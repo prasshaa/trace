@@ -1,0 +1,5 @@
+-r requirements.txt
+pytest==8.4.2
+httpx==0.28.1
+# Renders the fictional evaluation corpus for the resume parser (evaluation/resume_parser). BSD.
+reportlab==5.1.0

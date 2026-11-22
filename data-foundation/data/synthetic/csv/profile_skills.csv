@@ -1,0 +1,175 @@
+profile_skill_id,profile_id,skill_id,skill_text_raw,employment_id,evidence_id,evidence_source,confidence,verified
+SYN-001-SKL-SOFTWARE-ENGINEERING-synthetic_fixture,SYN-001,SKL-SOFTWARE-ENGINEERING,software engineering,,,synthetic_fixture,1.0,false
+SYN-001-SKL-APIS-synthetic_fixture,SYN-001,SKL-APIS,APIs,,,synthetic_fixture,1.0,false
+SYN-001-SKL-SYSTEM-DESIGN-synthetic_fixture,SYN-001,SKL-SYSTEM-DESIGN,system design,,,synthetic_fixture,1.0,false
+SYN-001-SKL-USER-STORIES-synthetic_fixture,SYN-001,SKL-USER-STORIES,user stories,,,synthetic_fixture,1.0,false
+SYN-001-SKL-PRODUCT-ROADMAP-synthetic_fixture,SYN-001,SKL-PRODUCT-ROADMAP,roadmapping,,,synthetic_fixture,1.0,false
+SYN-002-SKL-QUALITY-ENGINEERING-synthetic_fixture,SYN-002,SKL-QUALITY-ENGINEERING,QA,,,synthetic_fixture,1.0,false
+SYN-002-SKL-REQUIREMENTS-synthetic_fixture,SYN-002,SKL-REQUIREMENTS,requirements,,,synthetic_fixture,1.0,false
+SYN-002-SKL-SQL-synthetic_fixture,SYN-002,SKL-SQL,SQL,,,synthetic_fixture,1.0,false
+SYN-002-SKL-STAKEHOLDER-MANAGEMENT-synthetic_fixture,SYN-002,SKL-STAKEHOLDER-MANAGEMENT,stakeholder management,,,synthetic_fixture,1.0,false
+SYN-002-SKL-PRODUCT-DISCOVERY-synthetic_fixture,SYN-002,SKL-PRODUCT-DISCOVERY,product discovery,,,synthetic_fixture,1.0,false
+SYN-003-SKL-QUALITY-ENGINEERING-synthetic_fixture,SYN-003,SKL-QUALITY-ENGINEERING,quality engineering,,,synthetic_fixture,1.0,false
+SYN-003-SKL-CUSTOMER-FEEDBACK-synthetic_fixture,SYN-003,SKL-CUSTOMER-FEEDBACK,customer feedback,,,synthetic_fixture,1.0,false
+SYN-003-SKL-REQUIREMENTS-synthetic_fixture,SYN-003,SKL-REQUIREMENTS,requirements,,,synthetic_fixture,1.0,false
+SYN-003-SKL-ANALYTICS-synthetic_fixture,SYN-003,SKL-ANALYTICS,analytics,,,synthetic_fixture,1.0,false
+SYN-004-SKL-SQL-synthetic_fixture,SYN-004,SKL-SQL,SQL,,,synthetic_fixture,1.0,false
+SYN-004-SKL-PYTHON-synthetic_fixture,SYN-004,SKL-PYTHON,Python,,,synthetic_fixture,1.0,false
+SYN-004-SKL-EXPERIMENTATION-synthetic_fixture,SYN-004,SKL-EXPERIMENTATION,experimentation,,,synthetic_fixture,1.0,false
+SYN-004-SKL-FUNNEL-ANALYTICS-synthetic_fixture,SYN-004,SKL-FUNNEL-ANALYTICS,funnel analytics,,,synthetic_fixture,1.0,false
+SYN-004-SKL-PRODUCT-METRICS-synthetic_fixture,SYN-004,SKL-PRODUCT-METRICS,product metrics,,,synthetic_fixture,1.0,false
+SYN-005-SKL-BUSINESS-ANALYSIS-synthetic_fixture,SYN-005,SKL-BUSINESS-ANALYSIS,business analysis,,,synthetic_fixture,1.0,false
+SYN-005-SKL-PROCESS-DESIGN-synthetic_fixture,SYN-005,SKL-PROCESS-DESIGN,process design,,,synthetic_fixture,1.0,false
+SYN-005-SKL-SQL-synthetic_fixture,SYN-005,SKL-SQL,SQL,,,synthetic_fixture,1.0,false
+SYN-005-SKL-REQUIREMENTS-synthetic_fixture,SYN-005,SKL-REQUIREMENTS,requirements,,,synthetic_fixture,1.0,false
+SYN-005-SKL-STAKEHOLDER-MANAGEMENT-synthetic_fixture,SYN-005,SKL-STAKEHOLDER-MANAGEMENT,stakeholder management,,,synthetic_fixture,1.0,false
+SYN-006-SKL-MARKET-RESEARCH-synthetic_fixture,SYN-006,SKL-MARKET-RESEARCH,market research,,,synthetic_fixture,1.0,false
+SYN-006-SKL-BUSINESS-STRATEGY-synthetic_fixture,SYN-006,SKL-BUSINESS-STRATEGY,business strategy,,,synthetic_fixture,1.0,false
+SYN-006-SKL-ANALYTICS-synthetic_fixture,SYN-006,SKL-ANALYTICS,analytics,,,synthetic_fixture,1.0,false
+SYN-006-SKL-PRODUCT-DISCOVERY-synthetic_fixture,SYN-006,SKL-PRODUCT-DISCOVERY,product discovery,,,synthetic_fixture,1.0,false
+SYN-007-SKL-GROWTH-MARKETING-synthetic_fixture,SYN-007,SKL-GROWTH-MARKETING,growth marketing,,,synthetic_fixture,1.0,false
+SYN-007-SKL-EXPERIMENTATION-synthetic_fixture,SYN-007,SKL-EXPERIMENTATION,experimentation,,,synthetic_fixture,1.0,false
+SYN-007-SKL-CUSTOMER-SEGMENTATION-synthetic_fixture,SYN-007,SKL-CUSTOMER-SEGMENTATION,customer segmentation,,,synthetic_fixture,1.0,false
+SYN-007-SKL-PRICING-synthetic_fixture,SYN-007,SKL-PRICING,pricing,,,synthetic_fixture,1.0,false
+SYN-007-SKL-GTM-synthetic_fixture,SYN-007,SKL-GTM,GTM,,,synthetic_fixture,1.0,false
+SYN-008-SKL-ENTERPRISE-SALES-synthetic_fixture,SYN-008,SKL-ENTERPRISE-SALES,enterprise sales,,,synthetic_fixture,1.0,false
+SYN-008-SKL-CUSTOMER-DISCOVERY-synthetic_fixture,SYN-008,SKL-CUSTOMER-DISCOVERY,customer discovery,,,synthetic_fixture,1.0,false
+SYN-008-SKL-CRM-synthetic_fixture,SYN-008,SKL-CRM,CRM,,,synthetic_fixture,1.0,false
+SYN-008-SKL-PRICING-synthetic_fixture,SYN-008,SKL-PRICING,pricing,,,synthetic_fixture,1.0,false
+SYN-008-SKL-NEGOTIATION-synthetic_fixture,SYN-008,SKL-NEGOTIATION,negotiation,,,synthetic_fixture,1.0,false
+SYN-009-SKL-CUSTOMER-SUCCESS-synthetic_fixture,SYN-009,SKL-CUSTOMER-SUCCESS,customer success,,,synthetic_fixture,1.0,false
+SYN-009-SKL-ONBOARDING-synthetic_fixture,SYN-009,SKL-ONBOARDING,onboarding,,,synthetic_fixture,1.0,false
+SYN-009-SKL-CUSTOMER-FEEDBACK-synthetic_fixture,SYN-009,SKL-CUSTOMER-FEEDBACK,customer feedback,,,synthetic_fixture,1.0,false
+SYN-009-SKL-PRODUCT-ANALYTICS-synthetic_fixture,SYN-009,SKL-PRODUCT-ANALYTICS,product analytics,,,synthetic_fixture,1.0,false
+SYN-010-SKL-USER-RESEARCH-synthetic_fixture,SYN-010,SKL-USER-RESEARCH,UX research,,,synthetic_fixture,1.0,false
+SYN-010-SKL-PROTOTYPING-synthetic_fixture,SYN-010,SKL-PROTOTYPING,prototyping,,,synthetic_fixture,1.0,false
+SYN-010-SKL-USABILITY-TESTING-synthetic_fixture,SYN-010,SKL-USABILITY-TESTING,usability,,,synthetic_fixture,1.0,false
+SYN-010-SKL-DESIGN-SYSTEMS-synthetic_fixture,SYN-010,SKL-DESIGN-SYSTEMS,design systems,,,synthetic_fixture,1.0,false
+SYN-010-SKL-PRODUCT-DISCOVERY-synthetic_fixture,SYN-010,SKL-PRODUCT-DISCOVERY,product discovery,,,synthetic_fixture,1.0,false
+SYN-011-SKL-PROGRAM-DELIVERY-synthetic_fixture,SYN-011,SKL-PROGRAM-DELIVERY,program delivery,,,synthetic_fixture,1.0,false
+SYN-011-SKL-AGILE-synthetic_fixture,SYN-011,SKL-AGILE,Agile,,,synthetic_fixture,1.0,false
+SYN-011-SKL-RISK-MANAGEMENT-synthetic_fixture,SYN-011,SKL-RISK-MANAGEMENT,risk management,,,synthetic_fixture,1.0,false
+SYN-011-SKL-REQUIREMENTS-synthetic_fixture,SYN-011,SKL-REQUIREMENTS,requirements,,,synthetic_fixture,1.0,false
+SYN-011-SKL-PRODUCT-ROADMAP-synthetic_fixture,SYN-011,SKL-PRODUCT-ROADMAP,roadmapping,,,synthetic_fixture,1.0,false
+SYN-012-SKL-OPERATIONS-synthetic_fixture,SYN-012,SKL-OPERATIONS,operations,,,synthetic_fixture,1.0,false
+SYN-012-SKL-PROCESS-IMPROVEMENT-synthetic_fixture,SYN-012,SKL-PROCESS-IMPROVEMENT,process improvement,,,synthetic_fixture,1.0,false
+SYN-012-SKL-SQL-synthetic_fixture,SYN-012,SKL-SQL,SQL,,,synthetic_fixture,1.0,false
+SYN-012-SKL-PRODUCT-METRICS-synthetic_fixture,SYN-012,SKL-PRODUCT-METRICS,product metrics,,,synthetic_fixture,1.0,false
+SYN-012-SKL-WORKFLOW-DESIGN-synthetic_fixture,SYN-012,SKL-WORKFLOW-DESIGN,workflow design,,,synthetic_fixture,1.0,false
+SYN-013-SKL-FINANCIAL-MODELLING-synthetic_fixture,SYN-013,SKL-FINANCIAL-MODELLING,financial modelling,,,synthetic_fixture,1.0,false
+SYN-013-SKL-RECONCILIATION-synthetic_fixture,SYN-013,SKL-RECONCILIATION,reconciliation,,,synthetic_fixture,1.0,false
+SYN-013-SKL-PAYMENTS-synthetic_fixture,SYN-013,SKL-PAYMENTS,payments,,,synthetic_fixture,1.0,false
+SYN-013-SKL-ANALYTICS-synthetic_fixture,SYN-013,SKL-ANALYTICS,analytics,,,synthetic_fixture,1.0,false
+SYN-013-SKL-RISK-MANAGEMENT-synthetic_fixture,SYN-013,SKL-RISK-MANAGEMENT,risk,,,synthetic_fixture,1.0,false
+SYN-014-SKL-HR-OPERATIONS-synthetic_fixture,SYN-014,SKL-HR-OPERATIONS,HR operations,,,synthetic_fixture,1.0,false
+SYN-014-SKL-PEOPLE-ANALYTICS-synthetic_fixture,SYN-014,SKL-PEOPLE-ANALYTICS,people analytics,,,synthetic_fixture,1.0,false
+SYN-014-SKL-WORKFLOW-AUTOMATION-synthetic_fixture,SYN-014,SKL-WORKFLOW-AUTOMATION,workflow automation,,,synthetic_fixture,1.0,false
+SYN-014-SKL-STAKEHOLDER-MANAGEMENT-synthetic_fixture,SYN-014,SKL-STAKEHOLDER-MANAGEMENT,stakeholder management,,,synthetic_fixture,1.0,false
+SYN-015-SKL-TECHNICAL-SUPPORT-synthetic_fixture,SYN-015,SKL-TECHNICAL-SUPPORT,technical support,,,synthetic_fixture,1.0,false
+SYN-015-SKL-APIS-synthetic_fixture,SYN-015,SKL-APIS,APIs,,,synthetic_fixture,1.0,false
+SYN-015-SKL-INCIDENT-ANALYSIS-synthetic_fixture,SYN-015,SKL-INCIDENT-ANALYSIS,incident analysis,,,synthetic_fixture,1.0,false
+SYN-015-SKL-CUSTOMER-FEEDBACK-synthetic_fixture,SYN-015,SKL-CUSTOMER-FEEDBACK,customer feedback,,,synthetic_fixture,1.0,false
+SYN-015-SKL-TECHNICAL-DOCUMENTATION-synthetic_fixture,SYN-015,SKL-TECHNICAL-DOCUMENTATION,technical documentation,,,synthetic_fixture,1.0,false
+SYN-016-SKL-PYTHON-synthetic_fixture,SYN-016,SKL-PYTHON,Python,,,synthetic_fixture,1.0,false
+SYN-016-SKL-MACHINE-LEARNING-synthetic_fixture,SYN-016,SKL-MACHINE-LEARNING,machine learning,,,synthetic_fixture,1.0,false
+SYN-016-SKL-EXPERIMENTATION-synthetic_fixture,SYN-016,SKL-EXPERIMENTATION,experimentation,,,synthetic_fixture,1.0,false
+SYN-016-SKL-MODEL-DEPLOYMENT-synthetic_fixture,SYN-016,SKL-MODEL-DEPLOYMENT,model deployment,,,synthetic_fixture,1.0,false
+SYN-016-SKL-PRODUCT-ANALYTICS-synthetic_fixture,SYN-016,SKL-PRODUCT-ANALYTICS,product analytics,,,synthetic_fixture,1.0,false
+SYN-017-SKL-PRODUCT-DISCOVERY-synthetic_fixture,SYN-017,SKL-PRODUCT-DISCOVERY,product discovery,,,synthetic_fixture,1.0,false
+SYN-017-SKL-PRODUCT-ROADMAP-synthetic_fixture,SYN-017,SKL-PRODUCT-ROADMAP,roadmapping,,,synthetic_fixture,1.0,false
+SYN-017-SKL-EXPERIMENTATION-synthetic_fixture,SYN-017,SKL-EXPERIMENTATION,experimentation,,,synthetic_fixture,1.0,false
+SYN-017-SKL-ANALYTICS-synthetic_fixture,SYN-017,SKL-ANALYTICS,analytics,,,synthetic_fixture,1.0,false
+SYN-018-SKL-PAYMENTS-synthetic_fixture,SYN-018,SKL-PAYMENTS,payments,,,synthetic_fixture,1.0,false
+SYN-018-SKL-MARKETPLACE-synthetic_fixture,SYN-018,SKL-MARKETPLACE,marketplace,,,synthetic_fixture,1.0,false
+SYN-018-SKL-PRICING-synthetic_fixture,SYN-018,SKL-PRICING,pricing,,,synthetic_fixture,1.0,false
+SYN-018-SKL-PRODUCT-ROADMAP-synthetic_fixture,SYN-018,SKL-PRODUCT-ROADMAP,roadmapping,,,synthetic_fixture,1.0,false
+SYN-018-SKL-ANALYTICS-synthetic_fixture,SYN-018,SKL-ANALYTICS,analytics,,,synthetic_fixture,1.0,false
+SYN-019-SKL-B2B-SAAS-synthetic_fixture,SYN-019,SKL-B2B-SAAS,B2B SaaS,,,synthetic_fixture,1.0,false
+SYN-019-SKL-PLATFORM-PRODUCTS-synthetic_fixture,SYN-019,SKL-PLATFORM-PRODUCTS,platform products,,,synthetic_fixture,1.0,false
+SYN-019-SKL-CUSTOMER-DISCOVERY-synthetic_fixture,SYN-019,SKL-CUSTOMER-DISCOVERY,customer discovery,,,synthetic_fixture,1.0,false
+SYN-019-SKL-INTEGRATION-ROADMAPS-synthetic_fixture,SYN-019,SKL-INTEGRATION-ROADMAPS,integration roadmaps,,,synthetic_fixture,1.0,false
+SYN-020-SKL-PRODUCT-STRATEGY-synthetic_fixture,SYN-020,SKL-PRODUCT-STRATEGY,product strategy,,,synthetic_fixture,1.0,false
+SYN-020-SKL-ROADMAP-OWNERSHIP-synthetic_fixture,SYN-020,SKL-ROADMAP-OWNERSHIP,roadmap ownership,,,synthetic_fixture,1.0,false
+SYN-020-SKL-LEADERSHIP-synthetic_fixture,SYN-020,SKL-LEADERSHIP,leadership,,,synthetic_fixture,1.0,false
+SYN-020-SKL-METRICS-synthetic_fixture,SYN-020,SKL-METRICS,metrics,,,synthetic_fixture,1.0,false
+SYN-021-SKL-PRODUCT-STRATEGY-synthetic_fixture,SYN-021,SKL-PRODUCT-STRATEGY,product strategy,,,synthetic_fixture,1.0,false
+SYN-021-SKL-PORTFOLIO-PRIORITISATION-synthetic_fixture,SYN-021,SKL-PORTFOLIO-PRIORITISATION,portfolio prioritisation,,,synthetic_fixture,1.0,false
+SYN-021-SKL-CROSS-FUNCTIONAL-LEADERSHIP-synthetic_fixture,SYN-021,SKL-CROSS-FUNCTIONAL-LEADERSHIP,cross-functional leadership,,,synthetic_fixture,1.0,false
+SYN-022-SKL-PORTFOLIO-STRATEGY-synthetic_fixture,SYN-022,SKL-PORTFOLIO-STRATEGY,portfolio strategy,,,synthetic_fixture,1.0,false
+SYN-022-SKL-PEOPLE-LEADERSHIP-synthetic_fixture,SYN-022,SKL-PEOPLE-LEADERSHIP,people leadership,,,synthetic_fixture,1.0,false
+SYN-022-SKL-ANNUAL-PLANNING-synthetic_fixture,SYN-022,SKL-ANNUAL-PLANNING,annual planning,,,synthetic_fixture,1.0,false
+SYN-022-SKL-EXECUTIVE-COMMUNICATION-synthetic_fixture,SYN-022,SKL-EXECUTIVE-COMMUNICATION,executive communication,,,synthetic_fixture,1.0,false
+SYN-023-SKL-PORTFOLIO-PLANNING-synthetic_fixture,SYN-023,SKL-PORTFOLIO-PLANNING,portfolio planning,,,synthetic_fixture,1.0,false
+SYN-023-SKL-EXECUTIVE-ALIGNMENT-synthetic_fixture,SYN-023,SKL-EXECUTIVE-ALIGNMENT,executive alignment,,,synthetic_fixture,1.0,false
+SYN-023-SKL-PEOPLE-LEADERSHIP-synthetic_fixture,SYN-023,SKL-PEOPLE-LEADERSHIP,people management,,,synthetic_fixture,1.0,false
+SYN-023-SKL-BUSINESS-STRATEGY-synthetic_fixture,SYN-023,SKL-BUSINESS-STRATEGY,business strategy,,,synthetic_fixture,1.0,false
+SYN-024-SKL-PRODUCT-OWNERSHIP-synthetic_fixture,SYN-024,SKL-PRODUCT-OWNERSHIP,product ownership,,,synthetic_fixture,1.0,false
+SYN-024-SKL-BACKLOG-synthetic_fixture,SYN-024,SKL-BACKLOG,backlog,,,synthetic_fixture,1.0,false
+SYN-024-SKL-DISCOVERY-synthetic_fixture,SYN-024,SKL-DISCOVERY,discovery,,,synthetic_fixture,1.0,false
+SYN-024-SKL-CUSTOMER-INTERVIEWS-synthetic_fixture,SYN-024,SKL-CUSTOMER-INTERVIEWS,customer interviews,,,synthetic_fixture,1.0,false
+SYN-025-SKL-CLIENT-DISCOVERY-synthetic_fixture,SYN-025,SKL-CLIENT-DISCOVERY,client discovery,,,synthetic_fixture,1.0,false
+SYN-025-SKL-DELIVERY-synthetic_fixture,SYN-025,SKL-DELIVERY,delivery,,,synthetic_fixture,1.0,false
+SYN-025-SKL-PRODUCT-ROADMAP-synthetic_fixture,SYN-025,SKL-PRODUCT-ROADMAP,roadmapping,,,synthetic_fixture,1.0,false
+SYN-025-SKL-ANALYTICS-synthetic_fixture,SYN-025,SKL-ANALYTICS,analytics,,,synthetic_fixture,1.0,false
+SYN-026-SKL-PRODUCT-ANALYTICS-synthetic_fixture,SYN-026,SKL-PRODUCT-ANALYTICS,product analytics,,,synthetic_fixture,1.0,false
+SYN-026-SKL-MARKET-EXPANSION-synthetic_fixture,SYN-026,SKL-MARKET-EXPANSION,market expansion,,,synthetic_fixture,1.0,false
+SYN-026-SKL-PRODUCT-ROADMAP-synthetic_fixture,SYN-026,SKL-PRODUCT-ROADMAP,roadmapping,,,synthetic_fixture,1.0,false
+SYN-026-SKL-STAKEHOLDER-MANAGEMENT-synthetic_fixture,SYN-026,SKL-STAKEHOLDER-MANAGEMENT,stakeholder management,,,synthetic_fixture,1.0,false
+SYN-027-SKL-MANUFACTURING-SYSTEMS-synthetic_fixture,SYN-027,SKL-MANUFACTURING-SYSTEMS,manufacturing systems,,,synthetic_fixture,1.0,false
+SYN-027-SKL-WORKFLOW-AUTOMATION-synthetic_fixture,SYN-027,SKL-WORKFLOW-AUTOMATION,workflow automation,,,synthetic_fixture,1.0,false
+SYN-027-SKL-ENTERPRISE-SAAS-synthetic_fixture,SYN-027,SKL-ENTERPRISE-SAAS,enterprise SaaS,,,synthetic_fixture,1.0,false
+SYN-027-SKL-INTEGRATIONS-synthetic_fixture,SYN-027,SKL-INTEGRATIONS,integrations,,,synthetic_fixture,1.0,false
+SYN-028-SKL-0-TO-1-PRODUCT-synthetic_fixture,SYN-028,SKL-0-TO-1-PRODUCT,0-to-1 product,,,synthetic_fixture,1.0,false
+SYN-028-SKL-GROWTH-synthetic_fixture,SYN-028,SKL-GROWTH,growth,,,synthetic_fixture,1.0,false
+SYN-028-SKL-PRODUCT-ROADMAP-synthetic_fixture,SYN-028,SKL-PRODUCT-ROADMAP,roadmap,,,synthetic_fixture,1.0,false
+SYN-028-SKL-TEAM-LEADERSHIP-synthetic_fixture,SYN-028,SKL-TEAM-LEADERSHIP,team leadership,,,synthetic_fixture,1.0,false
+SYN-029-SKL-CONSUMER-ENGAGEMENT-synthetic_fixture,SYN-029,SKL-CONSUMER-ENGAGEMENT,consumer engagement,,,synthetic_fixture,1.0,false
+SYN-029-SKL-PAYMENTS-synthetic_fixture,SYN-029,SKL-PAYMENTS,payments,,,synthetic_fixture,1.0,false
+SYN-029-SKL-MONETISATION-synthetic_fixture,SYN-029,SKL-MONETISATION,monetisation,,,synthetic_fixture,1.0,false
+SYN-029-SKL-PRODUCT-ANALYTICS-synthetic_fixture,SYN-029,SKL-PRODUCT-ANALYTICS,product analytics,,,synthetic_fixture,1.0,false
+SYN-030-SKL-APIS-synthetic_fixture,SYN-030,SKL-APIS,APIs,,,synthetic_fixture,1.0,false
+SYN-030-SKL-PLATFORM-STRATEGY-synthetic_fixture,SYN-030,SKL-PLATFORM-STRATEGY,platform strategy,,,synthetic_fixture,1.0,false
+SYN-030-SKL-DEVELOPER-EXPERIENCE-synthetic_fixture,SYN-030,SKL-DEVELOPER-EXPERIENCE,developer experience,,,synthetic_fixture,1.0,false
+SYN-030-SKL-TECHNICAL-ROADMAP-synthetic_fixture,SYN-030,SKL-TECHNICAL-ROADMAP,technical roadmap,,,synthetic_fixture,1.0,false
+SYN-031-SKL-PRODUCT-ANALYTICS-synthetic_fixture,SYN-031,SKL-PRODUCT-ANALYTICS,product analytics,,,synthetic_fixture,1.0,false
+SYN-031-SKL-PRODUCT-ROADMAP-synthetic_fixture,SYN-031,SKL-PRODUCT-ROADMAP,roadmapping,,,synthetic_fixture,1.0,false
+SYN-031-SKL-CUSTOMER-DISCOVERY-synthetic_fixture,SYN-031,SKL-CUSTOMER-DISCOVERY,customer discovery,,,synthetic_fixture,1.0,false
+SYN-031-SKL-LEADERSHIP-synthetic_fixture,SYN-031,SKL-LEADERSHIP,leadership,,,synthetic_fixture,1.0,false
+SYN-032-SKL-PORTFOLIO-STRATEGY-synthetic_fixture,SYN-032,SKL-PORTFOLIO-STRATEGY,portfolio strategy,,,synthetic_fixture,1.0,false
+SYN-032-SKL-PRODUCT-ORGANISATION-DESIGN-synthetic_fixture,SYN-032,SKL-PRODUCT-ORGANISATION-DESIGN,product organisation design,,,synthetic_fixture,1.0,false
+SYN-032-SKL-EXECUTIVE-LEADERSHIP-synthetic_fixture,SYN-032,SKL-EXECUTIVE-LEADERSHIP,executive leadership,,,synthetic_fixture,1.0,false
+SYN-033-SKL-PRODUCT-ROADMAP-synthetic_fixture,SYN-033,SKL-PRODUCT-ROADMAP,product roadmap,,,synthetic_fixture,1.0,false
+SYN-033-SKL-PAYMENTS-synthetic_fixture,SYN-033,SKL-PAYMENTS,payments,,,synthetic_fixture,1.0,false
+SYN-033-SKL-EXPERIMENTATION-synthetic_fixture,SYN-033,SKL-EXPERIMENTATION,experimentation,,,synthetic_fixture,1.0,false
+SYN-033-SKL-PEOPLE-LEADERSHIP-synthetic_fixture,SYN-033,SKL-PEOPLE-LEADERSHIP,people leadership,,,synthetic_fixture,1.0,false
+SYN-034-SKL-SOFTWARE-ENGINEERING-synthetic_fixture,SYN-034,SKL-SOFTWARE-ENGINEERING,software engineering,,,synthetic_fixture,1.0,false
+SYN-034-SKL-APIS-synthetic_fixture,SYN-034,SKL-APIS,apis,,,synthetic_fixture,1.0,false
+SYN-034-SKL-PRD-WRITING-synthetic_fixture,SYN-034,SKL-PRD-WRITING,prd writing,,,synthetic_fixture,1.0,false
+SYN-034-SKL-EXPERIMENTATION-synthetic_fixture,SYN-034,SKL-EXPERIMENTATION,experimentation,,,synthetic_fixture,1.0,false
+SYN-035-SKL-SOFTWARE-ENGINEERING-synthetic_fixture,SYN-035,SKL-SOFTWARE-ENGINEERING,software engineering,,,synthetic_fixture,1.0,false
+SYN-035-SKL-PRODUCT-ROADMAP-synthetic_fixture,SYN-035,SKL-PRODUCT-ROADMAP,product roadmap,,,synthetic_fixture,1.0,false
+SYN-035-SKL-WORKFLOW-AUTOMATION-synthetic_fixture,SYN-035,SKL-WORKFLOW-AUTOMATION,workflow automation,,,synthetic_fixture,1.0,false
+SYN-036-SKL-QUALITY-ENGINEERING-synthetic_fixture,SYN-036,SKL-QUALITY-ENGINEERING,quality engineering,,,synthetic_fixture,1.0,false
+SYN-036-SKL-AGILE-synthetic_fixture,SYN-036,SKL-AGILE,agile,,,synthetic_fixture,1.0,false
+SYN-036-SKL-USER-STORIES-synthetic_fixture,SYN-036,SKL-USER-STORIES,user stories,,,synthetic_fixture,1.0,false
+SYN-036-SKL-PRODUCT-ROADMAP-synthetic_fixture,SYN-036,SKL-PRODUCT-ROADMAP,product roadmap,,,synthetic_fixture,1.0,false
+SYN-037-SKL-BUSINESS-ANALYSIS-synthetic_fixture,SYN-037,SKL-BUSINESS-ANALYSIS,business analysis,,,synthetic_fixture,1.0,false
+SYN-037-SKL-REQUIREMENTS-synthetic_fixture,SYN-037,SKL-REQUIREMENTS,requirements,,,synthetic_fixture,1.0,false
+SYN-037-SKL-BACKLOG-synthetic_fixture,SYN-037,SKL-BACKLOG,backlog,,,synthetic_fixture,1.0,false
+SYN-037-SKL-PRODUCT-ROADMAP-synthetic_fixture,SYN-037,SKL-PRODUCT-ROADMAP,product roadmap,,,synthetic_fixture,1.0,false
+SYN-038-SKL-SQL-synthetic_fixture,SYN-038,SKL-SQL,sql,,,synthetic_fixture,1.0,false
+SYN-038-SKL-PRODUCT-ANALYTICS-synthetic_fixture,SYN-038,SKL-PRODUCT-ANALYTICS,product analytics,,,synthetic_fixture,1.0,false
+SYN-038-SKL-EXPERIMENTATION-synthetic_fixture,SYN-038,SKL-EXPERIMENTATION,experimentation,,,synthetic_fixture,1.0,false
+SYN-038-SKL-BACKLOG-synthetic_fixture,SYN-038,SKL-BACKLOG,backlog,,,synthetic_fixture,1.0,false
+SYN-039-SKL-SOFTWARE-ENGINEERING-synthetic_fixture,SYN-039,SKL-SOFTWARE-ENGINEERING,software engineering,,,synthetic_fixture,1.0,false
+SYN-039-SKL-CUSTOMER-INTERVIEWS-synthetic_fixture,SYN-039,SKL-CUSTOMER-INTERVIEWS,customer interviews,,,synthetic_fixture,1.0,false
+SYN-039-SKL-BACKLOG-synthetic_fixture,SYN-039,SKL-BACKLOG,backlog,,,synthetic_fixture,1.0,false
+SYN-039-SKL-PRODUCT-ROADMAP-synthetic_fixture,SYN-039,SKL-PRODUCT-ROADMAP,product roadmap,,,synthetic_fixture,1.0,false
+SYN-040-SKL-0-TO-1-PRODUCT-synthetic_fixture,SYN-040,SKL-0-TO-1-PRODUCT,0-to-1 product,,,synthetic_fixture,1.0,false
+SYN-040-SKL-PRODUCT-STRATEGY-synthetic_fixture,SYN-040,SKL-PRODUCT-STRATEGY,product strategy,,,synthetic_fixture,1.0,false
+SYN-040-SKL-PLATFORM-STRATEGY-synthetic_fixture,SYN-040,SKL-PLATFORM-STRATEGY,platform strategy,,,synthetic_fixture,1.0,false
+SYN-040-SKL-APIS-synthetic_fixture,SYN-040,SKL-APIS,apis,,,synthetic_fixture,1.0,false
+SYN-041-SKL-EXPERIMENTATION-synthetic_fixture,SYN-041,SKL-EXPERIMENTATION,experimentation,,,synthetic_fixture,1.0,false
+SYN-041-SKL-BACKLOG-synthetic_fixture,SYN-041,SKL-BACKLOG,backlog,,,synthetic_fixture,1.0,false
+SYN-041-SKL-PRODUCT-ROADMAP-synthetic_fixture,SYN-041,SKL-PRODUCT-ROADMAP,product roadmap,,,synthetic_fixture,1.0,false
+SYN-041-SKL-PAYMENTS-synthetic_fixture,SYN-041,SKL-PAYMENTS,payments,,,synthetic_fixture,1.0,false

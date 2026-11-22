@@ -1,0 +1,33 @@
+# Fly.io (release, D52). Secrets are set with `fly secrets set` (docs/DEPLOYMENT.md); none are in this file.
+app = "trace-career"
+primary_region = "nrt"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  TRACE_REAL_RESUME_UPLOADS = "1"
+  MAX_RESUME_BYTES = "5242880"
+  TRACE_CONTRIBUTION_POLICY = "disabled"
+  TRACE_CONTRIBUTION_WORKER = "0"
+  TRACE_CAREER_ORIGINS = "0"
+  TRACE_HSTS = "1"
+  TRACE_RATE_LIMIT_NAMESPACE = "prod"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "20s"
+    method = "GET"
+    path = "/health"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "1gb"

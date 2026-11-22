@@ -1,0 +1,17 @@
+responsibility_area,label,is_pm_ownership_signal,description
+product_discovery,Product and customer discovery,true,"Problem, customer or user discovery that shapes what is built."
+roadmap_ownership,Roadmap ownership,true,Owns or sets a roadmap or product strategy for a product area.
+prioritisation_backlog,Prioritisation and backlog,true,"Owns backlog, release or feature prioritisation."
+outcome_ownership,Outcome ownership,true,"Accountable for product outcomes such as adoption, conversion, retention or revenue."
+requirements_analysis,Requirements analysis,false,"Elicits requirements, process maps or specifications."
+delivery_execution,Delivery and execution,false,"Plans and coordinates delivery, launches and dependencies."
+data_analysis,Data analysis,false,"Analyses data, funnels, experiments or metrics; builds dashboards or models."
+technical_engineering,Technical engineering,false,"Designs, builds or integrates software, APIs or models."
+quality_testing,Quality and testing,false,Tests software and manages defects.
+design_research,Design and user research,false,"Interaction design, usability testing and design research."
+go_to_market_growth,Go-to-market and growth,false,"Marketing, acquisition, campaigns and go-to-market."
+customer_account_management,Customer and account management,false,"Manages customer accounts, escalations and renewals or resolves customer issues."
+operations_process,Operations and process,false,Runs operations and improves processes.
+people_leadership,People leadership,false,Leads or mentors people or teams.
+strategy_portfolio,Strategy and portfolio,false,"Sets multi-product, portfolio or organisation-level strategy."
+stakeholder_management,Stakeholder management,false,Coordinates stakeholders and cross-functional partners.

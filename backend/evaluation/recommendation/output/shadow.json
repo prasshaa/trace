@@ -1,0 +1,6771 @@
+{
+ "comparisons": [
+  {
+   "pair": [
+    "R01",
+    "R02"
+   ],
+   "production_identical": false,
+   "production_order": [
+    [
+     "PM-PM>PM-SPM",
+     "PM-PM>ROLE-PGM>PM-SPM"
+    ],
+    [
+     "PM-PM>ROLE-PGM>PM-SPM",
+     "PM-PM>PM-SPM"
+    ]
+   ],
+   "production_tiers": [
+    [
+     "aligned",
+     "limited"
+    ],
+    [
+     "partial",
+     "limited"
+    ]
+   ],
+   "relevance_differs_in": {
+    "PM-PM>PM-SPM": [
+     "previous_roles",
+     "responsibilities",
+     "industries",
+     "skills",
+     "qualification_types",
+     "fields_of_study"
+    ],
+    "PM-PM>ROLE-PGM>PM-SPM": [
+     "previous_roles",
+     "responsibilities",
+     "industries",
+     "skills",
+     "qualification_types",
+     "fields_of_study"
+    ]
+   },
+   "why": "Profile A vs Profile B (different backgrounds, same roles and target)"
+  },
+  {
+   "pair": [
+    "S16A",
+    "S16B"
+   ],
+   "production_identical": false,
+   "production_order": [
+    [
+     "PM-APM>PM-PM"
+    ],
+    [
+     "PM-APM>PM-PM"
+    ]
+   ],
+   "production_tiers": [
+    [
+     "partial"
+    ],
+    [
+     "limited"
+    ]
+   ],
+   "relevance_differs_in": {
+    "PM-APM>PM-PM": [
+     "responsibilities"
+    ]
+   },
+   "why": "Phase 8.1 core: backgrounds A and B (core pool has no supporting attributes)"
+  },
+  {
+   "pair": [
+    "R01",
+    "R13"
+   ],
+   "production_identical": false,
+   "production_order": [
+    [
+     "PM-PM>PM-SPM",
+     "PM-PM>ROLE-PGM>PM-SPM"
+    ],
+    [
+     "PM-PM>PM-SPM",
+     "PM-PM>ROLE-PGM>PM-SPM"
+    ]
+   ],
+   "production_tiers": [
+    [
+     "aligned",
+     "limited"
+    ],
+    [
+     "aligned",
+     "limited"
+    ]
+   ],
+   "relevance_differs_in": {
+    "PM-PM>PM-SPM": [
+     "previous_roles",
+     "responsibilities",
+     "industries",
+     "skills",
+     "qualification_levels",
+     "qualification_types",
+     "fields_of_study",
+     "population"
+    ],
+    "PM-PM>ROLE-PGM>PM-SPM": []
+   },
+   "why": "Profile A with and without its own contribution in the population"
+  },
+  {
+   "pair": [
+    "R01",
+    "R07"
+   ],
+   "production_identical": true,
+   "production_order": [
+    [
+     "PM-PM>PM-SPM",
+     "PM-PM>ROLE-PGM>PM-SPM"
+    ],
+    [
+     "PM-PM>PM-SPM",
+     "PM-PM>ROLE-PGM>PM-SPM"
+    ]
+   ],
+   "production_tiers": [
+    [
+     "aligned",
+     "limited"
+    ],
+    [
+     "aligned",
+     "limited"
+    ]
+   ],
+   "relevance_differs_in": {
+    "PM-PM>PM-SPM": [
+     "qualification_levels",
+     "qualification_types"
+    ],
+    "PM-PM>ROLE-PGM>PM-SPM": [
+     "qualification_levels",
+     "qualification_types"
+    ]
+   },
+   "why": "Profile A with a different qualification (level and type)"
+  },
+  {
+   "pair": [
+    "R01",
+    "R14"
+   ],
+   "production_identical": true,
+   "production_order": [
+    [
+     "PM-PM>PM-SPM",
+     "PM-PM>ROLE-PGM>PM-SPM"
+    ],
+    [
+     "PM-PM>PM-SPM",
+     "PM-PM>ROLE-PGM>PM-SPM"
+    ]
+   ],
+   "production_tiers": [
+    [
+     "aligned",
+     "limited"
+    ],
+    [
+     "aligned",
+     "limited"
+    ]
+   ],
+   "relevance_differs_in": {
+    "PM-PM>PM-SPM": [
+     "fields_of_study"
+    ],
+    "PM-PM>ROLE-PGM>PM-SPM": [
+     "fields_of_study"
+    ]
+   },
+   "why": "Profile A with a different field of study"
+  }
+ ],
+ "invariants": {
+  "combination_risk_detected": {
+   "detail": "",
+   "ok": true
+  },
+  "compared_only_when_the_user_has_data": {
+   "detail": "",
+   "ok": true
+  },
+  "deterministic": {
+   "detail": "",
+   "ok": true
+  },
+  "disclosed_values_meet_privacy_minimum": {
+   "detail": "",
+   "ok": true
+  },
+  "every_no_path_state_is_explained": {
+   "detail": "",
+   "ok": true
+  },
+  "mba_is_a_type_not_a_level": {
+   "detail": "",
+   "ok": true
+  },
+  "missing_responsibilities_are_not_compared": {
+   "detail": "",
+   "ok": true
+  },
+  "one_changed_dimension_changes_exactly_that_dimension": {
+   "detail": "{\"R03\": [true, [\"previous_roles\"]], \"R04\": [true, [\"responsibilities\"]], \"R05\": [true, [\"industries\"]], \"R06\": [true, [\"skills\"]], \"R07\": [true, [\"qualification_levels\", \"qualification_types\"]], \"R08\": [true, []], \"R09\": [true, [\"responsibilities\"]], \"R10\": [true, [\"skills\"]], \"R14\": [true, [\"fields_of_study\"]]}",
+   "ok": true
+  },
+  "only_shown_routes_get_a_breakdown": {
+   "detail": "",
+   "ok": true
+  },
+  "own_contribution_never_in_population": {
+   "detail": "",
+   "ok": true
+  },
+  "own_exclusion_changes_the_population_exactly": {
+   "detail": "",
+   "ok": true
+  },
+  "population_equals_distinct_route_support": {
+   "detail": "",
+   "ok": true
+  },
+  "production_output_identical_to_phase_8_1_baseline": {
+   "detail": "",
+   "ok": true
+  },
+  "suppressed_routes_get_no_breakdown": {
+   "detail": "",
+   "ok": true
+  },
+  "unreviewed_skills_are_ignored": {
+   "detail": "",
+   "ok": true
+  }
+ },
+ "prototype": "whole-profile relevance, shadow mode (phase-8.2.1-v1)",
+ "sets": [
+  {
+   "areas": {
+    "data_analysis": {
+     "label": "Data analysis",
+     "pm_signal": false
+    },
+    "delivery_execution": {
+     "label": "Delivery and execution",
+     "pm_signal": false
+    },
+    "outcome_ownership": {
+     "label": "Outcome ownership",
+     "pm_signal": true
+    },
+    "prioritisation_backlog": {
+     "label": "Prioritisation and backlog",
+     "pm_signal": true
+    },
+    "product_discovery": {
+     "label": "Product and customer discovery",
+     "pm_signal": true
+    },
+    "quality_testing": {
+     "label": "Quality and testing",
+     "pm_signal": false
+    },
+    "requirements_analysis": {
+     "label": "Requirements analysis",
+     "pm_signal": false
+    },
+    "roadmap_ownership": {
+     "label": "Roadmap ownership",
+     "pm_signal": true
+    },
+    "stakeholder_management": {
+     "label": "Stakeholder management",
+     "pm_signal": false
+    },
+    "technical_engineering": {
+     "label": "Technical engineering",
+     "pm_signal": false
+    }
+   },
+   "dimensions": [
+    "previous_roles",
+    "responsibilities",
+    "industries",
+    "skills",
+    "qualifications",
+    "fields_of_study"
+   ],
+   "fixture_sha256": "2f65654c48fa62ca2d77529557ded9c52493be69cd35da6ccc71b9b9e36b105c",
+   "label": "EVALUATION FIXTURE: constructed test careers for recommendation-engine evaluation. Not real career histories, not market evidence.",
+   "pool_id": "eval-core-v1",
+   "privacy_minimum": 5,
+   "roles": {
+    "PM-APM": {
+     "family": "product_management",
+     "is_pm_target": true,
+     "rank": 30,
+     "seniority": "associate",
+     "title": "Associate Product Manager"
+    },
+    "PM-DIR": {
+     "family": "product_management",
+     "is_pm_target": true,
+     "rank": 80,
+     "seniority": "director",
+     "title": "Director of Product"
+    },
+    "PM-HEAD": {
+     "family": "product_management",
+     "is_pm_target": true,
+     "rank": 75,
+     "seniority": "head",
+     "title": "Head of Product"
+    },
+    "PM-LEAD": {
+     "family": "product_management",
+     "is_pm_target": true,
+     "rank": 60,
+     "seniority": "lead",
+     "title": "Lead Product Manager"
+    },
+    "PM-PM": {
+     "family": "product_management",
+     "is_pm_target": true,
+     "rank": 40,
+     "seniority": "mid",
+     "title": "Product Manager"
+    },
+    "PM-SDIR": {
+     "family": "product_management",
+     "is_pm_target": true,
+     "rank": 85,
+     "seniority": "senior_director",
+     "title": "Senior Director of Product"
+    },
+    "PM-SPM": {
+     "family": "product_management",
+     "is_pm_target": true,
+     "rank": 50,
+     "seniority": "senior",
+     "title": "Senior Product Manager"
+    },
+    "ROLE-BA": {
+     "family": "business_analysis",
+     "rank": 40,
+     "seniority": "mid",
+     "title": "Business Analyst"
+    },
+    "ROLE-CONSULT": {
+     "family": "consulting",
+     "rank": 40,
+     "seniority": "mid",
+     "title": "Consultant"
+    },
+    "ROLE-CS": {
+     "family": "customer_success",
+     "rank": 40,
+     "seniority": "mid",
+     "title": "Customer Success Professional"
+    },
+    "ROLE-DA": {
+     "family": "data_analytics",
+     "rank": 40,
+     "seniority": "mid",
+     "title": "Data Analyst"
+    },
+    "ROLE-DS": {
+     "family": "data_science",
+     "rank": 40,
+     "seniority": "mid",
+     "title": "Data Scientist"
+    },
+    "ROLE-ENT": {
+     "family": "entrepreneurship",
+     "rank": null,
+     "seniority": "founder",
+     "title": "Founder / Co-founder"
+    },
+    "ROLE-HR": {
+     "family": "human_resources",
+     "rank": 40,
+     "seniority": "mid",
+     "title": "HR Professional"
+    },
+    "ROLE-MKT": {
+     "family": "marketing_growth",
+     "rank": 40,
+     "seniority": "mid",
+     "title": "Marketing / Growth Professional"
+    },
+    "ROLE-OWNER": {
+     "family": "product_ownership",
+     "rank": 40,
+     "seniority": "mid",
+     "title": "Product Owner"
+    },
+    "ROLE-PAN": {
+     "family": "product_analytics",
+     "rank": 40,
+     "seniority": "mid",
+     "title": "Product Analyst"
+    },
+    "ROLE-PGM": {
+     "family": "project_program_management",
+     "rank": 40,
+     "seniority": "mid",
+     "title": "Program Manager"
+    },
+    "ROLE-QA": {
+     "family": "qa_testing",
+     "rank": 40,
+     "seniority": "mid",
+     "title": "QA / Quality Engineer"
+    },
+    "ROLE-SUPPORT": {
+     "family": "customer_support",
+     "rank": 40,
+     "seniority": "mid",
+     "title": "Customer / Technical Support Professional"
+    },
+    "ROLE-SWE": {
+     "family": "software_engineering",
+     "rank": 40,
+     "seniority": "mid",
+     "title": "Software Engineer"
+    },
+    "ROLE-UX": {
+     "family": "design_ux",
+     "rank": 40,
+     "seniority": "mid",
+     "title": "UX / Product Designer"
+    }
+   },
+   "scenarios": [
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S01",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [
+        "outcome_ownership",
+        "roadmap_ownership"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [
+        "outcome_ownership",
+        "roadmap_ownership"
+       ],
+       "observation_count": 9,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "all_common_areas_recorded",
+       "route_id": "PM-APM>PM-PM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "aligned"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "status": "insufficient_reference_evidence"
+        },
+        "previous_roles": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualifications": {
+         "status": "insufficient_reference_evidence"
+        },
+        "responsibilities": {
+         "matched": [
+          [
+           "roadmap_ownership",
+           9
+          ],
+          [
+           "outcome_ownership",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "status": "insufficient_reference_evidence"
+        }
+       },
+       "route_id": "PM-APM>PM-PM",
+       "state": "compared",
+       "supporting_profiles": 9
+      }
+     ],
+     "target": "PM-PM",
+     "title": "Strong fit: both common route areas categorised",
+     "user": {
+      "areas": [
+       "roadmap_ownership",
+       "outcome_ownership"
+      ],
+      "current_role": "PM-APM",
+      "held_roles": [
+       "PM-APM"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "qualifications": [
+       "bachelor"
+      ],
+      "skills": [
+       "SQL",
+       "Roadmapping"
+      ]
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S02",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [
+        "outcome_ownership",
+        "roadmap_ownership"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [
+        "roadmap_ownership"
+       ],
+       "observation_count": 9,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "some_common_areas_recorded",
+       "route_id": "PM-APM>PM-PM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "partial"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "status": "insufficient_reference_evidence"
+        },
+        "previous_roles": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualifications": {
+         "status": "insufficient_reference_evidence"
+        },
+        "responsibilities": {
+         "matched": [
+          [
+           "roadmap_ownership",
+           9
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [
+          [
+           "outcome_ownership",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "status": "insufficient_reference_evidence"
+        }
+       },
+       "route_id": "PM-APM>PM-PM",
+       "state": "compared",
+       "supporting_profiles": 9
+      }
+     ],
+     "target": "PM-PM",
+     "title": "Partial fit: one of two common areas",
+     "user": {
+      "areas": [
+       "roadmap_ownership"
+      ],
+      "current_role": "PM-APM",
+      "held_roles": [
+       "PM-APM"
+      ],
+      "industries": [
+       "fintech"
+      ],
+      "qualifications": [
+       "master"
+      ],
+      "skills": [
+       "Roadmapping"
+      ]
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S03",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [
+        "outcome_ownership",
+        "roadmap_ownership"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [],
+       "observation_count": 9,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "no_common_area_recorded",
+       "route_id": "PM-APM>PM-PM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "limited"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "status": "insufficient_reference_evidence"
+        },
+        "previous_roles": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualifications": {
+         "status": "insufficient_reference_evidence"
+        },
+        "responsibilities": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "data_analysis"
+         ],
+         "reference_not_in_profile": [
+          [
+           "roadmap_ownership",
+           9
+          ],
+          [
+           "outcome_ownership",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "status": "insufficient_reference_evidence"
+        }
+       },
+       "route_id": "PM-APM>PM-PM",
+       "state": "compared",
+       "supporting_profiles": 9
+      }
+     ],
+     "target": "PM-PM",
+     "title": "Limited fit: categorised, but no common area",
+     "user": {
+      "areas": [
+       "data_analysis"
+      ],
+      "current_role": "PM-APM",
+      "held_roles": [
+       "PM-APM"
+      ],
+      "industries": [
+       "ecommerce_marketplace"
+      ],
+      "qualifications": [
+       "bachelor"
+      ],
+      "skills": [
+       "Python"
+      ]
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S04",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [
+        "outcome_ownership",
+        "roadmap_ownership"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [
+        "incomplete_user_profile"
+       ],
+       "matched_areas": [],
+       "observation_count": 9,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "no_eligible_classified_evidence",
+       "route_id": "PM-APM>PM-PM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "not_established"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "previous_roles": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualifications": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "responsibilities": {
+         "reference_patterns": [
+          [
+           "roadmap_ownership",
+           9
+          ],
+          [
+           "outcome_ownership",
+           6
+          ]
+         ],
+         "status": "not_recorded_in_profile"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        }
+       },
+       "route_id": "PM-APM>PM-PM",
+       "state": "compared",
+       "supporting_profiles": 9
+      }
+     ],
+     "target": "PM-PM",
+     "title": "Incomplete user profile: nothing categorised",
+     "user": {
+      "areas": [],
+      "current_role": "PM-APM",
+      "held_roles": [
+       "PM-APM"
+      ],
+      "industries": [],
+      "qualifications": [],
+      "skills": []
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S05",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [],
+       "experience_state": "areas_withheld",
+       "limitations": [
+        "insufficient_reference_evidence"
+       ],
+       "matched_areas": [],
+       "observation_count": 12,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "reference_areas_withheld",
+       "route_id": "PM-PM>PM-SPM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "not_established"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "status": "insufficient_reference_evidence"
+        },
+        "previous_roles": {
+         "status": "insufficient_reference_evidence"
+        },
+        "qualifications": {
+         "status": "insufficient_reference_evidence"
+        },
+        "responsibilities": {
+         "status": "insufficient_reference_evidence"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "status": "insufficient_reference_evidence"
+        }
+       },
+       "route_id": "PM-PM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 12
+      }
+     ],
+     "target": "PM-SPM",
+     "title": "Incomplete reference evidence: areas withheld on the route",
+     "user": {
+      "areas": [
+       "roadmap_ownership"
+      ],
+      "current_role": "PM-PM",
+      "held_roles": [
+       "PM-APM",
+       "PM-PM"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "qualifications": [
+       "bachelor"
+      ],
+      "skills": [
+       "Roadmapping"
+      ]
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S06",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [],
+       "experience_state": "no_recorded_areas",
+       "limitations": [
+        "insufficient_reference_evidence"
+       ],
+       "matched_areas": [],
+       "observation_count": 5,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "reference_no_recorded_areas",
+       "route_id": "PM-SPM>PM-DIR",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "not_established"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "status": "insufficient_reference_evidence"
+        },
+        "previous_roles": {
+         "status": "insufficient_reference_evidence"
+        },
+        "qualifications": {
+         "status": "insufficient_reference_evidence"
+        },
+        "responsibilities": {
+         "status": "insufficient_reference_evidence"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        }
+       },
+       "route_id": "PM-SPM>PM-DIR",
+       "state": "compared",
+       "supporting_profiles": 5
+      }
+     ],
+     "target": "PM-DIR",
+     "title": "Reference profiles record no areas on the route",
+     "user": {
+      "areas": [
+       "roadmap_ownership"
+      ],
+      "current_role": "PM-SPM",
+      "held_roles": [
+       "PM-PM",
+       "PM-SPM"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "qualifications": [
+       "mba"
+      ],
+      "skills": []
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S07",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [
+        "outcome_ownership",
+        "roadmap_ownership"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [
+        "roadmap_ownership"
+       ],
+       "observation_count": 6,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "some_common_areas_recorded",
+       "route_id": "PM-PM>PM-SPM>PM-LEAD",
+       "step_gaps": [
+        "PM-SPM"
+       ],
+       "tied": false,
+       "tier": "partial"
+      },
+      {
+       "common_areas": [
+        "delivery_execution",
+        "stakeholder_management"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [],
+       "observation_count": 5,
+       "rank": 2,
+       "rank_group": 2,
+       "reason": "no_common_area_recorded",
+       "route_id": "PM-PM>ROLE-PGM>PM-LEAD",
+       "step_gaps": [
+        "ROLE-PGM"
+       ],
+       "tied": false,
+       "tier": "limited"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "status": "insufficient_reference_evidence"
+        },
+        "previous_roles": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualifications": {
+         "status": "insufficient_reference_evidence"
+        },
+        "responsibilities": {
+         "matched": [
+          [
+           "roadmap_ownership",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [
+          [
+           "outcome_ownership",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior",
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "status": "insufficient_reference_evidence"
+        }
+       },
+       "route_id": "PM-PM>PM-SPM>PM-LEAD",
+       "state": "compared",
+       "supporting_profiles": 6
+      },
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "status": "insufficient_reference_evidence"
+        },
+        "previous_roles": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualifications": {
+         "status": "insufficient_reference_evidence"
+        },
+        "responsibilities": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "roadmap_ownership"
+         ],
+         "reference_not_in_profile": [
+          [
+           "delivery_execution",
+           5
+          ],
+          [
+           "stakeholder_management",
+           5
+          ]
+         ],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change",
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "status": "insufficient_reference_evidence"
+        }
+       },
+       "route_id": "PM-PM>ROLE-PGM>PM-LEAD",
+       "state": "compared",
+       "supporting_profiles": 5
+      }
+     ],
+     "target": "PM-LEAD",
+     "title": "Two genuinely different routes; a distinctive single-profile route suppressed",
+     "user": {
+      "areas": [
+       "roadmap_ownership"
+      ],
+      "current_role": "PM-PM",
+      "held_roles": [
+       "PM-PM"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "qualifications": [
+       "bachelor"
+      ],
+      "skills": [
+       "Roadmapping"
+      ]
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S08",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [],
+       "experience_state": "no_recorded_areas",
+       "limitations": [
+        "insufficient_reference_evidence"
+       ],
+       "matched_areas": [],
+       "observation_count": 5,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "reference_no_recorded_areas",
+       "route_id": "ROLE-QA>PM-APM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "not_established"
+      },
+      {
+       "common_areas": [],
+       "experience_state": "no_recorded_areas",
+       "limitations": [
+        "insufficient_reference_evidence"
+       ],
+       "matched_areas": [],
+       "observation_count": 6,
+       "rank": 2,
+       "rank_group": 2,
+       "reason": "reference_no_recorded_areas",
+       "route_id": "ROLE-QA>ROLE-DA>PM-APM",
+       "step_gaps": [
+        "ROLE-DA"
+       ],
+       "tied": false,
+       "tier": "not_established"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "status": "insufficient_reference_evidence"
+        },
+        "previous_roles": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualifications": {
+         "status": "insufficient_reference_evidence"
+        },
+        "responsibilities": {
+         "status": "insufficient_reference_evidence"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "status": "insufficient_reference_evidence"
+        }
+       },
+       "route_id": "ROLE-QA>PM-APM",
+       "state": "compared",
+       "supporting_profiles": 5
+      },
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "status": "insufficient_reference_evidence"
+        },
+        "previous_roles": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualifications": {
+         "status": "insufficient_reference_evidence"
+        },
+        "responsibilities": {
+         "status": "insufficient_reference_evidence"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change",
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "status": "insufficient_reference_evidence"
+        }
+       },
+       "route_id": "ROLE-QA>ROLE-DA>PM-APM",
+       "state": "compared",
+       "supporting_profiles": 6
+      }
+     ],
+     "target": "PM-APM",
+     "title": "Privacy minimum across routes supported by 1, 2, 3, 4, 5 and 6 profiles",
+     "user": {
+      "areas": [
+       "quality_testing"
+      ],
+      "current_role": "ROLE-QA",
+      "held_roles": [
+       "ROLE-QA"
+      ],
+      "industries": [
+       "it_services"
+      ],
+      "qualifications": [
+       "bachelor"
+      ],
+      "skills": [
+       "Test automation"
+      ]
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S09",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [],
+       "experience_state": "no_recorded_areas",
+       "limitations": [
+        "insufficient_reference_evidence"
+       ],
+       "matched_areas": [],
+       "observation_count": 5,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "reference_no_recorded_areas",
+       "route_id": "ROLE-SWE>ROLE-DS>PM-PM",
+       "step_gaps": [
+        "ROLE-DS"
+       ],
+       "tied": true,
+       "tier": "not_established"
+      },
+      {
+       "common_areas": [],
+       "experience_state": "no_recorded_areas",
+       "limitations": [
+        "insufficient_reference_evidence"
+       ],
+       "matched_areas": [],
+       "observation_count": 5,
+       "rank": 2,
+       "rank_group": 1,
+       "reason": "reference_no_recorded_areas",
+       "route_id": "ROLE-SWE>ROLE-PAN>PM-PM",
+       "step_gaps": [
+        "ROLE-PAN"
+       ],
+       "tied": true,
+       "tier": "not_established"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "status": "insufficient_reference_evidence"
+        },
+        "previous_roles": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualifications": {
+         "status": "insufficient_reference_evidence"
+        },
+        "responsibilities": {
+         "status": "insufficient_reference_evidence"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change",
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "status": "insufficient_reference_evidence"
+        }
+       },
+       "route_id": "ROLE-SWE>ROLE-DS>PM-PM",
+       "state": "compared",
+       "supporting_profiles": 5
+      },
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "status": "insufficient_reference_evidence"
+        },
+        "previous_roles": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualifications": {
+         "status": "insufficient_reference_evidence"
+        },
+        "responsibilities": {
+         "status": "insufficient_reference_evidence"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change",
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "status": "insufficient_reference_evidence"
+        }
+       },
+       "route_id": "ROLE-SWE>ROLE-PAN>PM-PM",
+       "state": "compared",
+       "supporting_profiles": 5
+      }
+     ],
+     "target": "PM-PM",
+     "title": "Two equally ranked routes",
+     "user": {
+      "areas": [
+       "technical_engineering"
+      ],
+      "current_role": "ROLE-SWE",
+      "held_roles": [
+       "ROLE-SWE"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "qualifications": [
+       "bachelor"
+      ],
+      "skills": [
+       "Java"
+      ]
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S10",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [],
+       "experience_state": "no_recorded_areas",
+       "limitations": [
+        "insufficient_reference_evidence"
+       ],
+       "matched_areas": [],
+       "observation_count": 5,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "reference_no_recorded_areas",
+       "route_id": "ROLE-SWE>ROLE-PAN>PM-PM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "not_established"
+      },
+      {
+       "common_areas": [],
+       "experience_state": "no_recorded_areas",
+       "limitations": [
+        "insufficient_reference_evidence"
+       ],
+       "matched_areas": [],
+       "observation_count": 5,
+       "rank": 2,
+       "rank_group": 2,
+       "reason": "reference_no_recorded_areas",
+       "route_id": "ROLE-SWE>ROLE-DS>PM-PM",
+       "step_gaps": [
+        "ROLE-DS"
+       ],
+       "tied": false,
+       "tier": "not_established"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "status": "insufficient_reference_evidence"
+        },
+        "previous_roles": {
+         "status": "insufficient_reference_evidence"
+        },
+        "qualifications": {
+         "status": "insufficient_reference_evidence"
+        },
+        "responsibilities": {
+         "status": "insufficient_reference_evidence"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change",
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "status": "insufficient_reference_evidence"
+        }
+       },
+       "route_id": "ROLE-SWE>ROLE-PAN>PM-PM",
+       "state": "compared",
+       "supporting_profiles": 5
+      },
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "status": "insufficient_reference_evidence"
+        },
+        "previous_roles": {
+         "status": "insufficient_reference_evidence"
+        },
+        "qualifications": {
+         "status": "insufficient_reference_evidence"
+        },
+        "responsibilities": {
+         "status": "insufficient_reference_evidence"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change",
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "status": "insufficient_reference_evidence"
+        }
+       },
+       "route_id": "ROLE-SWE>ROLE-DS>PM-PM",
+       "state": "compared",
+       "supporting_profiles": 5
+      }
+     ],
+     "target": "PM-PM",
+     "title": "Same routes, tie separated by an earlier role the user held",
+     "user": {
+      "areas": [
+       "technical_engineering"
+      ],
+      "current_role": "ROLE-SWE",
+      "held_roles": [
+       "ROLE-PAN",
+       "ROLE-SWE"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "qualifications": [
+       "bachelor"
+      ],
+      "skills": [
+       "Java"
+      ]
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S11",
+     "no_path_reason": "insufficient_independent_evidence",
+     "production": [],
+     "relevance": [],
+     "target": "PM-PM",
+     "title": "Route meets the minimum only with the user's own contribution",
+     "user": {
+      "areas": [
+       "requirements_analysis"
+      ],
+      "current_role": "ROLE-BA",
+      "held_roles": [
+       "ROLE-BA"
+      ],
+      "industries": [
+       "banking_financial_services"
+      ],
+      "own_profile_ids": [
+       "EVAL-OWN-01"
+      ],
+      "qualifications": [
+       "bachelor"
+      ],
+      "skills": [
+       "SQL"
+      ]
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S12",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [],
+       "experience_state": "no_recorded_areas",
+       "limitations": [
+        "insufficient_reference_evidence"
+       ],
+       "matched_areas": [],
+       "observation_count": 5,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "reference_no_recorded_areas",
+       "route_id": "ROLE-BA>PM-PM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "not_established"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "status": "insufficient_reference_evidence"
+        },
+        "previous_roles": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualifications": {
+         "status": "insufficient_reference_evidence"
+        },
+        "responsibilities": {
+         "status": "insufficient_reference_evidence"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "status": "insufficient_reference_evidence"
+        }
+       },
+       "route_id": "ROLE-BA>PM-PM",
+       "state": "compared",
+       "supporting_profiles": 5
+      }
+     ],
+     "target": "PM-PM",
+     "title": "Another user still gets the contributor's profile as independent evidence",
+     "user": {
+      "areas": [
+       "requirements_analysis"
+      ],
+      "current_role": "ROLE-BA",
+      "held_roles": [
+       "ROLE-BA"
+      ],
+      "industries": [
+       "banking_financial_services"
+      ],
+      "qualifications": [
+       "bachelor"
+      ],
+      "skills": [
+       "SQL"
+      ]
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S13",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [],
+       "experience_state": "no_recorded_areas",
+       "limitations": [
+        "insufficient_reference_evidence",
+        "incomplete_user_profile"
+       ],
+       "matched_areas": [],
+       "observation_count": 5,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "reference_no_recorded_areas",
+       "route_id": "ROLE-MKT>PM-PM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "not_established"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "status": "insufficient_reference_evidence"
+        },
+        "previous_roles": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualifications": {
+         "status": "insufficient_reference_evidence"
+        },
+        "responsibilities": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "status": "insufficient_reference_evidence"
+        }
+       },
+       "route_id": "ROLE-MKT>PM-PM",
+       "state": "compared",
+       "supporting_profiles": 5
+      }
+     ],
+     "target": "PM-PM",
+     "title": "Route remains eligible after excluding the user's own contribution",
+     "user": {
+      "areas": [],
+      "current_role": "ROLE-MKT",
+      "held_roles": [
+       "ROLE-MKT"
+      ],
+      "industries": [
+       "consumer_internet"
+      ],
+      "own_profile_ids": [
+       "EVAL-OWN-02"
+      ],
+      "qualifications": [
+       "bachelor"
+      ],
+      "skills": [
+       "SEO"
+      ]
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S14",
+     "no_path_reason": "no_independent_evidence",
+     "production": [],
+     "relevance": [],
+     "target": "PM-PM",
+     "title": "The user's own profile is the only evidence",
+     "user": {
+      "areas": [],
+      "current_role": "ROLE-HR",
+      "held_roles": [
+       "ROLE-HR"
+      ],
+      "industries": [
+       "hr_tech"
+      ],
+      "own_profile_ids": [
+       "EVAL-OWN-03"
+      ],
+      "qualifications": [
+       "bachelor"
+      ],
+      "skills": []
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S15",
+     "no_path_reason": "starting_point_unconfirmed",
+     "production": [],
+     "relevance": [],
+     "target": "PM-PM",
+     "title": "No established current role",
+     "user": {
+      "areas": [
+       "roadmap_ownership"
+      ],
+      "current_role": null,
+      "held_roles": [],
+      "industries": [],
+      "position_reason": "role_unconfirmed",
+      "qualifications": [],
+      "skills": []
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S16A",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [
+        "outcome_ownership",
+        "roadmap_ownership"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [
+        "roadmap_ownership"
+       ],
+       "observation_count": 9,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "some_common_areas_recorded",
+       "route_id": "PM-APM>PM-PM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "partial"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "status": "insufficient_reference_evidence"
+        },
+        "previous_roles": {
+         "status": "insufficient_reference_evidence"
+        },
+        "qualifications": {
+         "status": "insufficient_reference_evidence"
+        },
+        "responsibilities": {
+         "matched": [
+          [
+           "roadmap_ownership",
+           9
+          ]
+         ],
+         "profile_not_shown_among_supporters": [
+          "technical_engineering"
+         ],
+         "reference_not_in_profile": [
+          [
+           "outcome_ownership",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "status": "insufficient_reference_evidence"
+        }
+       },
+       "route_id": "PM-APM>PM-PM",
+       "state": "compared",
+       "supporting_profiles": 9
+      }
+     ],
+     "target": "PM-PM",
+     "title": "Background A (engineering) to Product Manager",
+     "user": {
+      "areas": [
+       "roadmap_ownership",
+       "technical_engineering"
+      ],
+      "current_role": "PM-APM",
+      "held_roles": [
+       "ROLE-SWE",
+       "PM-APM"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "qualifications": [
+       "bachelor"
+      ],
+      "skills": [
+       "Java",
+       "Roadmapping"
+      ]
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S16B",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [
+        "outcome_ownership",
+        "roadmap_ownership"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [],
+       "observation_count": 9,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "no_common_area_recorded",
+       "route_id": "PM-APM>PM-PM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "limited"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "status": "insufficient_reference_evidence"
+        },
+        "previous_roles": {
+         "status": "insufficient_reference_evidence"
+        },
+        "qualifications": {
+         "status": "insufficient_reference_evidence"
+        },
+        "responsibilities": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "quality_testing",
+          "requirements_analysis"
+         ],
+         "reference_not_in_profile": [
+          [
+           "roadmap_ownership",
+           9
+          ],
+          [
+           "outcome_ownership",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "status": "insufficient_reference_evidence"
+        }
+       },
+       "route_id": "PM-APM>PM-PM",
+       "state": "compared",
+       "supporting_profiles": 9
+      }
+     ],
+     "target": "PM-PM",
+     "title": "Background B (QA and business analysis) to Product Manager",
+     "user": {
+      "areas": [
+       "requirements_analysis",
+       "quality_testing"
+      ],
+      "current_role": "PM-APM",
+      "held_roles": [
+       "ROLE-QA",
+       "ROLE-BA",
+       "PM-APM"
+      ],
+      "industries": [
+       "enterprise_software",
+       "it_services"
+      ],
+      "qualifications": [
+       "bachelor"
+      ],
+      "skills": [
+       "SQL",
+       "Test automation"
+      ]
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S17",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [],
+       "experience_state": "no_recorded_areas",
+       "limitations": [
+        "insufficient_reference_evidence",
+        "incomplete_user_profile"
+       ],
+       "matched_areas": [],
+       "observation_count": 5,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "reference_no_recorded_areas",
+       "route_id": "PM-SPM>PM-PM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "not_established"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "previous_roles": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualifications": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "responsibilities": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "seniority": {
+         "moves": [
+          "more_junior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        }
+       },
+       "route_id": "PM-SPM>PM-PM",
+       "state": "compared",
+       "supporting_profiles": 5
+      }
+     ],
+     "target": "PM-PM",
+     "title": "Downward move by default seniority",
+     "user": {
+      "areas": [],
+      "current_role": "PM-SPM",
+      "held_roles": [
+       "PM-SPM"
+      ],
+      "industries": [],
+      "qualifications": [],
+      "skills": []
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S18",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [],
+       "experience_state": "no_recorded_areas",
+       "limitations": [
+        "insufficient_reference_evidence"
+       ],
+       "matched_areas": [],
+       "observation_count": 5,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "reference_no_recorded_areas",
+       "route_id": "ROLE-OWNER>PM-PM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "not_established"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "previous_roles": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualifications": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "responsibilities": {
+         "status": "insufficient_reference_evidence"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        }
+       },
+       "route_id": "ROLE-OWNER>PM-PM",
+       "state": "compared",
+       "supporting_profiles": 5
+      }
+     ],
+     "target": "PM-PM",
+     "title": "Lateral move by default seniority",
+     "user": {
+      "areas": [
+       "prioritisation_backlog"
+      ],
+      "current_role": "ROLE-OWNER",
+      "held_roles": [
+       "ROLE-OWNER"
+      ],
+      "industries": [],
+      "qualifications": [],
+      "skills": []
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S19",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [],
+       "experience_state": "no_recorded_areas",
+       "limitations": [
+        "insufficient_reference_evidence",
+        "incomplete_user_profile"
+       ],
+       "matched_areas": [],
+       "observation_count": 5,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "reference_no_recorded_areas",
+       "route_id": "PM-DIR>ROLE-ENT>PM-HEAD",
+       "step_gaps": [
+        "ROLE-ENT"
+       ],
+       "tied": false,
+       "tier": "not_established"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "previous_roles": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualifications": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "responsibilities": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change",
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        }
+       },
+       "route_id": "PM-DIR>ROLE-ENT>PM-HEAD",
+       "state": "compared",
+       "supporting_profiles": 5
+      }
+     ],
+     "target": "PM-HEAD",
+     "title": "Route with an unranked step (founder)",
+     "user": {
+      "areas": [],
+      "current_role": "PM-DIR",
+      "held_roles": [
+       "PM-DIR"
+      ],
+      "industries": [],
+      "qualifications": [],
+      "skills": []
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S20",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [],
+       "experience_state": "no_recorded_areas",
+       "limitations": [
+        "insufficient_reference_evidence",
+        "incomplete_user_profile"
+       ],
+       "matched_areas": [],
+       "observation_count": 5,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "reference_no_recorded_areas",
+       "route_id": "ROLE-CONSULT>PM-APM>PM-SPM",
+       "step_gaps": [
+        "PM-APM"
+       ],
+       "tied": false,
+       "tier": "not_established"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "industries": {
+         "status": "insufficient_reference_evidence"
+        },
+        "previous_roles": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualifications": {
+         "status": "insufficient_reference_evidence"
+        },
+        "responsibilities": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change",
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        }
+       },
+       "route_id": "ROLE-CONSULT>PM-APM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 5
+      }
+     ],
+     "target": "PM-SPM",
+     "title": "Mixed down then up",
+     "user": {
+      "areas": [],
+      "current_role": "ROLE-CONSULT",
+      "held_roles": [
+       "ROLE-CONSULT"
+      ],
+      "industries": [
+       "consulting"
+      ],
+      "qualifications": [
+       "mba"
+      ],
+      "skills": []
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "S21",
+     "no_path_reason": "no_observed_route",
+     "production": [],
+     "relevance": [],
+     "target": "PM-SDIR",
+     "title": "No route to the target",
+     "user": {
+      "areas": [
+       "roadmap_ownership"
+      ],
+      "current_role": "PM-PM",
+      "held_roles": [
+       "PM-PM"
+      ],
+      "industries": [],
+      "qualifications": [],
+      "skills": []
+     },
+     "variant_of": null
+    }
+   ],
+   "set": "core"
+  },
+  {
+   "areas": {
+    "delivery_execution": {
+     "label": "Delivery and execution",
+     "pm_signal": false
+    },
+    "quality_testing": {
+     "label": "Quality and testing",
+     "pm_signal": false
+    },
+    "requirements_analysis": {
+     "label": "Requirements analysis",
+     "pm_signal": false
+    },
+    "roadmap_ownership": {
+     "label": "Roadmap ownership",
+     "pm_signal": true
+    },
+    "stakeholder_management": {
+     "label": "Stakeholder management",
+     "pm_signal": false
+    },
+    "technical_engineering": {
+     "label": "Technical engineering",
+     "pm_signal": false
+    }
+   },
+   "dimensions": [
+    "previous_roles",
+    "responsibilities",
+    "industries",
+    "skills",
+    "qualification_levels",
+    "qualification_types",
+    "fields_of_study"
+   ],
+   "fixture_sha256": "4051c844091a43eae593345edfe56cc0672bfdc26a6d07d21c46c8b9bb2d81f9",
+   "label": "EVALUATION FIXTURE: constructed test careers for the whole-profile relevance prototype (Phase 8.2.1: qualification level, qualification type and field of study kept separate). Not real career histories, not market evidence.",
+   "pool_id": "eval-personalisation-v2",
+   "privacy_minimum": 5,
+   "roles": {
+    "PM-APM": {
+     "family": "product_management",
+     "is_pm_target": true,
+     "rank": 30,
+     "seniority": "associate",
+     "title": "Associate Product Manager"
+    },
+    "PM-DIR": {
+     "family": "product_management",
+     "is_pm_target": true,
+     "rank": 80,
+     "seniority": "director",
+     "title": "Director of Product"
+    },
+    "PM-LEAD": {
+     "family": "product_management",
+     "is_pm_target": true,
+     "rank": 60,
+     "seniority": "lead",
+     "title": "Lead Product Manager"
+    },
+    "PM-PM": {
+     "family": "product_management",
+     "is_pm_target": true,
+     "rank": 40,
+     "seniority": "mid",
+     "title": "Product Manager"
+    },
+    "PM-SPM": {
+     "family": "product_management",
+     "is_pm_target": true,
+     "rank": 50,
+     "seniority": "senior",
+     "title": "Senior Product Manager"
+    },
+    "ROLE-BA": {
+     "family": "business_analysis",
+     "rank": 40,
+     "seniority": "mid",
+     "title": "Business Analyst"
+    },
+    "ROLE-DS": {
+     "family": "data_science",
+     "rank": 40,
+     "seniority": "mid",
+     "title": "Data Scientist"
+    },
+    "ROLE-PGM": {
+     "family": "project_program_management",
+     "rank": 40,
+     "seniority": "mid",
+     "title": "Program Manager"
+    },
+    "ROLE-QA": {
+     "family": "qa_testing",
+     "rank": 40,
+     "seniority": "mid",
+     "title": "QA / Quality Engineer"
+    },
+    "ROLE-SWE": {
+     "family": "software_engineering",
+     "rank": 40,
+     "seniority": "mid",
+     "title": "Software Engineer"
+    }
+   },
+   "scenarios": [
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "R01",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [
+        "roadmap_ownership",
+        "technical_engineering"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [
+        "roadmap_ownership",
+        "technical_engineering"
+       ],
+       "observation_count": 9,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "all_common_areas_recorded",
+       "route_id": "PM-PM>PM-SPM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "aligned"
+      },
+      {
+       "common_areas": [
+        "delivery_execution",
+        "requirements_analysis",
+        "stakeholder_management"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [],
+       "observation_count": 6,
+       "rank": 2,
+       "rank_group": 2,
+       "reason": "no_common_area_recorded",
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "step_gaps": [
+        "ROLE-PGM"
+       ],
+       "tied": false,
+       "tier": "limited"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [
+          [
+           "computer science",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [
+          [
+           "saas",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [
+          [
+           "PM-APM",
+           9
+          ],
+          [
+           "ROLE-SWE",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [
+          [
+           "btech",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [
+          [
+           "roadmap_ownership",
+           9
+          ],
+          [
+           "technical_engineering",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "java",
+           5
+          ],
+          [
+           "sql",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [
+          [
+           "roadmapping",
+           9
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 9
+      },
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "computer science"
+         ],
+         "reference_not_in_profile": [
+          [
+           "information systems",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "saas"
+         ],
+         "reference_not_in_profile": [
+          [
+           "it_services",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "PM-APM",
+          "ROLE-SWE"
+         ],
+         "reference_not_in_profile": [
+          [
+           "ROLE-BA",
+           6
+          ],
+          [
+           "ROLE-QA",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "btech"
+         ],
+         "reference_not_in_profile": [
+          [
+           "bsc",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "roadmap_ownership",
+          "technical_engineering"
+         ],
+         "reference_not_in_profile": [
+          [
+           "delivery_execution",
+           6
+          ],
+          [
+           "requirements_analysis",
+           6
+          ],
+          [
+           "stakeholder_management",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change",
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "sql",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [
+          "java"
+         ],
+         "reference_not_in_profile": [
+          [
+           "requirements",
+           6
+          ],
+          [
+           "test automation",
+           6
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 6
+      }
+     ],
+     "target": "PM-SPM",
+     "title": "Profile A: engineering background to Senior PM",
+     "user": {
+      "areas": [
+       "technical_engineering",
+       "roadmap_ownership"
+      ],
+      "current_role": "PM-PM",
+      "fields": [
+       "Computer Science"
+      ],
+      "held_roles": [
+       "ROLE-SWE",
+       "PM-APM",
+       "PM-PM"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "qualification_levels": [
+       "bachelor"
+      ],
+      "qualification_types": [
+       "btech"
+      ],
+      "skills": [
+       "Java",
+       "SQL"
+      ]
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "R02",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [
+        "delivery_execution",
+        "requirements_analysis",
+        "stakeholder_management"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [
+        "requirements_analysis"
+       ],
+       "observation_count": 6,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "some_common_areas_recorded",
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "step_gaps": [
+        "ROLE-PGM"
+       ],
+       "tied": false,
+       "tier": "partial"
+      },
+      {
+       "common_areas": [
+        "roadmap_ownership",
+        "technical_engineering"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [],
+       "observation_count": 9,
+       "rank": 2,
+       "rank_group": 2,
+       "reason": "no_common_area_recorded",
+       "route_id": "PM-PM>PM-SPM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "limited"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [
+          [
+           "information systems",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [
+          [
+           "it_services",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [
+          [
+           "ROLE-BA",
+           6
+          ],
+          [
+           "ROLE-QA",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [
+          [
+           "bsc",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [
+          [
+           "requirements_analysis",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [
+          "quality_testing"
+         ],
+         "reference_not_in_profile": [
+          [
+           "delivery_execution",
+           6
+          ],
+          [
+           "stakeholder_management",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change",
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "sql",
+           6
+          ],
+          [
+           "test automation",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [
+          [
+           "requirements",
+           6
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 6
+      },
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "information systems"
+         ],
+         "reference_not_in_profile": [
+          [
+           "computer science",
+           5
+          ]
+         ],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "it_services"
+         ],
+         "reference_not_in_profile": [
+          [
+           "saas",
+           5
+          ]
+         ],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "ROLE-BA",
+          "ROLE-QA"
+         ],
+         "reference_not_in_profile": [
+          [
+           "PM-APM",
+           9
+          ],
+          [
+           "ROLE-SWE",
+           5
+          ]
+         ],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "bsc"
+         ],
+         "reference_not_in_profile": [
+          [
+           "btech",
+           5
+          ]
+         ],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "quality_testing",
+          "requirements_analysis"
+         ],
+         "reference_not_in_profile": [
+          [
+           "roadmap_ownership",
+           9
+          ],
+          [
+           "technical_engineering",
+           5
+          ]
+         ],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "sql",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [
+          "test automation"
+         ],
+         "reference_not_in_profile": [
+          [
+           "roadmapping",
+           9
+          ],
+          [
+           "java",
+           5
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 9
+      }
+     ],
+     "target": "PM-SPM",
+     "title": "Profile B: QA and business-analysis background to Senior PM",
+     "user": {
+      "areas": [
+       "requirements_analysis",
+       "quality_testing"
+      ],
+      "current_role": "PM-PM",
+      "fields": [
+       "Information Systems"
+      ],
+      "held_roles": [
+       "ROLE-QA",
+       "ROLE-BA",
+       "PM-PM"
+      ],
+      "industries": [
+       "it_services"
+      ],
+      "qualification_levels": [
+       "bachelor"
+      ],
+      "qualification_types": [
+       "bsc"
+      ],
+      "skills": [
+       "SQL",
+       "Test automation"
+      ]
+     },
+     "variant_of": null
+    },
+    {
+     "changes": "previous_roles",
+     "combination_risks": {},
+     "id": "R03",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [
+        "roadmap_ownership",
+        "technical_engineering"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [
+        "roadmap_ownership",
+        "technical_engineering"
+       ],
+       "observation_count": 9,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "all_common_areas_recorded",
+       "route_id": "PM-PM>PM-SPM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "aligned"
+      },
+      {
+       "common_areas": [
+        "delivery_execution",
+        "requirements_analysis",
+        "stakeholder_management"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [],
+       "observation_count": 6,
+       "rank": 2,
+       "rank_group": 2,
+       "reason": "no_common_area_recorded",
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "step_gaps": [
+        "ROLE-PGM"
+       ],
+       "tied": false,
+       "tier": "limited"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [
+          [
+           "computer science",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [
+          [
+           "saas",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "ROLE-DS"
+         ],
+         "reference_not_in_profile": [
+          [
+           "PM-APM",
+           9
+          ],
+          [
+           "ROLE-SWE",
+           5
+          ]
+         ],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [
+          [
+           "btech",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [
+          [
+           "roadmap_ownership",
+           9
+          ],
+          [
+           "technical_engineering",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "java",
+           5
+          ],
+          [
+           "sql",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [
+          [
+           "roadmapping",
+           9
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 9
+      },
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "computer science"
+         ],
+         "reference_not_in_profile": [
+          [
+           "information systems",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "saas"
+         ],
+         "reference_not_in_profile": [
+          [
+           "it_services",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "ROLE-DS"
+         ],
+         "reference_not_in_profile": [
+          [
+           "ROLE-BA",
+           6
+          ],
+          [
+           "ROLE-QA",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "btech"
+         ],
+         "reference_not_in_profile": [
+          [
+           "bsc",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "roadmap_ownership",
+          "technical_engineering"
+         ],
+         "reference_not_in_profile": [
+          [
+           "delivery_execution",
+           6
+          ],
+          [
+           "requirements_analysis",
+           6
+          ],
+          [
+           "stakeholder_management",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change",
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "sql",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [
+          "java"
+         ],
+         "reference_not_in_profile": [
+          [
+           "requirements",
+           6
+          ],
+          [
+           "test automation",
+           6
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 6
+      }
+     ],
+     "target": "PM-SPM",
+     "title": "A with different earlier roles",
+     "user": {
+      "areas": [
+       "technical_engineering",
+       "roadmap_ownership"
+      ],
+      "current_role": "PM-PM",
+      "fields": [
+       "Computer Science"
+      ],
+      "held_roles": [
+       "ROLE-DS",
+       "PM-PM"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "qualification_levels": [
+       "bachelor"
+      ],
+      "qualification_types": [
+       "btech"
+      ],
+      "skills": [
+       "Java",
+       "SQL"
+      ]
+     },
+     "variant_of": "R01"
+    },
+    {
+     "changes": "responsibilities",
+     "combination_risks": {},
+     "id": "R04",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [
+        "delivery_execution",
+        "requirements_analysis",
+        "stakeholder_management"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [
+        "stakeholder_management"
+       ],
+       "observation_count": 6,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "some_common_areas_recorded",
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "step_gaps": [
+        "ROLE-PGM"
+       ],
+       "tied": false,
+       "tier": "partial"
+      },
+      {
+       "common_areas": [
+        "roadmap_ownership",
+        "technical_engineering"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [],
+       "observation_count": 9,
+       "rank": 2,
+       "rank_group": 2,
+       "reason": "no_common_area_recorded",
+       "route_id": "PM-PM>PM-SPM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "limited"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "computer science"
+         ],
+         "reference_not_in_profile": [
+          [
+           "information systems",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "saas"
+         ],
+         "reference_not_in_profile": [
+          [
+           "it_services",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "PM-APM",
+          "ROLE-SWE"
+         ],
+         "reference_not_in_profile": [
+          [
+           "ROLE-BA",
+           6
+          ],
+          [
+           "ROLE-QA",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "btech"
+         ],
+         "reference_not_in_profile": [
+          [
+           "bsc",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [
+          [
+           "stakeholder_management",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [
+          [
+           "delivery_execution",
+           6
+          ],
+          [
+           "requirements_analysis",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change",
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "sql",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [
+          "java"
+         ],
+         "reference_not_in_profile": [
+          [
+           "requirements",
+           6
+          ],
+          [
+           "test automation",
+           6
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 6
+      },
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [
+          [
+           "computer science",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [
+          [
+           "saas",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [
+          [
+           "PM-APM",
+           9
+          ],
+          [
+           "ROLE-SWE",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [
+          [
+           "btech",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "stakeholder_management"
+         ],
+         "reference_not_in_profile": [
+          [
+           "roadmap_ownership",
+           9
+          ],
+          [
+           "technical_engineering",
+           5
+          ]
+         ],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "java",
+           5
+          ],
+          [
+           "sql",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [
+          [
+           "roadmapping",
+           9
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 9
+      }
+     ],
+     "target": "PM-SPM",
+     "title": "A with different responsibilities",
+     "user": {
+      "areas": [
+       "stakeholder_management"
+      ],
+      "current_role": "PM-PM",
+      "fields": [
+       "Computer Science"
+      ],
+      "held_roles": [
+       "ROLE-SWE",
+       "PM-APM",
+       "PM-PM"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "qualification_levels": [
+       "bachelor"
+      ],
+      "qualification_types": [
+       "btech"
+      ],
+      "skills": [
+       "Java",
+       "SQL"
+      ]
+     },
+     "variant_of": "R01"
+    },
+    {
+     "changes": "industries",
+     "combination_risks": {},
+     "id": "R05",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [
+        "roadmap_ownership",
+        "technical_engineering"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [
+        "roadmap_ownership",
+        "technical_engineering"
+       ],
+       "observation_count": 9,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "all_common_areas_recorded",
+       "route_id": "PM-PM>PM-SPM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "aligned"
+      },
+      {
+       "common_areas": [
+        "delivery_execution",
+        "requirements_analysis",
+        "stakeholder_management"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [],
+       "observation_count": 6,
+       "rank": 2,
+       "rank_group": 2,
+       "reason": "no_common_area_recorded",
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "step_gaps": [
+        "ROLE-PGM"
+       ],
+       "tied": false,
+       "tier": "limited"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [
+          [
+           "computer science",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "fintech"
+         ],
+         "reference_not_in_profile": [
+          [
+           "saas",
+           5
+          ]
+         ],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [
+          [
+           "PM-APM",
+           9
+          ],
+          [
+           "ROLE-SWE",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [
+          [
+           "btech",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [
+          [
+           "roadmap_ownership",
+           9
+          ],
+          [
+           "technical_engineering",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "java",
+           5
+          ],
+          [
+           "sql",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [
+          [
+           "roadmapping",
+           9
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 9
+      },
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "computer science"
+         ],
+         "reference_not_in_profile": [
+          [
+           "information systems",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "fintech"
+         ],
+         "reference_not_in_profile": [
+          [
+           "it_services",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "PM-APM",
+          "ROLE-SWE"
+         ],
+         "reference_not_in_profile": [
+          [
+           "ROLE-BA",
+           6
+          ],
+          [
+           "ROLE-QA",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "btech"
+         ],
+         "reference_not_in_profile": [
+          [
+           "bsc",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "roadmap_ownership",
+          "technical_engineering"
+         ],
+         "reference_not_in_profile": [
+          [
+           "delivery_execution",
+           6
+          ],
+          [
+           "requirements_analysis",
+           6
+          ],
+          [
+           "stakeholder_management",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change",
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "sql",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [
+          "java"
+         ],
+         "reference_not_in_profile": [
+          [
+           "requirements",
+           6
+          ],
+          [
+           "test automation",
+           6
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 6
+      }
+     ],
+     "target": "PM-SPM",
+     "title": "A with a different industry background",
+     "user": {
+      "areas": [
+       "technical_engineering",
+       "roadmap_ownership"
+      ],
+      "current_role": "PM-PM",
+      "fields": [
+       "Computer Science"
+      ],
+      "held_roles": [
+       "ROLE-SWE",
+       "PM-APM",
+       "PM-PM"
+      ],
+      "industries": [
+       "fintech"
+      ],
+      "qualification_levels": [
+       "bachelor"
+      ],
+      "qualification_types": [
+       "btech"
+      ],
+      "skills": [
+       "Java",
+       "SQL"
+      ]
+     },
+     "variant_of": "R01"
+    },
+    {
+     "changes": "skills",
+     "combination_risks": {},
+     "id": "R06",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [
+        "roadmap_ownership",
+        "technical_engineering"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [
+        "roadmap_ownership",
+        "technical_engineering"
+       ],
+       "observation_count": 9,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "all_common_areas_recorded",
+       "route_id": "PM-PM>PM-SPM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "aligned"
+      },
+      {
+       "common_areas": [
+        "delivery_execution",
+        "requirements_analysis",
+        "stakeholder_management"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [],
+       "observation_count": 6,
+       "rank": 2,
+       "rank_group": 2,
+       "reason": "no_common_area_recorded",
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "step_gaps": [
+        "ROLE-PGM"
+       ],
+       "tied": false,
+       "tier": "limited"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [
+          [
+           "computer science",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [
+          [
+           "saas",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [
+          [
+           "PM-APM",
+           9
+          ],
+          [
+           "ROLE-SWE",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [
+          [
+           "btech",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [
+          [
+           "roadmap_ownership",
+           9
+          ],
+          [
+           "technical_engineering",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "python"
+         ],
+         "reference_not_in_profile": [
+          [
+           "roadmapping",
+           9
+          ],
+          [
+           "java",
+           5
+          ],
+          [
+           "sql",
+           5
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 9
+      },
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "computer science"
+         ],
+         "reference_not_in_profile": [
+          [
+           "information systems",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "saas"
+         ],
+         "reference_not_in_profile": [
+          [
+           "it_services",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "PM-APM",
+          "ROLE-SWE"
+         ],
+         "reference_not_in_profile": [
+          [
+           "ROLE-BA",
+           6
+          ],
+          [
+           "ROLE-QA",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "btech"
+         ],
+         "reference_not_in_profile": [
+          [
+           "bsc",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "roadmap_ownership",
+          "technical_engineering"
+         ],
+         "reference_not_in_profile": [
+          [
+           "delivery_execution",
+           6
+          ],
+          [
+           "requirements_analysis",
+           6
+          ],
+          [
+           "stakeholder_management",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change",
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "python"
+         ],
+         "reference_not_in_profile": [
+          [
+           "requirements",
+           6
+          ],
+          [
+           "sql",
+           6
+          ],
+          [
+           "test automation",
+           6
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 6
+      }
+     ],
+     "target": "PM-SPM",
+     "title": "A with different skills",
+     "user": {
+      "areas": [
+       "technical_engineering",
+       "roadmap_ownership"
+      ],
+      "current_role": "PM-PM",
+      "fields": [
+       "Computer Science"
+      ],
+      "held_roles": [
+       "ROLE-SWE",
+       "PM-APM",
+       "PM-PM"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "qualification_levels": [
+       "bachelor"
+      ],
+      "qualification_types": [
+       "btech"
+      ],
+      "skills": [
+       "Python"
+      ]
+     },
+     "variant_of": "R01"
+    },
+    {
+     "changes": "qualification_levels,qualification_types",
+     "combination_risks": {},
+     "id": "R07",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [
+        "roadmap_ownership",
+        "technical_engineering"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [
+        "roadmap_ownership",
+        "technical_engineering"
+       ],
+       "observation_count": 9,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "all_common_areas_recorded",
+       "route_id": "PM-PM>PM-SPM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "aligned"
+      },
+      {
+       "common_areas": [
+        "delivery_execution",
+        "requirements_analysis",
+        "stakeholder_management"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [],
+       "observation_count": 6,
+       "rank": 2,
+       "rank_group": 2,
+       "reason": "no_common_area_recorded",
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "step_gaps": [
+        "ROLE-PGM"
+       ],
+       "tied": false,
+       "tier": "limited"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [
+          [
+           "computer science",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [
+          [
+           "saas",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [
+          [
+           "PM-APM",
+           9
+          ],
+          [
+           "ROLE-SWE",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "master"
+         ],
+         "reference_not_in_profile": [
+          [
+           "bachelor",
+           5
+          ]
+         ],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "mtech"
+         ],
+         "reference_not_in_profile": [
+          [
+           "btech",
+           5
+          ]
+         ],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [
+          [
+           "roadmap_ownership",
+           9
+          ],
+          [
+           "technical_engineering",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "java",
+           5
+          ],
+          [
+           "sql",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [
+          [
+           "roadmapping",
+           9
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 9
+      },
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "computer science"
+         ],
+         "reference_not_in_profile": [
+          [
+           "information systems",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "saas"
+         ],
+         "reference_not_in_profile": [
+          [
+           "it_services",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "PM-APM",
+          "ROLE-SWE"
+         ],
+         "reference_not_in_profile": [
+          [
+           "ROLE-BA",
+           6
+          ],
+          [
+           "ROLE-QA",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "master"
+         ],
+         "reference_not_in_profile": [
+          [
+           "bachelor",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "mtech"
+         ],
+         "reference_not_in_profile": [
+          [
+           "bsc",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "roadmap_ownership",
+          "technical_engineering"
+         ],
+         "reference_not_in_profile": [
+          [
+           "delivery_execution",
+           6
+          ],
+          [
+           "requirements_analysis",
+           6
+          ],
+          [
+           "stakeholder_management",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change",
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "sql",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [
+          "java"
+         ],
+         "reference_not_in_profile": [
+          [
+           "requirements",
+           6
+          ],
+          [
+           "test automation",
+           6
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 6
+      }
+     ],
+     "target": "PM-SPM",
+     "title": "A with a different qualification (credential only; field of study unchanged)",
+     "user": {
+      "areas": [
+       "technical_engineering",
+       "roadmap_ownership"
+      ],
+      "current_role": "PM-PM",
+      "fields": [
+       "Computer Science"
+      ],
+      "held_roles": [
+       "ROLE-SWE",
+       "PM-APM",
+       "PM-PM"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "qualification_levels": [
+       "master"
+      ],
+      "qualification_types": [
+       "mtech"
+      ],
+      "skills": [
+       "Java",
+       "SQL"
+      ]
+     },
+     "variant_of": "R01"
+    },
+    {
+     "changes": "none",
+     "combination_risks": {},
+     "id": "R08",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [
+        "roadmap_ownership",
+        "technical_engineering"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [
+        "roadmap_ownership",
+        "technical_engineering"
+       ],
+       "observation_count": 9,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "all_common_areas_recorded",
+       "route_id": "PM-PM>PM-SPM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "aligned"
+      },
+      {
+       "common_areas": [
+        "delivery_execution",
+        "requirements_analysis",
+        "stakeholder_management"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [],
+       "observation_count": 6,
+       "rank": 2,
+       "rank_group": 2,
+       "reason": "no_common_area_recorded",
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "step_gaps": [
+        "ROLE-PGM"
+       ],
+       "tied": false,
+       "tier": "limited"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [
+          [
+           "computer science",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [
+          [
+           "saas",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [
+          [
+           "PM-APM",
+           9
+          ],
+          [
+           "ROLE-SWE",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [
+          [
+           "btech",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [
+          [
+           "roadmap_ownership",
+           9
+          ],
+          [
+           "technical_engineering",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "java",
+           5
+          ],
+          [
+           "sql",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [
+          [
+           "roadmapping",
+           9
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 9
+      },
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "computer science"
+         ],
+         "reference_not_in_profile": [
+          [
+           "information systems",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "saas"
+         ],
+         "reference_not_in_profile": [
+          [
+           "it_services",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "PM-APM",
+          "ROLE-SWE"
+         ],
+         "reference_not_in_profile": [
+          [
+           "ROLE-BA",
+           6
+          ],
+          [
+           "ROLE-QA",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "btech"
+         ],
+         "reference_not_in_profile": [
+          [
+           "bsc",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "roadmap_ownership",
+          "technical_engineering"
+         ],
+         "reference_not_in_profile": [
+          [
+           "delivery_execution",
+           6
+          ],
+          [
+           "requirements_analysis",
+           6
+          ],
+          [
+           "stakeholder_management",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change",
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "sql",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [
+          "java"
+         ],
+         "reference_not_in_profile": [
+          [
+           "requirements",
+           6
+          ],
+          [
+           "test automation",
+           6
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 6
+      }
+     ],
+     "target": "PM-SPM",
+     "title": "A with an irrelevant field changed",
+     "user": {
+      "areas": [
+       "technical_engineering",
+       "roadmap_ownership"
+      ],
+      "current_role": "PM-PM",
+      "fields": [
+       "Computer Science"
+      ],
+      "held_roles": [
+       "ROLE-SWE",
+       "PM-APM",
+       "PM-PM"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "location": "Pune",
+      "preferred_name": "Changed",
+      "qualification_levels": [
+       "bachelor"
+      ],
+      "qualification_types": [
+       "btech"
+      ],
+      "skills": [
+       "Java",
+       "SQL"
+      ]
+     },
+     "variant_of": "R01"
+    },
+    {
+     "changes": "responsibilities",
+     "combination_risks": {},
+     "id": "R09",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [
+        "roadmap_ownership",
+        "technical_engineering"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [
+        "incomplete_user_profile"
+       ],
+       "matched_areas": [],
+       "observation_count": 9,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "no_eligible_classified_evidence",
+       "route_id": "PM-PM>PM-SPM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "not_established"
+      },
+      {
+       "common_areas": [
+        "delivery_execution",
+        "requirements_analysis",
+        "stakeholder_management"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [
+        "incomplete_user_profile"
+       ],
+       "matched_areas": [],
+       "observation_count": 6,
+       "rank": 2,
+       "rank_group": 2,
+       "reason": "no_eligible_classified_evidence",
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "step_gaps": [
+        "ROLE-PGM"
+       ],
+       "tied": false,
+       "tier": "not_established"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [
+          [
+           "computer science",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [
+          [
+           "saas",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [
+          [
+           "PM-APM",
+           9
+          ],
+          [
+           "ROLE-SWE",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [
+          [
+           "btech",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "reference_patterns": [
+          [
+           "roadmap_ownership",
+           9
+          ],
+          [
+           "technical_engineering",
+           5
+          ]
+         ],
+         "status": "not_recorded_in_profile"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "java",
+           5
+          ],
+          [
+           "sql",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [
+          [
+           "roadmapping",
+           9
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 9
+      },
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "computer science"
+         ],
+         "reference_not_in_profile": [
+          [
+           "information systems",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "saas"
+         ],
+         "reference_not_in_profile": [
+          [
+           "it_services",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "PM-APM",
+          "ROLE-SWE"
+         ],
+         "reference_not_in_profile": [
+          [
+           "ROLE-BA",
+           6
+          ],
+          [
+           "ROLE-QA",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "btech"
+         ],
+         "reference_not_in_profile": [
+          [
+           "bsc",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "reference_patterns": [
+          [
+           "delivery_execution",
+           6
+          ],
+          [
+           "requirements_analysis",
+           6
+          ],
+          [
+           "stakeholder_management",
+           6
+          ]
+         ],
+         "status": "not_recorded_in_profile"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change",
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "sql",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [
+          "java"
+         ],
+         "reference_not_in_profile": [
+          [
+           "requirements",
+           6
+          ],
+          [
+           "test automation",
+           6
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 6
+      }
+     ],
+     "target": "PM-SPM",
+     "title": "A without categorised responsibilities",
+     "user": {
+      "areas": [],
+      "current_role": "PM-PM",
+      "fields": [
+       "Computer Science"
+      ],
+      "held_roles": [
+       "ROLE-SWE",
+       "PM-APM",
+       "PM-PM"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "qualification_levels": [
+       "bachelor"
+      ],
+      "qualification_types": [
+       "btech"
+      ],
+      "skills": [
+       "Java",
+       "SQL"
+      ]
+     },
+     "variant_of": "R01"
+    },
+    {
+     "changes": "skills",
+     "combination_risks": {},
+     "id": "R10",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [
+        "roadmap_ownership",
+        "technical_engineering"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [
+        "roadmap_ownership",
+        "technical_engineering"
+       ],
+       "observation_count": 9,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "all_common_areas_recorded",
+       "route_id": "PM-PM>PM-SPM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "aligned"
+      },
+      {
+       "common_areas": [
+        "delivery_execution",
+        "requirements_analysis",
+        "stakeholder_management"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [],
+       "observation_count": 6,
+       "rank": 2,
+       "rank_group": 2,
+       "reason": "no_common_area_recorded",
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "step_gaps": [
+        "ROLE-PGM"
+       ],
+       "tied": false,
+       "tier": "limited"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [
+          [
+           "computer science",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [
+          [
+           "saas",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [
+          [
+           "PM-APM",
+           9
+          ],
+          [
+           "ROLE-SWE",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [
+          [
+           "btech",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [
+          [
+           "roadmap_ownership",
+           9
+          ],
+          [
+           "technical_engineering",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "reference_patterns": [
+          [
+           "roadmapping",
+           9
+          ],
+          [
+           "java",
+           5
+          ],
+          [
+           "sql",
+           5
+          ]
+         ],
+         "status": "not_recorded_in_profile"
+        }
+       },
+       "route_id": "PM-PM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 9
+      },
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "computer science"
+         ],
+         "reference_not_in_profile": [
+          [
+           "information systems",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "saas"
+         ],
+         "reference_not_in_profile": [
+          [
+           "it_services",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "PM-APM",
+          "ROLE-SWE"
+         ],
+         "reference_not_in_profile": [
+          [
+           "ROLE-BA",
+           6
+          ],
+          [
+           "ROLE-QA",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "btech"
+         ],
+         "reference_not_in_profile": [
+          [
+           "bsc",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "roadmap_ownership",
+          "technical_engineering"
+         ],
+         "reference_not_in_profile": [
+          [
+           "delivery_execution",
+           6
+          ],
+          [
+           "requirements_analysis",
+           6
+          ],
+          [
+           "stakeholder_management",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change",
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "reference_patterns": [
+          [
+           "requirements",
+           6
+          ],
+          [
+           "sql",
+           6
+          ],
+          [
+           "test automation",
+           6
+          ]
+         ],
+         "status": "not_recorded_in_profile"
+        }
+       },
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 6
+      }
+     ],
+     "target": "PM-SPM",
+     "title": "A whose skills are not reviewed yet",
+     "user": {
+      "areas": [
+       "technical_engineering",
+       "roadmap_ownership"
+      ],
+      "current_role": "PM-PM",
+      "fields": [
+       "Computer Science"
+      ],
+      "held_roles": [
+       "ROLE-SWE",
+       "PM-APM",
+       "PM-PM"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "qualification_levels": [
+       "bachelor"
+      ],
+      "qualification_types": [
+       "btech"
+      ],
+      "skills": [],
+      "unreviewed_skills": [
+       "Java",
+       "SQL"
+      ]
+     },
+     "variant_of": "R01"
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "R11",
+     "no_path_reason": "privacy_minimum_not_met",
+     "production": [],
+     "relevance": [],
+     "target": "PM-LEAD",
+     "title": "Insufficient route evidence (suppressed route)",
+     "user": {
+      "areas": [
+       "roadmap_ownership"
+      ],
+      "current_role": "PM-PM",
+      "fields": [
+       "Computer Science"
+      ],
+      "held_roles": [
+       "ROLE-SWE",
+       "PM-APM",
+       "PM-PM"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "qualification_levels": [
+       "bachelor"
+      ],
+      "qualification_types": [
+       "btech"
+      ],
+      "skills": [
+       "Java"
+      ]
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {},
+     "id": "R12",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [],
+       "experience_state": "no_recorded_areas",
+       "limitations": [
+        "insufficient_reference_evidence"
+       ],
+       "matched_areas": [],
+       "observation_count": 5,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "reference_no_recorded_areas",
+       "route_id": "PM-PM>PM-DIR",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "not_established"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "status": "insufficient_reference_evidence"
+        },
+        "industries": {
+         "status": "insufficient_reference_evidence"
+        },
+        "previous_roles": {
+         "status": "insufficient_reference_evidence"
+        },
+        "qualification_levels": {
+         "status": "insufficient_reference_evidence"
+        },
+        "qualification_types": {
+         "status": "insufficient_reference_evidence"
+        },
+        "responsibilities": {
+         "status": "insufficient_reference_evidence"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "status": "insufficient_reference_evidence"
+        }
+       },
+       "route_id": "PM-PM>PM-DIR",
+       "state": "compared",
+       "supporting_profiles": 5
+      }
+     ],
+     "target": "PM-DIR",
+     "title": "Route shown, but every supporting attribute is too rare to show",
+     "user": {
+      "areas": [
+       "roadmap_ownership"
+      ],
+      "current_role": "PM-PM",
+      "fields": [
+       "Physics"
+      ],
+      "held_roles": [
+       "ROLE-SWE",
+       "PM-APM",
+       "PM-PM"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "qualification_levels": [
+       "bachelor"
+      ],
+      "qualification_types": [
+       "btech"
+      ],
+      "skills": [
+       "Java"
+      ]
+     },
+     "variant_of": null
+    },
+    {
+     "changes": "population",
+     "combination_risks": {},
+     "id": "R13",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [
+        "roadmap_ownership"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [
+        "roadmap_ownership"
+       ],
+       "observation_count": 8,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "all_common_areas_recorded",
+       "route_id": "PM-PM>PM-SPM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "aligned"
+      },
+      {
+       "common_areas": [
+        "delivery_execution",
+        "requirements_analysis",
+        "stakeholder_management"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [],
+       "observation_count": 6,
+       "rank": 2,
+       "rank_group": 2,
+       "reason": "no_common_area_recorded",
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "step_gaps": [
+        "ROLE-PGM"
+       ],
+       "tied": false,
+       "tier": "limited"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "status": "insufficient_reference_evidence"
+        },
+        "industries": {
+         "status": "insufficient_reference_evidence"
+        },
+        "previous_roles": {
+         "matched": [
+          [
+           "PM-APM",
+           8
+          ]
+         ],
+         "profile_not_shown_among_supporters": [
+          "ROLE-SWE"
+         ],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "status": "insufficient_reference_evidence"
+        },
+        "qualification_types": {
+         "status": "insufficient_reference_evidence"
+        },
+        "responsibilities": {
+         "matched": [
+          [
+           "roadmap_ownership",
+           8
+          ]
+         ],
+         "profile_not_shown_among_supporters": [
+          "technical_engineering"
+         ],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "java",
+          "sql"
+         ],
+         "reference_not_in_profile": [
+          [
+           "roadmapping",
+           8
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 8
+      },
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "computer science"
+         ],
+         "reference_not_in_profile": [
+          [
+           "information systems",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "saas"
+         ],
+         "reference_not_in_profile": [
+          [
+           "it_services",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "PM-APM",
+          "ROLE-SWE"
+         ],
+         "reference_not_in_profile": [
+          [
+           "ROLE-BA",
+           6
+          ],
+          [
+           "ROLE-QA",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "btech"
+         ],
+         "reference_not_in_profile": [
+          [
+           "bsc",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "roadmap_ownership",
+          "technical_engineering"
+         ],
+         "reference_not_in_profile": [
+          [
+           "delivery_execution",
+           6
+          ],
+          [
+           "requirements_analysis",
+           6
+          ],
+          [
+           "stakeholder_management",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change",
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "sql",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [
+          "java"
+         ],
+         "reference_not_in_profile": [
+          [
+           "requirements",
+           6
+          ],
+          [
+           "test automation",
+           6
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 6
+      }
+     ],
+     "target": "PM-SPM",
+     "title": "A, excluding A's own contribution from the supporting population",
+     "user": {
+      "areas": [
+       "technical_engineering",
+       "roadmap_ownership"
+      ],
+      "current_role": "PM-PM",
+      "fields": [
+       "Computer Science"
+      ],
+      "held_roles": [
+       "ROLE-SWE",
+       "PM-APM",
+       "PM-PM"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "own_profile_ids": [
+       "EVAL-OWNP-01"
+      ],
+      "qualification_levels": [
+       "bachelor"
+      ],
+      "qualification_types": [
+       "btech"
+      ],
+      "skills": [
+       "Java",
+       "SQL"
+      ]
+     },
+     "variant_of": "R01"
+    },
+    {
+     "changes": "fields_of_study",
+     "combination_risks": {},
+     "id": "R14",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [
+        "roadmap_ownership",
+        "technical_engineering"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [
+        "roadmap_ownership",
+        "technical_engineering"
+       ],
+       "observation_count": 9,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "all_common_areas_recorded",
+       "route_id": "PM-PM>PM-SPM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "aligned"
+      },
+      {
+       "common_areas": [
+        "delivery_execution",
+        "requirements_analysis",
+        "stakeholder_management"
+       ],
+       "experience_state": "areas_disclosed",
+       "limitations": [],
+       "matched_areas": [],
+       "observation_count": 6,
+       "rank": 2,
+       "rank_group": 2,
+       "reason": "no_common_area_recorded",
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "step_gaps": [
+        "ROLE-PGM"
+       ],
+       "tied": false,
+       "tier": "limited"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "information systems"
+         ],
+         "reference_not_in_profile": [
+          [
+           "computer science",
+           5
+          ]
+         ],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [
+          [
+           "saas",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [
+          [
+           "PM-APM",
+           9
+          ],
+          [
+           "ROLE-SWE",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [
+          [
+           "btech",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [
+          [
+           "roadmap_ownership",
+           9
+          ],
+          [
+           "technical_engineering",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "java",
+           5
+          ],
+          [
+           "sql",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [
+          [
+           "roadmapping",
+           9
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 9
+      },
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [
+          [
+           "information systems",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "saas"
+         ],
+         "reference_not_in_profile": [
+          [
+           "it_services",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "PM-APM",
+          "ROLE-SWE"
+         ],
+         "reference_not_in_profile": [
+          [
+           "ROLE-BA",
+           6
+          ],
+          [
+           "ROLE-QA",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "qualification_levels": {
+         "matched": [
+          [
+           "bachelor",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "qualification_types": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "btech"
+         ],
+         "reference_not_in_profile": [
+          [
+           "bsc",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "responsibilities": {
+         "matched": [],
+         "profile_not_shown_among_supporters": [
+          "roadmap_ownership",
+          "technical_engineering"
+         ],
+         "reference_not_in_profile": [
+          [
+           "delivery_execution",
+           6
+          ],
+          [
+           "requirements_analysis",
+           6
+          ],
+          [
+           "stakeholder_management",
+           6
+          ]
+         ],
+         "status": "compared"
+        },
+        "seniority": {
+         "moves": [
+          "career_track_change",
+          "career_track_change"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "sql",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [
+          "java"
+         ],
+         "reference_not_in_profile": [
+          [
+           "requirements",
+           6
+          ],
+          [
+           "test automation",
+           6
+          ]
+         ],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>ROLE-PGM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 6
+      }
+     ],
+     "target": "PM-SPM",
+     "title": "A with a different field of study only",
+     "user": {
+      "areas": [
+       "technical_engineering",
+       "roadmap_ownership"
+      ],
+      "current_role": "PM-PM",
+      "fields": [
+       "Information Systems"
+      ],
+      "held_roles": [
+       "ROLE-SWE",
+       "PM-APM",
+       "PM-PM"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "qualification_levels": [
+       "bachelor"
+      ],
+      "qualification_types": [
+       "btech"
+      ],
+      "skills": [
+       "Java",
+       "SQL"
+      ]
+     },
+     "variant_of": "R01"
+    }
+   ],
+   "set": "personalisation"
+  },
+  {
+   "areas": {},
+   "dimensions": [
+    "previous_roles",
+    "responsibilities",
+    "industries",
+    "skills",
+    "qualification_levels",
+    "qualification_types",
+    "fields_of_study"
+   ],
+   "fixture_sha256": "7f13ef7a4e3fb2b562acb61aad4037391654b9722738ff0cfae17d02e966eae0",
+   "label": "EVALUATION FIXTURE: a constructed privacy-audit case (Phase 8.2.1). Not real career histories.",
+   "pool_id": "eval-intersection-v1",
+   "privacy_minimum": 5,
+   "roles": {
+    "PM-PM": {
+     "family": "product_management",
+     "is_pm_target": true,
+     "rank": 40,
+     "seniority": "mid",
+     "title": "Product Manager"
+    },
+    "PM-SPM": {
+     "family": "product_management",
+     "is_pm_target": true,
+     "rank": 50,
+     "seniority": "senior",
+     "title": "Senior Product Manager"
+    }
+   },
+   "scenarios": [
+    {
+     "changes": null,
+     "combination_risks": {
+      "PM-PM>PM-SPM": [
+       {
+        "supporters_with_all": "fewer than 5",
+        "values": [
+         [
+          "fields_of_study",
+          "computer science"
+         ],
+         [
+          "industries",
+          "saas"
+         ],
+         [
+          "skills",
+          "java"
+         ]
+        ]
+       }
+      ]
+     },
+     "id": "I01",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [],
+       "experience_state": "no_recorded_areas",
+       "limitations": [
+        "insufficient_reference_evidence",
+        "incomplete_user_profile"
+       ],
+       "matched_areas": [],
+       "observation_count": 8,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "reference_no_recorded_areas",
+       "route_id": "PM-PM>PM-SPM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "not_established"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [
+          [
+           "computer science",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [
+          [
+           "saas",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualification_levels": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualification_types": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "responsibilities": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "java",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 8
+      }
+     ],
+     "target": "PM-SPM",
+     "title": "Each value shown (6 of 8), the three-way combination held by 4",
+     "user": {
+      "areas": [],
+      "current_role": "PM-PM",
+      "fields": [
+       "Computer Science"
+      ],
+      "held_roles": [
+       "PM-PM"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "qualification_levels": [],
+      "qualification_types": [],
+      "skills": [
+       "Java"
+      ]
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {
+      "PM-PM>PM-SPM": [
+       {
+        "supporters_with_all": "fewer than 5",
+        "values": [
+         [
+          "fields_of_study",
+          "computer science"
+         ],
+         [
+          "industries",
+          "saas"
+         ]
+        ]
+       },
+       {
+        "supporters_with_all": "fewer than 5",
+        "values": [
+         [
+          "fields_of_study",
+          "computer science"
+         ],
+         [
+          "skills",
+          "java"
+         ]
+        ]
+       },
+       {
+        "supporters_with_all": "fewer than 5",
+        "values": [
+         [
+          "industries",
+          "saas"
+         ],
+         [
+          "skills",
+          "java"
+         ]
+        ]
+       },
+       {
+        "supporters_with_all": "fewer than 5",
+        "values": [
+         [
+          "fields_of_study",
+          "computer science"
+         ],
+         [
+          "industries",
+          "saas"
+         ],
+         [
+          "skills",
+          "java"
+         ]
+        ]
+       }
+      ]
+     },
+     "id": "I02",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [],
+       "experience_state": "no_recorded_areas",
+       "limitations": [
+        "insufficient_reference_evidence",
+        "incomplete_user_profile"
+       ],
+       "matched_areas": [],
+       "observation_count": 7,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "reference_no_recorded_areas",
+       "route_id": "PM-PM>PM-SPM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "not_established"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [
+          [
+           "computer science",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [
+          [
+           "saas",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualification_levels": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualification_types": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "responsibilities": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "java",
+           5
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 7
+      }
+     ],
+     "target": "PM-SPM",
+     "title": "Own contribution inside the combination excluded",
+     "user": {
+      "areas": [],
+      "current_role": "PM-PM",
+      "fields": [
+       "Computer Science"
+      ],
+      "held_roles": [
+       "PM-PM"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "own_profile_ids": [
+       "EVAL-INT-01"
+      ],
+      "qualification_levels": [],
+      "qualification_types": [],
+      "skills": [
+       "Java"
+      ]
+     },
+     "variant_of": null
+    },
+    {
+     "changes": null,
+     "combination_risks": {
+      "PM-PM>PM-SPM": [
+       {
+        "supporters_with_all": "fewer than 5",
+        "values": [
+         [
+          "fields_of_study",
+          "computer science"
+         ],
+         [
+          "industries",
+          "saas"
+         ],
+         [
+          "skills",
+          "java"
+         ]
+        ]
+       }
+      ]
+     },
+     "id": "I03",
+     "no_path_reason": null,
+     "production": [
+      {
+       "common_areas": [],
+       "experience_state": "no_recorded_areas",
+       "limitations": [
+        "insufficient_reference_evidence",
+        "incomplete_user_profile"
+       ],
+       "matched_areas": [],
+       "observation_count": 7,
+       "rank": 1,
+       "rank_group": 1,
+       "reason": "reference_no_recorded_areas",
+       "route_id": "PM-PM>PM-SPM",
+       "step_gaps": [],
+       "tied": false,
+       "tier": "not_established"
+      }
+     ],
+     "relevance": [
+      {
+       "dimensions": {
+        "fields_of_study": {
+         "matched": [
+          [
+           "computer science",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "industries": {
+         "matched": [
+          [
+           "saas",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        },
+        "previous_roles": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualification_levels": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "qualification_types": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "responsibilities": {
+         "reference_patterns": [],
+         "status": "not_recorded_in_profile"
+        },
+        "seniority": {
+         "moves": [
+          "more_senior"
+         ],
+         "status": "reliable_direction"
+        },
+        "skills": {
+         "matched": [
+          [
+           "java",
+           6
+          ]
+         ],
+         "profile_not_shown_among_supporters": [],
+         "reference_not_in_profile": [],
+         "status": "compared"
+        }
+       },
+       "route_id": "PM-PM>PM-SPM",
+       "state": "compared",
+       "supporting_profiles": 7
+      }
+     ],
+     "target": "PM-SPM",
+     "title": "Own contribution outside the combination excluded",
+     "user": {
+      "areas": [],
+      "current_role": "PM-PM",
+      "fields": [
+       "Computer Science"
+      ],
+      "held_roles": [
+       "PM-PM"
+      ],
+      "industries": [
+       "saas"
+      ],
+      "own_profile_ids": [
+       "EVAL-INT-08"
+      ],
+      "qualification_levels": [],
+      "qualification_types": [],
+      "skills": [
+       "Java"
+      ]
+     },
+     "variant_of": null
+    }
+   ],
+   "set": "privacy_audit"
+  }
+ ]
+}

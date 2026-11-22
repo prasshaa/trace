@@ -1,0 +1,107 @@
+alias_id,alias,role_id,seniority_hint_code,context_required,default_confidence,mapping_rule
+ALS-0001,Associate Product Manager,PM-APM,,false,0.95,
+ALS-0002,APM,PM-APM,,false,0.9,
+ALS-0003,Product Manager,PM-PM,,false,0.95,
+ALS-0004,PM,PM-PM,,true,0.5,"Abbreviation is ambiguous (Product, Project or Program Manager). Map to PM-PM only when the resume context shows product ownership."
+ALS-0005,PM,ROLE-PROJ,,true,0.4,"Abbreviation is ambiguous. Map to ROLE-PROJ when the context shows project delivery rather than product ownership."
+ALS-0006,Product Manager II,PM-PM,,false,0.9,
+ALS-0007,Technical Product Manager,PM-PM,,false,0.9,Specialisation is preserved in the raw title; level is PM unless the title says otherwise.
+ALS-0008,Growth Product Manager,PM-PM,,false,0.9,
+ALS-0009,AI Product Manager,PM-PM,,false,0.9,
+ALS-0010,Platform Product Manager,PM-PM,,false,0.9,
+ALS-0011,Senior Product Manager,PM-SPM,,false,0.95,
+ALS-0012,Senior PM,PM-SPM,,false,0.9,
+ALS-0013,SPM,PM-SPM,,false,0.85,
+ALS-0014,Senior Technical Product Manager,PM-SPM,,false,0.9,
+ALS-0015,Lead Product Manager,PM-LEAD,,false,0.9,
+ALS-0016,Lead PM,PM-LEAD,,false,0.85,
+ALS-0017,Product Lead,PM-LEAD,,true,0.6,"Organisation-dependent. Can mean a lead IC, a group PM or a head of product; confirm scope and reports."
+ALS-0018,Product Lead,PM-HEAD,,true,0.4,"Use PM-HEAD only when the person heads the whole product function."
+ALS-0019,Principal Product Manager,PM-PRINCIPAL,,false,0.95,
+ALS-0020,Principal PM,PM-PRINCIPAL,,false,0.9,
+ALS-0021,Group Product Manager,PM-GPM,,false,0.95,
+ALS-0022,GPM,PM-GPM,,false,0.85,
+ALS-0023,Head of Product,PM-HEAD,,false,0.9,
+ALS-0024,Director of Product,PM-DIR,,false,0.95,
+ALS-0025,Product Director,PM-DIR,,false,0.9,
+ALS-0026,Director - Product Management,PM-DIR,,false,0.9,
+ALS-0027,Senior Director of Product,PM-SDIR,,false,0.95,
+ALS-0028,VP of Product,PM-VP,,false,0.95,
+ALS-0029,VP Product,PM-VP,,false,0.95,
+ALS-0030,Chief Product Officer,PM-CPO,,false,0.95,
+ALS-0031,CPO,PM-CPO,,false,0.85,
+ALS-0032,Product Management Intern,PM-INTERN,,false,0.95,
+ALS-0033,Product Manager Intern,PM-INTERN,,false,0.95,
+ALS-0034,Product Intern,PM-INTERN,,false,0.85,
+ALS-0035,Product Owner,ROLE-OWNER,,true,0.6,"Keep as ROLE-OWNER (product_ownership) unless reviewed evidence shows product discovery, roadmap ownership, customer prioritisation or outcome ownership. Mapping stays needs_review until a participant or reviewer confirms it."
+ALS-0036,Product Owner,PM-PM,,true,0.5,"Remap to PM-PM only after review, when evidence includes product discovery, roadmap ownership, customer prioritisation or outcome ownership responsibility areas."
+ALS-0037,Senior Product Owner,ROLE-OWNER,senior,true,0.6,Same rule as Product Owner.
+ALS-0038,TPM,PM-PM,,true,0.4,"Abbreviation is ambiguous (Technical Product Manager or Technical Program Manager). Confirm with the participant."
+ALS-0039,TPM,ROLE-TPGM,,true,0.4,"Abbreviation is ambiguous (Technical Program Manager or Technical Product Manager). Confirm with the participant."
+ALS-0040,Product & Growth,PM-PM,,true,0.5,"Hybrid title. Map to PM-PM only when evidence shows product ownership; otherwise ROLE-MKT or ROLE-UNKNOWN."
+ALS-0041,Product & Growth,ROLE-MKT,,true,0.4,"Hybrid title. Map to ROLE-MKT when evidence is mainly acquisition or marketing."
+ALS-0042,Associate,ROLE-UNKNOWN,associate,true,0.3,"Generic title. Do not infer software engineering, business analysis or product management; resolve from responsibilities or ask the participant."
+ALS-0043,Technical Associate,ROLE-UNKNOWN,associate,true,0.3,"Generic title. Resolve from responsibilities or ask the participant."
+ALS-0044,Technology Associate,ROLE-UNKNOWN,associate,true,0.3,"Generic title. Resolve from responsibilities or ask the participant."
+ALS-0045,Technology Associate / SDE 2,ROLE-SWE,,false,0.85,Explicit SDE designation resolves the generic associate title.
+ALS-0046,Assistant Manager,ROLE-UNKNOWN,,true,0.3,"Function is not stated. Resolve from responsibilities or ask the participant."
+ALS-0047,Analyst,ROLE-UNKNOWN,,true,0.3,"Generic title. Resolve to ROLE-BA, ROLE-DA, ROLE-FIN or another analyst role from evidence."
+ALS-0048,Junior Analyst,ROLE-UNKNOWN,junior,true,0.3,"Generic title. Resolve from evidence."
+ALS-0049,Program Management,ROLE-PGM,,true,0.6,"Function name rather than a job title. Confirm the actual title before treating as Program Manager."
+ALS-0050,Software Engineer,ROLE-SWE,,false,0.95,
+ALS-0051,Senior Software Engineer,ROLE-SWE,senior,false,0.95,
+ALS-0052,SDE,ROLE-SWE,,false,0.9,
+ALS-0053,Software Development Engineer,ROLE-SWE,,false,0.95,
+ALS-0054,Software Developer,ROLE-SWE,,false,0.95,
+ALS-0055,Frontend Developer,ROLE-SWE,,false,0.9,
+ALS-0056,Backend Developer,ROLE-SWE,,false,0.9,
+ALS-0057,Full Stack Developer,ROLE-SWE,,false,0.9,
+ALS-0058,Technology Analyst Intern,ROLE-SWE,intern,false,0.8,
+ALS-0059,Engineering Manager,ROLE-EM,,false,0.95,
+ALS-0060,QA Engineer,ROLE-QA,,false,0.95,
+ALS-0061,Quality Engineer,ROLE-QA,,false,0.95,
+ALS-0062,Quality Engineering Analyst,ROLE-QA,,false,0.9,
+ALS-0063,Test Engineer,ROLE-QA,,false,0.95,
+ALS-0064,SDET,ROLE-QA,,false,0.9,
+ALS-0065,Business Analyst,ROLE-BA,,false,0.95,
+ALS-0066,Business Systems Analyst,ROLE-BA,,false,0.95,
+ALS-0067,Business Analyst - Data,ROLE-BA,,false,0.8,
+ALS-0068,Data Analyst,ROLE-DA,,false,0.95,
+ALS-0069,Data Analyst Intern,ROLE-DA,intern,false,0.9,
+ALS-0070,Data Scientist,ROLE-DS,,false,0.95,
+ALS-0071,Associate Data Scientist,ROLE-DS,associate,false,0.9,
+ALS-0072,Senior Data Scientist,ROLE-DS,senior,false,0.95,
+ALS-0073,Product Analyst,ROLE-PAN,,false,0.95,
+ALS-0074,Senior Product Analyst,ROLE-PAN,senior,false,0.95,
+ALS-0075,Product Analyst Intern,ROLE-PAN,intern,false,0.9,
+ALS-0076,Marketing Manager,ROLE-MKT,,false,0.9,
+ALS-0077,Digital Marketing Manager,ROLE-MKT,,false,0.9,
+ALS-0078,Digital Marketing Lead,ROLE-MKT,lead,false,0.9,
+ALS-0079,Marketing Head,ROLE-MKT,head,false,0.9,
+ALS-0080,Digital Marketing Head,ROLE-MKT,head,false,0.9,
+ALS-0081,Growth Marketing Manager,ROLE-MKT,,false,0.9,
+ALS-0082,Google Ads Account Manager,ROLE-MKT,,false,0.85,Advertising-account management is mapped to marketing rather than sales.
+ALS-0083,Account Manager,ROLE-SALES,,false,0.8,
+ALS-0084,Key Account Manager,ROLE-SALES,,false,0.9,
+ALS-0085,Customer Success Manager,ROLE-CS,,false,0.95,
+ALS-0086,Support Engineer,ROLE-SUPPORT,,false,0.9,
+ALS-0087,Technical Support Engineer,ROLE-SUPPORT,,false,0.95,
+ALS-0088,Technical Support Associate,ROLE-SUPPORT,associate,false,0.9,
+ALS-0089,Operations Manager,ROLE-OPS,,false,0.9,
+ALS-0090,Project Manager,ROLE-PROJ,,false,0.95,
+ALS-0091,Program Manager,ROLE-PGM,,false,0.95,
+ALS-0092,Technical Program Manager,ROLE-TPGM,,false,0.95,
+ALS-0093,Product Designer,ROLE-UX,,false,0.95,
+ALS-0094,UX Designer,ROLE-UX,,false,0.95,
+ALS-0095,UI/UX Designer,ROLE-UX,,false,0.95,
+ALS-0096,UI Designer,ROLE-UX,,false,0.9,
+ALS-0097,UI/UX Design Intern,ROLE-UX,intern,false,0.9,
+ALS-0098,Management Consultant,ROLE-CONSULT,,false,0.95,
+ALS-0099,Consultant,ROLE-CONSULT,,false,0.8,
+ALS-0100,Product Consultant,ROLE-CONSULT,,true,0.6,"Can describe consulting work or a product role at a services firm. Confirm responsibilities."
+ALS-0101,Product Consultant,PM-PM,,true,0.4,"Use PM-PM only when evidence shows ownership of a product's roadmap and outcomes."
+ALS-0102,Business & Product Consulting Intern,ROLE-CONSULT,intern,false,0.85,
+ALS-0103,Financial Analyst,ROLE-FIN,,false,0.95,
+ALS-0104,HR Operations Analyst,ROLE-HR,,false,0.9,
+ALS-0105,Founder,ROLE-ENT,,false,0.95,
+ALS-0106,Co-founder,ROLE-ENT,,false,0.95,

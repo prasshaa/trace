@@ -1,0 +1,92 @@
+{
+ "label": "EVALUATION FIXTURE privacy-audit scenarios (Phase 8.2.1). Constructed users; not real people. Not part of the review pack.",
+ "pool": "pool_intersection.json",
+ "scenarios": [
+  {
+   "id": "I01",
+   "title": "Each value shown (6 of 8), the three-way combination held by 4",
+   "covers": [
+    "attribute_intersection"
+   ],
+   "user": {
+    "current_role": "PM-PM",
+    "held_roles": [
+     "PM-PM"
+    ],
+    "areas": [],
+    "skills": [
+     "Java"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "qualification_levels": [],
+    "qualification_types": [],
+    "fields": [
+     "Computer Science"
+    ]
+   },
+   "target": "PM-SPM"
+  },
+  {
+   "id": "I02",
+   "title": "Own contribution inside the combination excluded",
+   "covers": [
+    "attribute_intersection",
+    "own_contribution_excluded"
+   ],
+   "user": {
+    "current_role": "PM-PM",
+    "held_roles": [
+     "PM-PM"
+    ],
+    "areas": [],
+    "skills": [
+     "Java"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "qualification_levels": [],
+    "qualification_types": [],
+    "fields": [
+     "Computer Science"
+    ],
+    "own_profile_ids": [
+     "EVAL-INT-01"
+    ]
+   },
+   "target": "PM-SPM"
+  },
+  {
+   "id": "I03",
+   "title": "Own contribution outside the combination excluded",
+   "covers": [
+    "attribute_intersection",
+    "own_contribution_excluded"
+   ],
+   "user": {
+    "current_role": "PM-PM",
+    "held_roles": [
+     "PM-PM"
+    ],
+    "areas": [],
+    "skills": [
+     "Java"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "qualification_levels": [],
+    "qualification_types": [],
+    "fields": [
+     "Computer Science"
+    ],
+    "own_profile_ids": [
+     "EVAL-INT-08"
+    ]
+   },
+   "target": "PM-SPM"
+  }
+ ]
+}

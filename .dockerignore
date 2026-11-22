@@ -1,0 +1,19 @@
+# Only backend/ and the knowledge packs go into the image. Never secrets, local data, research files or internal docs.
+**/.env
+**/.env.*
+**/.venv
+**/__pycache__
+**/.pytest_cache
+**/.DS_Store
+.git
+.mcp.json
+docs
+data-foundation
+!data-foundation/knowledge_packs
+data-foundation-v2.0.0-backup
+Trace_Data_Foundation_v2_review*.zip
+**/local_only
+backend/app/services/career_origins/content
+backend/scripts/build_career_origins.py
+backend/evaluation
+backend/tests

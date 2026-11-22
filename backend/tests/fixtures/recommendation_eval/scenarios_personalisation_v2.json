@@ -1,0 +1,528 @@
+{
+ "label": "EVALUATION FIXTURE scenarios for the relevance prototype (Phase 8.2.1). Constructed users; not real people.",
+ "pool": "pool_personalisation_v2.json",
+ "scenarios": [
+  {
+   "id": "R01",
+   "title": "Profile A: engineering background to Senior PM",
+   "covers": [
+    "background_engineering"
+   ],
+   "user": {
+    "current_role": "PM-PM",
+    "held_roles": [
+     "ROLE-SWE",
+     "PM-APM",
+     "PM-PM"
+    ],
+    "areas": [
+     "technical_engineering",
+     "roadmap_ownership"
+    ],
+    "skills": [
+     "Java",
+     "SQL"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "fields": [
+     "Computer Science"
+    ],
+    "qualification_levels": [
+     "bachelor"
+    ],
+    "qualification_types": [
+     "btech"
+    ]
+   },
+   "target": "PM-SPM"
+  },
+  {
+   "id": "R02",
+   "title": "Profile B: QA and business-analysis background to Senior PM",
+   "covers": [
+    "background_quality_business"
+   ],
+   "user": {
+    "current_role": "PM-PM",
+    "held_roles": [
+     "ROLE-QA",
+     "ROLE-BA",
+     "PM-PM"
+    ],
+    "areas": [
+     "requirements_analysis",
+     "quality_testing"
+    ],
+    "skills": [
+     "SQL",
+     "Test automation"
+    ],
+    "industries": [
+     "it_services"
+    ],
+    "fields": [
+     "Information Systems"
+    ],
+    "qualification_levels": [
+     "bachelor"
+    ],
+    "qualification_types": [
+     "bsc"
+    ]
+   },
+   "target": "PM-SPM"
+  },
+  {
+   "id": "R03",
+   "title": "A with different earlier roles",
+   "variant_of": "R01",
+   "changes": "previous_roles",
+   "covers": [
+    "different_earlier_roles"
+   ],
+   "user": {
+    "current_role": "PM-PM",
+    "held_roles": [
+     "ROLE-DS",
+     "PM-PM"
+    ],
+    "areas": [
+     "technical_engineering",
+     "roadmap_ownership"
+    ],
+    "skills": [
+     "Java",
+     "SQL"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "fields": [
+     "Computer Science"
+    ],
+    "qualification_levels": [
+     "bachelor"
+    ],
+    "qualification_types": [
+     "btech"
+    ]
+   },
+   "target": "PM-SPM"
+  },
+  {
+   "id": "R04",
+   "title": "A with different responsibilities",
+   "variant_of": "R01",
+   "changes": "responsibilities",
+   "covers": [
+    "different_responsibilities"
+   ],
+   "user": {
+    "current_role": "PM-PM",
+    "held_roles": [
+     "ROLE-SWE",
+     "PM-APM",
+     "PM-PM"
+    ],
+    "areas": [
+     "stakeholder_management"
+    ],
+    "skills": [
+     "Java",
+     "SQL"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "fields": [
+     "Computer Science"
+    ],
+    "qualification_levels": [
+     "bachelor"
+    ],
+    "qualification_types": [
+     "btech"
+    ]
+   },
+   "target": "PM-SPM"
+  },
+  {
+   "id": "R05",
+   "title": "A with a different industry background",
+   "variant_of": "R01",
+   "changes": "industries",
+   "covers": [
+    "different_industry"
+   ],
+   "user": {
+    "current_role": "PM-PM",
+    "held_roles": [
+     "ROLE-SWE",
+     "PM-APM",
+     "PM-PM"
+    ],
+    "areas": [
+     "technical_engineering",
+     "roadmap_ownership"
+    ],
+    "skills": [
+     "Java",
+     "SQL"
+    ],
+    "industries": [
+     "fintech"
+    ],
+    "fields": [
+     "Computer Science"
+    ],
+    "qualification_levels": [
+     "bachelor"
+    ],
+    "qualification_types": [
+     "btech"
+    ]
+   },
+   "target": "PM-SPM"
+  },
+  {
+   "id": "R06",
+   "title": "A with different skills",
+   "variant_of": "R01",
+   "changes": "skills",
+   "covers": [
+    "different_skills"
+   ],
+   "user": {
+    "current_role": "PM-PM",
+    "held_roles": [
+     "ROLE-SWE",
+     "PM-APM",
+     "PM-PM"
+    ],
+    "areas": [
+     "technical_engineering",
+     "roadmap_ownership"
+    ],
+    "skills": [
+     "Python"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "fields": [
+     "Computer Science"
+    ],
+    "qualification_levels": [
+     "bachelor"
+    ],
+    "qualification_types": [
+     "btech"
+    ]
+   },
+   "target": "PM-SPM"
+  },
+  {
+   "id": "R07",
+   "title": "A with a different qualification (credential only; field of study unchanged)",
+   "variant_of": "R01",
+   "changes": "qualification_levels,qualification_types",
+   "covers": [
+    "different_qualifications"
+   ],
+   "user": {
+    "current_role": "PM-PM",
+    "held_roles": [
+     "ROLE-SWE",
+     "PM-APM",
+     "PM-PM"
+    ],
+    "areas": [
+     "technical_engineering",
+     "roadmap_ownership"
+    ],
+    "skills": [
+     "Java",
+     "SQL"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "fields": [
+     "Computer Science"
+    ],
+    "qualification_levels": [
+     "master"
+    ],
+    "qualification_types": [
+     "mtech"
+    ]
+   },
+   "target": "PM-SPM"
+  },
+  {
+   "id": "R08",
+   "title": "A with an irrelevant field changed",
+   "variant_of": "R01",
+   "changes": "none",
+   "covers": [
+    "irrelevant_field"
+   ],
+   "user": {
+    "current_role": "PM-PM",
+    "held_roles": [
+     "ROLE-SWE",
+     "PM-APM",
+     "PM-PM"
+    ],
+    "areas": [
+     "technical_engineering",
+     "roadmap_ownership"
+    ],
+    "skills": [
+     "Java",
+     "SQL"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "fields": [
+     "Computer Science"
+    ],
+    "location": "Pune",
+    "preferred_name": "Changed",
+    "qualification_levels": [
+     "bachelor"
+    ],
+    "qualification_types": [
+     "btech"
+    ]
+   },
+   "target": "PM-SPM"
+  },
+  {
+   "id": "R09",
+   "title": "A without categorised responsibilities",
+   "variant_of": "R01",
+   "changes": "responsibilities",
+   "covers": [
+    "missing_responsibilities"
+   ],
+   "user": {
+    "current_role": "PM-PM",
+    "held_roles": [
+     "ROLE-SWE",
+     "PM-APM",
+     "PM-PM"
+    ],
+    "areas": [],
+    "skills": [
+     "Java",
+     "SQL"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "fields": [
+     "Computer Science"
+    ],
+    "qualification_levels": [
+     "bachelor"
+    ],
+    "qualification_types": [
+     "btech"
+    ]
+   },
+   "target": "PM-SPM"
+  },
+  {
+   "id": "R10",
+   "title": "A whose skills are not reviewed yet",
+   "variant_of": "R01",
+   "changes": "skills",
+   "covers": [
+    "unreviewed_skills"
+   ],
+   "user": {
+    "current_role": "PM-PM",
+    "held_roles": [
+     "ROLE-SWE",
+     "PM-APM",
+     "PM-PM"
+    ],
+    "areas": [
+     "technical_engineering",
+     "roadmap_ownership"
+    ],
+    "skills": [],
+    "unreviewed_skills": [
+     "Java",
+     "SQL"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "fields": [
+     "Computer Science"
+    ],
+    "qualification_levels": [
+     "bachelor"
+    ],
+    "qualification_types": [
+     "btech"
+    ]
+   },
+   "target": "PM-SPM"
+  },
+  {
+   "id": "R11",
+   "title": "Insufficient route evidence (suppressed route)",
+   "covers": [
+    "insufficient_route_evidence",
+    "suppressed_route_evidence"
+   ],
+   "user": {
+    "current_role": "PM-PM",
+    "held_roles": [
+     "ROLE-SWE",
+     "PM-APM",
+     "PM-PM"
+    ],
+    "areas": [
+     "roadmap_ownership"
+    ],
+    "skills": [
+     "Java"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "fields": [
+     "Computer Science"
+    ],
+    "qualification_levels": [
+     "bachelor"
+    ],
+    "qualification_types": [
+     "btech"
+    ]
+   },
+   "target": "PM-LEAD"
+  },
+  {
+   "id": "R12",
+   "title": "Route shown, but every supporting attribute is too rare to show",
+   "covers": [
+    "suppressed_dimension_evidence"
+   ],
+   "user": {
+    "current_role": "PM-PM",
+    "held_roles": [
+     "ROLE-SWE",
+     "PM-APM",
+     "PM-PM"
+    ],
+    "areas": [
+     "roadmap_ownership"
+    ],
+    "skills": [
+     "Java"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "fields": [
+     "Physics"
+    ],
+    "qualification_levels": [
+     "bachelor"
+    ],
+    "qualification_types": [
+     "btech"
+    ]
+   },
+   "target": "PM-DIR"
+  },
+  {
+   "id": "R13",
+   "title": "A, excluding A's own contribution from the supporting population",
+   "variant_of": "R01",
+   "changes": "population",
+   "covers": [
+    "own_contribution_excluded",
+    "different_eligible_population"
+   ],
+   "user": {
+    "current_role": "PM-PM",
+    "held_roles": [
+     "ROLE-SWE",
+     "PM-APM",
+     "PM-PM"
+    ],
+    "areas": [
+     "technical_engineering",
+     "roadmap_ownership"
+    ],
+    "skills": [
+     "Java",
+     "SQL"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "fields": [
+     "Computer Science"
+    ],
+    "own_profile_ids": [
+     "EVAL-OWNP-01"
+    ],
+    "qualification_levels": [
+     "bachelor"
+    ],
+    "qualification_types": [
+     "btech"
+    ]
+   },
+   "target": "PM-SPM"
+  },
+  {
+   "id": "R14",
+   "title": "A with a different field of study only",
+   "covers": [
+    "different_field_of_study"
+   ],
+   "user": {
+    "current_role": "PM-PM",
+    "held_roles": [
+     "ROLE-SWE",
+     "PM-APM",
+     "PM-PM"
+    ],
+    "areas": [
+     "technical_engineering",
+     "roadmap_ownership"
+    ],
+    "skills": [
+     "Java",
+     "SQL"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "fields": [
+     "Information Systems"
+    ],
+    "qualification_levels": [
+     "bachelor"
+    ],
+    "qualification_types": [
+     "btech"
+    ]
+   },
+   "target": "PM-SPM",
+   "variant_of": "R01",
+   "changes": "fields_of_study"
+  }
+ ]
+}

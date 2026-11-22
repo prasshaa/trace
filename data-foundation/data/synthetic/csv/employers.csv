@@ -1,0 +1,84 @@
+profile_id,employer_id,industry_raw,industry_sector,company_model,business_model,company_size_band,attribute_provenance
+SYN-001,SYN-001-ORG-A,B2B SaaS,saas,product_company,b2b,unknown,synthetic_curated
+SYN-001,SYN-001-ORG-B,B2B SaaS,saas,product_company,b2b,unknown,synthetic_curated
+SYN-002,SYN-002-ORG-A,IT services,it_services,it_services,b2b,unknown,synthetic_curated
+SYN-002,SYN-002-ORG-B,enterprise software,enterprise_software,product_company,b2b,unknown,synthetic_curated
+SYN-003,SYN-003-ORG-A,consumer technology,consumer_internet,product_company,b2c,unknown,synthetic_curated
+SYN-003,SYN-003-ORG-B,consumer technology,consumer_internet,product_company,b2c,unknown,synthetic_curated
+SYN-004,SYN-004-ORG-A,fintech,fintech,product_company,unknown,unknown,synthetic_curated
+SYN-004,SYN-004-ORG-B,fintech,fintech,product_company,unknown,unknown,synthetic_curated
+SYN-005,SYN-005-ORG-A,enterprise SaaS,saas,product_company,b2b,unknown,synthetic_curated
+SYN-005,SYN-005-ORG-B,enterprise SaaS,saas,product_company,b2b,unknown,synthetic_curated
+SYN-006,SYN-006-ORG-A,management consulting,consulting,consulting,b2b,unknown,synthetic_curated
+SYN-006,SYN-006-ORG-B,SaaS,saas,product_company,unknown,unknown,synthetic_curated
+SYN-007,SYN-007-ORG-A,consumer internet,consumer_internet,product_company,b2c,unknown,synthetic_curated
+SYN-007,SYN-007-ORG-B,consumer internet,consumer_internet,product_company,b2c,unknown,synthetic_curated
+SYN-008,SYN-008-ORG-A,enterprise technology,enterprise_software,unknown,b2b,unknown,synthetic_curated
+SYN-008,SYN-008-ORG-B,B2B SaaS,saas,product_company,b2b,unknown,synthetic_curated
+SYN-009,SYN-009-ORG-A,SaaS,saas,product_company,unknown,unknown,synthetic_curated
+SYN-009,SYN-009-ORG-B,SaaS,saas,product_company,unknown,unknown,synthetic_curated
+SYN-010,SYN-010-ORG-A,consumer apps,consumer_internet,product_company,b2c,unknown,synthetic_curated
+SYN-010,SYN-010-ORG-B,consumer apps,consumer_internet,product_company,b2c,unknown,synthetic_curated
+SYN-011,SYN-011-ORG-A,IT services,it_services,it_services,b2b,unknown,synthetic_curated
+SYN-011,SYN-011-ORG-B,enterprise platform,enterprise_software,product_company,b2b,unknown,synthetic_curated
+SYN-012,SYN-012-ORG-A,logistics technology,logistics,product_company,unknown,unknown,synthetic_curated
+SYN-012,SYN-012-ORG-B,logistics technology,logistics,product_company,unknown,unknown,synthetic_curated
+SYN-013,SYN-013-ORG-A,banking,banking_financial_services,non_tech_enterprise,b2c,unknown,synthetic_curated
+SYN-013,SYN-013-ORG-B,fintech,fintech,product_company,unknown,unknown,synthetic_curated
+SYN-014,SYN-014-ORG-A,professional services,consulting,consulting,b2b,unknown,synthetic_curated
+SYN-014,SYN-014-ORG-B,HR technology,hr_tech,product_company,b2b,unknown,synthetic_curated
+SYN-015,SYN-015-ORG-A,enterprise software,enterprise_software,product_company,b2b,unknown,synthetic_curated
+SYN-015,SYN-015-ORG-B,enterprise software,enterprise_software,product_company,b2b,unknown,synthetic_curated
+SYN-016,SYN-016-ORG-A,analytics technology,analytics_ai,product_company,b2b,unknown,synthetic_curated
+SYN-016,SYN-016-ORG-B,analytics SaaS,analytics_ai,product_company,b2b,unknown,synthetic_curated
+SYN-017,SYN-017-ORG-A,e-commerce,ecommerce_marketplace,product_company,b2c,unknown,synthetic_curated
+SYN-017,SYN-017-ORG-B,consumer technology,consumer_internet,product_company,b2c,unknown,synthetic_curated
+SYN-018,SYN-018-ORG-A,fintech,fintech,product_company,unknown,unknown,synthetic_curated
+SYN-018,SYN-018-ORG-B,marketplace,ecommerce_marketplace,product_company,marketplace,unknown,synthetic_curated
+SYN-019,SYN-019-ORG-A,startup SaaS,saas,product_company,b2b,11-50,synthetic_curated
+SYN-019,SYN-019-ORG-B,enterprise SaaS,saas,product_company,b2b,5001-plus,synthetic_curated
+SYN-020,SYN-020-ORG-A,consumer technology,consumer_internet,product_company,b2c,unknown,synthetic_curated
+SYN-021,SYN-021-ORG-A,fintech,fintech,product_company,unknown,unknown,synthetic_curated
+SYN-021,SYN-021-ORG-B,financial technology,fintech,product_company,unknown,unknown,synthetic_curated
+SYN-022,SYN-022-ORG-A,B2B SaaS,saas,product_company,b2b,unknown,synthetic_curated
+SYN-023,SYN-023-ORG-A,consumer internet,consumer_internet,product_company,b2c,unknown,synthetic_curated
+SYN-023,SYN-023-ORG-B,consumer technology,consumer_internet,product_company,b2c,unknown,synthetic_curated
+SYN-024,SYN-024-ORG-A,enterprise software,enterprise_software,product_company,b2b,unknown,synthetic_curated
+SYN-024,SYN-024-ORG-B,enterprise software,enterprise_software,product_company,b2b,unknown,synthetic_curated
+SYN-025,SYN-025-ORG-A,digital agency,agency,agency,b2b,unknown,synthetic_curated
+SYN-025,SYN-025-ORG-B,SaaS product company,saas,product_company,b2b,unknown,synthetic_curated
+SYN-026,SYN-026-ORG-A,regional consumer technology,consumer_internet,product_company,b2c,201-1000,synthetic_curated
+SYN-026,SYN-026-ORG-B,large-scale consumer technology,consumer_internet,product_company,b2c,5001-plus,synthetic_curated
+SYN-027,SYN-027-ORG-A,manufacturing technology,manufacturing,unknown,b2b,unknown,synthetic_curated
+SYN-027,SYN-027-ORG-B,enterprise SaaS,saas,product_company,b2b,unknown,synthetic_curated
+SYN-028,SYN-028-ORG-A,startup commerce technology,ecommerce_marketplace,product_company,unknown,51-200,synthetic_curated
+SYN-029,SYN-029-ORG-A,media / OTT,media_entertainment,product_company,b2c,unknown,synthetic_curated
+SYN-029,SYN-029-ORG-B,fintech,fintech,product_company,unknown,unknown,synthetic_curated
+SYN-030,SYN-030-ORG-A,B2B SaaS,saas,product_company,b2b,unknown,synthetic_curated
+SYN-030,SYN-030-ORG-B,platform technology,enterprise_software,product_company,b2b,unknown,synthetic_curated
+SYN-031,SYN-031-ORG-A,e-commerce,ecommerce_marketplace,product_company,b2c,unknown,synthetic_curated
+SYN-032,SYN-032-ORG-A,enterprise software,enterprise_software,product_company,b2b,unknown,synthetic_curated
+SYN-032,SYN-032-ORG-B,enterprise technology,enterprise_software,unknown,b2b,unknown,synthetic_curated
+SYN-033,SYN-033-ORG-A,fintech,fintech,product_company,unknown,1001-5000,synthetic_curated
+SYN-034,SYN-034-ORG-A,IT services,it_services,it_services,b2b,5001-plus,synthetic_curated
+SYN-034,SYN-034-ORG-B,,unknown,unknown,unknown,unknown,synthetic_curated
+SYN-034,SYN-034-ORG-C,consumer internet,consumer_internet,product_company,b2c,201-1000,synthetic_curated
+SYN-035,SYN-035-ORG-A,enterprise software,enterprise_software,product_company,b2b,unknown,synthetic_curated
+SYN-035,SYN-035-ORG-B,professional services,consulting,consulting,b2b,unknown,synthetic_curated
+SYN-035,SYN-035-ORG-C,B2B SaaS,saas,product_company,b2b,unknown,synthetic_curated
+SYN-036,SYN-036-ORG-A,IT services,it_services,it_services,b2b,unknown,synthetic_curated
+SYN-036,SYN-036-ORG-B,IT services,it_services,it_services,b2b,unknown,synthetic_curated
+SYN-036,SYN-036-ORG-C,SaaS,saas,product_company,unknown,unknown,synthetic_curated
+SYN-037,SYN-037-ORG-A,banking,banking_financial_services,non_tech_enterprise,b2c,unknown,synthetic_curated
+SYN-037,SYN-037-ORG-B,fintech,fintech,product_company,unknown,unknown,synthetic_curated
+SYN-038,SYN-038-ORG-A,consumer apps,consumer_internet,product_company,b2c,unknown,synthetic_curated
+SYN-038,SYN-038-ORG-B,,unknown,unknown,unknown,unknown,synthetic_curated
+SYN-038,SYN-038-ORG-C,e-commerce,ecommerce_marketplace,product_company,b2c,unknown,synthetic_curated
+SYN-039,SYN-039-ORG-A,IT services,it_services,it_services,b2b,5001-plus,synthetic_curated
+SYN-039,SYN-039-ORG-B,consumer technology,consumer_internet,product_company,b2c,unknown,synthetic_curated
+SYN-039,SYN-039-ORG-C,B2B SaaS,saas,product_company,b2b,201-1000,synthetic_curated
+SYN-040,SYN-040-ORG-A,consumer internet,consumer_internet,product_company,b2c,unknown,synthetic_curated
+SYN-040,SYN-040-ORG-B,startup SaaS,saas,product_company,b2b,1-10,synthetic_curated
+SYN-040,SYN-040-ORG-C,enterprise SaaS,saas,product_company,b2b,1001-5000,synthetic_curated
+SYN-041,SYN-041-ORG-A,SaaS,saas,product_company,unknown,1001-5000,synthetic_curated
+SYN-041,SYN-041-ORG-B,fintech,fintech,product_company,unknown,unknown,synthetic_curated

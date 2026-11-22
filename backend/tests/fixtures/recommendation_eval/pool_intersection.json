@@ -1,0 +1,159 @@
+{
+ "pool_id": "eval-intersection-v1",
+ "label": "EVALUATION FIXTURE: a constructed privacy-audit case (Phase 8.2.1). Not real career histories.",
+ "privacy_minimum": 5,
+ "dimension_set": "v2",
+ "roles": {
+  "PM-PM": {
+   "title": "Product Manager",
+   "family": "product_management",
+   "is_pm_target": true,
+   "seniority": "mid",
+   "rank": 40
+  },
+  "PM-SPM": {
+   "title": "Senior Product Manager",
+   "family": "product_management",
+   "is_pm_target": true,
+   "seniority": "senior",
+   "rank": 50
+  }
+ },
+ "areas": {},
+ "route_groups": [
+  {
+   "id": "INT",
+   "route": [
+    "PM-PM",
+    "PM-SPM"
+   ],
+   "profiles": 8,
+   "ids": [
+    "EVAL-INT-01",
+    "EVAL-INT-02",
+    "EVAL-INT-03",
+    "EVAL-INT-04",
+    "EVAL-INT-05",
+    "EVAL-INT-06",
+    "EVAL-INT-07",
+    "EVAL-INT-08"
+   ],
+   "purpose": "SaaS, Java and Computer Science are each held by 6 of 8 supporters; every pair by 5; all three by only 4.",
+   "subgroups": [
+    {
+     "count": 1,
+     "attributes": {
+      "industries": [
+       "saas"
+      ],
+      "skills": [
+       "java"
+      ],
+      "fields": [
+       "computer science"
+      ]
+     }
+    },
+    {
+     "count": 1,
+     "attributes": {
+      "industries": [
+       "saas"
+      ],
+      "skills": [
+       "java"
+      ],
+      "fields": [
+       "computer science"
+      ]
+     }
+    },
+    {
+     "count": 1,
+     "attributes": {
+      "industries": [
+       "saas"
+      ],
+      "skills": [
+       "java"
+      ],
+      "fields": [
+       "computer science"
+      ]
+     }
+    },
+    {
+     "count": 1,
+     "attributes": {
+      "industries": [
+       "saas"
+      ],
+      "skills": [
+       "java"
+      ],
+      "fields": [
+       "computer science"
+      ]
+     }
+    },
+    {
+     "count": 1,
+     "attributes": {
+      "industries": [
+       "saas"
+      ],
+      "skills": [
+       "java"
+      ],
+      "fields": [
+       "physics"
+      ]
+     }
+    },
+    {
+     "count": 1,
+     "attributes": {
+      "industries": [
+       "saas"
+      ],
+      "skills": [
+       "python"
+      ],
+      "fields": [
+       "computer science"
+      ]
+     }
+    },
+    {
+     "count": 1,
+     "attributes": {
+      "industries": [
+       "fintech"
+      ],
+      "skills": [
+       "java"
+      ],
+      "fields": [
+       "computer science"
+      ]
+     }
+    },
+    {
+     "count": 1,
+     "attributes": {
+      "industries": [
+       "logistics"
+      ],
+      "skills": [
+       "excel"
+      ],
+      "fields": [
+       "economics"
+      ]
+     }
+    }
+   ]
+  }
+ ],
+ "profiles": []
+}

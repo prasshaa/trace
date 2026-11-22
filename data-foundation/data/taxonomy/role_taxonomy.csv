@@ -1,0 +1,35 @@
+role_id,role_family,canonical_title,default_seniority_code,is_pm_target,is_resolved,active,definition
+PM-INTERN,product_management,Product Management Intern,intern,false,true,true,Product-management internship. Excluded from confirmed full-time transitions unless explicitly reclassified.
+PM-APM,product_management,Associate Product Manager,associate,true,true,true,Entry-level product manager working on a defined product area under guidance.
+PM-PM,product_management,Product Manager,mid,true,true,true,"Owns problem discovery, prioritisation, roadmap and outcomes for a product area."
+PM-SPM,product_management,Senior Product Manager,senior,true,true,true,Owns a larger or more complex product area with greater autonomy and influence.
+PM-LEAD,product_management,Lead Product Manager,lead,true,true,true,Senior individual contributor or first-line lead across related product areas.
+PM-PRINCIPAL,product_management,Principal Product Manager,principal,true,true,true,Principal-level individual contributor setting direction for complex or cross-cutting product areas.
+PM-GPM,product_management,Group Product Manager,group,true,true,true,Leads several product areas and usually manages product managers.
+PM-HEAD,product_management,Head of Product,head,true,true,true,Heads a product line or product function. Scope varies by organisation size.
+PM-DIR,product_management,Director of Product,director,true,true,true,Leads product strategy and product managers across a portfolio.
+PM-SDIR,product_management,Senior Director of Product,senior_director,true,true,true,Senior director-level product leader.
+PM-VP,product_management,VP of Product,vp,false,true,true,Vice-President-level product leader. Outside the current target scope.
+PM-CPO,product_management,Chief Product Officer,executive,false,true,true,Executive product leader. Outside the current target scope.
+ROLE-OWNER,product_ownership,Product Owner,mid,false,true,true,"Product Owner. Not product management by default, remap to PM-PM only after review of ownership evidence."
+ROLE-PAN,product_analytics,Product Analyst,mid,false,true,true,"Analyses product usage, experiments and metrics. Not product management by default."
+ROLE-SWE,software_engineering,Software Engineer,mid,false,true,true,Designs and builds software.
+ROLE-EM,engineering_management,Engineering Manager,lead,false,true,true,Manages software engineers and delivery.
+ROLE-QA,qa_testing,QA / Quality Engineer,mid,false,true,true,Tests software quality and reliability.
+ROLE-BA,business_analysis,Business Analyst,mid,false,true,true,Analyses business needs and translates them into requirements.
+ROLE-DA,data_analytics,Data Analyst,mid,false,true,true,Analyses data and produces reporting and insights.
+ROLE-DS,data_science,Data Scientist,mid,false,true,true,Builds statistical and machine-learning models.
+ROLE-MKT,marketing_growth,Marketing / Growth Professional,mid,false,true,true,"Marketing, performance marketing or growth role outside product management."
+ROLE-SALES,sales,Sales / Account Management Professional,mid,false,true,true,Sales or account-management role.
+ROLE-CS,customer_success,Customer Success Professional,mid,false,true,true,Customer success role.
+ROLE-SUPPORT,customer_support,Customer / Technical Support Professional,mid,false,true,true,Customer or technical support role.
+ROLE-OPS,operations,Operations Professional,mid,false,true,true,Business operations role.
+ROLE-PGM,project_program_management,Program Manager,mid,false,true,true,Coordinates programs and cross-team delivery. Not product management.
+ROLE-PROJ,project_program_management,Project Manager,mid,false,true,true,"Manages project scope, schedule and delivery. Not product management."
+ROLE-TPGM,project_program_management,Technical Program Manager,mid,false,true,true,Coordinates technical programs across engineering teams. Not product management.
+ROLE-UX,design_ux,UX / Product Designer,mid,false,true,true,Designs user experiences and interfaces.
+ROLE-CONSULT,consulting,Consultant,mid,false,true,true,"Management, strategy or technology consulting role."
+ROLE-FIN,finance,Finance Professional,mid,false,true,true,Finance or financial-analysis role.
+ROLE-HR,human_resources,HR Professional,mid,false,true,true,Human-resources or people-operations role.
+ROLE-ENT,entrepreneurship,Founder / Co-founder,founder,false,true,true,Founder or co-founder activity.
+ROLE-UNKNOWN,unknown,Unresolved / Ambiguous Role,unknown,false,false,true,Placeholder for a preserved but unresolved role. Never used in confirmed transitions.

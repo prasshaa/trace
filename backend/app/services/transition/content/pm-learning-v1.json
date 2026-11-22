@@ -1,0 +1,343 @@
+{
+  "version": "pm-learning-v1",
+  "target_family": "product_management",
+  "curated_on": "2026-11-17",
+  "curation_note": "Trace-curated learning guidance for the Product Manager and Senior Product Manager transition POC. Resource facts (title, provider, access, published length, topics) were checked on each resource's own page on the verification date; nothing that a page does not state (price, length) is recorded. Explanations, exercises and outputs are Trace guidance, not quotations. GOV.UK Service Manual pages are Crown copyright, available under the Open Government Licence v3.0.",
+  "resources": {
+    "govuk-user-research-discovery": {
+      "title": "User research in discovery", "provider": "GOV.UK Service Manual (Government Digital Service)", "type": "guide",
+      "url": "https://www.gov.uk/service-manual/user-research/user-research-in-discovery", "access": "free",
+      "access_note": "Free to read online, no sign-in.", "published_length": null, "level": "beginner",
+      "topics": ["Researching before you plan or build", "Including a wide range of users", "Interviews, observation and data review", "Mapping current experiences and user needs"],
+      "outcomes": ["Plan discovery research before deciding what to build", "Choose suitable research methods", "Describe current experiences and user needs"],
+      "why": "A clear, practical, free introduction to discovery research from the same publisher as one of Trace's core role frameworks.",
+      "licence": "Open Government Licence v3.0 (Crown copyright)", "verified_on": "2026-11-17"
+    },
+    "govuk-in-depth-interviews": {
+      "title": "Using in-depth interviews", "provider": "GOV.UK Service Manual (Government Digital Service)", "type": "guide",
+      "url": "https://www.gov.uk/service-manual/user-research/using-in-depth-interviews", "access": "free",
+      "access_note": "Free to read online, no sign-in.", "published_length": null, "level": "beginner",
+      "topics": ["When interviews are useful", "Writing a discussion guide", "Keeping the conversation on real examples", "Following up after interviews"],
+      "outcomes": ["Prepare a discussion guide", "Run an interview focused on real past behaviour"],
+      "why": "Shows how to plan and run interviews step by step; useful before your first user conversations.",
+      "licence": "Open Government Licence v3.0 (Crown copyright)", "verified_on": "2026-11-17"
+    },
+    "govuk-analyse-research": {
+      "title": "Analyse a research session", "provider": "GOV.UK Service Manual (Government Digital Service)", "type": "guide",
+      "url": "https://www.gov.uk/service-manual/user-research/analyse-a-research-session", "access": "free",
+      "access_note": "Free to read online, no sign-in.", "published_length": null, "level": "beginner",
+      "topics": ["Turning raw research notes into insights", "Analysing soon after each round", "Analysing as a group"],
+      "outcomes": ["Synthesise interview notes into findings you can act on"],
+      "why": "Covers the step most beginners skip: turning notes into a few clear findings.",
+      "licence": "Open Government Licence v3.0 (Crown copyright)", "verified_on": "2026-11-17"
+    },
+    "yc-how-to-talk-to-users": {
+      "title": "How to Talk to Users", "provider": "Eric Migicovsky, Y Combinator Startup School (2019)", "type": "video",
+      "url": "https://www.youtube.com/watch?v=MT4Ig2uqjTc", "access": "free",
+      "access_note": "Free to watch on YouTube.", "published_length": null, "level": "beginner",
+      "topics": ["Common mistakes when talking to users", "Questions that reveal real problems", "Talking about the user's life rather than your idea"],
+      "outcomes": ["Avoid leading questions", "Ask about specific past experiences instead of hypotheticals"],
+      "why": "A short, widely used talk on the most common interview mistakes; a good free starting point.",
+      "licence": null, "verified_on": "2026-11-17"
+    },
+    "mom-test": {
+      "title": "The Mom Test", "provider": "Rob Fitzpatrick", "type": "book",
+      "url": "https://www.momtestbook.com/", "access": "paid",
+      "access_note": "A book (paperback, Kindle, audiobook and PDF editions are listed). Price not recorded by Trace.", "published_length": null, "level": "beginner",
+      "topics": ["Talking to customers without getting biased feedback", "Asking about real behaviour", "Telling whether someone would really buy or use something"],
+      "outcomes": ["Run customer conversations that produce honest, usable answers"],
+      "why": "Short and practical; the classic book on asking questions that people can't answer politely but untruthfully.",
+      "licence": null, "verified_on": "2026-11-17"
+    },
+    "continuous-discovery-habits": {
+      "title": "Continuous Discovery Habits", "provider": "Teresa Torres (2021)", "type": "book",
+      "url": "https://www.producttalk.org/continuous-discovery-habits/", "access": "paid",
+      "access_note": "A book (paperback and Kindle). Price not recorded by Trace.", "published_length": null, "level": "intermediate",
+      "topics": ["Starting from a clear outcome", "Interviewing customers to find opportunities", "Opportunity solution trees", "Testing assumptions before building"],
+      "outcomes": ["Connect user research to an outcome", "Map opportunities and compare solutions", "Test the riskiest assumptions first"],
+      "why": "A structured, repeatable approach to discovery that product teams use week to week; best after your first interviews.",
+      "licence": null, "verified_on": "2026-11-17"
+    },
+    "govuk-developing-roadmap": {
+      "title": "Developing a roadmap", "provider": "GOV.UK Service Manual (Government Digital Service)", "type": "guide",
+      "url": "https://www.gov.uk/service-manual/agile-delivery/developing-a-roadmap", "access": "free",
+      "access_note": "Free to read online, no sign-in.", "published_length": null, "level": "beginner",
+      "topics": ["What a roadmap is for", "Showing intent rather than fixed solutions", "Iterations towards a vision", "Roadmaps versus backlogs"],
+      "outcomes": ["Write a simple, outcome-based roadmap", "Explain the difference between a roadmap and a backlog"],
+      "why": "A concise, free description of a good roadmap: simple, open, regularly revised and focused on intent.",
+      "licence": "Open Government Licence v3.0 (Crown copyright)", "verified_on": "2026-11-17"
+    },
+    "govuk-deciding-priorities": {
+      "title": "Deciding on priorities", "provider": "GOV.UK Service Manual (Government Digital Service)", "type": "guide",
+      "url": "https://www.gov.uk/service-manual/agile-delivery/deciding-on-priorities", "access": "free",
+      "access_note": "Free to read online, no sign-in.", "published_length": null, "level": "beginner",
+      "topics": ["Revisiting priorities regularly", "Using performance data, research and stakeholder input", "Using a clear method such as MoSCoW"],
+      "outcomes": ["Run a transparent prioritisation conversation with a team"],
+      "why": "Practical guidance on how priorities are decided and revisited, which is the daily work of a product role.",
+      "licence": "Open Government Licence v3.0 (Crown copyright)", "verified_on": "2026-11-17"
+    },
+    "govuk-user-stories": {
+      "title": "Writing user stories", "provider": "GOV.UK Service Manual (Government Digital Service)", "type": "guide",
+      "url": "https://www.gov.uk/service-manual/agile-delivery/writing-user-stories", "access": "free",
+      "access_note": "Free to read online, no sign-in.", "published_length": null, "level": "beginner",
+      "topics": ["Who, what and why in a user story", "Acceptance criteria", "Splitting large stories"],
+      "outcomes": ["Write user stories with clear acceptance criteria"],
+      "why": "The simplest free guide to expressing requirements from the user's point of view.",
+      "licence": "Open Government Licence v3.0 (Crown copyright)", "verified_on": "2026-11-17"
+    },
+    "inspired": {
+      "title": "INSPIRED: How to Create Tech Products Customers Love (2nd edition)", "provider": "Marty Cagan, Silicon Valley Product Group", "type": "book",
+      "url": "https://www.svpg.com/books/inspired-how-to-create-tech-products-customers-love-2nd-edition/", "access": "paid",
+      "access_note": "A book. Price not recorded by Trace.", "published_length": null, "level": "beginner",
+      "topics": ["What product managers do in strong product teams", "Product discovery", "Product vision and strategy", "Product culture"],
+      "outcomes": ["Understand the product manager's responsibilities and how they differ from delivery roles"],
+      "why": "One of the most widely read introductions to the product manager role in technology companies.",
+      "licence": null, "verified_on": "2026-11-17"
+    },
+    "govuk-performance-metrics": {
+      "title": "How to set performance metrics for your service", "provider": "GOV.UK Service Manual (Government Digital Service)", "type": "guide",
+      "url": "https://www.gov.uk/service-manual/measuring-success/how-to-set-performance-metrics-for-your-service", "access": "free",
+      "access_note": "Free to read online, no sign-in.", "published_length": null, "level": "beginner",
+      "topics": ["Starting from the service's purpose", "Turning benefits into testable hypotheses", "Choosing a small set of metrics", "Baselines, trends and segmentation"],
+      "outcomes": ["Define a purpose, a hypothesis and a few metrics for a product area"],
+      "why": "A clear, free method for choosing outcome metrics instead of tracking everything.",
+      "licence": "Open Government Licence v3.0 (Crown copyright)", "verified_on": "2026-11-17"
+    },
+    "udacity-ab-testing": {
+      "title": "A/B Testing", "provider": "Udacity (instructors from Google)", "type": "course",
+      "url": "https://www.udacity.com/course/ab-testing--ud257", "access": "free",
+      "access_note": "Listed as free on Udacity.", "published_length": null, "level": "beginner",
+      "topics": ["What A/B testing is for", "Policy and ethics of experiments", "Choosing and characterising metrics", "Designing an experiment", "Analysing results"],
+      "outcomes": ["Choose metrics for an experiment", "Design a simple A/B test", "Read experiment results critically"],
+      "why": "A free, structured course on experiments and metrics, taught by practitioners from Google.",
+      "licence": null, "verified_on": "2026-11-17"
+    },
+    "lean-analytics": {
+      "title": "Lean Analytics", "provider": "Alistair Croll and Ben Yoskovitz", "type": "book",
+      "url": "https://leananalyticsbook.com/", "access": "paid",
+      "access_note": "A book; a free ebook sampler is offered on the site. Price not recorded by Trace.", "published_length": null, "level": "beginner",
+      "topics": ["Choosing the one metric that matters now", "Metrics by business type and stage", "Case studies"],
+      "outcomes": ["Pick a focus metric that fits a product's type and stage"],
+      "why": "Helps you move from 'lots of numbers' to the one metric that should drive a decision.",
+      "licence": null, "verified_on": "2026-11-17"
+    },
+    "trustworthy-experiments": {
+      "title": "Trustworthy Online Controlled Experiments: A Practical Guide to A/B Testing", "provider": "Ron Kohavi, Diane Tang and Ya Xu (Cambridge University Press, 2020)", "type": "book",
+      "url": "https://experimentguide.com/", "access": "paid",
+      "access_note": "A book (paperback and Kindle). Price not recorded by Trace.", "published_length": null, "level": "advanced",
+      "topics": ["Designing trustworthy experiments", "Overall evaluation criteria", "Common pitfalls", "Long-term effects"],
+      "outcomes": ["Recognise when an experiment result can and cannot be trusted"],
+      "why": "The reference book on experimentation, for later, once you are running experiments in real work.",
+      "licence": null, "verified_on": "2026-11-17"
+    },
+    "coursera-uva-dpm-fundamentals": {
+      "title": "Digital Product Management: Modern Fundamentals", "provider": "University of Virginia on Coursera (instructor: Alex Cowan)", "type": "course",
+      "url": "https://www.coursera.org/learn/uva-darden-digital-product-management", "access": "free_enrolment_paid_certificate",
+      "access_note": "Coursera shows an 'Enroll for free' option; a certificate requires payment. Check the options on the page when you enrol.",
+      "published_length": {"hours": 10, "note": "about 10 hours across 4 modules, as listed by Coursera"}, "level": "beginner",
+      "topics": ["Building an actionable, testable focus", "Agile, lean startup and customer discovery", "Exploring and validating a new product idea", "Growing an existing product with analytics"],
+      "outcomes": ["Describe how modern product teams decide what to build", "Frame a product idea as something testable"],
+      "why": "A short, structured university course that connects the main product-management methods in one place.",
+      "licence": null, "verified_on": "2026-11-17"
+    },
+    "coursera-uva-dpm-specialization": {
+      "title": "Digital Product Management Specialization", "provider": "University of Virginia on Coursera (instructor: Alex Cowan)", "type": "course_series",
+      "url": "https://www.coursera.org/specializations/uva-darden-digital-product-management", "access": "paid",
+      "access_note": "Coursera's page says the series can't be taken for free; financial aid is available and it is included with Coursera Plus.",
+      "published_length": {"hours": 57, "note": "5 courses listed at 11, 9, 11, 15 and 11 hours"}, "level": "beginner",
+      "topics": ["Modern product-management fundamentals", "Agile and design thinking", "Hypothesis-driven development", "Product analytics and AI", "Managing an agile team"],
+      "outcomes": ["Work through discovery, testing, analytics and delivery in a structured sequence"],
+      "why": "The fuller paid version if you want a structured programme covering several development areas together.",
+      "licence": null, "verified_on": "2026-11-17"
+    },
+    "cracking-pm-interview": {
+      "title": "Cracking the PM Interview", "provider": "Gayle Laakmann McDowell and Jackie Bavaro", "type": "book",
+      "url": "http://www.crackingthepminterview.com/", "access": "paid",
+      "access_note": "A book. Price not recorded by Trace.", "published_length": null, "level": "beginner",
+      "topics": ["How the PM role differs between companies", "Making existing experience relevant", "PM resumes and cover letters", "Estimation, behavioural, product and technical interview questions"],
+      "outcomes": ["Prepare for each type of product-manager interview question"],
+      "why": "A widely used preparation guide that covers both positioning your background and practising interview questions.",
+      "licence": null, "verified_on": "2026-11-17"
+    }
+  },
+  "guides": {
+    "C1": {
+      "heading": "Develop your user and customer discovery skills",
+      "concept": "Product discovery is how product teams understand customers' problems, check whether a problem is worth solving and explore possible solutions before committing to build one.",
+      "subtopics": ["Identifying the user's problem, not just the requested feature", "Interviewing users about specific past experiences", "Synthesising notes into a few clear findings", "Writing a problem statement", "Judging which opportunities matter most", "Testing the riskiest assumption before building"],
+      "why": "Product Managers are expected to bring evidence about users into decisions. Showing that you can learn from users, and change a decision because of it, is one of the clearest signals of product thinking.",
+      "why_bridge": "In an Associate Product Manager role you would usually support discovery on features; arriving with interview and synthesis practice lets you take on more of it.",
+      "learn": [
+        {"method": "free_learning", "summary": "Start with the free GOV.UK guides on discovery research and interviews, then watch 'How to Talk to Users'.", "resources": ["govuk-user-research-discovery", "govuk-in-depth-interviews", "yc-how-to-talk-to-users"]},
+        {"method": "reading", "summary": "Read The Mom Test before your first interviews; read Continuous Discovery Habits once you have done a few.", "resources": ["mom-test", "continuous-discovery-habits"]},
+        {"method": "structured_course", "summary": "If you prefer a structured course, the University of Virginia's fundamentals course covers customer discovery alongside other product methods.", "resources": ["coursera-uva-dpm-fundamentals"]}
+      ],
+      "recommended_first": "free_learning",
+      "practice": {
+        "engineering": ["Pick a feature or workflow your team is building or has just shipped.", "Ask the product owner or manager whether you can join, or run, three to five short conversations with its users or with the internal teams who support them.", "Ask about the last time each person did the task: what happened, what was hard, what they did instead. Avoid asking whether they would like your idea.", "Write up what you heard and propose one change, then ask to be part of the decision about it."],
+        "analysis": ["Choose a process or report your stakeholders rely on.", "Run three to five short conversations about how they actually use it and where it fails them, using specific recent examples.", "Combine what you heard with the usage data you can already see.", "Write the problem statement and recommend one change to whoever decides."],
+        "customer": ["Choose a recurring customer problem you hear about.", "Review recent tickets or calls and speak with three to five customers about specific instances.", "Separate the underlying problem from the solutions customers suggest.", "Write a problem statement and share it with the product team."],
+        "default": ["Choose a product you use, or a service at your organisation, with a clear group of users.", "Speak with three to five of its users about the last time they used it, using a short discussion guide.", "Synthesise the conversations into a few findings.", "Write a problem statement and one proposed change. If this is a personal project, label it as one."]
+      },
+      "output": {"name": "Discovery summary", "good_contains": ["Who you spoke with and why", "Three to five findings, each backed by what people said or did", "A one-sentence problem statement", "The change you propose and the riskiest assumption behind it", "What happened next, if the work was real"]},
+      "use_output": ["As a concrete example of learning from users in interviews", "As the basis of a case study", "As evidence for a conversation about taking on product work", "Added to your Trace profile once it reflects real work"]
+    },
+    "C2": {
+      "heading": "Develop product direction and roadmap thinking",
+      "concept": "Product strategy is a clear choice about which problems a product will solve, for whom and why now. A roadmap turns that direction into a sequenced, regularly revised plan of outcomes, not a fixed list of features.",
+      "subtopics": ["Writing a short product direction: problem, audience and goal", "Choosing what not to do", "Sequencing work by outcome", "Roadmaps compared with backlogs", "Revisiting priorities with data and research", "Explaining the reasoning to stakeholders"],
+      "why": "Setting and explaining direction is one of the decisions that separates product ownership from delivery or analysis. Employers look for evidence that you have shaped what gets built and why.",
+      "why_bridge": "An Associate Product Manager usually contributes to a roadmap rather than owning a product's strategy, so you will need to seek opportunities to shape direction for a feature area.",
+      "learn": [
+        {"method": "free_learning", "summary": "Read the free GOV.UK guides on developing a roadmap and deciding on priorities.", "resources": ["govuk-developing-roadmap", "govuk-deciding-priorities"]},
+        {"method": "reading", "summary": "INSPIRED explains how product vision and strategy work in technology companies.", "resources": ["inspired"]},
+        {"method": "structured_course", "summary": "The University of Virginia course covers building an actionable, testable focus for a product.", "resources": ["coursera-uva-dpm-fundamentals"]}
+      ],
+      "recommended_first": "free_learning",
+      "practice": {
+        "engineering": ["Pick an area you know well, such as an internal tool, a platform component or a feature set.", "Write a one-page direction: the problem, who it is for, the outcome you want and what you would not do.", "Draft a next-quarter roadmap of three to five outcomes in priority order, with your reasoning.", "Review it with whoever owns the area and ask what they would change and why."],
+        "analysis": ["Pick a product area your analysis supports.", "Write a one-page direction backed by the data you already have.", "Turn it into a sequenced roadmap of outcomes, not features.", "Present it to the area's owner and record the decisions it informed."],
+        "customer": ["Pick a customer segment you know well.", "Write the direction you would set for them, based on the problems you see most.", "Sequence three to five outcomes.", "Share it with the product team as a proposal."],
+        "default": ["Pick a product you know well.", "Write a one-page direction and a roadmap of three to five outcomes in priority order.", "Explain what you chose not to do.", "If this is a personal project, label it clearly as one."]
+      },
+      "output": {"name": "Product direction and roadmap", "good_contains": ["The problem and who it is for", "The outcome you are aiming at and how you would know", "Three to five sequenced outcomes with the reason for the order", "What you are deliberately not doing", "Feedback from the area's owner, if it was real work"]},
+      "use_output": ["To discuss product thinking in interviews", "As a proposal to take on roadmap work in your current role", "As part of a case study"]
+    },
+    "C3": {
+      "heading": "Turn problems into clear requirements and priorities",
+      "concept": "Requirements describe what a product needs to do and why, from the user's point of view, with criteria that tell the team when it is done. Prioritising them means deciding what comes first and explaining the trade-off.",
+      "subtopics": ["User stories: who, what and why", "Acceptance criteria", "Splitting large pieces of work", "Prioritisation methods such as MoSCoW", "Writing a short product specification"],
+      "why": "Product Managers are expected to turn a problem into something a team can build, and to decide its order. It is often the first responsibility people take on when moving into product work.",
+      "why_bridge": "Associate Product Managers often own requirements for a feature, so this is a natural first area of ownership in a bridge role.",
+      "learn": [
+        {"method": "free_learning", "summary": "Read the free GOV.UK guides on writing user stories and deciding on priorities.", "resources": ["govuk-user-stories", "govuk-deciding-priorities"]}
+      ],
+      "recommended_first": "workplace",
+      "practice": {
+        "engineering": ["Take one real piece of work your team is about to start.", "Write the user stories and acceptance criteria before work begins, and agree the priority order with the team.", "Follow it through to delivery and note what changed and why."],
+        "analysis": ["Take a request you are working on.", "Rewrite it as user stories with acceptance criteria and a proposed priority.", "Agree it with the team that will build it."],
+        "customer": ["Take a customer request that keeps coming back.", "Write it up as a user story with acceptance criteria and evidence of the need.", "Share it with the product team as a proposal."],
+        "default": ["Take a feature of a product you know.", "Write user stories, acceptance criteria and a priority order with your reasons.", "If this is a personal project, label it as one."]
+      },
+      "output": {"name": "Prioritised requirements", "good_contains": ["User stories with acceptance criteria", "The priority order and why", "What was delivered and what changed along the way, if it was real work"]},
+      "use_output": ["As evidence of turning a problem into buildable work", "To discuss trade-offs in interviews"]
+    },
+    "C4": {
+      "heading": "Learn to define outcome metrics and decide from data",
+      "concept": "An outcome metric shows whether a change actually helped users or the business, rather than whether work was delivered. Product Managers define it before building, then use the result to decide what to do next.",
+      "subtopics": ["Outputs compared with outcomes", "Turning a goal into a testable hypothesis", "Choosing a small set of metrics and a baseline", "Experiments and A/B tests", "Reading results critically", "Making and recording the follow-up decision"],
+      "why": "Owning the measure of success, and acting on it, is one of the clearest signs of product ownership. Analysing or reporting numbers is useful, but it is different from defining the outcome and deciding from it.",
+      "why_bridge": "In an Associate Product Manager role you may recommend decisions from data; seek a feature where you define the success metric yourself and make the follow-up decision.",
+      "learn": [
+        {"method": "free_learning", "summary": "Read the free GOV.UK guide on setting performance metrics, then take the free Udacity A/B Testing course.", "resources": ["govuk-performance-metrics", "udacity-ab-testing"]},
+        {"method": "reading", "summary": "Lean Analytics helps you choose the one metric that matters; Trustworthy Online Controlled Experiments is the reference for later, once you run experiments.", "resources": ["lean-analytics", "trustworthy-experiments"]}
+      ],
+      "recommended_first": "free_learning",
+      "practice": {
+        "engineering": ["Pick a feature or change your team is about to ship.", "Before it ships, agree with the product owner what outcome it should change, which metric shows it and the current baseline.", "Check the metric after release.", "Write up what it showed and what was decided next, and ask to make or recommend that decision."],
+        "analysis": ["Pick a change your stakeholders are about to make.", "Propose the outcome metric and baseline before it happens, not only a report afterwards.", "After the change, recommend the decision and record what was decided.", "Note whether you defined the metric and made the decision, or supported someone else's: be precise about which."],
+        "customer": ["Pick a change that affects your customers.", "Agree how its success will be measured before it happens.", "Review the result and recommend a next step."],
+        "default": ["Pick a feature of a product you know.", "Write its outcome metric, baseline and decision rule.", "If you can observe real data, check it afterwards; otherwise label this as a learning exercise."]
+      },
+      "output": {"name": "Metric definition and decision record", "good_contains": ["The outcome you wanted and why", "The metric, how it is measured and the baseline", "The decision rule you agreed in advance", "What happened and the decision made", "Your exact role in it"]},
+      "use_output": ["As the strongest single example of product ownership you can show", "For analytical and metrics interview questions", "As a case study"]
+    },
+    "C5": {
+      "heading": "Build cross-functional collaboration without authority",
+      "concept": "Product Managers align engineering, design, business and leadership around decisions they don't control directly. That means preparing options, running the discussion and making the decision and its reasons visible.",
+      "subtopics": ["Preparing options and trade-offs", "Running a decision meeting", "Writing a decision record", "Communicating with senior stakeholders"],
+      "why": "Most product work happens through other people. Showing that you can get several functions to a decision is a core part of the role.",
+      "why_bridge": "A bridge role puts you in these conversations daily; aim to lead some of them rather than only attend.",
+      "learn": [],
+      "recommended_first": "workplace",
+      "practice": {
+        "default": ["Find a decision that involves at least two other functions.", "Prepare the options and trade-offs, run the discussion and circulate the decision and its reasons.", "Ask one participant for feedback on how it went."]
+      },
+      "output": {"name": "Decision record", "good_contains": ["The options considered", "The decision and who agreed", "The reasons and trade-offs"]},
+      "use_output": ["For behavioural interview questions about influence", "As part of a case study"]
+    },
+    "C6": {
+      "heading": "Show iterative delivery across the lifecycle",
+      "concept": "Iterative delivery means shipping in small steps, measuring what happened and adjusting, from first release to retirement.",
+      "subtopics": ["Small releases", "Measuring after release", "Deciding to iterate, expand or stop"],
+      "why": "Product Managers are expected to keep improving a product after launch, not only to get it shipped.",
+      "why_bridge": "Bridge roles usually involve regular releases; use them to practise measuring and iterating.",
+      "learn": [],
+      "recommended_first": "workplace",
+      "practice": {
+        "default": ["Pick something your team shipped recently.", "Look at what happened after release and propose one iteration.", "Follow it through and record the decision."]
+      },
+      "output": {"name": "Iteration note", "good_contains": ["What shipped", "What you observed afterwards", "The iteration and why"]},
+      "use_output": ["To discuss delivery and iteration in interviews"]
+    }
+  },
+  "families": {
+    "engineering": ["software_engineering", "qa_testing", "engineering_management"],
+    "analysis": ["business_analysis", "data_analytics", "data_science", "product_analytics"],
+    "customer": ["customer_success", "customer_support", "sales", "consulting"]
+  },
+  "methods": {
+    "structured_course": "Structured course",
+    "free_learning": "Free guides and videos",
+    "reading": "Books and reading",
+    "workplace": "Practise at work",
+    "internal": "An internal opportunity",
+    "mentorship": "Learn from a practitioner",
+    "personal_project": "A personal project",
+    "internship": "An internship"
+  },
+  "alternatives": {
+    "workplace": "Ask to take on this responsibility for a feature or workflow in your current job. Usually the most valuable evidence, because it is real work.",
+    "internal": "Shadow or work alongside a Product Manager in your organisation on one decision or release.",
+    "mentorship": "Ask an experienced Product Manager to review your output and talk through how they would approach it.",
+    "personal_project": "Do the exercise on a product you know. Label it clearly as a personal project: it shows how you think, not professional ownership.",
+    "internship": "An internship or returnship can give supervised product experience. It is usually most suitable earlier in a career or after a break."
+  },
+  "themes": [
+    {"key": "delivery", "title": "Technical delivery and execution", "areas": ["delivery_execution", "technical_engineering", "quality_testing", "operations_process"],
+     "relevance": "This gives you a useful foundation for working closely with engineering teams on how and when product work gets built and shipped."},
+    {"key": "collaboration", "title": "Working with cross-functional teams", "areas": ["stakeholder_management", "executive_communication", "people_leadership"],
+     "relevance": "Product Managers spend much of their time aligning people they don't manage, so this is directly useful."},
+    {"key": "customers", "title": "Understanding customers and users", "areas": ["customer_account_management", "product_discovery", "design_research"],
+     "relevance": "Understanding what users need is central to product work, and this experience gives you a starting point."},
+    {"key": "requirements", "title": "Shaping requirements and priorities", "areas": ["requirements_analysis", "prioritisation_backlog"],
+     "relevance": "Turning needs into clear, prioritised work is one of the first responsibilities people take on in product roles."},
+    {"key": "data", "title": "Working with data", "areas": ["data_analysis", "data_governance_quality", "ai_product_work"],
+     "relevance": "Comfort with data helps you define and read the measures product decisions depend on."},
+    {"key": "direction", "title": "Product direction and outcomes", "areas": ["roadmap_ownership", "strategy_portfolio", "outcome_ownership", "business_case_economics", "go_to_market_growth"],
+     "relevance": "This is close to the core of the Product Manager role: setting direction and being accountable for results."}
+  ],
+  "area_phrases": {
+    "delivery_execution": "delivering and releasing work with your team", "technical_engineering": "building technical systems",
+    "quality_testing": "quality and testing", "operations_process": "running and improving operational processes",
+    "stakeholder_management": "working with stakeholders", "executive_communication": "communicating with senior leadership",
+    "people_leadership": "leading and developing people", "customer_account_management": "managing customer relationships",
+    "product_discovery": "learning about customers' needs", "design_research": "design and user research",
+    "requirements_analysis": "analysing and writing requirements", "prioritisation_backlog": "prioritising work",
+    "data_analysis": "analysing data", "data_governance_quality": "data quality and governance", "ai_product_work": "AI and machine-learning work",
+    "roadmap_ownership": "owning a roadmap", "strategy_portfolio": "strategy and portfolio decisions", "outcome_ownership": "owning outcomes and metrics",
+    "business_case_economics": "business cases and economics", "go_to_market_growth": "go-to-market and growth"
+  },
+  "stage_guidance": {
+    "3": {
+      "resume": ["Lead with the experience that is closest to product work, described in plain language.", "Describe your role precisely: what you did, what you decided and what you supported.", "Add new product work only once it is real, and say what it was."],
+      "case_study": ["Context: the product, the users and the situation", "The problem and how you knew it mattered", "Your role: exactly what you were responsible for", "What you did and the options you considered", "The decision and why", "What happened, only if you know", "What you learned and would do differently"],
+      "narratives": ["Prepare two or three short stories from real work, each with the situation, your action and the result.", "Have one story about learning from users, one about a trade-off you made and one about working across teams."],
+      "never_claim": ["Ownership you didn't have", "Research you didn't do", "Metrics or results you can't support", "Leadership you didn't hold", "A personal project presented as professional work"]
+    },
+    "4": {
+      "interviews": ["Product sense: improve or design a product for a given user and problem", "Analytical: choose metrics, diagnose a drop, size a market", "Execution: prioritise, plan a launch, handle a trade-off", "Behavioural: influence, conflict, failure and learning", "Technical (often asked of engineers moving into product): explain a system and its trade-offs simply"],
+      "product_case": ["Pick a product you use. In 45 minutes, write who it is for, the most important problem, three solution options, the one you'd choose, the metric you'd track and the main trade-off.", "Repeat with different products until the structure feels natural; ask a practitioner to review one."],
+      "networking": ["Speak with two or three people already doing the target role about how they got in and what their teams look for.", "Ask for a referral only where someone knows your work."],
+      "internal": ["Ask your manager or product team whether product roles or projects are open to internal candidates and what they would want to see."],
+      "resources": ["cracking-pm-interview"]
+    }
+  },
+  "weekly_advice": {
+    "1_3": "With about 1–3 hours a week, work on one development area at a time. Start with the free resource and one small practical exercise before adding anything else.",
+    "4_6": "With about 4–6 hours a week, combine one learning resource with one practical opportunity at a time.",
+    "7_10": "With about 7–10 hours a week, you can work on a learning resource and a practical exercise in parallel, and start interview practice earlier.",
+    "more_than_10": "With more than 10 hours a week, you can work on two development areas in parallel while building your case study.",
+    "varies": "Because your time varies, keep one small practical exercise going and pick up learning when you have time."
+  }
+}

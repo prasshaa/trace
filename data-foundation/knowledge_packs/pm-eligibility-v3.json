@@ -1,0 +1,550 @@
+{
+ "key": "pm-eligibility-v3",
+ "kind": "employer_eligibility_rules",
+ "source_inventory": "pm-v1",
+ "approved_on": "2026-11-16",
+ "approval_note": "Phase 4 closure (2026-11-17): J12 'currently a product manager' and a current Associate PM; J3 engineering experience before product.",
+ "curation_note": "Structure preserves AND (all) / OR (any), ranges and required versus preferred. Leaves: years_in_families (reviewed roles in the named role families, from partial dates: 'meets' only when the certain minimum reaches the stated minimum, 'does not meet' only when the possible maximum cannot), product_exposure (confirmed, categorised responsibility evidence in a role of the named families showing a product-ownership area; a job title alone never counts), current_role_in_families and not_transitioning_from (the user's CURRENT confirmed role only; earlier roles never trigger an exclusion), total_years, qualification (an 'or equivalent' clause never gives 'does not meet'; a missing qualification record is unclear, never absence), and stated_condition (a condition the profile cannot show, such as a product domain; always unclear). Preferred criteria are reported but never decide the outcome. Revision v2 (D36): product management tenure leaves list Product Owner and founder families as possible equivalents, which give Unclear (never meets or does not meet on their own); qualifications match the stated field on normalised whole values through explicit aliases, or a degree type (B.E./B.Tech); internships, part-time work and apprenticeships with an unspecified work pattern never count towards the certain minimum. Revision v3: a current-role leaf may list unconfirmed_roles (a role inside the named families that the employer has not said it treats as equivalent; it gives unclear, never meets or does not meet); a years leaf may list before_families (only experience before the first confirmed role in those families counts).",
+ "product_exposure_areas": [
+  "product_discovery",
+  "roadmap_ownership",
+  "prioritisation_backlog",
+  "outcome_ownership"
+ ],
+ "background_families": {
+  "J11": {
+   "accepted": {
+    "data": [
+     "data_analytics",
+     "data_science"
+    ],
+    "analytics": [
+     "data_analytics",
+     "product_analytics"
+    ],
+    "engineering (with product exposure)": [
+     "software_engineering"
+    ]
+   }
+  },
+  "J12": {
+   "excluded": {
+    "consulting": [
+     "consulting"
+    ],
+    "project management": [
+     "project_program_management"
+    ],
+    "program management": [
+     "project_program_management"
+    ]
+   }
+  }
+ },
+ "education_fields": [
+  {
+   "code": "computer_science",
+   "label": "Computer science",
+   "category": "computing",
+   "aliases": [
+    "computer science",
+    "cs",
+    "computer science and engineering",
+    "cse",
+    "computing"
+   ]
+  },
+  {
+   "code": "computer_engineering",
+   "label": "Computer engineering",
+   "category": "engineering",
+   "aliases": [
+    "computer engineering"
+   ]
+  },
+  {
+   "code": "information_technology",
+   "label": "Information technology",
+   "category": "computing",
+   "aliases": [
+    "information technology",
+    "it"
+   ]
+  },
+  {
+   "code": "electrical_engineering",
+   "label": "Electrical engineering",
+   "category": "engineering",
+   "aliases": [
+    "electrical engineering",
+    "electrical",
+    "ee",
+    "electrical and electronics engineering",
+    "eee"
+   ]
+  },
+  {
+   "code": "electronics_engineering",
+   "label": "Electronics engineering",
+   "category": "engineering",
+   "aliases": [
+    "electronics engineering",
+    "electronics",
+    "electronics and communication engineering",
+    "ece",
+    "electronics and telecommunication engineering"
+   ]
+  },
+  {
+   "code": "mechanical_engineering",
+   "label": "Mechanical engineering",
+   "category": "engineering",
+   "aliases": [
+    "mechanical engineering",
+    "mechanical"
+   ]
+  },
+  {
+   "code": "civil_engineering",
+   "label": "Civil engineering",
+   "category": "engineering",
+   "aliases": [
+    "civil engineering",
+    "civil"
+   ]
+  },
+  {
+   "code": "chemical_engineering",
+   "label": "Chemical engineering",
+   "category": "engineering",
+   "aliases": [
+    "chemical engineering"
+   ]
+  },
+  {
+   "code": "engineering",
+   "label": "Engineering (discipline not stated)",
+   "category": "engineering",
+   "aliases": [
+    "engineering"
+   ]
+  },
+  {
+   "code": "mathematics",
+   "label": "Mathematics",
+   "category": "quantitative",
+   "aliases": [
+    "mathematics",
+    "maths",
+    "math",
+    "applied mathematics"
+   ]
+  },
+  {
+   "code": "statistics",
+   "label": "Statistics",
+   "category": "quantitative",
+   "aliases": [
+    "statistics",
+    "applied statistics"
+   ]
+  },
+  {
+   "code": "economics",
+   "label": "Economics",
+   "category": "quantitative",
+   "aliases": [
+    "economics"
+   ]
+  },
+  {
+   "code": "physics",
+   "label": "Physics",
+   "category": "quantitative",
+   "aliases": [
+    "physics"
+   ]
+  },
+  {
+   "code": "business",
+   "label": "Business",
+   "category": "business",
+   "aliases": [
+    "business",
+    "business administration",
+    "business management"
+   ]
+  }
+ ],
+ "criteria": [
+  {
+   "source": "J2",
+   "text": "6+ years of product management, at least 2 focused on growth or PLG",
+   "rule": {
+    "all": [
+     {
+      "type": "years_in_families",
+      "families": [
+       "product_management"
+      ],
+      "min": 6,
+      "max": null,
+      "equivalent_families": [
+       "product_ownership",
+       "entrepreneurship"
+      ]
+     },
+     {
+      "type": "stated_condition",
+      "text": "at least 2 years focused on growth or product-led growth"
+     }
+    ]
+   }
+  },
+  {
+   "source": "J3",
+   "text": "4 to 8 years of product management, at least 2 owning a platform, API or infrastructure product",
+   "rule": {
+    "all": [
+     {
+      "type": "years_in_families",
+      "families": [
+       "product_management"
+      ],
+      "min": 4,
+      "max": 8,
+      "equivalent_families": [
+       "product_ownership",
+       "entrepreneurship"
+      ]
+     },
+     {
+      "type": "stated_condition",
+      "text": "at least 2 years owning a platform, API or infrastructure product"
+     }
+    ]
+   }
+  },
+  {
+   "source": "J3",
+   "text": "A computer science or engineering degree is not mandatory; ideally 2+ years as an engineer or architect before product",
+   "rule": {
+    "type": "years_in_families",
+    "families": [
+     "software_engineering"
+    ],
+    "min": 2,
+    "max": null,
+    "before_families": [
+     "product_management"
+    ]
+   },
+   "note": "A preference in addition to the product management experience, not a substitute for it. Only engineering experience before the first product management role counts ('before product')."
+  },
+  {
+   "source": "J4",
+   "text": "4-8 years (from the title), strong product management experience",
+   "rule": {
+    "all": [
+     {
+      "type": "years_in_families",
+      "families": [
+       "product_management"
+      ],
+      "min": 4,
+      "max": 8,
+      "equivalent_families": [
+       "product_ownership",
+       "entrepreneurship"
+      ]
+     },
+     {
+      "type": "stated_condition",
+      "text": "strong product management experience with ownership from concept to launch and scale"
+     }
+    ]
+   }
+  },
+  {
+   "source": "J4",
+   "text": "B.E./B.Tech or equivalent technical education",
+   "rule": {
+    "type": "qualification",
+    "min_level": "bachelor",
+    "types": [
+     "BE",
+     "BTech"
+    ],
+    "fields": [],
+    "or_equivalent": true
+   },
+   "note": "A B.E. or B.Tech of any discipline meets this; the discipline is reported separately. Other technical education is for the employer to judge."
+  },
+  {
+   "source": "J4",
+   "text": "FinTech, lending, payments or financial services",
+   "rule": {
+    "type": "stated_condition",
+    "text": "experience in fintech, lending, payments or financial services"
+   }
+  },
+  {
+   "source": "J5",
+   "text": "3+ years of product management building consumer-facing digital products",
+   "rule": {
+    "all": [
+     {
+      "type": "years_in_families",
+      "families": [
+       "product_management"
+      ],
+      "min": 3,
+      "max": null,
+      "equivalent_families": [
+       "product_ownership",
+       "entrepreneurship"
+      ]
+     },
+     {
+      "type": "stated_condition",
+      "text": "building consumer-facing digital products"
+     }
+    ]
+   }
+  },
+  {
+   "source": "J6",
+   "text": "8+ years in global or cross-functional software teams at a software product company",
+   "rule": {
+    "all": [
+     {
+      "type": "total_years",
+      "min": 8
+     },
+     {
+      "type": "stated_condition",
+      "text": "in global or cross-functional software teams at a software product company"
+     }
+    ]
+   }
+  },
+  {
+   "source": "J7",
+   "text": "8-10 years of product management",
+   "rule": {
+    "type": "years_in_families",
+    "families": [
+     "product_management"
+    ],
+    "min": 8,
+    "max": 10,
+    "equivalent_families": [
+     "product_ownership",
+     "entrepreneurship"
+    ]
+   }
+  },
+  {
+   "source": "J7",
+   "text": "Bachelor's in Computer Science, Engineering, Business or similar (Master's or equivalent experience preferred)",
+   "rule": {
+    "type": "qualification",
+    "min_level": "bachelor",
+    "fields": [
+     "computer_science",
+     "category:engineering",
+     "business"
+    ],
+    "or_equivalent": true
+   }
+  },
+  {
+   "source": "J8",
+   "text": "5+ years of relevant product management",
+   "rule": {
+    "all": [
+     {
+      "type": "years_in_families",
+      "families": [
+       "product_management"
+      ],
+      "min": 5,
+      "max": null,
+      "equivalent_families": [
+       "product_ownership",
+       "entrepreneurship"
+      ]
+     },
+     {
+      "type": "stated_condition",
+      "text": "the product management experience is relevant to the role (judged by the employer)"
+     }
+    ]
+   }
+  },
+  {
+   "source": "J8",
+   "text": "Bachelor's or advanced degree in a quantitative field, EE, CS or equivalent",
+   "rule": {
+    "type": "qualification",
+    "min_level": "bachelor",
+    "fields": [
+     "category:quantitative",
+     "category:engineering",
+     "computer_science"
+    ],
+    "or_equivalent": true
+   },
+   "note": "Quantitative fields are Trace's curated list (mathematics, statistics, economics, physics); engineering includes EE."
+  },
+  {
+   "source": "J9",
+   "text": "6+ years in product management; e-commerce valued",
+   "rule": {
+    "type": "years_in_families",
+    "families": [
+     "product_management"
+    ],
+    "min": 6,
+    "max": null,
+    "equivalent_families": [
+     "product_ownership",
+     "entrepreneurship"
+    ]
+   },
+   "note": "E-commerce experience is valued (a preference), not assessed."
+  },
+  {
+   "source": "J9",
+   "text": "Bachelor's in CS or CE, or an equivalent combination of education and experience",
+   "rule": {
+    "type": "qualification",
+    "min_level": "bachelor",
+    "fields": [
+     "computer_science",
+     "computer_engineering"
+    ],
+    "or_equivalent": true
+   }
+  },
+  {
+   "source": "J10",
+   "text": "4-8 years of product management, significant time in enterprise SaaS or B2B AI",
+   "rule": {
+    "all": [
+     {
+      "type": "years_in_families",
+      "families": [
+       "product_management"
+      ],
+      "min": 4,
+      "max": 8,
+      "equivalent_families": [
+       "product_ownership",
+       "entrepreneurship"
+      ]
+     },
+     {
+      "type": "stated_condition",
+      "text": "significant time in enterprise SaaS or B2B AI products"
+     }
+    ]
+   }
+  },
+  {
+   "source": "J10",
+   "text": "Background in Computer Science or Electrical Engineering",
+   "rule": {
+    "type": "qualification",
+    "min_level": null,
+    "fields": [
+     "computer_science",
+     "electrical_engineering"
+    ],
+    "or_equivalent": false
+   }
+  },
+  {
+   "source": "J11",
+   "text": "3-5 years in product management, or 5+ years in related data, analytics or engineering roles with product exposure",
+   "rule": {
+    "any": [
+     {
+      "type": "years_in_families",
+      "families": [
+       "product_management"
+      ],
+      "min": 3,
+      "max": 5,
+      "equivalent_families": [
+       "product_ownership",
+       "entrepreneurship"
+      ]
+     },
+     {
+      "all": [
+       {
+        "type": "years_in_families",
+        "families": [
+         "data_analytics",
+         "data_science",
+         "product_analytics",
+         "software_engineering"
+        ],
+        "min": 5,
+        "max": null
+       },
+       {
+        "type": "product_exposure",
+        "families": [
+         "data_analytics",
+         "data_science",
+         "product_analytics",
+         "software_engineering"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "note": "An adjacent background is a substitute only together with product exposure; the title of an adjacent role alone is not enough."
+  },
+  {
+   "source": "J12",
+   "text": "3-7 years of product management; currently a product manager",
+   "rule": {
+    "all": [
+     {
+      "type": "years_in_families",
+      "families": [
+       "product_management"
+      ],
+      "min": 3,
+      "max": 7,
+      "equivalent_families": [
+       "product_ownership",
+       "entrepreneurship"
+      ]
+     },
+     {
+      "type": "current_role_in_families",
+      "families": [
+       "product_management"
+      ],
+      "unconfirmed_roles": [
+       "PM-APM"
+      ]
+     },
+     {
+      "type": "not_transitioning_from",
+      "families": [
+       "consulting",
+       "project_program_management"
+      ]
+     }
+    ]
+   },
+   "note": "The exclusion applies to people transitioning now from consulting, project or program management (their current role), not to anyone who held such a role earlier. A current Associate Product Manager is in product management, but the employer has not said it treats that as 'currently a product manager': unclear."
+  }
+ ]
+}

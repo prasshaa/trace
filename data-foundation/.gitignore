@@ -1,0 +1,11 @@
+# Restricted third-party resume fixtures: permission for shared reuse is not verified.
+# Never commit, upload, share or import these files.
+local_only/
+
+__pycache__/
+*.pyc
+.DS_Store
+.env
+.env.*
+supabase/.temp/
+supabase/.branches/

@@ -1,0 +1,947 @@
+{
+ "key": "pm-actions-v2",
+ "kind": "action_template_library",
+ "requirements_pack": "pm-v1.2",
+ "approved_on": "2026-11-16",
+ "approval_note": "Content corrections from the Phase 4 review and D32 (2026-11-16).",
+ "curation_note": "Templates are instantiated per requirement from the user's own assessment: Gap -> Build (stage 1) and Demonstrate (stage 2); Transferable -> Demonstrate (stage 2) and Reposition (stage 3); Demonstrated -> Reposition (stage 3) only; Unknown -> resolve the missing information first (stage 0), no capability action. Stage 4 is always considered. No courses, providers, costs, timelines, placement outcomes or job openings are named or implied; current openings come only from verified postings in the knowledge base. Revision v2: learning exercises and personal projects are labelled; repositioning keeps to confirmed records; skill and role-history evidence have their own reposition templates; Stage 4 adds employer criteria, a case study, case practice, alternative routes and, on bridge routes, the responsibility still to seek.",
+ "where_values": {
+  "current_job": "In your current job",
+  "internal_move": "Through an internal move or project in your organisation",
+  "external_project": "In a self-directed or volunteer project",
+  "self_directed_study": "Self-directed study of the cited sources",
+  "job_market": "In the job market",
+  "trace_profile": "In your Trace profile"
+ },
+ "label_values": {
+  "learning_exercise": "A learning exercise, not professional evidence",
+  "personal_project_possible": "If done as a personal project, it is labelled as one, never as professional product ownership",
+  "factual_accuracy": "Says only what your confirmed records show",
+  "trace_curated": "Curated by Trace; no cited source"
+ },
+ "templates": [
+  {
+   "key": "build.C1",
+   "stage": 1,
+   "kind": "build",
+   "requirement_key": "C1",
+   "objective": "Understand how product teams learn what users need",
+   "action": "Study how the cited frameworks describe user-centred insight, then plan five short interviews with users or internal customers of something you work on, with the questions you would ask and what decision each answer could change.",
+   "deliverable": "A one-page research plan: who you will speak to, your questions, and the decisions they inform (a learning exercise, not professional evidence)",
+   "where": [
+    "self_directed_study",
+    "current_job"
+   ],
+   "basis_sources": [
+    "pm-v1:F1"
+   ],
+   "labels": [
+    "learning_exercise"
+   ]
+  },
+  {
+   "key": "demonstrate.C1",
+   "stage": 2,
+   "kind": "demonstrate",
+   "requirement_key": "C1",
+   "objective": "Show that you learn from users and act on it",
+   "action": "Run the interviews (or analyse existing feedback or support tickets), summarise what users need, and propose one change based on it to the people who decide.",
+   "deliverable": "An insight summary with the proposed change and what happened to it. If you do this as a personal project, label it as a personal project, not professional product ownership.",
+   "where": [
+    "current_job",
+    "internal_move",
+    "external_project"
+   ],
+   "basis_sources": [
+    "pm-v1:F1"
+   ],
+   "labels": [
+    "personal_project_possible"
+   ]
+  },
+  {
+   "key": "build.C2",
+   "stage": 1,
+   "kind": "build",
+   "requirement_key": "C2",
+   "objective": "Understand how a product direction becomes a sequenced roadmap",
+   "action": "Study how the cited frameworks describe roadmapping and strategic ownership, then write a short product direction for a product you know: the problem, who it is for, and three outcomes in priority order.",
+   "deliverable": "A one-page product direction with a sequenced, outcome-based roadmap (a learning exercise, not professional evidence)",
+   "where": [
+    "self_directed_study"
+   ],
+   "basis_sources": [
+    "pm-v1:F1",
+    "pm-v1:F4"
+   ],
+   "labels": [
+    "learning_exercise"
+   ]
+  },
+  {
+   "key": "demonstrate.C2",
+   "stage": 2,
+   "kind": "demonstrate",
+   "requirement_key": "C2",
+   "objective": "Show that you can set and sequence direction for a product area",
+   "action": "Offer to draft the next-quarter priorities for a feature area or internal tool you work on, explain the order you chose, and get it reviewed by the person who owns the area.",
+   "deliverable": "A roadmap draft you prepared for one area, reviewed by the area's owner (a contribution, not ownership). If you do this as a personal project, label it as a personal project, not professional product ownership.",
+   "where": [
+    "current_job",
+    "internal_move",
+    "external_project"
+   ],
+   "basis_sources": [
+    "pm-v1:F1"
+   ],
+   "labels": [
+    "personal_project_possible"
+   ]
+  },
+  {
+   "key": "build.C3",
+   "stage": 1,
+   "kind": "build",
+   "requirement_key": "C3",
+   "objective": "Learn to turn a problem into clear requirements and priorities",
+   "action": "Take a problem you have seen at work and write it up as a problem statement, user stories with acceptance criteria, and a short reason for their order.",
+   "deliverable": "A written problem statement with prioritised user stories and acceptance criteria (a learning exercise, not professional evidence)",
+   "where": [
+    "self_directed_study",
+    "current_job"
+   ],
+   "basis_sources": [
+    "pm-v1:F1",
+    "pm-bridges-v1:B2"
+   ],
+   "labels": [
+    "learning_exercise"
+   ]
+  },
+  {
+   "key": "demonstrate.C3",
+   "stage": 2,
+   "kind": "demonstrate",
+   "requirement_key": "C3",
+   "objective": "Show that your requirements and priorities are used by a team",
+   "action": "Write the requirements for one real piece of work your team takes on, agree the priority order with the team, and follow it through to delivery.",
+   "deliverable": "Requirements a team built from, with the agreed order and the delivered result",
+   "where": [
+    "current_job",
+    "internal_move"
+   ],
+   "basis_sources": [
+    "pm-v1:F1"
+   ],
+   "labels": []
+  },
+  {
+   "key": "build.C4",
+   "stage": 1,
+   "kind": "build",
+   "requirement_key": "C4",
+   "objective": "Understand how product outcomes are defined and measured",
+   "action": "Study how the cited frameworks describe managing product outcomes, then pick a feature you know and define its outcome, one success metric, its baseline and how you would read the result.",
+   "deliverable": "A one-page metric definition: outcome, metric, baseline and decision rule (a learning exercise, not professional evidence)",
+   "where": [
+    "self_directed_study"
+   ],
+   "basis_sources": [
+    "pm-v1:F1"
+   ],
+   "labels": [
+    "learning_exercise"
+   ]
+  },
+  {
+   "key": "demonstrate.C4",
+   "stage": 2,
+   "kind": "demonstrate",
+   "requirement_key": "C4",
+   "objective": "Show that you own an outcome metric and decide from it",
+   "action": "Agree a success metric for one feature or process change in your team before it ships, track it afterwards, and write up what it showed and what was decided.",
+   "deliverable": "A before-and-after metric review with the decision it led to. If you do this as a personal project, label it as a personal project, not professional product ownership.",
+   "where": [
+    "current_job",
+    "internal_move",
+    "external_project"
+   ],
+   "basis_sources": [
+    "pm-v1:F1"
+   ],
+   "labels": [
+    "personal_project_possible"
+   ]
+  },
+  {
+   "key": "build.C5",
+   "stage": 1,
+   "kind": "build",
+   "requirement_key": "C5",
+   "objective": "Understand how product work aligns people with different goals",
+   "action": "Map the stakeholders of a product or project you know: what each needs, where they disagree, and how a decision between them should be made and communicated.",
+   "deliverable": "A stakeholder map with a communication plan for one contested decision (a learning exercise, not professional evidence)",
+   "where": [
+    "self_directed_study",
+    "current_job"
+   ],
+   "basis_sources": [
+    "pm-v1:F1"
+   ],
+   "labels": [
+    "learning_exercise"
+   ]
+  },
+  {
+   "key": "demonstrate.C5",
+   "stage": 2,
+   "kind": "demonstrate",
+   "requirement_key": "C5",
+   "objective": "Show that you lead cross-functional decisions",
+   "action": "Facilitate one decision that involves at least two other functions (for example engineering and sales): prepare the options, run the discussion, and circulate the decision and its reasons.",
+   "deliverable": "A written decision record with the options, the outcome and who agreed",
+   "where": [
+    "current_job",
+    "internal_move"
+   ],
+   "basis_sources": [
+    "pm-v1:F1"
+   ],
+   "labels": []
+  },
+  {
+   "key": "build.C6",
+   "stage": 1,
+   "kind": "build",
+   "requirement_key": "C6",
+   "objective": "Understand iterative delivery across a product's life cycle",
+   "action": "Study how the cited sources describe agile and lean practice and life-cycle management, then outline how one feature you know could have shipped in smaller increments, each with something to learn.",
+   "deliverable": "An increment plan for one feature with what each increment tests (a learning exercise, not professional evidence)",
+   "where": [
+    "self_directed_study"
+   ],
+   "basis_sources": [
+    "pm-v1:F1",
+    "pm-bridges-v1:B2"
+   ],
+   "labels": [
+    "learning_exercise"
+   ]
+  },
+  {
+   "key": "demonstrate.C6",
+   "stage": 2,
+   "kind": "demonstrate",
+   "requirement_key": "C6",
+   "objective": "Show that you run iterative delivery",
+   "action": "Take one piece of work through at least two increments with your team, reviewing what was learned after each before deciding the next.",
+   "deliverable": "Short review notes for each increment and the change they led to. If you do this as a personal project, label it as a personal project, not professional product ownership.",
+   "where": [
+    "current_job",
+    "internal_move",
+    "external_project"
+   ],
+   "basis_sources": [
+    "pm-v1:F1"
+   ],
+   "labels": [
+    "personal_project_possible"
+   ]
+  },
+  {
+   "key": "build.X1",
+   "stage": 1,
+   "kind": "build",
+   "requirement_key": "X1",
+   "objective": "Build hands-on product analytics skills",
+   "action": "Using a public or anonymised dataset, write the queries for a funnel and a retention view, and explain what each shows and what you would test next.",
+   "deliverable": "A short analysis with queries, two charts and the next experiment you would run (a learning exercise, not professional evidence)",
+   "where": [
+    "self_directed_study",
+    "external_project"
+   ],
+   "basis_sources": [
+    "pm-bridges-v1:B1"
+   ],
+   "labels": [
+    "learning_exercise"
+   ]
+  },
+  {
+   "key": "demonstrate.X1",
+   "stage": 2,
+   "kind": "demonstrate",
+   "requirement_key": "X1",
+   "objective": "Show that you use product data yourself",
+   "action": "Answer one open product question in your team with your own query or dashboard, and share the result with the people who decide.",
+   "deliverable": "A query or dashboard in use, with the question it answered",
+   "where": [
+    "current_job",
+    "internal_move"
+   ],
+   "basis_sources": [
+    "pm-bridges-v1:B1"
+   ],
+   "labels": []
+  },
+  {
+   "key": "build.X2",
+   "stage": 1,
+   "kind": "build",
+   "requirement_key": "X2",
+   "objective": "Understand how products are positioned and launched",
+   "action": "For a product you know, write who it is for, the problem it solves, how it is priced or sold, and how a launch would reach its first users.",
+   "deliverable": "A one-page positioning and launch plan (a learning exercise, not professional evidence)",
+   "where": [
+    "self_directed_study"
+   ],
+   "basis_sources": [],
+   "labels": [
+    "learning_exercise",
+    "trace_curated"
+   ]
+  },
+  {
+   "key": "demonstrate.X2",
+   "stage": 2,
+   "kind": "demonstrate",
+   "requirement_key": "X2",
+   "objective": "Show go-to-market ownership",
+   "action": "Work with sales or marketing on one launch or adoption push: agree the target users and message, and track adoption afterwards.",
+   "deliverable": "A launch brief and the adoption result",
+   "where": [
+    "current_job",
+    "internal_move"
+   ],
+   "basis_sources": [],
+   "labels": [
+    "trace_curated"
+   ]
+  },
+  {
+   "key": "build.X3",
+   "stage": 1,
+   "kind": "build",
+   "requirement_key": "X3",
+   "objective": "Build working knowledge of APIs, platforms and data architecture",
+   "action": "Read the public API documentation of a product you use, and write how a developer would integrate with it, its main limits and one improvement you would prioritise.",
+   "deliverable": "A short API review with an improvement and the reason for it (a learning exercise, not professional evidence)",
+   "where": [
+    "self_directed_study"
+   ],
+   "basis_sources": [],
+   "labels": [
+    "learning_exercise",
+    "trace_curated"
+   ]
+  },
+  {
+   "key": "demonstrate.X3",
+   "stage": 2,
+   "kind": "demonstrate",
+   "requirement_key": "X3",
+   "objective": "Show technical depth in product decisions",
+   "action": "Contribute to one technical design discussion for your team's product by writing the user and business trade-offs of the options.",
+   "deliverable": "A trade-off note used in a technical decision",
+   "where": [
+    "current_job",
+    "internal_move"
+   ],
+   "basis_sources": [],
+   "labels": [
+    "trace_curated"
+   ]
+  },
+  {
+   "key": "build.X4",
+   "stage": 1,
+   "kind": "build",
+   "requirement_key": "X4",
+   "objective": "Build domain and regulatory knowledge for your chosen context",
+   "action": "Identify the regulator and the main rules that apply to products in your chosen domain, and summarise how they constrain one product decision.",
+   "deliverable": "A one-page domain brief naming the rules and their product impact (a learning exercise, not professional evidence)",
+   "where": [
+    "self_directed_study"
+   ],
+   "basis_sources": [],
+   "labels": [
+    "learning_exercise",
+    "trace_curated"
+   ]
+  },
+  {
+   "key": "demonstrate.X4",
+   "stage": 2,
+   "kind": "demonstrate",
+   "requirement_key": "X4",
+   "objective": "Show domain knowledge in real work",
+   "action": "Work with compliance or legal on one change in a regulated area and record how the requirement shaped it.",
+   "deliverable": "A change record showing the domain requirement and its effect",
+   "where": [
+    "current_job",
+    "internal_move"
+   ],
+   "basis_sources": [],
+   "labels": [
+    "trace_curated"
+   ]
+  },
+  {
+   "key": "build.X5",
+   "stage": 1,
+   "kind": "build",
+   "requirement_key": "X5",
+   "objective": "Learn to reason about value, business cases and unit economics",
+   "action": "Build a simple business case for one feature: who pays or saves, the cost to build and run it, and what would need to be true for it to be worth doing.",
+   "deliverable": "A one-page business case with the assumptions stated (a learning exercise, not professional evidence)",
+   "where": [
+    "self_directed_study"
+   ],
+   "basis_sources": [
+    "pm-v1:F1"
+   ],
+   "labels": [
+    "learning_exercise"
+   ]
+  },
+  {
+   "key": "demonstrate.X5",
+   "stage": 2,
+   "kind": "demonstrate",
+   "requirement_key": "X5",
+   "objective": "Show that you weigh value against cost in real decisions",
+   "action": "Prepare the cost and value case for one real decision in your team and present it to the person who approves it.",
+   "deliverable": "A business case used in a real decision",
+   "where": [
+    "current_job",
+    "internal_move"
+   ],
+   "basis_sources": [
+    "pm-v1:F1"
+   ],
+   "labels": []
+  },
+  {
+   "key": "build.X6",
+   "stage": 1,
+   "kind": "build",
+   "requirement_key": "X6",
+   "objective": "Build practical understanding of AI-powered features",
+   "action": "Specify one AI-powered feature: what it should do, how its quality will be evaluated, what it must never do, and how cost and latency limit the choice of model.",
+   "deliverable": "A feature specification with an evaluation plan and guardrails (a learning exercise, not professional evidence)",
+   "where": [
+    "self_directed_study",
+    "external_project"
+   ],
+   "basis_sources": [],
+   "labels": [
+    "learning_exercise",
+    "trace_curated"
+   ]
+  },
+  {
+   "key": "demonstrate.X6",
+   "stage": 2,
+   "kind": "demonstrate",
+   "requirement_key": "X6",
+   "objective": "Show hands-on AI product work",
+   "action": "Help define or run the evaluation of one AI or machine-learning feature in your organisation, or build a small prototype in a project, and record the results.",
+   "deliverable": "An evaluation record or prototype with its measured results. If you do this as a personal project, label it as a personal project, not professional product ownership.",
+   "where": [
+    "current_job",
+    "internal_move",
+    "external_project"
+   ],
+   "basis_sources": [],
+   "labels": [
+    "personal_project_possible",
+    "trace_curated"
+   ]
+  },
+  {
+   "key": "build.X7",
+   "stage": 1,
+   "kind": "build",
+   "requirement_key": "X7",
+   "objective": "Understand data quality and governance",
+   "action": "For one dataset you know, write its key definitions, the quality checks it needs, who may access it and why.",
+   "deliverable": "A short data contract: definitions, checks and access rules (a learning exercise, not professional evidence)",
+   "where": [
+    "self_directed_study",
+    "current_job"
+   ],
+   "basis_sources": [],
+   "labels": [
+    "learning_exercise",
+    "trace_curated"
+   ]
+  },
+  {
+   "key": "demonstrate.X7",
+   "stage": 2,
+   "kind": "demonstrate",
+   "requirement_key": "X7",
+   "objective": "Show that you improve data quality or governance",
+   "action": "Introduce one shared definition, quality check or access rule for data your team relies on, and get it adopted.",
+   "deliverable": "An adopted definition, check or rule, with where it is used",
+   "where": [
+    "current_job",
+    "internal_move"
+   ],
+   "basis_sources": [],
+   "labels": [
+    "trace_curated"
+   ]
+  },
+  {
+   "key": "build.L1",
+   "stage": 1,
+   "kind": "build",
+   "requirement_key": "L1",
+   "objective": "Understand portfolio-level product decisions",
+   "action": "Compare two products or initiatives you know: their goals, shared dependencies and how you would divide investment between them.",
+   "deliverable": "A short portfolio note with a recommended split and its reasoning (a learning exercise, not professional evidence)",
+   "where": [
+    "self_directed_study"
+   ],
+   "basis_sources": [
+    "pm-v1:F1"
+   ],
+   "labels": [
+    "learning_exercise"
+   ]
+  },
+  {
+   "key": "demonstrate.L1",
+   "stage": 2,
+   "kind": "demonstrate",
+   "requirement_key": "L1",
+   "objective": "Show scope across several products or a complex, high-risk product",
+   "action": "If you hold a product role, take on a second product area or initiative, or the riskiest part of your current one, and own its decisions. If you don't, contribute to planning across several products or initiatives in your organisation.",
+   "deliverable": "Decisions you owned across more than one area, or a contribution to portfolio planning described as a contribution, not ownership",
+   "where": [
+    "current_job",
+    "internal_move"
+   ],
+   "basis_sources": [
+    "pm-v1:F1"
+   ],
+   "labels": []
+  },
+  {
+   "key": "build.L2",
+   "stage": 1,
+   "kind": "build",
+   "requirement_key": "L2",
+   "objective": "Prepare to coach and mentor others",
+   "action": "Write how you would onboard a new team member to your area: what they need to learn, in which order, and how you would check progress.",
+   "deliverable": "An onboarding and coaching plan for one person (a learning exercise, not professional evidence)",
+   "where": [
+    "self_directed_study",
+    "current_job"
+   ],
+   "basis_sources": [
+    "pm-v1:F1"
+   ],
+   "labels": [
+    "learning_exercise"
+   ]
+  },
+  {
+   "key": "demonstrate.L2",
+   "stage": 2,
+   "kind": "demonstrate",
+   "requirement_key": "L2",
+   "objective": "Show coaching and product leadership",
+   "action": "Mentor a colleague on a real piece of work, with regular check-ins and feedback: product work where you can, otherwise work in your own field.",
+   "deliverable": "A mentoring record that says whether the work was product work",
+   "where": [
+    "current_job",
+    "internal_move"
+   ],
+   "basis_sources": [
+    "pm-v1:F1"
+   ],
+   "labels": []
+  },
+  {
+   "key": "build.L3",
+   "stage": 1,
+   "kind": "build",
+   "requirement_key": "L3",
+   "objective": "Learn to communicate decisions to senior leaders",
+   "action": "Write a one-page decision paper for a senior audience on a decision you know: the situation, the options, your recommendation and the risks.",
+   "deliverable": "A one-page decision paper (a learning exercise, not professional evidence)",
+   "where": [
+    "self_directed_study"
+   ],
+   "basis_sources": [],
+   "labels": [
+    "learning_exercise",
+    "trace_curated"
+   ]
+  },
+  {
+   "key": "demonstrate.L3",
+   "stage": 2,
+   "kind": "demonstrate",
+   "requirement_key": "L3",
+   "objective": "Show executive-level communication",
+   "action": "Present progress, risks or a decision for your area to a senior leader or leadership meeting, and record what was decided.",
+   "deliverable": "The paper or slides used and the decision recorded",
+   "where": [
+    "current_job",
+    "internal_move"
+   ],
+   "basis_sources": [],
+   "labels": [
+    "trace_curated"
+   ]
+  },
+  {
+   "key": "build.L4",
+   "stage": 1,
+   "kind": "build",
+   "requirement_key": "L4",
+   "objective": "Understand planning across teams",
+   "action": "Map the dependencies between teams for one initiative you know and propose an order of work that removes the biggest blocker first.",
+   "deliverable": "A cross-team dependency map with a proposed sequence (a learning exercise, not professional evidence)",
+   "where": [
+    "self_directed_study",
+    "current_job"
+   ],
+   "basis_sources": [],
+   "labels": [
+    "learning_exercise",
+    "trace_curated"
+   ]
+  },
+  {
+   "key": "demonstrate.L4",
+   "stage": 2,
+   "kind": "demonstrate",
+   "requirement_key": "L4",
+   "objective": "Show planning across teams and functions",
+   "action": "Coordinate one initiative that needs at least two teams: agree the dependencies and sequence with both, and track it to completion.",
+   "deliverable": "A shared cross-team plan and its delivery record",
+   "where": [
+    "current_job",
+    "internal_move"
+   ],
+   "basis_sources": [],
+   "labels": [
+    "trace_curated"
+   ]
+  },
+  {
+   "key": "reposition.demonstrated",
+   "stage": 3,
+   "kind": "reposition",
+   "requirement_key": null,
+   "objective": "Present existing evidence accurately as product evidence",
+   "action": "Rewrite the line \"{record_excerpt}\" for applications in the language of \"{requirement_title}\", saying only what your confirmed record shows. Add a decision you made or a result only if it happened, and add it to your profile first so it is confirmed. Never add research, ownership, metrics or outcomes the record doesn't show.",
+   "deliverable": "A rewritten resume line, faithful to your confirmed record, and a short interview story for this requirement",
+   "where": [
+    "job_market"
+   ],
+   "basis_sources": [],
+   "labels": [
+    "factual_accuracy"
+   ]
+  },
+  {
+   "key": "reposition.transferable",
+   "stage": 3,
+   "kind": "reposition",
+   "requirement_key": null,
+   "objective": "Explain how related experience carries over",
+   "action": "Rewrite the line \"{record_excerpt}\" to explain how this experience relates to \"{requirement_title}\", without claiming the requirement itself. When your stage 2 action produces real evidence, add it to your profile, then to your resume.",
+   "deliverable": "A rewritten resume line that links your experience to this requirement without overstating it",
+   "where": [
+    "job_market"
+   ],
+   "basis_sources": [],
+   "labels": [
+    "factual_accuracy"
+   ]
+  },
+  {
+   "key": "resolve.pending",
+   "stage": 0,
+   "kind": "resolve",
+   "requirement_key": null,
+   "objective": "Confirm your draft records",
+   "action": "Review the draft records Trace lists here and confirm, correct or reject each one.",
+   "deliverable": "Every listed draft confirmed, corrected or rejected",
+   "where": [
+    "trace_profile"
+   ],
+   "basis_sources": [],
+   "labels": []
+  },
+  {
+   "key": "resolve.unclassified",
+   "stage": 0,
+   "kind": "resolve",
+   "requirement_key": null,
+   "objective": "Categorise your experience",
+   "action": "Categorise the listed lines of experience by area of responsibility, or mark them \"None of these areas\".",
+   "deliverable": "Every listed line categorised",
+   "where": [
+    "trace_profile"
+   ],
+   "basis_sources": [],
+   "labels": []
+  },
+  {
+   "key": "resolve.recheck",
+   "stage": 0,
+   "kind": "resolve",
+   "requirement_key": null,
+   "objective": "Check older categories against the new areas",
+   "action": "Open the listed lines and check whether any of the newer areas fit; save them again even if nothing changes.",
+   "deliverable": "Every listed line checked against the current list of areas",
+   "where": [
+    "trace_profile"
+   ],
+   "basis_sources": [],
+   "labels": []
+  },
+  {
+   "key": "resolve.scope_question",
+   "stage": 0,
+   "kind": "resolve",
+   "requirement_key": null,
+   "objective": "Answer the scope questions",
+   "action": "Answer the yes/no scope question on the listed lines (choose \"Not sure\" only if you really are).",
+   "deliverable": "The scope question answered on every listed line",
+   "where": [
+    "trace_profile"
+   ],
+   "basis_sources": [],
+   "labels": []
+  },
+  {
+   "key": "resolve.no_evidence",
+   "stage": 0,
+   "kind": "resolve",
+   "requirement_key": null,
+   "objective": "Add your experience",
+   "action": "Add your jobs and what you did in them, then confirm them, so Trace can compare your experience with the target role.",
+   "deliverable": "At least one confirmed job with its responsibilities",
+   "where": [
+    "trace_profile"
+   ],
+   "basis_sources": [],
+   "labels": []
+  },
+  {
+   "key": "resolve.not_inferable",
+   "stage": 0,
+   "kind": "resolve",
+   "requirement_key": null,
+   "objective": "Add evidence Trace cannot infer",
+   "action": "If you have experience of \"{requirement_title}\", add it to your profile as a responsibility or skill; Trace never assumes it is missing.",
+   "deliverable": "Any relevant experience added and confirmed",
+   "where": [
+    "trace_profile"
+   ],
+   "basis_sources": [],
+   "labels": []
+  },
+  {
+   "key": "apply.current_postings",
+   "stage": 4,
+   "kind": "apply",
+   "requirement_key": null,
+   "objective": "Apply where the stated criteria fit",
+   "action": "Review the verified current postings listed with this plan, starting with those whose stated criteria you meet; check each on the employer's own site before applying.",
+   "deliverable": "Applications to postings whose stated criteria you meet, each checked on the employer's site",
+   "where": [
+    "job_market"
+   ],
+   "basis_sources": [],
+   "labels": []
+  },
+  {
+   "key": "apply.no_verified_postings",
+   "stage": 4,
+   "kind": "apply",
+   "requirement_key": null,
+   "objective": "Find current openings yourself",
+   "action": "Trace has no verified current posting for this role that you can be matched against. Search employers' own career pages and compare each posting's stated criteria with your confirmed experience.",
+   "deliverable": "A list of openings you found, each with its stated criteria and the date you checked it",
+   "where": [
+    "job_market"
+   ],
+   "basis_sources": [],
+   "labels": []
+  },
+  {
+   "key": "apply.position_application",
+   "stage": 4,
+   "kind": "apply",
+   "requirement_key": null,
+   "objective": "Position your application for the role",
+   "action": "Lead your resume and application with the requirements you have demonstrated, then the ones that carry over, using the lines rewritten in stage 3. Claim only what your confirmed records show.",
+   "deliverable": "A tailored resume and a short summary statement for this role",
+   "where": [
+    "job_market"
+   ],
+   "basis_sources": [],
+   "labels": [
+    "factual_accuracy"
+   ]
+  },
+  {
+   "key": "apply.referrals",
+   "stage": 4,
+   "kind": "apply",
+   "requirement_key": null,
+   "objective": "Learn from people already in the role",
+   "action": "Ask people you already work with or know in this role how they got in and how their teams hire; ask for a referral only where they know your work.",
+   "deliverable": "Notes from your conversations, and any referrals offered",
+   "where": [
+    "job_market",
+    "current_job"
+   ],
+   "basis_sources": [],
+   "labels": []
+  },
+  {
+   "key": "apply.interview_preparation",
+   "stage": 4,
+   "kind": "apply",
+   "requirement_key": null,
+   "objective": "Prepare for interviews on your weaker areas",
+   "action": "Prepare one specific example for each requirement listed here, using your stage 2 results where you have them, and practise a product case: the problem, the users, the options, a success metric and the trade-off you would make.",
+   "deliverable": "One prepared example per listed requirement, and one practised product case",
+   "where": [
+    "job_market"
+   ],
+   "basis_sources": [],
+   "labels": []
+  },
+  {
+   "key": "apply.internal_route",
+   "stage": 4,
+   "kind": "apply",
+   "requirement_key": null,
+   "objective": "Consider an internal route",
+   "action": "Ask your manager or the product team in your organisation whether product roles or product projects are open to internal candidates, and what they would want to see from you.",
+   "deliverable": "A conversation with the people who decide, and what they said",
+   "where": [
+    "internal_move"
+   ],
+   "basis_sources": [],
+   "labels": []
+  },
+  {
+   "key": "apply.bridge_role",
+   "stage": 4,
+   "kind": "apply",
+   "requirement_key": null,
+   "objective": "Move into the bridge role first",
+   "action": "Look for {bridge_title} roles whose responsibilities match those listed with this route, check their stated entry criteria, and apply where they fit; plan the move to {target_title} from there.",
+   "deliverable": "Applications to {bridge_title} roles whose responsibilities develop your gaps",
+   "where": [
+    "job_market",
+    "internal_move"
+   ],
+   "basis_sources": [],
+   "labels": []
+  },
+  {
+   "key": "reposition.skill",
+   "stage": 3,
+   "kind": "reposition",
+   "requirement_key": null,
+   "objective": "Turn a stated skill into evidence",
+   "action": "Your profile shows \"{record_excerpt}\" as a skill. Name the confirmed job where you used it for work related to \"{requirement_title}\" and describe that work; a skill on its own is not evidence. Never claim responsibilities your confirmed records don't show.",
+   "deliverable": "A resume line that ties the skill to confirmed work",
+   "where": [
+    "job_market"
+   ],
+   "basis_sources": [],
+   "labels": [
+    "factual_accuracy"
+   ]
+  },
+  {
+   "key": "reposition.role",
+   "stage": 3,
+   "kind": "reposition",
+   "requirement_key": null,
+   "objective": "Explain what your previous role involved",
+   "action": "Describe what you did as \"{record_excerpt}\" that relates to \"{requirement_title}\", using only the confirmed responsibilities of that job. If they don't show it, add the responsibility to your profile first, if it is true.",
+   "deliverable": "A short description of the role's relevant responsibilities, faithful to your confirmed records",
+   "where": [
+    "job_market"
+   ],
+   "basis_sources": [],
+   "labels": [
+    "factual_accuracy"
+   ]
+  },
+  {
+   "key": "apply.check_criteria",
+   "stage": 4,
+   "kind": "apply",
+   "requirement_key": null,
+   "objective": "Understand each employer's criteria",
+   "action": "For each posting listed, read the criteria marked unclear and note what decides them: something your profile doesn't show yet (complete it), imprecise dates (correct them if you can), or a condition only the employer can judge (ask the recruiter or hiring team). Never assume you meet a criterion Trace marks unclear.",
+   "deliverable": "A note per posting: criteria met, not met, and how you will clarify each unclear one",
+   "where": [
+    "job_market"
+   ],
+   "basis_sources": [],
+   "labels": []
+  },
+  {
+   "key": "apply.case_study",
+   "stage": 4,
+   "kind": "apply",
+   "requirement_key": null,
+   "objective": "Prepare a case study from real work",
+   "action": "Write one case study about a piece of your confirmed work related to {target_title}: the problem, what you did, the decision and what happened, using only what your records show. A personal project can be a second case study, labelled as a personal project.",
+   "deliverable": "A one- to two-page case study; any personal project labelled as such",
+   "where": [
+    "job_market"
+   ],
+   "basis_sources": [],
+   "labels": [
+    "factual_accuracy",
+    "personal_project_possible"
+   ]
+  },
+  {
+   "key": "apply.alternative_routes",
+   "stage": 4,
+   "kind": "apply",
+   "requirement_key": null,
+   "objective": "Plan other ways in when no suitable opening is available",
+   "action": "If no verified opening fits, plan other ways in: an internal transfer or secondment, a product project in your current organisation, or a bridge role listed with this plan. Check any programme or opening on the employer's own site; Trace doesn't list unverified ones.",
+   "deliverable": "A short list of alternative routes, each with its next step",
+   "where": [
+    "internal_move",
+    "job_market"
+   ],
+   "basis_sources": [],
+   "labels": []
+  },
+  {
+   "key": "apply.bridge_seek",
+   "stage": 4,
+   "kind": "apply",
+   "requirement_key": null,
+   "objective": "Grow what the bridge role only partly develops",
+   "action": "In the {bridge_title} role, \"{requirement_title}\" is developed only partly. It develops: {develops} Still incomplete: {incomplete} Seek this responsibility: {seek}",
+   "deliverable": "Evidence of that responsibility, added to your profile once you have it",
+   "where": [
+    "current_job"
+   ],
+   "basis_sources": [],
+   "labels": []
+  }
+ ]
+}

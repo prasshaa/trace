@@ -1,0 +1,1168 @@
+{
+ "key": "pm-v1.1",
+ "role_family": "product_management",
+ "approved_on": "2026-11-16",
+ "sources_from": "pm-v1",
+ "taxonomy_version": 2,
+ "levels": {
+  "pm": [
+   "PM-PM"
+  ],
+  "senior_pm": [
+   "PM-SPM"
+  ]
+ },
+ "contexts": {
+  "commercial_product": "Commercial products (B2B SaaS, consumer)",
+  "growth_analytics": "Growth or analytical roles",
+  "platform_api": "Platform or API products",
+  "data_product": "Data products",
+  "regulated_domain": "Regulated domains (for example fintech)",
+  "ai_product": "AI products"
+ },
+ "curation_note": "Curated evidence base (15 sources), not a representative survey of the job market. No single source defines the profession. Revision 1.1: taxonomy v2 areas and evidence-specific conditions (Phase 3.1).",
+ "changes_from": "pm-v1",
+ "requirements": [
+  {
+   "key": "C1",
+   "requirement_class": "core",
+   "applies_to_level": "all",
+   "title": "Understand users and customers and set priorities from their needs",
+   "description": "Learn about users and customers through research, feedback and data, and use that to decide what matters.",
+   "contexts": [],
+   "direct_areas": [
+    "product_discovery",
+    "design_research"
+   ],
+   "transferable_areas": [
+    "customer_account_management",
+    "requirements_analysis"
+   ],
+   "direct_skills": [
+    "SKL-CUSTOMER-DISCOVERY",
+    "SKL-USER-RESEARCH",
+    "SKL-CUSTOMER-INTERVIEWS",
+    "SKL-PRODUCT-DISCOVERY",
+    "SKL-VOC",
+    "SKL-USABILITY-TESTING",
+    "SKL-CUSTOMER-FEEDBACK",
+    "SKL-CLIENT-DISCOVERY",
+    "SKL-MARKET-RESEARCH",
+    "SKL-PRODUCT-RESEARCH",
+    "SKL-DISCOVERY"
+   ],
+   "transferable_skills": [],
+   "transferable_role_families": [],
+   "transfer_rationale": "Account management and requirements analysis involve learning customers' needs directly, which carries over to product discovery.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": {
+    "pm": "Own product area",
+    "senior_pm": "Leads validation of major bets"
+   },
+   "evidence": [
+    {
+     "source": "F1",
+     "stance": "supports",
+     "note": "Applying user-centred insights: practitioner at PM and Senior PM"
+    },
+    {
+     "source": "F3",
+     "stance": "supports",
+     "note": "N8127 requirements through client interaction"
+    },
+    {
+     "source": "F4",
+     "stance": "supports"
+    },
+    {
+     "source": "J1",
+     "stance": "supports"
+    },
+    {
+     "source": "J2",
+     "stance": "supports"
+    },
+    {
+     "source": "J4",
+     "stance": "supports"
+    },
+    {
+     "source": "J5",
+     "stance": "supports"
+    },
+    {
+     "source": "J6",
+     "stance": "supports"
+    },
+    {
+     "source": "J7",
+     "stance": "supports"
+    },
+    {
+     "source": "J9",
+     "stance": "supports"
+    },
+    {
+     "source": "J10",
+     "stance": "supports",
+     "note": "IT-admin and enterprise buyer personas"
+    },
+    {
+     "source": "J11",
+     "stance": "qualifies",
+     "note": "The users are internal business teams"
+    }
+   ],
+   "area_conditions": {}
+  },
+  {
+   "key": "C2",
+   "requirement_class": "core",
+   "applies_to_level": "all",
+   "title": "Product vision, strategy and roadmap",
+   "description": "Set direction for a product and turn it into a sequenced roadmap.",
+   "contexts": [],
+   "direct_areas": [
+    "roadmap_ownership",
+    "strategy_portfolio"
+   ],
+   "transferable_areas": [
+    "prioritisation_backlog"
+   ],
+   "direct_skills": [
+    "SKL-PRODUCT-ROADMAP",
+    "SKL-ROADMAP-OWNERSHIP",
+    "SKL-PRODUCT-STRATEGY",
+    "SKL-PORTFOLIO-STRATEGY",
+    "SKL-PLATFORM-STRATEGY"
+   ],
+   "transferable_skills": [
+    "SKL-TECHNICAL-ROADMAP",
+    "SKL-BUSINESS-STRATEGY",
+    "SKL-ANNUAL-PLANNING",
+    "SKL-PORTFOLIO-PLANNING",
+    "SKL-INTEGRATION-ROADMAPS"
+   ],
+   "transferable_role_families": [],
+   "transfer_rationale": "Prioritising a backlog, or planning technical or business roadmaps, exercises the sequencing judgement a product roadmap needs.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": {
+    "pm": "Own product area",
+    "senior_pm": "Wider scope, longer horizon"
+   },
+   "evidence": [
+    {
+     "source": "F1",
+     "stance": "supports",
+     "note": "Strategic ownership: working (PM) to practitioner (Senior PM)"
+    },
+    {
+     "source": "F3",
+     "stance": "supports",
+     "note": "N8401 product strategy and lifecycle"
+    },
+    {
+     "source": "F4",
+     "stance": "supports"
+    },
+    {
+     "source": "J1",
+     "stance": "supports"
+    },
+    {
+     "source": "J2",
+     "stance": "supports"
+    },
+    {
+     "source": "J3",
+     "stance": "supports"
+    },
+    {
+     "source": "J4",
+     "stance": "supports"
+    },
+    {
+     "source": "J5",
+     "stance": "supports"
+    },
+    {
+     "source": "J6",
+     "stance": "supports"
+    },
+    {
+     "source": "J7",
+     "stance": "supports"
+    },
+    {
+     "source": "J8",
+     "stance": "supports"
+    },
+    {
+     "source": "J9",
+     "stance": "supports"
+    },
+    {
+     "source": "J10",
+     "stance": "supports"
+    },
+    {
+     "source": "J11",
+     "stance": "qualifies",
+     "note": "Roadmap shaped with the manager at PM level"
+    }
+   ],
+   "area_conditions": {}
+  },
+  {
+   "key": "C3",
+   "requirement_class": "core",
+   "applies_to_level": "all",
+   "title": "Turn problems into requirements and priorities",
+   "description": "Write specifications, PRDs or data contracts, own a backlog and decide what comes first.",
+   "contexts": [],
+   "direct_areas": [
+    "requirements_analysis",
+    "prioritisation_backlog"
+   ],
+   "transferable_areas": [
+    "delivery_execution",
+    "quality_testing",
+    "technical_engineering"
+   ],
+   "direct_skills": [
+    "SKL-PRD-WRITING",
+    "SKL-REQUIREMENTS",
+    "SKL-BACKLOG",
+    "SKL-USER-STORIES",
+    "SKL-PORTFOLIO-PRIORITISATION"
+   ],
+   "transferable_skills": [
+    "SKL-BUSINESS-ANALYSIS",
+    "SKL-BACKLOG-COORDINATION",
+    "SKL-BACKLOG-SUPPORT",
+    "SKL-TECHNICAL-DOCUMENTATION",
+    "SKL-AGILE"
+   ],
+   "transferable_role_families": [],
+   "transfer_rationale": "Delivery, testing and engineering work involve writing or consuming precise specifications and acceptance criteria.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "F3",
+     "stance": "supports"
+    },
+    {
+     "source": "F4",
+     "stance": "supports"
+    },
+    {
+     "source": "J1",
+     "stance": "supports"
+    },
+    {
+     "source": "J3",
+     "stance": "supports"
+    },
+    {
+     "source": "J5",
+     "stance": "supports"
+    },
+    {
+     "source": "J7",
+     "stance": "supports"
+    },
+    {
+     "source": "J8",
+     "stance": "supports"
+    },
+    {
+     "source": "J10",
+     "stance": "supports"
+    },
+    {
+     "source": "J11",
+     "stance": "supports"
+    }
+   ],
+   "area_conditions": {}
+  },
+  {
+   "key": "C4",
+   "requirement_class": "core",
+   "applies_to_level": "all",
+   "title": "Define outcome metrics and make data-informed decisions",
+   "description": "Decide how success is measured and use data to choose and adjust.",
+   "contexts": [],
+   "direct_areas": [
+    "outcome_ownership",
+    "data_analysis"
+   ],
+   "transferable_areas": [
+    "go_to_market_growth",
+    "business_case_economics"
+   ],
+   "direct_skills": [
+    "SKL-PRODUCT-METRICS",
+    "SKL-METRICS",
+    "SKL-PRODUCT-ANALYTICS",
+    "SKL-EXPERIMENTATION",
+    "SKL-FUNNEL-ANALYTICS"
+   ],
+   "transferable_skills": [
+    "SKL-ANALYTICS",
+    "SKL-BUSINESS-ANALYTICS",
+    "SKL-SQL",
+    "SKL-POWER-BI",
+    "SKL-TABLEAU"
+   ],
+   "transferable_role_families": [],
+   "transfer_rationale": "Growth work is run against measurable targets; general analytics skills support defining and reading product metrics; business-case work transfers only where it included defining or tracking outcomes.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": {
+    "pm": "Defines metrics for own area",
+    "senior_pm": "Owns north-star and input metrics; runs experiments"
+   },
+   "evidence": [
+    {
+     "source": "F1",
+     "stance": "supports",
+     "note": "Managing product outcomes"
+    },
+    {
+     "source": "F3",
+     "stance": "supports",
+     "note": "N8403 KPIs"
+    },
+    {
+     "source": "F4",
+     "stance": "supports"
+    },
+    {
+     "source": "J2",
+     "stance": "supports"
+    },
+    {
+     "source": "J4",
+     "stance": "supports"
+    },
+    {
+     "source": "J5",
+     "stance": "supports"
+    },
+    {
+     "source": "J6",
+     "stance": "supports"
+    },
+    {
+     "source": "J9",
+     "stance": "supports"
+    },
+    {
+     "source": "J10",
+     "stance": "supports"
+    },
+    {
+     "source": "J11",
+     "stance": "supports"
+    }
+   ],
+   "area_conditions": {
+    "business_case_economics": "tracks_outcomes"
+   }
+  },
+  {
+   "key": "C5",
+   "requirement_class": "core",
+   "applies_to_level": "all",
+   "title": "Cross-functional collaboration and stakeholder communication",
+   "description": "Work with engineering, design, business and leadership, including without direct authority.",
+   "contexts": [],
+   "direct_areas": [
+    "stakeholder_management",
+    "executive_communication"
+   ],
+   "transferable_areas": [
+    "customer_account_management",
+    "people_leadership",
+    "delivery_execution"
+   ],
+   "direct_skills": [
+    "SKL-STAKEHOLDER-MANAGEMENT",
+    "SKL-STAKEHOLDER-COMMUNICATION",
+    "SKL-STAKEHOLDER-COORDINATION",
+    "SKL-CROSS-FUNCTIONAL-LEADERSHIP",
+    "SKL-EXECUTIVE-COMMUNICATION",
+    "SKL-EXECUTIVE-ALIGNMENT"
+   ],
+   "transferable_skills": [],
+   "transferable_role_families": [],
+   "transfer_rationale": "Managing accounts, leading people and coordinating delivery all require aligning people with different goals.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "F1",
+     "stance": "supports",
+     "note": "Stakeholder relationship management: practitioner"
+    },
+    {
+     "source": "F3",
+     "stance": "qualifies",
+     "note": "Team-performance module is optional (N9011)"
+    },
+    {
+     "source": "F4",
+     "stance": "supports"
+    },
+    {
+     "source": "J1",
+     "stance": "supports"
+    },
+    {
+     "source": "J2",
+     "stance": "supports"
+    },
+    {
+     "source": "J3",
+     "stance": "supports"
+    },
+    {
+     "source": "J4",
+     "stance": "supports"
+    },
+    {
+     "source": "J5",
+     "stance": "supports"
+    },
+    {
+     "source": "J6",
+     "stance": "supports"
+    },
+    {
+     "source": "J7",
+     "stance": "supports"
+    },
+    {
+     "source": "J8",
+     "stance": "supports"
+    },
+    {
+     "source": "J9",
+     "stance": "supports"
+    },
+    {
+     "source": "J10",
+     "stance": "supports"
+    },
+    {
+     "source": "J11",
+     "stance": "supports",
+     "note": "Working effectively without direct authority"
+    }
+   ],
+   "area_conditions": {}
+  },
+  {
+   "key": "C6",
+   "requirement_class": "core",
+   "applies_to_level": "all",
+   "title": "Iterative delivery across the product lifecycle",
+   "description": "Ship, measure and iterate, from launch to retirement.",
+   "contexts": [],
+   "direct_areas": [
+    "delivery_execution"
+   ],
+   "transferable_areas": [
+    "quality_testing",
+    "operations_process",
+    "technical_engineering"
+   ],
+   "direct_skills": [
+    "SKL-AGILE",
+    "SKL-DELIVERY"
+   ],
+   "transferable_skills": [
+    "SKL-PROGRAM-DELIVERY",
+    "SKL-PROGRAM-MANAGEMENT"
+   ],
+   "transferable_role_families": [],
+   "transfer_rationale": "Testing, operations and engineering work are part of shipping and running a product iteratively.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "F1",
+     "stance": "supports",
+     "note": "Agile and lean practices; life cycle management"
+    },
+    {
+     "source": "F3",
+     "stance": "supports"
+    },
+    {
+     "source": "F4",
+     "stance": "supports"
+    },
+    {
+     "source": "J4",
+     "stance": "supports"
+    },
+    {
+     "source": "J6",
+     "stance": "supports"
+    },
+    {
+     "source": "J10",
+     "stance": "supports"
+    },
+    {
+     "source": "J11",
+     "stance": "qualifies",
+     "note": "Definition through UAT to production for data products"
+    }
+   ],
+   "area_conditions": {}
+  },
+  {
+   "key": "X1",
+   "requirement_class": "context_dependent",
+   "applies_to_level": "all",
+   "title": "Hands-on analytics (SQL, dashboards, experimentation tooling)",
+   "description": "Query and analyse product data directly.",
+   "contexts": [
+    "growth_analytics",
+    "platform_api",
+    "data_product"
+   ],
+   "direct_areas": [
+    "data_analysis"
+   ],
+   "transferable_areas": [],
+   "direct_skills": [
+    "SKL-SQL",
+    "SKL-PRODUCT-ANALYTICS",
+    "SKL-FUNNEL-ANALYTICS",
+    "SKL-EXPERIMENTATION",
+    "SKL-TABLEAU",
+    "SKL-POWER-BI",
+    "SKL-ANALYTICS",
+    "SKL-BUSINESS-ANALYTICS"
+   ],
+   "transferable_skills": [
+    "SKL-PYTHON",
+    "SKL-METRICS"
+   ],
+   "transferable_role_families": [],
+   "transfer_rationale": "Programming or metric work supports learning product analytics tooling.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "J12",
+     "stance": "supports",
+     "note": "Closed posting: comfortable writing SQL, setting up funnels"
+    },
+    {
+     "source": "J2",
+     "stance": "supports"
+    },
+    {
+     "source": "J3",
+     "stance": "supports"
+    },
+    {
+     "source": "J4",
+     "stance": "supports"
+    },
+    {
+     "source": "J5",
+     "stance": "supports"
+    },
+    {
+     "source": "J11",
+     "stance": "qualifies",
+     "note": "Strong analytics fluency; SQL not named"
+    },
+    {
+     "source": "J10",
+     "stance": "qualifies",
+     "note": "Experiments and data; SQL not named"
+    },
+    {
+     "source": "F1",
+     "stance": "silent",
+     "note": "Asks for data-informed decisions, not hands-on analytics"
+    },
+    {
+     "source": "F3",
+     "stance": "silent"
+    },
+    {
+     "source": "F4",
+     "stance": "silent"
+    }
+   ],
+   "area_conditions": {}
+  },
+  {
+   "key": "X2",
+   "requirement_class": "context_dependent",
+   "applies_to_level": "all",
+   "title": "Owning go-to-market",
+   "description": "Plan and run a product's launch and adoption with sales and marketing.",
+   "contexts": [
+    "commercial_product"
+   ],
+   "direct_areas": [
+    "go_to_market_growth"
+   ],
+   "transferable_areas": [
+    "customer_account_management"
+   ],
+   "direct_skills": [
+    "SKL-GTM",
+    "SKL-GROWTH",
+    "SKL-MARKETING-STRATEGY",
+    "SKL-ENTERPRISE-SALES",
+    "SKL-GROWTH-MARKETING",
+    "SKL-FULL-FUNNEL-CAMPAIGNS"
+   ],
+   "transferable_skills": [
+    "SKL-CUSTOMER-SUCCESS",
+    "SKL-ONBOARDING",
+    "SKL-CONSUMER-ENGAGEMENT"
+   ],
+   "transferable_role_families": [],
+   "transfer_rationale": "Customer-facing account and success work exposes how products are adopted and sold.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "F3",
+     "stance": "supports",
+     "note": "N8404 go-to-market (core module)"
+    },
+    {
+     "source": "J1",
+     "stance": "supports"
+    },
+    {
+     "source": "J2",
+     "stance": "supports"
+    },
+    {
+     "source": "J10",
+     "stance": "supports",
+     "note": "B2B go-to-market alignment with sales and customer success"
+    },
+    {
+     "source": "J7",
+     "stance": "qualifies",
+     "note": "Works with go-to-market teams"
+    },
+    {
+     "source": "F1",
+     "stance": "silent",
+     "note": "Public sector"
+    },
+    {
+     "source": "J11",
+     "stance": "silent",
+     "note": "Internal data products"
+    }
+   ],
+   "area_conditions": {}
+  },
+  {
+   "key": "X3",
+   "requirement_class": "context_dependent",
+   "applies_to_level": "all",
+   "title": "Technical depth: APIs, platform and data architecture, security",
+   "description": "Work at engineering depth on APIs, systems or data platforms.",
+   "contexts": [
+    "platform_api",
+    "data_product"
+   ],
+   "direct_areas": [
+    "technical_engineering"
+   ],
+   "transferable_areas": [],
+   "direct_skills": [
+    "SKL-APIS",
+    "SKL-SYSTEM-DESIGN",
+    "SKL-INTEGRATIONS",
+    "SKL-CLOUD",
+    "SKL-SOFTWARE-ENGINEERING",
+    "SKL-PLATFORM-PRODUCTS",
+    "SKL-DEVELOPER-EXPERIENCE"
+   ],
+   "transferable_skills": [
+    "SKL-TECHNICAL-DOCUMENTATION",
+    "SKL-PYTHON",
+    "SKL-FRONTEND-ENGINEERING"
+   ],
+   "transferable_role_families": [
+    "software_engineering",
+    "qa_testing",
+    "data_science"
+   ],
+   "transfer_rationale": "Engineering, testing or data-science roles build working knowledge of systems and data that platform PM work relies on.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "J3",
+     "stance": "supports",
+     "note": "APIs, distributed systems; a CS degree is not required"
+    },
+    {
+     "source": "J7",
+     "stance": "supports"
+    },
+    {
+     "source": "J8",
+     "stance": "supports"
+    },
+    {
+     "source": "J10",
+     "stance": "supports",
+     "note": "APIs, multi-tenant SaaS, enterprise authentication"
+    },
+    {
+     "source": "J11",
+     "stance": "supports",
+     "note": "Medallion architecture, lakehouse, lineage and cost"
+    }
+   ],
+   "area_conditions": {}
+  },
+  {
+   "key": "X4",
+   "requirement_class": "context_dependent",
+   "applies_to_level": "all",
+   "title": "Domain and regulatory knowledge",
+   "description": "Know the domain's customers, rules and regulation.",
+   "contexts": [
+    "regulated_domain"
+   ],
+   "direct_areas": [],
+   "transferable_areas": [],
+   "direct_skills": [
+    "SKL-FINTECH",
+    "SKL-PAYMENTS"
+   ],
+   "transferable_skills": [],
+   "transferable_role_families": [],
+   "transfer_rationale": "Assessed only from stated domain skills; employer industry is shown as context, never as proof of domain knowledge.",
+   "gap_basis": "not_inferable",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "J3",
+     "stance": "supports",
+     "note": "Indian KYC regulation, DPDP Act"
+    },
+    {
+     "source": "J4",
+     "stance": "supports",
+     "note": "Fintech strongly preferred"
+    },
+    {
+     "source": "J5",
+     "stance": "supports",
+     "note": "NPCI/RBI"
+    },
+    {
+     "source": "J8",
+     "stance": "supports",
+     "note": "Privacy frameworks"
+    },
+    {
+     "source": "J9",
+     "stance": "supports",
+     "note": "E-commerce valued"
+    },
+    {
+     "source": "J10",
+     "stance": "supports",
+     "note": "Enterprise IT, data residency"
+    },
+    {
+     "source": "J11",
+     "stance": "supports",
+     "note": "Identity resolution, householding, consent"
+    }
+   ],
+   "area_conditions": {}
+  },
+  {
+   "key": "X5",
+   "requirement_class": "context_dependent",
+   "applies_to_level": "all",
+   "title": "Value, business case and unit economics",
+   "description": "Reason about cost, revenue or public value of product decisions.",
+   "contexts": [
+    "commercial_product"
+   ],
+   "direct_areas": [
+    "business_case_economics"
+   ],
+   "transferable_areas": [
+    "outcome_ownership",
+    "strategy_portfolio"
+   ],
+   "direct_skills": [
+    "SKL-PRICING",
+    "SKL-MONETISATION",
+    "SKL-FINANCIAL-MODELLING"
+   ],
+   "transferable_skills": [
+    "SKL-BUSINESS-STRATEGY"
+   ],
+   "transferable_role_families": [],
+   "transfer_rationale": "Owning outcomes or strategy involves weighing value against cost.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "F1",
+     "stance": "supports",
+     "note": "Creating value for money"
+    },
+    {
+     "source": "F3",
+     "stance": "qualifies",
+     "note": "Revenue optimisation is an optional module"
+    },
+    {
+     "source": "J2",
+     "stance": "supports",
+     "note": "Unit economics to P&L"
+    },
+    {
+     "source": "J11",
+     "stance": "qualifies",
+     "note": "Translate capability into measurable business outcomes"
+    }
+   ],
+   "area_conditions": {}
+  },
+  {
+   "key": "X6",
+   "requirement_class": "context_dependent",
+   "applies_to_level": "all",
+   "title": "Practical AI and LLM experience",
+   "description": "Emerging and time-sensitive: hands-on work with AI products, agents or evaluation.",
+   "contexts": [
+    "ai_product"
+   ],
+   "direct_areas": [
+    "ai_product_work"
+   ],
+   "transferable_areas": [],
+   "direct_skills": [
+    "SKL-AGENTIC-WORKFLOWS",
+    "SKL-AI-COPILOT",
+    "SKL-EVALUATION",
+    "SKL-LANGGRAPH",
+    "SKL-MACHINE-LEARNING",
+    "SKL-ML-SYSTEMS",
+    "SKL-MLOPS",
+    "SKL-MODEL-DEPLOYMENT",
+    "SKL-RAG",
+    "SKL-RECOMMENDATION-SYSTEMS",
+    "SKL-AI-PRODUCT"
+   ],
+   "transferable_skills": [],
+   "transferable_role_families": [
+    "data_science"
+   ],
+   "transfer_rationale": "Data-science roles build familiarity with models and evaluation.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "J12",
+     "stance": "supports",
+     "note": "Closed posting: built agents, evals"
+    },
+    {
+     "source": "F4",
+     "stance": "supports",
+     "note": "All levels use AI"
+    },
+    {
+     "source": "J2",
+     "stance": "supports"
+    },
+    {
+     "source": "J3",
+     "stance": "supports"
+    },
+    {
+     "source": "J4",
+     "stance": "supports"
+    },
+    {
+     "source": "J7",
+     "stance": "supports"
+    },
+    {
+     "source": "J8",
+     "stance": "supports"
+    },
+    {
+     "source": "J5",
+     "stance": "qualifies",
+     "note": "Preferred"
+    },
+    {
+     "source": "J6",
+     "stance": "qualifies",
+     "note": "Leveraging AI"
+    },
+    {
+     "source": "J10",
+     "stance": "supports",
+     "note": "Requirements for HITL and agentic workflows"
+    },
+    {
+     "source": "J11",
+     "stance": "silent"
+    },
+    {
+     "source": "F1",
+     "stance": "silent"
+    },
+    {
+     "source": "F3",
+     "stance": "silent"
+    }
+   ],
+   "area_conditions": {}
+  },
+  {
+   "key": "X7",
+   "requirement_class": "context_dependent",
+   "applies_to_level": "all",
+   "title": "Data governance and data quality",
+   "description": "Certify, monitor and control access to data products.",
+   "contexts": [
+    "data_product"
+   ],
+   "direct_areas": [
+    "data_governance_quality"
+   ],
+   "transferable_areas": [
+    "quality_testing",
+    "data_analysis"
+   ],
+   "direct_skills": [],
+   "transferable_skills": [],
+   "transferable_role_families": [],
+   "transfer_rationale": "Quality and data-analysis work involve checking and reconciling data.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "J11",
+     "stance": "supports",
+     "note": "Critical, not optional"
+    },
+    {
+     "source": "J8",
+     "stance": "supports",
+     "note": "Privacy"
+    },
+    {
+     "source": "J10",
+     "stance": "qualifies",
+     "note": "Compliance and auditability"
+    }
+   ],
+   "area_conditions": {}
+  },
+  {
+   "key": "L1",
+   "requirement_class": "differentiator",
+   "applies_to_level": "senior_pm",
+   "title": "Scope: several products or a complex, high-risk product",
+   "description": "Own a group of products, or one complex or high-risk product.",
+   "contexts": [],
+   "direct_areas": [
+    "strategy_portfolio"
+   ],
+   "transferable_areas": [
+    "roadmap_ownership"
+   ],
+   "direct_skills": [
+    "SKL-PORTFOLIO-STRATEGY",
+    "SKL-PORTFOLIO-PLANNING",
+    "SKL-PORTFOLIO-PRIORITISATION"
+   ],
+   "transferable_skills": [],
+   "transferable_role_families": [],
+   "transfer_rationale": "Owning a roadmap is the single-product form of portfolio scope.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "F1",
+     "stance": "supports",
+     "note": "Senior PM level description"
+    },
+    {
+     "source": "F4",
+     "stance": "supports",
+     "note": "P4: adjacent groups"
+    },
+    {
+     "source": "J4",
+     "stance": "supports",
+     "note": "Multiple concurrent initiatives"
+    },
+    {
+     "source": "J9",
+     "stance": "supports",
+     "note": "12+ month, multi-domain horizon"
+    }
+   ],
+   "area_conditions": {
+    "strategy_portfolio": "multi_product_scope"
+   }
+  },
+  {
+   "key": "L2",
+   "requirement_class": "differentiator",
+   "applies_to_level": "senior_pm",
+   "title": "Coaching, mentoring and product leadership",
+   "description": "Develop other product people and lead without a title.",
+   "contexts": [],
+   "direct_areas": [
+    "people_leadership"
+   ],
+   "transferable_areas": [],
+   "direct_skills": [
+    "SKL-LEADERSHIP",
+    "SKL-TEAM-LEADERSHIP",
+    "SKL-PEOPLE-LEADERSHIP"
+   ],
+   "transferable_skills": [],
+   "transferable_role_families": [],
+   "transfer_rationale": null,
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "F1",
+     "stance": "supports",
+     "note": "Product management at expert level, coaching"
+    },
+    {
+     "source": "F4",
+     "stance": "supports",
+     "note": "P4 mentors junior PMs"
+    },
+    {
+     "source": "J4",
+     "stance": "supports"
+    },
+    {
+     "source": "J7",
+     "stance": "supports"
+    },
+    {
+     "source": "J9",
+     "stance": "supports"
+    }
+   ],
+   "area_conditions": {
+    "people_leadership": "coaching_mentoring"
+   }
+  },
+  {
+   "key": "L3",
+   "requirement_class": "differentiator",
+   "applies_to_level": "senior_pm",
+   "title": "Executive-level communication",
+   "description": "Present direction, risks and results to senior leaders.",
+   "contexts": [],
+   "direct_areas": [
+    "executive_communication"
+   ],
+   "transferable_areas": [
+    "stakeholder_management"
+   ],
+   "direct_skills": [
+    "SKL-EXECUTIVE-COMMUNICATION",
+    "SKL-EXECUTIVE-ALIGNMENT"
+   ],
+   "transferable_skills": [
+    "SKL-STAKEHOLDER-COMMUNICATION"
+   ],
+   "transferable_role_families": [],
+   "transfer_rationale": "Stakeholder management builds the communication executive work extends.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "F4",
+     "stance": "supports",
+     "note": "Exec-ready narratives"
+    },
+    {
+     "source": "J4",
+     "stance": "supports",
+     "note": "Senior leadership"
+    },
+    {
+     "source": "J8",
+     "stance": "supports",
+     "note": "Presents to directors and VPs"
+    }
+   ],
+   "area_conditions": {}
+  },
+  {
+   "key": "L4",
+   "requirement_class": "differentiator",
+   "applies_to_level": "senior_pm",
+   "title": "Planning across teams and functions",
+   "description": "Plan work that spans several teams and manage the dependencies.",
+   "contexts": [],
+   "direct_areas": [
+    "delivery_execution"
+   ],
+   "transferable_areas": [
+    "stakeholder_management"
+   ],
+   "direct_skills": [
+    "SKL-CROSS-FUNCTIONAL-LEADERSHIP"
+   ],
+   "transferable_skills": [
+    "SKL-PROGRAM-MANAGEMENT",
+    "SKL-PROGRAM-DELIVERY"
+   ],
+   "transferable_role_families": [],
+   "transfer_rationale": "Coordinating stakeholders across functions is the closest experience to cross-team planning.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "F1",
+     "stance": "supports",
+     "note": "Plan work across multiple teams"
+    },
+    {
+     "source": "F4",
+     "stance": "supports",
+     "note": "Manages cross-team dependencies"
+    }
+   ],
+   "area_conditions": {
+    "delivery_execution": "cross_team"
+   }
+  }
+ ]
+}

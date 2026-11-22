@@ -1,0 +1,51 @@
+{
+  "pool_id": "eval-personalisation-v1",
+  "label": "EVALUATION FIXTURE: constructed test careers for the Phase 8.2 whole-profile relevance prototype. Not real career histories, not market evidence.",
+  "privacy_minimum": 5,
+  "roles": {
+    "PM-APM": {"title": "Associate Product Manager", "family": "product_management", "is_pm_target": true, "seniority": "associate", "rank": 30},
+    "PM-PM": {"title": "Product Manager", "family": "product_management", "is_pm_target": true, "seniority": "mid", "rank": 40},
+    "PM-SPM": {"title": "Senior Product Manager", "family": "product_management", "is_pm_target": true, "seniority": "senior", "rank": 50},
+    "PM-LEAD": {"title": "Lead Product Manager", "family": "product_management", "is_pm_target": true, "seniority": "lead", "rank": 60},
+    "PM-DIR": {"title": "Director of Product", "family": "product_management", "is_pm_target": true, "seniority": "director", "rank": 80},
+    "ROLE-SWE": {"title": "Software Engineer", "family": "software_engineering", "seniority": "mid", "rank": 40},
+    "ROLE-QA": {"title": "QA / Quality Engineer", "family": "qa_testing", "seniority": "mid", "rank": 40},
+    "ROLE-BA": {"title": "Business Analyst", "family": "business_analysis", "seniority": "mid", "rank": 40},
+    "ROLE-DS": {"title": "Data Scientist", "family": "data_science", "seniority": "mid", "rank": 40},
+    "ROLE-PGM": {"title": "Program Manager", "family": "project_program_management", "seniority": "mid", "rank": 40}
+  },
+  "areas": {
+    "roadmap_ownership": {"label": "Roadmap ownership", "pm_signal": true},
+    "technical_engineering": {"label": "Technical engineering", "pm_signal": false},
+    "requirements_analysis": {"label": "Requirements analysis", "pm_signal": false},
+    "stakeholder_management": {"label": "Stakeholder management", "pm_signal": false},
+    "delivery_execution": {"label": "Delivery and execution", "pm_signal": false},
+    "quality_testing": {"label": "Quality and testing", "pm_signal": false}
+  },
+  "route_groups": [
+    {"id": "P1", "route": ["PM-PM", "PM-SPM"], "profiles": 9, "ids": ["EVAL-OWNP-01"],
+     "purpose": "Direct route to Senior PM; supporters mostly came through engineering and APM roles.",
+     "subgroups": [
+       {"count": 5, "prefix": ["ROLE-SWE", "PM-APM"], "route_stint_areas": {"1": ["technical_engineering", "roadmap_ownership"]},
+        "attributes": {"industries": ["saas"], "skills": ["java", "sql", "roadmapping"], "qualifications": ["bachelor"], "fields": ["computer science"]}},
+       {"count": 4, "prefix": ["PM-APM"], "route_stint_areas": {"1": ["roadmap_ownership"]},
+        "attributes": {"industries": ["fintech"], "skills": ["roadmapping"], "qualifications": ["mba"], "fields": ["business"]}}]},
+    {"id": "P2", "route": ["PM-PM", "ROLE-PGM", "PM-SPM"], "profiles": 6,
+     "purpose": "Route to Senior PM via Program Manager; supporters came through QA and business analysis.",
+     "subgroups": [
+       {"count": 6, "prefix": ["ROLE-QA", "ROLE-BA"],
+        "route_stint_areas": {"1": ["requirements_analysis", "stakeholder_management"], "2": ["delivery_execution"]},
+        "attributes": {"industries": ["it_services"], "skills": ["sql", "test automation", "requirements"], "qualifications": ["bachelor"],
+                       "fields": ["information systems"]}}]},
+    {"id": "P3", "route": ["PM-PM", "PM-LEAD"], "profiles": 3, "purpose": "Below the privacy minimum: suppressed, no breakdown."},
+    {"id": "P4", "route": ["PM-PM", "PM-DIR"], "profiles": 5,
+     "purpose": "Shown route whose supporters share no attribute value (each below the minimum): insufficient reference evidence per dimension.",
+     "subgroups": [
+       {"count": 1, "attributes": {"industries": ["saas"], "skills": ["java"], "qualifications": ["bachelor"], "fields": ["physics"]}},
+       {"count": 1, "attributes": {"industries": ["fintech"], "skills": ["sql"], "qualifications": ["mba"], "fields": ["business"]}},
+       {"count": 1, "attributes": {"industries": ["it_services"], "skills": ["python"], "qualifications": ["master"], "fields": ["economics"]}},
+       {"count": 1, "attributes": {"industries": ["logistics"], "skills": ["excel"], "qualifications": ["doctorate"], "fields": ["chemistry"]}},
+       {"count": 1, "attributes": {"industries": ["agency"], "skills": ["figma"], "qualifications": ["diploma"], "fields": ["design"]}}]}
+  ],
+  "profiles": []
+}

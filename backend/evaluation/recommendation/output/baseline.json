@@ -1,0 +1,2980 @@
+{
+ "fixture_sha256": "2f65654c48fa62ca2d77529557ded9c52493be69cd35da6ccc71b9b9e36b105c",
+ "harness_version": "phase-8.1-v1",
+ "label": "EVALUATION FIXTURE: constructed test careers for recommendation-engine evaluation. Not real career histories, not market evidence.",
+ "pool_id": "eval-core-v1",
+ "privacy_minimum": 5,
+ "profiles": 95,
+ "scenarios": [
+  {
+   "covers": [
+    "sufficient_reference_evidence",
+    "fit_aligned"
+   ],
+   "directions": {
+    "PM-APM>PM-PM": [
+     "up"
+    ]
+   },
+   "discovered_routes": [
+    {
+     "distinct_profiles": 9,
+     "route_id": "PM-APM>PM-PM"
+    }
+   ],
+   "eligible_population": 95,
+   "explanation": {
+    "limitations": [
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": []
+   },
+   "id": "S01",
+   "inputs": {
+    "areas": [
+     "roadmap_ownership",
+     "outcome_ownership"
+    ],
+    "current_role": "PM-APM",
+    "held_roles": [
+     "PM-APM"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "own_profile_ids": null,
+    "position_reason": null,
+    "qualifications": [
+     "bachelor"
+    ],
+    "skills": [
+     "SQL",
+     "Roadmapping"
+    ]
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to ROLE-QA",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own []",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {'PM-APM>PM-PM': 9}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [
+    {
+     "common_areas": [
+      "outcome_ownership",
+      "roadmap_ownership"
+     ],
+     "experience_state": "areas_disclosed",
+     "limitations": [],
+     "matched_areas": [
+      "outcome_ownership",
+      "roadmap_ownership"
+     ],
+     "observation_count": 9,
+     "rank": 1,
+     "rank_group": 1,
+     "reason": "all_common_areas_recorded",
+     "route_id": "PM-APM>PM-PM",
+     "step_gaps": [],
+     "tied": false,
+     "tier": "aligned"
+    }
+   ],
+   "suppressed_routes": [],
+   "target": "PM-PM",
+   "tie_groups": [],
+   "title": "Strong fit: both common route areas categorised"
+  },
+  {
+   "covers": [
+    "fit_partial"
+   ],
+   "directions": {
+    "PM-APM>PM-PM": [
+     "up"
+    ]
+   },
+   "discovered_routes": [
+    {
+     "distinct_profiles": 9,
+     "route_id": "PM-APM>PM-PM"
+    }
+   ],
+   "eligible_population": 95,
+   "explanation": {
+    "limitations": [
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": []
+   },
+   "id": "S02",
+   "inputs": {
+    "areas": [
+     "roadmap_ownership"
+    ],
+    "current_role": "PM-APM",
+    "held_roles": [
+     "PM-APM"
+    ],
+    "industries": [
+     "fintech"
+    ],
+    "own_profile_ids": null,
+    "position_reason": null,
+    "qualifications": [
+     "master"
+    ],
+    "skills": [
+     "Roadmapping"
+    ]
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to ROLE-QA",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own []",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {'PM-APM>PM-PM': 9}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [
+    {
+     "common_areas": [
+      "outcome_ownership",
+      "roadmap_ownership"
+     ],
+     "experience_state": "areas_disclosed",
+     "limitations": [],
+     "matched_areas": [
+      "roadmap_ownership"
+     ],
+     "observation_count": 9,
+     "rank": 1,
+     "rank_group": 1,
+     "reason": "some_common_areas_recorded",
+     "route_id": "PM-APM>PM-PM",
+     "step_gaps": [],
+     "tied": false,
+     "tier": "partial"
+    }
+   ],
+   "suppressed_routes": [],
+   "target": "PM-PM",
+   "tie_groups": [],
+   "title": "Partial fit: one of two common areas"
+  },
+  {
+   "covers": [
+    "fit_limited"
+   ],
+   "directions": {
+    "PM-APM>PM-PM": [
+     "up"
+    ]
+   },
+   "discovered_routes": [
+    {
+     "distinct_profiles": 9,
+     "route_id": "PM-APM>PM-PM"
+    }
+   ],
+   "eligible_population": 95,
+   "explanation": {
+    "limitations": [
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": []
+   },
+   "id": "S03",
+   "inputs": {
+    "areas": [
+     "data_analysis"
+    ],
+    "current_role": "PM-APM",
+    "held_roles": [
+     "PM-APM"
+    ],
+    "industries": [
+     "ecommerce_marketplace"
+    ],
+    "own_profile_ids": null,
+    "position_reason": null,
+    "qualifications": [
+     "bachelor"
+    ],
+    "skills": [
+     "Python"
+    ]
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to ROLE-QA",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own []",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {'PM-APM>PM-PM': 9}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [
+    {
+     "common_areas": [
+      "outcome_ownership",
+      "roadmap_ownership"
+     ],
+     "experience_state": "areas_disclosed",
+     "limitations": [],
+     "matched_areas": [],
+     "observation_count": 9,
+     "rank": 1,
+     "rank_group": 1,
+     "reason": "no_common_area_recorded",
+     "route_id": "PM-APM>PM-PM",
+     "step_gaps": [],
+     "tied": false,
+     "tier": "limited"
+    }
+   ],
+   "suppressed_routes": [],
+   "target": "PM-PM",
+   "tie_groups": [],
+   "title": "Limited fit: categorised, but no common area"
+  },
+  {
+   "covers": [
+    "incomplete_user_responsibilities"
+   ],
+   "directions": {
+    "PM-APM>PM-PM": [
+     "up"
+    ]
+   },
+   "discovered_routes": [
+    {
+     "distinct_profiles": 9,
+     "route_id": "PM-APM>PM-PM"
+    }
+   ],
+   "eligible_population": 95,
+   "explanation": {
+    "limitations": [
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": [
+     "Classify your reviewed responsibilities and achievements with responsibility areas, so they can be compared with observed routes."
+    ]
+   },
+   "id": "S04",
+   "inputs": {
+    "areas": [],
+    "current_role": "PM-APM",
+    "held_roles": [
+     "PM-APM"
+    ],
+    "industries": [],
+    "own_profile_ids": null,
+    "position_reason": null,
+    "qualifications": [],
+    "skills": []
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to ROLE-QA",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own []",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {'PM-APM>PM-PM': 9}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [
+    {
+     "common_areas": [
+      "outcome_ownership",
+      "roadmap_ownership"
+     ],
+     "experience_state": "areas_disclosed",
+     "limitations": [
+      "incomplete_user_profile"
+     ],
+     "matched_areas": [],
+     "observation_count": 9,
+     "rank": 1,
+     "rank_group": 1,
+     "reason": "no_eligible_classified_evidence",
+     "route_id": "PM-APM>PM-PM",
+     "step_gaps": [],
+     "tied": false,
+     "tier": "not_established"
+    }
+   ],
+   "suppressed_routes": [],
+   "target": "PM-PM",
+   "tie_groups": [],
+   "title": "Incomplete user profile: nothing categorised"
+  },
+  {
+   "covers": [
+    "incomplete_reference_evidence"
+   ],
+   "directions": {
+    "PM-PM>PM-SPM": [
+     "up"
+    ]
+   },
+   "discovered_routes": [
+    {
+     "distinct_profiles": 12,
+     "route_id": "PM-PM>PM-SPM"
+    }
+   ],
+   "eligible_population": 95,
+   "explanation": {
+    "limitations": [
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": []
+   },
+   "id": "S05",
+   "inputs": {
+    "areas": [
+     "roadmap_ownership"
+    ],
+    "current_role": "PM-PM",
+    "held_roles": [
+     "PM-APM",
+     "PM-PM"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "own_profile_ids": null,
+    "position_reason": null,
+    "qualifications": [
+     "bachelor"
+    ],
+    "skills": [
+     "Roadmapping"
+    ]
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to ROLE-QA",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own []",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {'PM-PM>PM-SPM': 12}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [
+    {
+     "common_areas": [],
+     "experience_state": "areas_withheld",
+     "limitations": [
+      "insufficient_reference_evidence"
+     ],
+     "matched_areas": [],
+     "observation_count": 12,
+     "rank": 1,
+     "rank_group": 1,
+     "reason": "reference_areas_withheld",
+     "route_id": "PM-PM>PM-SPM",
+     "step_gaps": [],
+     "tied": false,
+     "tier": "not_established"
+    }
+   ],
+   "suppressed_routes": [],
+   "target": "PM-SPM",
+   "tie_groups": [],
+   "title": "Incomplete reference evidence: areas withheld on the route"
+  },
+  {
+   "covers": [
+    "incomplete_reference_evidence"
+   ],
+   "directions": {
+    "PM-SPM>PM-DIR": [
+     "up"
+    ]
+   },
+   "discovered_routes": [
+    {
+     "distinct_profiles": 5,
+     "route_id": "PM-SPM>PM-DIR"
+    }
+   ],
+   "eligible_population": 95,
+   "explanation": {
+    "limitations": [
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": []
+   },
+   "id": "S06",
+   "inputs": {
+    "areas": [
+     "roadmap_ownership"
+    ],
+    "current_role": "PM-SPM",
+    "held_roles": [
+     "PM-PM",
+     "PM-SPM"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "own_profile_ids": null,
+    "position_reason": null,
+    "qualifications": [
+     "mba"
+    ],
+    "skills": []
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to ROLE-QA",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own []",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {'PM-SPM>PM-DIR': 5}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [
+    {
+     "common_areas": [],
+     "experience_state": "no_recorded_areas",
+     "limitations": [
+      "insufficient_reference_evidence"
+     ],
+     "matched_areas": [],
+     "observation_count": 5,
+     "rank": 1,
+     "rank_group": 1,
+     "reason": "reference_no_recorded_areas",
+     "route_id": "PM-SPM>PM-DIR",
+     "step_gaps": [],
+     "tied": false,
+     "tier": "not_established"
+    }
+   ],
+   "suppressed_routes": [],
+   "target": "PM-DIR",
+   "tie_groups": [],
+   "title": "Reference profiles record no areas on the route"
+  },
+  {
+   "covers": [
+    "multiple_routes",
+    "single_profile_route",
+    "multi_step"
+   ],
+   "directions": {
+    "PM-PM>PM-SPM>PM-LEAD": [
+     "up",
+     "up"
+    ],
+    "PM-PM>ROLE-PGM>PM-LEAD": [
+     "lateral",
+     "up"
+    ]
+   },
+   "discovered_routes": [
+    {
+     "distinct_profiles": 6,
+     "route_id": "PM-PM>PM-SPM>PM-LEAD"
+    },
+    {
+     "distinct_profiles": 1,
+     "route_id": "PM-PM>ROLE-ENT>PM-LEAD"
+    },
+    {
+     "distinct_profiles": 5,
+     "route_id": "PM-PM>ROLE-PGM>PM-LEAD"
+    }
+   ],
+   "eligible_population": 95,
+   "explanation": {
+    "limitations": [
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": []
+   },
+   "id": "S07",
+   "inputs": {
+    "areas": [
+     "roadmap_ownership"
+    ],
+    "current_role": "PM-PM",
+    "held_roles": [
+     "PM-PM"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "own_profile_ids": null,
+    "position_reason": null,
+    "qualifications": [
+     "bachelor"
+    ],
+    "skills": [
+     "Roadmapping"
+    ]
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to ROLE-QA",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own []",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {'PM-PM>PM-SPM>PM-LEAD': 6, 'PM-PM>ROLE-PGM>PM-LEAD': 5}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [
+    {
+     "common_areas": [
+      "outcome_ownership",
+      "roadmap_ownership"
+     ],
+     "experience_state": "areas_disclosed",
+     "limitations": [],
+     "matched_areas": [
+      "roadmap_ownership"
+     ],
+     "observation_count": 6,
+     "rank": 1,
+     "rank_group": 1,
+     "reason": "some_common_areas_recorded",
+     "route_id": "PM-PM>PM-SPM>PM-LEAD",
+     "step_gaps": [
+      "PM-SPM"
+     ],
+     "tied": false,
+     "tier": "partial"
+    },
+    {
+     "common_areas": [
+      "delivery_execution",
+      "stakeholder_management"
+     ],
+     "experience_state": "areas_disclosed",
+     "limitations": [],
+     "matched_areas": [],
+     "observation_count": 5,
+     "rank": 2,
+     "rank_group": 2,
+     "reason": "no_common_area_recorded",
+     "route_id": "PM-PM>ROLE-PGM>PM-LEAD",
+     "step_gaps": [
+      "ROLE-PGM"
+     ],
+     "tied": false,
+     "tier": "limited"
+    }
+   ],
+   "suppressed_routes": [
+    {
+     "distinct_profiles": 1,
+     "route_id": "PM-PM>ROLE-ENT>PM-LEAD"
+    }
+   ],
+   "target": "PM-LEAD",
+   "tie_groups": [],
+   "title": "Two genuinely different routes; a distinctive single-profile route suppressed"
+  },
+  {
+   "covers": [
+    "route_privacy_counts",
+    "exact_minimum",
+    "insufficient_route_support"
+   ],
+   "directions": {
+    "ROLE-QA>PM-APM": [
+     "down"
+    ],
+    "ROLE-QA>ROLE-DA>PM-APM": [
+     "lateral",
+     "down"
+    ]
+   },
+   "discovered_routes": [
+    {
+     "distinct_profiles": 5,
+     "route_id": "ROLE-QA>PM-APM"
+    },
+    {
+     "distinct_profiles": 4,
+     "route_id": "ROLE-QA>ROLE-BA>PM-APM"
+    },
+    {
+     "distinct_profiles": 2,
+     "route_id": "ROLE-QA>ROLE-CS>PM-APM"
+    },
+    {
+     "distinct_profiles": 6,
+     "route_id": "ROLE-QA>ROLE-DA>PM-APM"
+    },
+    {
+     "distinct_profiles": 3,
+     "route_id": "ROLE-QA>ROLE-SUPPORT>PM-APM"
+    },
+    {
+     "distinct_profiles": 1,
+     "route_id": "ROLE-QA>ROLE-UX>PM-APM"
+    }
+   ],
+   "eligible_population": 95,
+   "explanation": {
+    "limitations": [
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": []
+   },
+   "id": "S08",
+   "inputs": {
+    "areas": [
+     "quality_testing"
+    ],
+    "current_role": "ROLE-QA",
+    "held_roles": [
+     "ROLE-QA"
+    ],
+    "industries": [
+     "it_services"
+    ],
+    "own_profile_ids": null,
+    "position_reason": null,
+    "qualifications": [
+     "bachelor"
+    ],
+    "skills": [
+     "Test automation"
+    ]
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to PM-APM",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own []",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {'ROLE-QA>PM-APM': 5, 'ROLE-QA>ROLE-DA>PM-APM': 6}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [
+    {
+     "common_areas": [],
+     "experience_state": "no_recorded_areas",
+     "limitations": [
+      "insufficient_reference_evidence"
+     ],
+     "matched_areas": [],
+     "observation_count": 5,
+     "rank": 1,
+     "rank_group": 1,
+     "reason": "reference_no_recorded_areas",
+     "route_id": "ROLE-QA>PM-APM",
+     "step_gaps": [],
+     "tied": false,
+     "tier": "not_established"
+    },
+    {
+     "common_areas": [],
+     "experience_state": "no_recorded_areas",
+     "limitations": [
+      "insufficient_reference_evidence"
+     ],
+     "matched_areas": [],
+     "observation_count": 6,
+     "rank": 2,
+     "rank_group": 2,
+     "reason": "reference_no_recorded_areas",
+     "route_id": "ROLE-QA>ROLE-DA>PM-APM",
+     "step_gaps": [
+      "ROLE-DA"
+     ],
+     "tied": false,
+     "tier": "not_established"
+    }
+   ],
+   "suppressed_routes": [
+    {
+     "distinct_profiles": 4,
+     "route_id": "ROLE-QA>ROLE-BA>PM-APM"
+    },
+    {
+     "distinct_profiles": 2,
+     "route_id": "ROLE-QA>ROLE-CS>PM-APM"
+    },
+    {
+     "distinct_profiles": 3,
+     "route_id": "ROLE-QA>ROLE-SUPPORT>PM-APM"
+    },
+    {
+     "distinct_profiles": 1,
+     "route_id": "ROLE-QA>ROLE-UX>PM-APM"
+    }
+   ],
+   "target": "PM-APM",
+   "tie_groups": [],
+   "title": "Privacy minimum across routes supported by 1, 2, 3, 4, 5 and 6 profiles"
+  },
+  {
+   "covers": [
+    "tied_routes"
+   ],
+   "directions": {
+    "ROLE-SWE>ROLE-DS>PM-PM": [
+     "lateral",
+     "lateral"
+    ],
+    "ROLE-SWE>ROLE-PAN>PM-PM": [
+     "lateral",
+     "lateral"
+    ]
+   },
+   "discovered_routes": [
+    {
+     "distinct_profiles": 5,
+     "route_id": "ROLE-SWE>ROLE-DS>PM-PM"
+    },
+    {
+     "distinct_profiles": 5,
+     "route_id": "ROLE-SWE>ROLE-PAN>PM-PM"
+    }
+   ],
+   "eligible_population": 95,
+   "explanation": {
+    "limitations": [
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": []
+   },
+   "id": "S09",
+   "inputs": {
+    "areas": [
+     "technical_engineering"
+    ],
+    "current_role": "ROLE-SWE",
+    "held_roles": [
+     "ROLE-SWE"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "own_profile_ids": null,
+    "position_reason": null,
+    "qualifications": [
+     "bachelor"
+    ],
+    "skills": [
+     "Java"
+    ]
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to ROLE-QA",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own []",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {'ROLE-SWE>ROLE-DS>PM-PM': 5, 'ROLE-SWE>ROLE-PAN>PM-PM': 5}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [
+    {
+     "common_areas": [],
+     "experience_state": "no_recorded_areas",
+     "limitations": [
+      "insufficient_reference_evidence"
+     ],
+     "matched_areas": [],
+     "observation_count": 5,
+     "rank": 1,
+     "rank_group": 1,
+     "reason": "reference_no_recorded_areas",
+     "route_id": "ROLE-SWE>ROLE-DS>PM-PM",
+     "step_gaps": [
+      "ROLE-DS"
+     ],
+     "tied": true,
+     "tier": "not_established"
+    },
+    {
+     "common_areas": [],
+     "experience_state": "no_recorded_areas",
+     "limitations": [
+      "insufficient_reference_evidence"
+     ],
+     "matched_areas": [],
+     "observation_count": 5,
+     "rank": 2,
+     "rank_group": 1,
+     "reason": "reference_no_recorded_areas",
+     "route_id": "ROLE-SWE>ROLE-PAN>PM-PM",
+     "step_gaps": [
+      "ROLE-PAN"
+     ],
+     "tied": true,
+     "tier": "not_established"
+    }
+   ],
+   "suppressed_routes": [],
+   "target": "PM-PM",
+   "tie_groups": [
+    1
+   ],
+   "title": "Two equally ranked routes"
+  },
+  {
+   "covers": [
+    "earlier_role_sensitivity"
+   ],
+   "directions": {
+    "ROLE-SWE>ROLE-DS>PM-PM": [
+     "lateral",
+     "lateral"
+    ],
+    "ROLE-SWE>ROLE-PAN>PM-PM": [
+     "lateral",
+     "lateral"
+    ]
+   },
+   "discovered_routes": [
+    {
+     "distinct_profiles": 5,
+     "route_id": "ROLE-SWE>ROLE-DS>PM-PM"
+    },
+    {
+     "distinct_profiles": 5,
+     "route_id": "ROLE-SWE>ROLE-PAN>PM-PM"
+    }
+   ],
+   "eligible_population": 95,
+   "explanation": {
+    "limitations": [
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": []
+   },
+   "id": "S10",
+   "inputs": {
+    "areas": [
+     "technical_engineering"
+    ],
+    "current_role": "ROLE-SWE",
+    "held_roles": [
+     "ROLE-PAN",
+     "ROLE-SWE"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "own_profile_ids": null,
+    "position_reason": null,
+    "qualifications": [
+     "bachelor"
+    ],
+    "skills": [
+     "Java"
+    ]
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to ROLE-QA",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own []",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {'ROLE-SWE>ROLE-PAN>PM-PM': 5, 'ROLE-SWE>ROLE-DS>PM-PM': 5}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": true,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": true
+   },
+   "shown_routes": [
+    {
+     "common_areas": [],
+     "experience_state": "no_recorded_areas",
+     "limitations": [
+      "insufficient_reference_evidence"
+     ],
+     "matched_areas": [],
+     "observation_count": 5,
+     "rank": 1,
+     "rank_group": 1,
+     "reason": "reference_no_recorded_areas",
+     "route_id": "ROLE-SWE>ROLE-PAN>PM-PM",
+     "step_gaps": [],
+     "tied": false,
+     "tier": "not_established"
+    },
+    {
+     "common_areas": [],
+     "experience_state": "no_recorded_areas",
+     "limitations": [
+      "insufficient_reference_evidence"
+     ],
+     "matched_areas": [],
+     "observation_count": 5,
+     "rank": 2,
+     "rank_group": 2,
+     "reason": "reference_no_recorded_areas",
+     "route_id": "ROLE-SWE>ROLE-DS>PM-PM",
+     "step_gaps": [
+      "ROLE-DS"
+     ],
+     "tied": false,
+     "tier": "not_established"
+    }
+   ],
+   "suppressed_routes": [],
+   "target": "PM-PM",
+   "tie_groups": [],
+   "title": "Same routes, tie separated by an earlier role the user held"
+  },
+  {
+   "covers": [
+    "own_contribution_drops_route"
+   ],
+   "directions": {},
+   "discovered_routes": [
+    {
+     "distinct_profiles": 4,
+     "route_id": "ROLE-BA>PM-PM"
+    }
+   ],
+   "eligible_population": 94,
+   "explanation": {
+    "limitations": [
+     "No route from ROLE-BA to PM-PM is supported by enough reference profiles to be shown. This is an absence of observations, not an assessment of the route.",
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": []
+   },
+   "id": "S11",
+   "inputs": {
+    "areas": [
+     "requirements_analysis"
+    ],
+    "current_role": "ROLE-BA",
+    "held_roles": [
+     "ROLE-BA"
+    ],
+    "industries": [
+     "banking_financial_services"
+    ],
+    "own_profile_ids": [
+     "EVAL-OWN-01"
+    ],
+    "position_reason": null,
+    "qualifications": [
+     "bachelor"
+    ],
+    "skills": [
+     "SQL"
+    ]
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to ROLE-QA",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own ['EVAL-OWN-01']",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [],
+   "suppressed_routes": [
+    {
+     "distinct_profiles": 4,
+     "route_id": "ROLE-BA>PM-PM"
+    }
+   ],
+   "target": "PM-PM",
+   "tie_groups": [],
+   "title": "Route meets the minimum only with the user's own contribution"
+  },
+  {
+   "covers": [
+    "contribution_supports_others"
+   ],
+   "directions": {
+    "ROLE-BA>PM-PM": [
+     "lateral"
+    ]
+   },
+   "discovered_routes": [
+    {
+     "distinct_profiles": 5,
+     "route_id": "ROLE-BA>PM-PM"
+    }
+   ],
+   "eligible_population": 95,
+   "explanation": {
+    "limitations": [
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": []
+   },
+   "id": "S12",
+   "inputs": {
+    "areas": [
+     "requirements_analysis"
+    ],
+    "current_role": "ROLE-BA",
+    "held_roles": [
+     "ROLE-BA"
+    ],
+    "industries": [
+     "banking_financial_services"
+    ],
+    "own_profile_ids": null,
+    "position_reason": null,
+    "qualifications": [
+     "bachelor"
+    ],
+    "skills": [
+     "SQL"
+    ]
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to ROLE-QA",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own []",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {'ROLE-BA>PM-PM': 5}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [
+    {
+     "common_areas": [],
+     "experience_state": "no_recorded_areas",
+     "limitations": [
+      "insufficient_reference_evidence"
+     ],
+     "matched_areas": [],
+     "observation_count": 5,
+     "rank": 1,
+     "rank_group": 1,
+     "reason": "reference_no_recorded_areas",
+     "route_id": "ROLE-BA>PM-PM",
+     "step_gaps": [],
+     "tied": false,
+     "tier": "not_established"
+    }
+   ],
+   "suppressed_routes": [],
+   "target": "PM-PM",
+   "tie_groups": [],
+   "title": "Another user still gets the contributor's profile as independent evidence"
+  },
+  {
+   "covers": [
+    "own_contribution_route_remains"
+   ],
+   "directions": {
+    "ROLE-MKT>PM-PM": [
+     "lateral"
+    ]
+   },
+   "discovered_routes": [
+    {
+     "distinct_profiles": 5,
+     "route_id": "ROLE-MKT>PM-PM"
+    }
+   ],
+   "eligible_population": 94,
+   "explanation": {
+    "limitations": [
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": [
+     "Classify your reviewed responsibilities and achievements with responsibility areas, so they can be compared with observed routes."
+    ]
+   },
+   "id": "S13",
+   "inputs": {
+    "areas": [],
+    "current_role": "ROLE-MKT",
+    "held_roles": [
+     "ROLE-MKT"
+    ],
+    "industries": [
+     "consumer_internet"
+    ],
+    "own_profile_ids": [
+     "EVAL-OWN-02"
+    ],
+    "position_reason": null,
+    "qualifications": [
+     "bachelor"
+    ],
+    "skills": [
+     "SEO"
+    ]
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to ROLE-QA",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own ['EVAL-OWN-02']",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {'ROLE-MKT>PM-PM': 5}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [
+    {
+     "common_areas": [],
+     "experience_state": "no_recorded_areas",
+     "limitations": [
+      "insufficient_reference_evidence",
+      "incomplete_user_profile"
+     ],
+     "matched_areas": [],
+     "observation_count": 5,
+     "rank": 1,
+     "rank_group": 1,
+     "reason": "reference_no_recorded_areas",
+     "route_id": "ROLE-MKT>PM-PM",
+     "step_gaps": [],
+     "tied": false,
+     "tier": "not_established"
+    }
+   ],
+   "suppressed_routes": [],
+   "target": "PM-PM",
+   "tie_groups": [],
+   "title": "Route remains eligible after excluding the user's own contribution"
+  },
+  {
+   "covers": [
+    "own_profile_only_evidence"
+   ],
+   "directions": {},
+   "discovered_routes": [],
+   "eligible_population": 94,
+   "explanation": {
+    "limitations": [
+     "No route from ROLE-HR to PM-PM is supported by enough reference profiles to be shown. This is an absence of observations, not an assessment of the route.",
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": [
+     "Classify your reviewed responsibilities and achievements with responsibility areas, so they can be compared with observed routes."
+    ]
+   },
+   "id": "S14",
+   "inputs": {
+    "areas": [],
+    "current_role": "ROLE-HR",
+    "held_roles": [
+     "ROLE-HR"
+    ],
+    "industries": [
+     "hr_tech"
+    ],
+    "own_profile_ids": [
+     "EVAL-OWN-03"
+    ],
+    "position_reason": null,
+    "qualifications": [
+     "bachelor"
+    ],
+    "skills": []
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to ROLE-QA",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own ['EVAL-OWN-03']",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [],
+   "suppressed_routes": [],
+   "target": "PM-PM",
+   "tie_groups": [],
+   "title": "The user's own profile is the only evidence"
+  },
+  {
+   "covers": [
+    "missing_current_role"
+   ],
+   "directions": {},
+   "discovered_routes": [],
+   "eligible_population": 95,
+   "explanation": {
+    "limitations": [
+     "No pathway is assessed: the current position is unknown (role_unconfirmed)."
+    ],
+    "next_steps": [
+     "Your current job is confirmed, but the standard role matched to it hasn't been confirmed yet. Review the role match to continue."
+    ]
+   },
+   "id": "S15",
+   "inputs": {
+    "areas": [
+     "roadmap_ownership"
+    ],
+    "current_role": null,
+    "held_roles": [],
+    "industries": [],
+    "own_profile_ids": null,
+    "position_reason": "role_unconfirmed",
+    "qualifications": [],
+    "skills": []
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own []",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "unknown",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [],
+   "suppressed_routes": [],
+   "target": "PM-PM",
+   "tie_groups": [],
+   "title": "No established current role"
+  },
+  {
+   "covers": [
+    "different_backgrounds_same_target"
+   ],
+   "directions": {
+    "PM-APM>PM-PM": [
+     "up"
+    ]
+   },
+   "discovered_routes": [
+    {
+     "distinct_profiles": 9,
+     "route_id": "PM-APM>PM-PM"
+    }
+   ],
+   "eligible_population": 95,
+   "explanation": {
+    "limitations": [
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": []
+   },
+   "id": "S16A",
+   "inputs": {
+    "areas": [
+     "roadmap_ownership",
+     "technical_engineering"
+    ],
+    "current_role": "PM-APM",
+    "held_roles": [
+     "ROLE-SWE",
+     "PM-APM"
+    ],
+    "industries": [
+     "saas"
+    ],
+    "own_profile_ids": null,
+    "position_reason": null,
+    "qualifications": [
+     "bachelor"
+    ],
+    "skills": [
+     "Java",
+     "Roadmapping"
+    ]
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to ROLE-QA",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own []",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {'PM-APM>PM-PM': 9}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [
+    {
+     "common_areas": [
+      "outcome_ownership",
+      "roadmap_ownership"
+     ],
+     "experience_state": "areas_disclosed",
+     "limitations": [],
+     "matched_areas": [
+      "roadmap_ownership"
+     ],
+     "observation_count": 9,
+     "rank": 1,
+     "rank_group": 1,
+     "reason": "some_common_areas_recorded",
+     "route_id": "PM-APM>PM-PM",
+     "step_gaps": [],
+     "tied": false,
+     "tier": "partial"
+    }
+   ],
+   "suppressed_routes": [],
+   "target": "PM-PM",
+   "tie_groups": [],
+   "title": "Background A (engineering) to Product Manager"
+  },
+  {
+   "covers": [
+    "different_backgrounds_same_target"
+   ],
+   "directions": {
+    "PM-APM>PM-PM": [
+     "up"
+    ]
+   },
+   "discovered_routes": [
+    {
+     "distinct_profiles": 9,
+     "route_id": "PM-APM>PM-PM"
+    }
+   ],
+   "eligible_population": 95,
+   "explanation": {
+    "limitations": [
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": []
+   },
+   "id": "S16B",
+   "inputs": {
+    "areas": [
+     "requirements_analysis",
+     "quality_testing"
+    ],
+    "current_role": "PM-APM",
+    "held_roles": [
+     "ROLE-QA",
+     "ROLE-BA",
+     "PM-APM"
+    ],
+    "industries": [
+     "enterprise_software",
+     "it_services"
+    ],
+    "own_profile_ids": null,
+    "position_reason": null,
+    "qualifications": [
+     "bachelor"
+    ],
+    "skills": [
+     "SQL",
+     "Test automation"
+    ]
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to ROLE-QA",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own []",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {'PM-APM>PM-PM': 9}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [
+    {
+     "common_areas": [
+      "outcome_ownership",
+      "roadmap_ownership"
+     ],
+     "experience_state": "areas_disclosed",
+     "limitations": [],
+     "matched_areas": [],
+     "observation_count": 9,
+     "rank": 1,
+     "rank_group": 1,
+     "reason": "no_common_area_recorded",
+     "route_id": "PM-APM>PM-PM",
+     "step_gaps": [],
+     "tied": false,
+     "tier": "limited"
+    }
+   ],
+   "suppressed_routes": [],
+   "target": "PM-PM",
+   "tie_groups": [],
+   "title": "Background B (QA and business analysis) to Product Manager"
+  },
+  {
+   "covers": [
+    "seniority_down"
+   ],
+   "directions": {
+    "PM-SPM>PM-PM": [
+     "down"
+    ]
+   },
+   "discovered_routes": [
+    {
+     "distinct_profiles": 5,
+     "route_id": "PM-SPM>PM-PM"
+    }
+   ],
+   "eligible_population": 95,
+   "explanation": {
+    "limitations": [
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": [
+     "Classify your reviewed responsibilities and achievements with responsibility areas, so they can be compared with observed routes."
+    ]
+   },
+   "id": "S17",
+   "inputs": {
+    "areas": [],
+    "current_role": "PM-SPM",
+    "held_roles": [
+     "PM-SPM"
+    ],
+    "industries": [],
+    "own_profile_ids": null,
+    "position_reason": null,
+    "qualifications": [],
+    "skills": []
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to ROLE-QA",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own []",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {'PM-SPM>PM-PM': 5}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [
+    {
+     "common_areas": [],
+     "experience_state": "no_recorded_areas",
+     "limitations": [
+      "insufficient_reference_evidence",
+      "incomplete_user_profile"
+     ],
+     "matched_areas": [],
+     "observation_count": 5,
+     "rank": 1,
+     "rank_group": 1,
+     "reason": "reference_no_recorded_areas",
+     "route_id": "PM-SPM>PM-PM",
+     "step_gaps": [],
+     "tied": false,
+     "tier": "not_established"
+    }
+   ],
+   "suppressed_routes": [],
+   "target": "PM-PM",
+   "tie_groups": [],
+   "title": "Downward move by default seniority"
+  },
+  {
+   "covers": [
+    "seniority_lateral"
+   ],
+   "directions": {
+    "ROLE-OWNER>PM-PM": [
+     "lateral"
+    ]
+   },
+   "discovered_routes": [
+    {
+     "distinct_profiles": 5,
+     "route_id": "ROLE-OWNER>PM-PM"
+    }
+   ],
+   "eligible_population": 95,
+   "explanation": {
+    "limitations": [
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": []
+   },
+   "id": "S18",
+   "inputs": {
+    "areas": [
+     "prioritisation_backlog"
+    ],
+    "current_role": "ROLE-OWNER",
+    "held_roles": [
+     "ROLE-OWNER"
+    ],
+    "industries": [],
+    "own_profile_ids": null,
+    "position_reason": null,
+    "qualifications": [],
+    "skills": []
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to ROLE-QA",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own []",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {'ROLE-OWNER>PM-PM': 5}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [
+    {
+     "common_areas": [],
+     "experience_state": "no_recorded_areas",
+     "limitations": [
+      "insufficient_reference_evidence"
+     ],
+     "matched_areas": [],
+     "observation_count": 5,
+     "rank": 1,
+     "rank_group": 1,
+     "reason": "reference_no_recorded_areas",
+     "route_id": "ROLE-OWNER>PM-PM",
+     "step_gaps": [],
+     "tied": false,
+     "tier": "not_established"
+    }
+   ],
+   "suppressed_routes": [],
+   "target": "PM-PM",
+   "tie_groups": [],
+   "title": "Lateral move by default seniority"
+  },
+  {
+   "covers": [
+    "seniority_unknown"
+   ],
+   "directions": {
+    "PM-DIR>ROLE-ENT>PM-HEAD": [
+     "unknown",
+     "unknown"
+    ]
+   },
+   "discovered_routes": [
+    {
+     "distinct_profiles": 5,
+     "route_id": "PM-DIR>ROLE-ENT>PM-HEAD"
+    }
+   ],
+   "eligible_population": 95,
+   "explanation": {
+    "limitations": [
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": [
+     "Classify your reviewed responsibilities and achievements with responsibility areas, so they can be compared with observed routes."
+    ]
+   },
+   "id": "S19",
+   "inputs": {
+    "areas": [],
+    "current_role": "PM-DIR",
+    "held_roles": [
+     "PM-DIR"
+    ],
+    "industries": [],
+    "own_profile_ids": null,
+    "position_reason": null,
+    "qualifications": [],
+    "skills": []
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to ROLE-QA",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own []",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {'PM-DIR>ROLE-ENT>PM-HEAD': 5}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [
+    {
+     "common_areas": [],
+     "experience_state": "no_recorded_areas",
+     "limitations": [
+      "insufficient_reference_evidence",
+      "incomplete_user_profile"
+     ],
+     "matched_areas": [],
+     "observation_count": 5,
+     "rank": 1,
+     "rank_group": 1,
+     "reason": "reference_no_recorded_areas",
+     "route_id": "PM-DIR>ROLE-ENT>PM-HEAD",
+     "step_gaps": [
+      "ROLE-ENT"
+     ],
+     "tied": false,
+     "tier": "not_established"
+    }
+   ],
+   "suppressed_routes": [],
+   "target": "PM-HEAD",
+   "tie_groups": [],
+   "title": "Route with an unranked step (founder)"
+  },
+  {
+   "covers": [
+    "seniority_mixed",
+    "multi_step"
+   ],
+   "directions": {
+    "ROLE-CONSULT>PM-APM>PM-SPM": [
+     "down",
+     "up"
+    ]
+   },
+   "discovered_routes": [
+    {
+     "distinct_profiles": 5,
+     "route_id": "ROLE-CONSULT>PM-APM>PM-SPM"
+    }
+   ],
+   "eligible_population": 95,
+   "explanation": {
+    "limitations": [
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": [
+     "Classify your reviewed responsibilities and achievements with responsibility areas, so they can be compared with observed routes."
+    ]
+   },
+   "id": "S20",
+   "inputs": {
+    "areas": [],
+    "current_role": "ROLE-CONSULT",
+    "held_roles": [
+     "ROLE-CONSULT"
+    ],
+    "industries": [
+     "consulting"
+    ],
+    "own_profile_ids": null,
+    "position_reason": null,
+    "qualifications": [
+     "mba"
+    ],
+    "skills": []
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to ROLE-QA",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own []",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {'ROLE-CONSULT>PM-APM>PM-SPM': 5}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [
+    {
+     "common_areas": [],
+     "experience_state": "no_recorded_areas",
+     "limitations": [
+      "insufficient_reference_evidence",
+      "incomplete_user_profile"
+     ],
+     "matched_areas": [],
+     "observation_count": 5,
+     "rank": 1,
+     "rank_group": 1,
+     "reason": "reference_no_recorded_areas",
+     "route_id": "ROLE-CONSULT>PM-APM>PM-SPM",
+     "step_gaps": [
+      "PM-APM"
+     ],
+     "tied": false,
+     "tier": "not_established"
+    }
+   ],
+   "suppressed_routes": [],
+   "target": "PM-SPM",
+   "tie_groups": [],
+   "title": "Mixed down then up"
+  },
+  {
+   "covers": [
+    "no_route"
+   ],
+   "directions": {},
+   "discovered_routes": [],
+   "eligible_population": 95,
+   "explanation": {
+    "limitations": [
+     "No route from PM-PM to PM-SDIR is supported by enough reference profiles to be shown. This is an absence of observations, not an assessment of the route.",
+     "Only routes with at least one confirmed move (role change, employer change, or both) into the destination role are observed pathways; a single episode in the destination role is not.",
+     "Each individual contributes at most one observation: the first confirmed route into the destination role in their history.",
+     "A seniority change within the same role id at the same employer is not an episode boundary (pending a taxonomy decision on levels such as PM II).",
+     "With an origin role, each individual contributes at most one observation: the route from their first episode in the origin role to their first later episode in the destination role, within one confirmed segment. People who reached the destination from elsewhere are not included.",
+     "Route step experience lists the responsibility areas recorded on the observed people's employments before the destination role, counted once per person. Routes observed fewer times than the display threshold (five by default) disclose no areas, and an area is listed only when at least that many people recorded it. Areas describe what was recorded, not what was required to make the move.",
+     "Routes that start and end in the same standard role (for example a move to another employer in the same role) are employment history, not career progressions: they are not returned as routes.",
+     "Routes supported by fewer distinct reference profiles than the privacy minimum are never shown, described, counted or used for guidance: a distinctive sequence of roles could identify someone."
+    ],
+    "next_steps": []
+   },
+   "id": "S21",
+   "inputs": {
+    "areas": [
+     "roadmap_ownership"
+    ],
+    "current_role": "PM-PM",
+    "held_roles": [
+     "PM-PM"
+    ],
+    "industries": [],
+    "own_profile_ids": null,
+    "position_reason": null,
+    "qualifications": [],
+    "skills": []
+   },
+   "invariants": {
+    "counts_are_distinct_profiles": {
+     "detail": "observation_count equals distinct supporting profiles",
+     "ok": true
+    },
+    "current_role_change_moves_origin": {
+     "detail": "current role corrected to ROLE-QA",
+     "ok": true
+    },
+    "deterministic": {
+     "detail": "",
+     "ok": true
+    },
+    "fit_follows_existing_rule": {
+     "detail": "",
+     "ok": true
+    },
+    "irrelevant_fields_do_not_change_output": {
+     "detail": "skills, industries and qualifications changed",
+     "ok": true
+    },
+    "no_zero_move_route": {
+     "detail": "",
+     "ok": true
+    },
+    "own_contribution_excluded": {
+     "detail": "own []",
+     "ok": true
+    },
+    "own_exclusion_never_adds_support": {
+     "detail": "",
+     "ok": true
+    },
+    "privacy_minimum_applied": {
+     "detail": "shown supports {}, minimum 5",
+     "ok": true
+    },
+    "responsibilities_affect_fit_only": {
+     "detail": "route set and evidence unchanged when areas are added",
+     "ok": true
+    },
+    "routes_end_at_target": {
+     "detail": "",
+     "ok": true
+    },
+    "routes_start_at_current_role": {
+     "detail": "",
+     "ok": true
+    },
+    "ties_consistent": {
+     "detail": "",
+     "ok": true
+    }
+   },
+   "position": "known",
+   "sensitivity": {
+    "earlier_roles_changed_order": false,
+    "earlier_roles_changed_routes": false,
+    "earlier_roles_changed_ties": false
+   },
+   "shown_routes": [],
+   "suppressed_routes": [],
+   "target": "PM-SDIR",
+   "tie_groups": [],
+   "title": "No route to the target"
+  }
+ ]
+}

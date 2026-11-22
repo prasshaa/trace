@@ -1,0 +1,25 @@
+# Secrets and environment configuration
+.env
+.env.*
+!.env.example
+.mcp.json
+
+# Restricted resume fixtures
+**/local_only/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# macOS
+.DS_Store
+
+# Supabase local state
+**/supabase/.temp/
+**/supabase/.branches/
+
+# Local backups and review archives
+data-foundation-v2.0.0-backup/
+Trace_Data_Foundation_v2_review*.zip

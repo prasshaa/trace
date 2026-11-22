@@ -1,0 +1,107 @@
+evidence_id,profile_id,employment_id,evidence_type,responsibility_area,evidence_text_redacted,provenance,evidence_status,confidence
+SYN-001-EMP-01-E01,SYN-001,SYN-001-EMP-01,responsibility,technical_engineering,Built workflow APIs and collaborated with business teams.,synthetic_fixture,synthetic_curated,1.0
+SYN-001-EMP-02-E01,SYN-001,SYN-001-EMP-02,responsibility,product_discovery,Owned backlog for an integration product and conducted customer discovery.,synthetic_fixture,synthetic_curated,1.0
+SYN-001-EMP-03-E01,SYN-001,SYN-001-EMP-03,responsibility,roadmap_ownership,"Owned product roadmap, adoption and monetisation.",synthetic_fixture,synthetic_curated,1.0
+SYN-002-EMP-01-E01,SYN-002,SYN-002-EMP-01,responsibility,quality_testing,Executed functional testing and documented defects.,synthetic_fixture,synthetic_curated,1.0
+SYN-002-EMP-02-E01,SYN-002,SYN-002-EMP-02,responsibility,requirements_analysis,Translated business needs into requirements and process maps.,synthetic_fixture,synthetic_curated,1.0
+SYN-002-EMP-03-E01,SYN-002,SYN-002-EMP-03,responsibility,prioritisation_backlog,Owned product backlog and release priorities.,synthetic_fixture,synthetic_curated,1.0
+SYN-003-EMP-01-E01,SYN-003,SYN-003-EMP-01,responsibility,data_analysis,Analysed recurring user issues and worked with design and engineering.,synthetic_fixture,synthetic_curated,1.0
+SYN-003-EMP-02-E01,SYN-003,SYN-003-EMP-02,responsibility,outcome_ownership,Owned onboarding and issue-resolution features.,synthetic_fixture,synthetic_curated,1.0
+SYN-003-EMP-03-E01,SYN-003,SYN-003-EMP-03,responsibility,roadmap_ownership,Owned a product area and quarterly roadmap.,synthetic_fixture,synthetic_curated,1.0
+SYN-004-EMP-01-E01,SYN-004,SYN-004-EMP-01,responsibility,data_analysis,Built dashboards and analysed customer funnel behaviour.,synthetic_fixture,synthetic_curated,1.0
+SYN-004-EMP-02-E01,SYN-004,SYN-004-EMP-02,responsibility,data_analysis,Defined product metrics and evaluated experiments.,synthetic_fixture,synthetic_curated,1.0
+SYN-004-EMP-03-E01,SYN-004,SYN-004-EMP-03,responsibility,prioritisation_backlog,Owned a feature backlog and coordinated launches.,synthetic_fixture,synthetic_curated,1.0
+SYN-004-EMP-04-E01,SYN-004,SYN-004-EMP-04,responsibility,roadmap_ownership,Owned a product domain roadmap.,synthetic_fixture,synthetic_curated,1.0
+SYN-005-EMP-01-E01,SYN-005,SYN-005-EMP-01,responsibility,product_discovery,Led requirements and process discovery for enterprise workflows.,synthetic_fixture,synthetic_curated,1.0
+SYN-005-EMP-02-E01,SYN-005,SYN-005-EMP-02,responsibility,roadmap_ownership,Owned roadmap and customer outcomes for workflow products.,synthetic_fixture,synthetic_curated,1.0
+SYN-006-EMP-01-E01,SYN-006,SYN-006-EMP-01,responsibility,delivery_execution,Delivered market-entry and operating-model projects.,synthetic_fixture,synthetic_curated,1.0
+SYN-006-EMP-02-E01,SYN-006,SYN-006-EMP-02,responsibility,data_analysis,Analysed adoption and customer journey data.,synthetic_fixture,synthetic_curated,1.0
+SYN-006-EMP-03-E01,SYN-006,SYN-006-EMP-03,responsibility,prioritisation_backlog,Owned roadmap and prioritisation for a product module.,synthetic_fixture,synthetic_curated,1.0
+SYN-007-EMP-01-E01,SYN-007,SYN-007-EMP-01,responsibility,go_to_market_growth,"Owned acquisition funnels, campaign budgets and conversion experiments.",synthetic_fixture,synthetic_curated,1.0
+SYN-007-EMP-02-E01,SYN-007,SYN-007-EMP-02,responsibility,roadmap_ownership,"Owned activation, referral and monetisation roadmap.",synthetic_fixture,synthetic_curated,1.0
+SYN-008-EMP-01-E01,SYN-008,SYN-008-EMP-01,responsibility,customer_account_management,Managed enterprise accounts and surfaced recurring product needs.,synthetic_fixture,synthetic_curated,1.0
+SYN-008-EMP-02-E01,SYN-008,SYN-008-EMP-02,responsibility,outcome_ownership,Owned customer onboarding and account administration product area.,synthetic_fixture,synthetic_curated,1.0
+SYN-009-EMP-01-E01,SYN-009,SYN-009-EMP-01,responsibility,customer_account_management,"Managed adoption, escalations and renewal risks.",synthetic_fixture,synthetic_curated,1.0
+SYN-009-EMP-02-E01,SYN-009,SYN-009-EMP-02,responsibility,outcome_ownership,Owned onboarding and help-centre improvements.,synthetic_fixture,synthetic_curated,1.0
+SYN-009-EMP-03-E01,SYN-009,SYN-009-EMP-03,responsibility,roadmap_ownership,Owned retention and customer experience roadmap.,synthetic_fixture,synthetic_curated,1.0
+SYN-010-EMP-01-E01,SYN-010,SYN-010-EMP-01,responsibility,design_research,"Led research, interaction design and usability testing.",synthetic_fixture,synthetic_curated,1.0
+SYN-010-EMP-02-E01,SYN-010,SYN-010-EMP-02,responsibility,roadmap_ownership,Owned onboarding and navigation feature roadmap.,synthetic_fixture,synthetic_curated,1.0
+SYN-010-EMP-03-E01,SYN-010,SYN-010-EMP-03,responsibility,outcome_ownership,Owned customer experience product area.,synthetic_fixture,synthetic_curated,1.0
+SYN-011-EMP-01-E01,SYN-011,SYN-011-EMP-01,responsibility,delivery_execution,Managed delivery plans and cross-functional dependencies.,synthetic_fixture,synthetic_curated,1.0
+SYN-011-EMP-02-E01,SYN-011,SYN-011-EMP-02,responsibility,product_discovery,Took ownership of problem discovery and feature prioritisation.,synthetic_fixture,synthetic_curated,1.0
+SYN-011-EMP-03-E01,SYN-011,SYN-011-EMP-03,responsibility,roadmap_ownership,Owned product outcomes and roadmap.,synthetic_fixture,synthetic_curated,1.0
+SYN-012-EMP-01-E01,SYN-012,SYN-012-EMP-01,responsibility,operations_process,Owned operational performance and process improvement.,synthetic_fixture,synthetic_curated,1.0
+SYN-012-EMP-02-E01,SYN-012,SYN-012-EMP-02,responsibility,data_analysis,Analysed platform workflows and feature adoption.,synthetic_fixture,synthetic_curated,1.0
+SYN-012-EMP-03-E01,SYN-012,SYN-012-EMP-03,responsibility,roadmap_ownership,Owned operations platform roadmap.,synthetic_fixture,synthetic_curated,1.0
+SYN-013-EMP-01-E01,SYN-013,SYN-013-EMP-01,responsibility,data_analysis,"Analysed settlements, reconciliations and operational metrics.",synthetic_fixture,synthetic_curated,1.0
+SYN-013-EMP-02-E01,SYN-013,SYN-013-EMP-02,responsibility,outcome_ownership,Owned payment reconciliation and merchant workflows.,synthetic_fixture,synthetic_curated,1.0
+SYN-014-EMP-01-E01,SYN-014,SYN-014-EMP-01,responsibility,data_analysis,Analysed employee lifecycle workflows and HR service issues.,synthetic_fixture,synthetic_curated,1.0
+SYN-014-EMP-02-E01,SYN-014,SYN-014-EMP-02,responsibility,roadmap_ownership,Owned employee self-service and HR workflow roadmap.,synthetic_fixture,synthetic_curated,1.0
+SYN-015-EMP-01-E01,SYN-015,SYN-015-EMP-01,responsibility,customer_account_management,Resolved complex customer issues and identified recurring product defects.,synthetic_fixture,synthetic_curated,1.0
+SYN-015-EMP-02-E01,SYN-015,SYN-015-EMP-02,responsibility,roadmap_ownership,Owned integrations and reliability roadmap.,synthetic_fixture,synthetic_curated,1.0
+SYN-016-EMP-01-E01,SYN-016,SYN-016-EMP-01,responsibility,data_analysis,Built models and worked with business users on operational adoption.,synthetic_fixture,synthetic_curated,1.0
+SYN-016-EMP-02-E01,SYN-016,SYN-016-EMP-02,responsibility,roadmap_ownership,Owned analytics product roadmap and customer adoption.,synthetic_fixture,synthetic_curated,1.0
+SYN-017-EMP-01-E01,SYN-017,SYN-017-EMP-01,responsibility,outcome_ownership,Owned search and discovery features.,synthetic_fixture,synthetic_curated,1.0
+SYN-017-EMP-02-E01,SYN-017,SYN-017-EMP-02,responsibility,outcome_ownership,Owned a product area and quarterly outcomes.,synthetic_fixture,synthetic_curated,1.0
+SYN-018-EMP-01-E01,SYN-018,SYN-018-EMP-01,responsibility,outcome_ownership,Owned merchant payments and settlement experiences.,synthetic_fixture,synthetic_curated,1.0
+SYN-018-EMP-02-E01,SYN-018,SYN-018-EMP-02,responsibility,outcome_ownership,Owned seller onboarding and transaction conversion.,synthetic_fixture,synthetic_curated,1.0
+SYN-019-EMP-01-E01,SYN-019,SYN-019-EMP-01,responsibility,product_discovery,Owned 0-to-1 workflow product and customer discovery.,synthetic_fixture,synthetic_curated,1.0
+SYN-019-EMP-02-E01,SYN-019,SYN-019-EMP-02,responsibility,roadmap_ownership,Owned enterprise platform integrations and multi-team roadmap.,synthetic_fixture,synthetic_curated,1.0
+SYN-020-EMP-01-E01,SYN-020,SYN-020-EMP-01,responsibility,outcome_ownership,Owned a product area and cross-functional delivery.,synthetic_fixture,synthetic_curated,1.0
+SYN-020-EMP-02-E01,SYN-020,SYN-020-EMP-02,scope,strategy_portfolio,Led multi-quarter strategy across multiple product areas.,synthetic_fixture,synthetic_curated,1.0
+SYN-021-EMP-01-E01,SYN-021,SYN-021-EMP-01,responsibility,roadmap_ownership,Owned merchant and credit product roadmaps.,synthetic_fixture,synthetic_curated,1.0
+SYN-021-EMP-02-E01,SYN-021,SYN-021-EMP-02,leadership,people_leadership,Led several product teams and portfolio-level priorities.,synthetic_fixture,synthetic_curated,1.0
+SYN-022-EMP-01-E01,SYN-022,SYN-022-EMP-01,leadership,people_leadership,Led multiple teams and strategic product areas.,synthetic_fixture,synthetic_curated,1.0
+SYN-022-EMP-02-E01,SYN-022,SYN-022-EMP-02,leadership,people_leadership,Led product managers and portfolio strategy.,synthetic_fixture,synthetic_curated,1.0
+SYN-023-EMP-01-E01,SYN-023,SYN-023-EMP-01,scope,strategy_portfolio,Led multi-product roadmap and product managers.,synthetic_fixture,synthetic_curated,1.0
+SYN-023-EMP-02-E01,SYN-023,SYN-023-EMP-02,scope,strategy_portfolio,Owned product organisation strategy and leadership.,synthetic_fixture,synthetic_curated,1.0
+SYN-024-EMP-01-E01,SYN-024,SYN-024-EMP-01,responsibility,prioritisation_backlog,"Owned backlog, customer prioritisation and release outcomes.",synthetic_fixture,synthetic_curated,1.0
+SYN-024-EMP-02-E01,SYN-024,SYN-024-EMP-02,responsibility,roadmap_ownership,Owned product strategy and roadmap.,synthetic_fixture,synthetic_curated,1.0
+SYN-025-EMP-01-E01,SYN-025,SYN-025-EMP-01,responsibility,roadmap_ownership,Managed multiple client product roadmaps and delivery teams.,synthetic_fixture,synthetic_curated,1.0
+SYN-025-EMP-02-E01,SYN-025,SYN-025-EMP-02,responsibility,product_discovery,"Owned a single product's strategy, discovery and lifecycle.",synthetic_fixture,synthetic_curated,1.0
+SYN-026-EMP-01-E01,SYN-026,SYN-026-EMP-01,responsibility,outcome_ownership,Owned regional product adoption and localisation.,synthetic_fixture,synthetic_curated,1.0
+SYN-026-EMP-02-E01,SYN-026,SYN-026-EMP-02,responsibility,roadmap_ownership,Owned national-scale product experience and cross-functional roadmap.,synthetic_fixture,synthetic_curated,1.0
+SYN-027-EMP-01-E01,SYN-027,SYN-027-EMP-01,responsibility,outcome_ownership,Owned production planning and factory workflow software.,synthetic_fixture,synthetic_curated,1.0
+SYN-027-EMP-02-E01,SYN-027,SYN-027-EMP-02,responsibility,outcome_ownership,Owned cloud workflow and integrations products.,synthetic_fixture,synthetic_curated,1.0
+SYN-028-EMP-01-E01,SYN-028,SYN-028-EMP-01,responsibility,roadmap_ownership,Owned initial product and growth roadmap.,synthetic_fixture,synthetic_curated,1.0
+SYN-028-EMP-02-E01,SYN-028,SYN-028-EMP-02,leadership,people_leadership,Led multiple product areas and mentored PMs.,synthetic_fixture,synthetic_curated,1.0
+SYN-029-EMP-01-E01,SYN-029,SYN-029-EMP-01,responsibility,outcome_ownership,Owned subscription and content discovery experiences.,synthetic_fixture,synthetic_curated,1.0
+SYN-029-EMP-02-E01,SYN-029,SYN-029-EMP-02,responsibility,outcome_ownership,Owned customer payments and transaction lifecycle.,synthetic_fixture,synthetic_curated,1.0
+SYN-030-EMP-01-E01,SYN-030,SYN-030-EMP-01,responsibility,outcome_ownership,Owned workflow products and customer integrations.,synthetic_fixture,synthetic_curated,1.0
+SYN-030-EMP-02-E01,SYN-030,SYN-030-EMP-02,responsibility,outcome_ownership,Owned platform APIs and developer-facing capabilities.,synthetic_fixture,synthetic_curated,1.0
+SYN-031-EMP-01-E01,SYN-031,SYN-031-EMP-01,responsibility,outcome_ownership,Owned feature execution and product metrics.,synthetic_fixture,synthetic_curated,1.0
+SYN-031-EMP-02-E01,SYN-031,SYN-031-EMP-02,responsibility,roadmap_ownership,Owned a product area and roadmap.,synthetic_fixture,synthetic_curated,1.0
+SYN-031-EMP-03-E01,SYN-031,SYN-031-EMP-03,leadership,people_leadership,Led cross-product strategy and mentored PMs.,synthetic_fixture,synthetic_curated,1.0
+SYN-032-EMP-01-E01,SYN-032,SYN-032-EMP-01,scope,strategy_portfolio,Led product strategy across multiple enterprise products.,synthetic_fixture,synthetic_curated,1.0
+SYN-032-EMP-02-E01,SYN-032,SYN-032-EMP-02,scope,strategy_portfolio,Led product organisation and portfolio-level planning.,synthetic_fixture,synthetic_curated,1.0
+SYN-033-EMP-01-E01,SYN-033,SYN-033-EMP-01,responsibility,prioritisation_backlog,Owned the backlog for merchant onboarding features.,synthetic_fixture,synthetic_curated,1.0
+SYN-033-EMP-02-E01,SYN-033,SYN-033-EMP-02,responsibility,roadmap_ownership,Owned the payments checkout roadmap and conversion outcomes.,synthetic_fixture,synthetic_curated,1.0
+SYN-033-EMP-03-E01,SYN-033,SYN-033-EMP-03,leadership,people_leadership,Led two product managers and the lending product strategy.,synthetic_fixture,synthetic_curated,1.0
+SYN-034-EMP-01-E01,SYN-034,SYN-034-EMP-01,responsibility,technical_engineering,Built client billing integrations and APIs.,synthetic_fixture,synthetic_curated,1.0
+SYN-034-EMP-02-E01,SYN-034,SYN-034-EMP-02,responsibility,requirements_analysis,Wrote PRDs and user flows for two early-stage startup clients.,synthetic_fixture,synthetic_curated,1.0
+SYN-034-EMP-03-E01,SYN-034,SYN-034-EMP-03,responsibility,outcome_ownership,Owned search ranking experiments and conversion outcomes.,synthetic_fixture,synthetic_curated,1.0
+SYN-034-EMP-04-E01,SYN-034,SYN-034-EMP-04,responsibility,roadmap_ownership,Owned the discovery feed roadmap.,synthetic_fixture,synthetic_curated,1.0
+SYN-035-EMP-01-E01,SYN-035,SYN-035-EMP-01,responsibility,technical_engineering,Built reporting services for enterprise customers.,synthetic_fixture,synthetic_curated,1.0
+SYN-035-EMP-02-E01,SYN-035,SYN-035-EMP-02,responsibility,,Supported client engagements across several workstreams.,synthetic_fixture,synthetic_curated,1.0
+SYN-035-EMP-03-E01,SYN-035,SYN-035-EMP-03,responsibility,roadmap_ownership,Owned the workflow automation roadmap.,synthetic_fixture,synthetic_curated,1.0
+SYN-036-EMP-01-E01,SYN-036,SYN-036-EMP-01,responsibility,quality_testing,Executed regression testing and tracked defects.,synthetic_fixture,synthetic_curated,1.0
+SYN-036-EMP-02-E01,SYN-036,SYN-036-EMP-02,responsibility,delivery_execution,Maintained the sprint backlog and wrote acceptance criteria for an outsourced delivery team.,synthetic_fixture,synthetic_curated,1.0
+SYN-036-EMP-03-E01,SYN-036,SYN-036-EMP-03,responsibility,roadmap_ownership,Owned customer onboarding outcomes and roadmap.,synthetic_fixture,synthetic_curated,1.0
+SYN-037-EMP-01-E01,SYN-037,SYN-037-EMP-01,responsibility,requirements_analysis,Translated lending requirements into process maps.,synthetic_fixture,synthetic_curated,1.0
+SYN-037-EMP-02-E01,SYN-037,SYN-037-EMP-02,responsibility,prioritisation_backlog,Owned the loan application backlog.,synthetic_fixture,synthetic_curated,1.0
+SYN-037-EMP-03-E01,SYN-037,SYN-037-EMP-03,responsibility,roadmap_ownership,Owned the credit product roadmap and approval outcomes.,synthetic_fixture,synthetic_curated,1.0
+SYN-038-EMP-01-E01,SYN-038,SYN-038-EMP-01,responsibility,requirements_analysis,Wrote a PRD for a referral feature.,synthetic_fixture,synthetic_curated,1.0
+SYN-038-EMP-02-E01,SYN-038,SYN-038-EMP-02,responsibility,data_analysis,Built weekly sales dashboards.,synthetic_fixture,synthetic_curated,1.0
+SYN-038-EMP-03-E01,SYN-038,SYN-038-EMP-03,responsibility,data_analysis,Analysed checkout funnel data and evaluated experiments.,synthetic_fixture,synthetic_curated,1.0
+SYN-038-EMP-04-E01,SYN-038,SYN-038-EMP-04,responsibility,prioritisation_backlog,Owned the returns experience backlog.,synthetic_fixture,synthetic_curated,1.0
+SYN-039-EMP-01-E01,SYN-039,SYN-039-EMP-01,responsibility,technical_engineering,Built mobile banking APIs for a client programme.,synthetic_fixture,synthetic_curated,1.0
+SYN-039-EMP-02-E01,SYN-039,SYN-039-EMP-02,responsibility,product_discovery,Ran customer interviews and wrote a PRD for a loyalty feature.,synthetic_fixture,synthetic_curated,1.0
+SYN-039-EMP-03-E01,SYN-039,SYN-039-EMP-03,responsibility,prioritisation_backlog,Owned the billing integrations backlog.,synthetic_fixture,synthetic_curated,1.0
+SYN-039-EMP-04-E01,SYN-039,SYN-039-EMP-04,responsibility,roadmap_ownership,Owned the billing product roadmap and revenue outcomes.,synthetic_fixture,synthetic_curated,1.0
+SYN-040-EMP-01-E01,SYN-040,SYN-040-EMP-01,responsibility,roadmap_ownership,Owned the creator monetisation roadmap.,synthetic_fixture,synthetic_curated,1.0
+SYN-040-EMP-02-E01,SYN-040,SYN-040-EMP-02,responsibility,technical_engineering,Built and sold a workflow tool to early customers.,synthetic_fixture,synthetic_curated,1.0
+SYN-040-EMP-03-E01,SYN-040,SYN-040-EMP-03,responsibility,roadmap_ownership,Owned the platform integrations roadmap across three teams.,synthetic_fixture,synthetic_curated,1.0
+SYN-040-EMP-04-E01,SYN-040,SYN-040-EMP-04,scope,strategy_portfolio,Led cross-product strategy for platform APIs.,synthetic_fixture,synthetic_curated,1.0
+SYN-041-EMP-01-E01,SYN-041,SYN-041-EMP-01,responsibility,outcome_ownership,Owned onboarding experiments for a self-serve plan.,synthetic_fixture,synthetic_curated,1.0
+SYN-041-EMP-02-E01,SYN-041,SYN-041-EMP-02,responsibility,prioritisation_backlog,Owned the self-serve billing backlog.,synthetic_fixture,synthetic_curated,1.0
+SYN-041-EMP-03-E01,SYN-041,SYN-041-EMP-03,responsibility,roadmap_ownership,Owned the merchant payouts roadmap.,synthetic_fixture,synthetic_curated,1.0

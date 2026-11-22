@@ -1,0 +1,1708 @@
+{
+ "key": "pm-v1",
+ "role_family": "product_management",
+ "approved_on": "2026-11-16",
+ "levels": {
+  "pm": [
+   "PM-PM"
+  ],
+  "senior_pm": [
+   "PM-SPM"
+  ]
+ },
+ "contexts": {
+  "commercial_product": "Commercial products (B2B SaaS, consumer)",
+  "growth_analytics": "Growth or analytical roles",
+  "platform_api": "Platform or API products",
+  "data_product": "Data products",
+  "regulated_domain": "Regulated domains (for example fintech)",
+  "ai_product": "AI products"
+ },
+ "curation_note": "Curated evidence base (15 sources), not a representative survey of the job market. No single source defines the profession.",
+ "sources": [
+  {
+   "key": "F1",
+   "kind": "framework",
+   "source_type": "official_career_framework",
+   "company_name": "UK Government Digital Service",
+   "publisher": "UK Government Digital Service",
+   "role_title": "Product manager (Government Digital and Data Capability Framework)",
+   "role_id": null,
+   "location": null,
+   "geography": "GB",
+   "url": "https://understand-digital-data-roles-skills.service.gov.uk/role/product-manager",
+   "published_at": "2025-02-28",
+   "retrieved_at": "2026-11-16",
+   "last_verified_at": "2026-11-16",
+   "revalidate_by": "2027-11-16",
+   "status": "current",
+   "status_note": null,
+   "licence": "Open Government Licence v3.0",
+   "attribution": "Contains public sector information licensed under the Open Government Licence v3.0.",
+   "level_as_stated": "Product manager; Senior product manager",
+   "context_tags": [
+    "public_sector"
+   ]
+  },
+  {
+   "key": "F3",
+   "kind": "national_standard",
+   "source_type": "other_public_source",
+   "company_name": "IT-ITeS Sector Skills Council NASSCOM",
+   "publisher": "SSC NASSCOM, National Qualification Register (NCVET)",
+   "role_title": "Product Manager - Web & Mobile (qualification file, NSQF level 6)",
+   "role_id": null,
+   "location": null,
+   "geography": "IN",
+   "url": "https://www.nqr.gov.in/qualification/file/Qfile_Product%20Manager%20-%20Web%20&%20Mobile.pdf",
+   "published_at": "2025-02-18",
+   "retrieved_at": "2026-11-16",
+   "last_verified_at": "2026-11-16",
+   "revalidate_by": "2028-02-18",
+   "status": "current",
+   "status_note": "Training qualification: its entry criteria are training eligibility, not job requirements",
+   "licence": "No licence stated: structured facts and module titles with attribution only",
+   "attribution": "Qualification file 'Product Manager - Web & Mobile', SSC NASSCOM, National Qualification Register (approved 2025-02-18).",
+   "level_as_stated": "NSQF level 6",
+   "context_tags": [
+    "it_services",
+    "web_mobile"
+   ]
+  },
+  {
+   "key": "F4",
+   "kind": "employer_framework",
+   "source_type": "official_career_framework",
+   "company_name": "GitLab",
+   "publisher": "GitLab",
+   "role_title": "Product Manager job family (P3, P4)",
+   "role_id": null,
+   "location": "Remote",
+   "geography": "GLOBAL",
+   "url": "https://handbook.gitlab.com/job-families/product/product-manager/",
+   "published_at": null,
+   "retrieved_at": "2026-11-16",
+   "last_verified_at": "2026-11-16",
+   "revalidate_by": "2027-05-16",
+   "status": "current",
+   "status_note": "Employer-specific framework (D17)",
+   "licence": "CC BY-SA 4.0: attribution and link; no substantial passages or adapted product content without a share-alike review",
+   "attribution": "GitLab Handbook, Product Manager job family, CC BY-SA 4.0.",
+   "level_as_stated": "P3 Product Manager; P4 Senior Product Manager",
+   "context_tags": [
+    "b2b_saas",
+    "developer_tools"
+   ]
+  },
+  {
+   "key": "J1",
+   "kind": "job_posting",
+   "source_type": "official_job_posting",
+   "company_name": "Razorpay",
+   "publisher": "Razorpay",
+   "role_title": "Product Manager II (merchant onboarding on storefronts)",
+   "role_id": "PM-PM",
+   "location": "Bengaluru, IN",
+   "geography": "IN",
+   "url": "https://job-boards.greenhouse.io/razorpaysoftwareprivatelimited/jobs/4749335005",
+   "published_at": null,
+   "retrieved_at": "2026-11-16",
+   "last_verified_at": "2026-11-16",
+   "revalidate_by": "2026-11-30",
+   "status": "current",
+   "status_note": null,
+   "licence": "Employer copyright: structured paraphrase and one short attributed quotation only; never the full text",
+   "attribution": "Job posting by Razorpay, retrieved 2026-11-16",
+   "level_as_stated": "PM",
+   "context_tags": [
+    "fintech",
+    "b2b_payments"
+   ],
+   "entry_background_stance": "not_specified",
+   "accepted_backgrounds": [],
+   "excluded_backgrounds": [],
+   "entry_quote": null,
+   "entry_locator": "Description (no experience or background requirement stated)",
+   "employer_criteria": []
+  },
+  {
+   "key": "J2",
+   "kind": "job_posting",
+   "source_type": "official_job_posting",
+   "company_name": "Razorpay",
+   "publisher": "Razorpay",
+   "role_title": "Senior Product Manager (growth)",
+   "role_id": "PM-SPM",
+   "location": "Bengaluru, IN",
+   "geography": "IN",
+   "url": "https://job-boards.greenhouse.io/razorpaysoftwareprivatelimited/jobs/4736585005",
+   "published_at": null,
+   "retrieved_at": "2026-11-16",
+   "last_verified_at": "2026-11-16",
+   "revalidate_by": "2026-11-30",
+   "status": "current",
+   "status_note": null,
+   "licence": "Employer copyright: structured paraphrase and one short attributed quotation only; never the full text",
+   "attribution": "Job posting by Razorpay, retrieved 2026-11-16",
+   "level_as_stated": "Senior PM",
+   "context_tags": [
+    "fintech",
+    "growth"
+   ],
+   "entry_background_stance": "requires_target_role_experience",
+   "accepted_backgrounds": [],
+   "excluded_backgrounds": [],
+   "entry_quote": "You have 6+ years of experience in product management with at least 2 years focused on growth or PLG initiatives.",
+   "entry_locator": "Requirements",
+   "employer_criteria": [
+    {
+     "requirement_type": "experience",
+     "text": "6+ years of product management, at least 2 focused on growth or PLG",
+     "min_years_experience": 6,
+     "importance": "required"
+    }
+   ]
+  },
+  {
+   "key": "J3",
+   "kind": "job_posting",
+   "source_type": "official_job_posting",
+   "company_name": "Razorpay",
+   "publisher": "Razorpay",
+   "role_title": "Senior Product Manager (Onboarding Infra)",
+   "role_id": "PM-SPM",
+   "location": "Bengaluru, IN",
+   "geography": "IN",
+   "url": "https://job-boards.greenhouse.io/razorpaysoftwareprivatelimited/jobs/4749341005",
+   "published_at": null,
+   "retrieved_at": "2026-11-16",
+   "last_verified_at": "2026-11-16",
+   "revalidate_by": "2026-11-30",
+   "status": "current",
+   "status_note": null,
+   "licence": "Employer copyright: structured paraphrase and one short attributed quotation only; never the full text",
+   "attribution": "Job posting by Razorpay, retrieved 2026-11-16",
+   "level_as_stated": "Senior PM",
+   "context_tags": [
+    "fintech",
+    "platform_api"
+   ],
+   "entry_background_stance": "requires_target_role_experience",
+   "accepted_backgrounds": [],
+   "excluded_backgrounds": [],
+   "entry_quote": "4 to 8 years of product management, with at least 2 years owning a platform, API or infrastructure product.",
+   "entry_locator": "Experience and background",
+   "employer_criteria": [
+    {
+     "requirement_type": "experience",
+     "text": "4 to 8 years of product management, at least 2 owning a platform, API or infrastructure product",
+     "min_years_experience": 4,
+     "importance": "required"
+    },
+    {
+     "requirement_type": "education",
+     "text": "A computer science or engineering degree is not mandatory; ideally 2+ years as an engineer or architect before product",
+     "min_years_experience": null,
+     "importance": "preferred"
+    }
+   ]
+  },
+  {
+   "key": "J4",
+   "kind": "job_posting",
+   "source_type": "official_job_posting",
+   "company_name": "Paytm",
+   "publisher": "Paytm",
+   "role_title": "Product Management - Lending Product (Senior PM)",
+   "role_id": "PM-SPM",
+   "location": "Noida / Bangalore, IN",
+   "geography": "IN",
+   "url": "https://jobs.lever.co/paytm/f24d29df-a4ad-4991-ae78-1c5c24c63c75",
+   "published_at": null,
+   "retrieved_at": "2026-11-16",
+   "last_verified_at": "2026-11-16",
+   "revalidate_by": "2026-11-30",
+   "status": "current",
+   "status_note": null,
+   "licence": "Employer copyright: structured paraphrase and one short attributed quotation only; never the full text",
+   "attribution": "Job posting by Paytm, retrieved 2026-11-16",
+   "level_as_stated": "Senior PM",
+   "context_tags": [
+    "consumer",
+    "fintech"
+   ],
+   "entry_background_stance": "requires_target_role_experience",
+   "accepted_backgrounds": [],
+   "excluded_backgrounds": [],
+   "entry_quote": "Strong product management experience, with demonstrated ownership of products from concept to launch and scale.",
+   "entry_locator": "Requirements (title: Experience 4-8 yrs)",
+   "employer_criteria": [
+    {
+     "requirement_type": "experience",
+     "text": "4-8 years (from the title), strong product management experience",
+     "min_years_experience": 4,
+     "importance": "required"
+    },
+    {
+     "requirement_type": "education",
+     "text": "B.E./B.Tech or equivalent technical education",
+     "min_years_experience": null,
+     "importance": "preferred"
+    },
+    {
+     "requirement_type": "domain",
+     "text": "FinTech, lending, payments or financial services",
+     "min_years_experience": null,
+     "importance": "preferred"
+    }
+   ]
+  },
+  {
+   "key": "J5",
+   "kind": "job_posting",
+   "source_type": "official_job_posting",
+   "company_name": "Paytm",
+   "publisher": "Paytm",
+   "role_title": "Product Management - UPI Product",
+   "role_id": "PM-PM",
+   "location": "Noida, IN",
+   "geography": "IN",
+   "url": "https://jobs.lever.co/paytm/c173ccbe-d2ae-42f4-9cd5-72f69ff45a0f",
+   "published_at": null,
+   "retrieved_at": "2026-11-16",
+   "last_verified_at": "2026-11-16",
+   "revalidate_by": "2026-11-30",
+   "status": "current",
+   "status_note": null,
+   "licence": "Employer copyright: structured paraphrase and one short attributed quotation only; never the full text",
+   "attribution": "Job posting by Paytm, retrieved 2026-11-16",
+   "level_as_stated": "PM",
+   "context_tags": [
+    "consumer",
+    "payments"
+   ],
+   "entry_background_stance": "requires_target_role_experience",
+   "accepted_backgrounds": [],
+   "excluded_backgrounds": [],
+   "entry_quote": "3+ years of Product Management experience building consumer-facing digital products.",
+   "entry_locator": "Requirements",
+   "employer_criteria": [
+    {
+     "requirement_type": "experience",
+     "text": "3+ years of product management building consumer-facing digital products",
+     "min_years_experience": 3,
+     "importance": "required"
+    }
+   ]
+  },
+  {
+   "key": "J6",
+   "kind": "job_posting",
+   "source_type": "official_job_posting",
+   "company_name": "Freshworks",
+   "publisher": "Freshworks",
+   "role_title": "Senior Product Manager",
+   "role_id": "PM-SPM",
+   "location": "Chennai, IN",
+   "geography": "IN",
+   "url": "https://jobs.smartrecruiters.com/Freshworks/744000161428419-senior-product-manager",
+   "published_at": "2026-11-13",
+   "retrieved_at": "2026-11-16",
+   "last_verified_at": "2026-11-16",
+   "revalidate_by": "2026-11-30",
+   "status": "current",
+   "status_note": null,
+   "licence": "Employer copyright: structured paraphrase and one short attributed quotation only; never the full text",
+   "attribution": "Job posting by Freshworks, retrieved 2026-11-16",
+   "level_as_stated": "Senior PM",
+   "context_tags": [
+    "b2b_saas"
+   ],
+   "entry_background_stance": "not_specified",
+   "accepted_backgrounds": [],
+   "excluded_backgrounds": [],
+   "entry_quote": null,
+   "entry_locator": "Qualifications (experience framed as software-team experience, not PM; transitions not addressed)",
+   "employer_criteria": [
+    {
+     "requirement_type": "experience",
+     "text": "8+ years in global or cross-functional software teams at a software product company",
+     "min_years_experience": 8,
+     "importance": "required"
+    }
+   ]
+  },
+  {
+   "key": "J7",
+   "kind": "job_posting",
+   "source_type": "official_job_posting",
+   "company_name": "Adobe",
+   "publisher": "Adobe",
+   "role_title": "Principal Product Manager - Firefly UI (body: Senior Product Manager)",
+   "role_id": "PM-SPM",
+   "location": "Noida / Bangalore, IN",
+   "geography": "IN",
+   "url": "https://adobe.wd5.myworkdayjobs.com/external_experienced/job/Noida/Senior-Product-Manager_R167941",
+   "published_at": "2026-10-28",
+   "retrieved_at": "2026-11-16",
+   "last_verified_at": "2026-11-16",
+   "revalidate_by": "2026-11-30",
+   "status": "current",
+   "status_note": null,
+   "licence": "Employer copyright: structured paraphrase and one short attributed quotation only; never the full text",
+   "attribution": "Job posting by Adobe, retrieved 2026-11-16",
+   "level_as_stated": "Senior PM or above (title says Principal)",
+   "context_tags": [
+    "saas",
+    "api",
+    "ai_product"
+   ],
+   "entry_background_stance": "requires_target_role_experience",
+   "accepted_backgrounds": [],
+   "excluded_backgrounds": [],
+   "entry_quote": "8-10 years of product management experience, preferably in a large technology company",
+   "entry_locator": "Qualifications",
+   "employer_criteria": [
+    {
+     "requirement_type": "experience",
+     "text": "8-10 years of product management",
+     "min_years_experience": 8,
+     "importance": "required"
+    },
+    {
+     "requirement_type": "education",
+     "text": "Bachelor's in Computer Science, Engineering, Business or similar (Master's or equivalent experience preferred)",
+     "min_years_experience": null,
+     "importance": "required"
+    }
+   ]
+  },
+  {
+   "key": "J8",
+   "kind": "job_posting",
+   "source_type": "official_job_posting",
+   "company_name": "Adobe",
+   "publisher": "Adobe",
+   "role_title": "Senior Product Manager, Privacy Engineering",
+   "role_id": "PM-SPM",
+   "location": "San Jose / San Francisco, US",
+   "geography": "US",
+   "url": "https://adobe.wd5.myworkdayjobs.com/external_experienced/job/San-Jose/Senior-Product-Manager--Privacy-Engineering_R171542",
+   "published_at": "2026-09-18",
+   "retrieved_at": "2026-11-16",
+   "last_verified_at": "2026-11-16",
+   "revalidate_by": "2026-11-30",
+   "status": "current",
+   "status_note": null,
+   "licence": "Employer copyright: structured paraphrase and one short attributed quotation only; never the full text",
+   "attribution": "Job posting by Adobe, retrieved 2026-11-16",
+   "level_as_stated": "Senior PM",
+   "context_tags": [
+    "data_platform",
+    "enterprise"
+   ],
+   "entry_background_stance": "requires_target_role_experience",
+   "accepted_backgrounds": [],
+   "excluded_backgrounds": [],
+   "entry_quote": "5+ years of relevant product management experience in either commercial or well-defined internal-facing products.",
+   "entry_locator": "What is Needed to Succeed",
+   "employer_criteria": [
+    {
+     "requirement_type": "experience",
+     "text": "5+ years of relevant product management",
+     "min_years_experience": 5,
+     "importance": "required"
+    },
+    {
+     "requirement_type": "education",
+     "text": "Bachelor's or advanced degree in a quantitative field, EE, CS or equivalent",
+     "min_years_experience": null,
+     "importance": "required"
+    }
+   ]
+  },
+  {
+   "key": "J9",
+   "kind": "job_posting",
+   "source_type": "official_job_posting",
+   "company_name": "Wayfair",
+   "publisher": "Wayfair",
+   "role_title": "Senior Product Manager, Growth",
+   "role_id": "PM-SPM",
+   "location": "Boston, US",
+   "geography": "US",
+   "url": "https://www.wayfair.com/careers/job/senior-product-manager--growth/2-20775",
+   "published_at": "2026-10-15",
+   "retrieved_at": "2026-11-16",
+   "last_verified_at": "2026-11-16",
+   "revalidate_by": "2026-11-30",
+   "status": "current",
+   "status_note": null,
+   "licence": "Employer copyright: structured paraphrase and one short attributed quotation only; never the full text",
+   "attribution": "Job posting by Wayfair, retrieved 2026-11-16",
+   "level_as_stated": "Senior PM",
+   "context_tags": [
+    "consumer",
+    "marketplace",
+    "ecommerce"
+   ],
+   "entry_background_stance": "requires_target_role_experience",
+   "accepted_backgrounds": [],
+   "excluded_backgrounds": [],
+   "entry_quote": "6+ years experience working in product management.",
+   "entry_locator": "We Are A Match Because You Have",
+   "employer_criteria": [
+    {
+     "requirement_type": "experience",
+     "text": "6+ years in product management; e-commerce valued",
+     "min_years_experience": 6,
+     "importance": "required"
+    },
+    {
+     "requirement_type": "education",
+     "text": "Bachelor's in CS or CE, or an equivalent combination of education and experience",
+     "min_years_experience": null,
+     "importance": "required"
+    }
+   ]
+  },
+  {
+   "key": "J10",
+   "kind": "job_posting",
+   "source_type": "official_job_posting",
+   "company_name": "Sarvam",
+   "publisher": "Sarvam",
+   "role_title": "Product Manager On-Device & Edge AI",
+   "role_id": "PM-PM",
+   "location": "Bengaluru, IN",
+   "geography": "IN",
+   "url": "https://www.sarvam.ai/careers/jobs/f462051e-ec76-45cf-96c5-e0192dd4dcc6",
+   "published_at": null,
+   "retrieved_at": "2026-11-16",
+   "last_verified_at": "2026-11-16",
+   "revalidate_by": "2026-11-30",
+   "status": "current",
+   "status_note": null,
+   "licence": "Employer copyright: structured paraphrase and one short attributed quotation only; never the full text",
+   "attribution": "Job posting by Sarvam, retrieved 2026-11-16",
+   "level_as_stated": "PM (title) with 4-8 years",
+   "context_tags": [
+    "enterprise",
+    "ai_product",
+    "edge",
+    "platform_api"
+   ],
+   "entry_background_stance": "requires_target_role_experience",
+   "accepted_backgrounds": [],
+   "excluded_backgrounds": [],
+   "entry_quote": "4–8 years of product management experience, with significant time in enterprise SaaS or B2B AI products",
+   "entry_locator": "What We're Looking For",
+   "employer_criteria": [
+    {
+     "requirement_type": "experience",
+     "text": "4-8 years of product management, significant time in enterprise SaaS or B2B AI",
+     "min_years_experience": 4,
+     "importance": "required"
+    },
+    {
+     "requirement_type": "education",
+     "text": "Background in Computer Science or Electrical Engineering",
+     "min_years_experience": null,
+     "importance": "preferred"
+    }
+   ]
+  },
+  {
+   "key": "J11",
+   "kind": "job_posting",
+   "source_type": "official_job_posting",
+   "company_name": "Target",
+   "publisher": "Target",
+   "role_title": "Product Manager - Household Data Products",
+   "role_id": "PM-PM",
+   "location": "Bangalore, IN",
+   "geography": "IN",
+   "url": "https://corporate.target.com/jobs/w58/34/product-manager",
+   "published_at": "2026-11-04",
+   "retrieved_at": "2026-11-16",
+   "last_verified_at": "2026-11-16",
+   "revalidate_by": "2026-11-30",
+   "status": "current",
+   "status_note": null,
+   "licence": "Employer copyright: structured paraphrase and one short attributed quotation only; never the full text",
+   "attribution": "Job posting by Target, retrieved 2026-11-16",
+   "level_as_stated": "PM",
+   "context_tags": [
+    "data_product",
+    "retail"
+   ],
+   "entry_background_stance": "accepts_adjacent",
+   "accepted_backgrounds": [
+    "data",
+    "analytics",
+    "engineering (with product exposure)"
+   ],
+   "excluded_backgrounds": [],
+   "entry_quote": "3–5 years in product management (or 5+ years in closely related data, analytics or engineering roles with product exposure)",
+   "entry_locator": "What you'll bring",
+   "employer_criteria": [
+    {
+     "requirement_type": "experience",
+     "text": "3-5 years in product management, or 5+ years in related data, analytics or engineering roles with product exposure",
+     "min_years_experience": 3,
+     "importance": "required"
+    }
+   ]
+  },
+  {
+   "key": "J12",
+   "kind": "job_posting",
+   "source_type": "official_job_posting",
+   "company_name": "Sarvam",
+   "publisher": "Sarvam",
+   "role_title": "Product Manager (general)",
+   "role_id": "PM-PM",
+   "location": "Bengaluru, IN",
+   "geography": "IN",
+   "url": "https://careers.kula.ai/sarvam-ai/28847",
+   "published_at": "2026-03-23",
+   "retrieved_at": "2026-11-16",
+   "last_verified_at": "2026-11-16",
+   "revalidate_by": null,
+   "status": "expired",
+   "status_note": "Closed for new applications ('No longer accepting applications'), verified 2026-11-16. Dated eligibility evidence only (D22)",
+   "licence": "Employer copyright: structured paraphrase and one short attributed quotation only; never the full text",
+   "attribution": "Job posting by Sarvam, retrieved 2026-11-16",
+   "level_as_stated": "PM",
+   "context_tags": [
+    "ai_product",
+    "consumer",
+    "enterprise"
+   ],
+   "entry_background_stance": "excludes_specified_transitions",
+   "accepted_backgrounds": [],
+   "excluded_backgrounds": [
+    "consulting",
+    "project management",
+    "program management"
+   ],
+   "entry_quote": "Currently a product manager — this role is not for people transitioning from consulting, project management, or program management",
+   "entry_locator": "What We're Looking For",
+   "employer_criteria": [
+    {
+     "requirement_type": "experience",
+     "text": "3-7 years of product management; currently a product manager",
+     "min_years_experience": 3,
+     "importance": "required"
+    }
+   ]
+  }
+ ],
+ "requirements": [
+  {
+   "key": "C1",
+   "requirement_class": "core",
+   "applies_to_level": "all",
+   "title": "Understand users and customers and set priorities from their needs",
+   "description": "Learn about users and customers through research, feedback and data, and use that to decide what matters.",
+   "contexts": [],
+   "direct_areas": [
+    "product_discovery",
+    "design_research"
+   ],
+   "transferable_areas": [
+    "customer_account_management",
+    "requirements_analysis"
+   ],
+   "direct_skills": [
+    "SKL-CUSTOMER-DISCOVERY",
+    "SKL-USER-RESEARCH",
+    "SKL-CUSTOMER-INTERVIEWS",
+    "SKL-PRODUCT-DISCOVERY",
+    "SKL-VOC",
+    "SKL-USABILITY-TESTING",
+    "SKL-CUSTOMER-FEEDBACK",
+    "SKL-CLIENT-DISCOVERY",
+    "SKL-MARKET-RESEARCH",
+    "SKL-PRODUCT-RESEARCH",
+    "SKL-DISCOVERY"
+   ],
+   "transferable_skills": [],
+   "transferable_role_families": [],
+   "transfer_rationale": "Account management and requirements analysis involve learning customers' needs directly, which carries over to product discovery.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": {
+    "pm": "Own product area",
+    "senior_pm": "Leads validation of major bets"
+   },
+   "evidence": [
+    {
+     "source": "F1",
+     "stance": "supports",
+     "note": "Applying user-centred insights: practitioner at PM and Senior PM"
+    },
+    {
+     "source": "F3",
+     "stance": "supports",
+     "note": "N8127 requirements through client interaction"
+    },
+    {
+     "source": "F4",
+     "stance": "supports"
+    },
+    {
+     "source": "J1",
+     "stance": "supports"
+    },
+    {
+     "source": "J2",
+     "stance": "supports"
+    },
+    {
+     "source": "J4",
+     "stance": "supports"
+    },
+    {
+     "source": "J5",
+     "stance": "supports"
+    },
+    {
+     "source": "J6",
+     "stance": "supports"
+    },
+    {
+     "source": "J7",
+     "stance": "supports"
+    },
+    {
+     "source": "J9",
+     "stance": "supports"
+    },
+    {
+     "source": "J10",
+     "stance": "supports",
+     "note": "IT-admin and enterprise buyer personas"
+    },
+    {
+     "source": "J11",
+     "stance": "qualifies",
+     "note": "The users are internal business teams"
+    }
+   ]
+  },
+  {
+   "key": "C2",
+   "requirement_class": "core",
+   "applies_to_level": "all",
+   "title": "Product vision, strategy and roadmap",
+   "description": "Set direction for a product and turn it into a sequenced roadmap.",
+   "contexts": [],
+   "direct_areas": [
+    "roadmap_ownership",
+    "strategy_portfolio"
+   ],
+   "transferable_areas": [
+    "prioritisation_backlog"
+   ],
+   "direct_skills": [
+    "SKL-PRODUCT-ROADMAP",
+    "SKL-ROADMAP-OWNERSHIP",
+    "SKL-PRODUCT-STRATEGY",
+    "SKL-PORTFOLIO-STRATEGY",
+    "SKL-PLATFORM-STRATEGY"
+   ],
+   "transferable_skills": [
+    "SKL-TECHNICAL-ROADMAP",
+    "SKL-BUSINESS-STRATEGY",
+    "SKL-ANNUAL-PLANNING",
+    "SKL-PORTFOLIO-PLANNING",
+    "SKL-INTEGRATION-ROADMAPS"
+   ],
+   "transferable_role_families": [],
+   "transfer_rationale": "Prioritising a backlog, or planning technical or business roadmaps, exercises the sequencing judgement a product roadmap needs.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": {
+    "pm": "Own product area",
+    "senior_pm": "Wider scope, longer horizon"
+   },
+   "evidence": [
+    {
+     "source": "F1",
+     "stance": "supports",
+     "note": "Strategic ownership: working (PM) to practitioner (Senior PM)"
+    },
+    {
+     "source": "F3",
+     "stance": "supports",
+     "note": "N8401 product strategy and lifecycle"
+    },
+    {
+     "source": "F4",
+     "stance": "supports"
+    },
+    {
+     "source": "J1",
+     "stance": "supports"
+    },
+    {
+     "source": "J2",
+     "stance": "supports"
+    },
+    {
+     "source": "J3",
+     "stance": "supports"
+    },
+    {
+     "source": "J4",
+     "stance": "supports"
+    },
+    {
+     "source": "J5",
+     "stance": "supports"
+    },
+    {
+     "source": "J6",
+     "stance": "supports"
+    },
+    {
+     "source": "J7",
+     "stance": "supports"
+    },
+    {
+     "source": "J8",
+     "stance": "supports"
+    },
+    {
+     "source": "J9",
+     "stance": "supports"
+    },
+    {
+     "source": "J10",
+     "stance": "supports"
+    },
+    {
+     "source": "J11",
+     "stance": "qualifies",
+     "note": "Roadmap shaped with the manager at PM level"
+    }
+   ]
+  },
+  {
+   "key": "C3",
+   "requirement_class": "core",
+   "applies_to_level": "all",
+   "title": "Turn problems into requirements and priorities",
+   "description": "Write specifications, PRDs or data contracts, own a backlog and decide what comes first.",
+   "contexts": [],
+   "direct_areas": [
+    "requirements_analysis",
+    "prioritisation_backlog"
+   ],
+   "transferable_areas": [
+    "delivery_execution",
+    "quality_testing",
+    "technical_engineering"
+   ],
+   "direct_skills": [
+    "SKL-PRD-WRITING",
+    "SKL-REQUIREMENTS",
+    "SKL-BACKLOG",
+    "SKL-USER-STORIES",
+    "SKL-PORTFOLIO-PRIORITISATION"
+   ],
+   "transferable_skills": [
+    "SKL-BUSINESS-ANALYSIS",
+    "SKL-BACKLOG-COORDINATION",
+    "SKL-BACKLOG-SUPPORT",
+    "SKL-TECHNICAL-DOCUMENTATION",
+    "SKL-AGILE"
+   ],
+   "transferable_role_families": [],
+   "transfer_rationale": "Delivery, testing and engineering work involve writing or consuming precise specifications and acceptance criteria.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "F3",
+     "stance": "supports"
+    },
+    {
+     "source": "F4",
+     "stance": "supports"
+    },
+    {
+     "source": "J1",
+     "stance": "supports"
+    },
+    {
+     "source": "J3",
+     "stance": "supports"
+    },
+    {
+     "source": "J5",
+     "stance": "supports"
+    },
+    {
+     "source": "J7",
+     "stance": "supports"
+    },
+    {
+     "source": "J8",
+     "stance": "supports"
+    },
+    {
+     "source": "J10",
+     "stance": "supports"
+    },
+    {
+     "source": "J11",
+     "stance": "supports"
+    }
+   ]
+  },
+  {
+   "key": "C4",
+   "requirement_class": "core",
+   "applies_to_level": "all",
+   "title": "Define outcome metrics and make data-informed decisions",
+   "description": "Decide how success is measured and use data to choose and adjust.",
+   "contexts": [],
+   "direct_areas": [
+    "outcome_ownership",
+    "data_analysis"
+   ],
+   "transferable_areas": [
+    "go_to_market_growth"
+   ],
+   "direct_skills": [
+    "SKL-PRODUCT-METRICS",
+    "SKL-METRICS",
+    "SKL-PRODUCT-ANALYTICS",
+    "SKL-EXPERIMENTATION",
+    "SKL-FUNNEL-ANALYTICS"
+   ],
+   "transferable_skills": [
+    "SKL-ANALYTICS",
+    "SKL-BUSINESS-ANALYTICS",
+    "SKL-SQL",
+    "SKL-POWER-BI",
+    "SKL-TABLEAU"
+   ],
+   "transferable_role_families": [],
+   "transfer_rationale": "Growth work is run against measurable targets; general analytics skills support defining and reading product metrics.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": {
+    "pm": "Defines metrics for own area",
+    "senior_pm": "Owns north-star and input metrics; runs experiments"
+   },
+   "evidence": [
+    {
+     "source": "F1",
+     "stance": "supports",
+     "note": "Managing product outcomes"
+    },
+    {
+     "source": "F3",
+     "stance": "supports",
+     "note": "N8403 KPIs"
+    },
+    {
+     "source": "F4",
+     "stance": "supports"
+    },
+    {
+     "source": "J2",
+     "stance": "supports"
+    },
+    {
+     "source": "J4",
+     "stance": "supports"
+    },
+    {
+     "source": "J5",
+     "stance": "supports"
+    },
+    {
+     "source": "J6",
+     "stance": "supports"
+    },
+    {
+     "source": "J9",
+     "stance": "supports"
+    },
+    {
+     "source": "J10",
+     "stance": "supports"
+    },
+    {
+     "source": "J11",
+     "stance": "supports"
+    }
+   ]
+  },
+  {
+   "key": "C5",
+   "requirement_class": "core",
+   "applies_to_level": "all",
+   "title": "Cross-functional collaboration and stakeholder communication",
+   "description": "Work with engineering, design, business and leadership, including without direct authority.",
+   "contexts": [],
+   "direct_areas": [
+    "stakeholder_management"
+   ],
+   "transferable_areas": [
+    "customer_account_management",
+    "people_leadership",
+    "delivery_execution"
+   ],
+   "direct_skills": [
+    "SKL-STAKEHOLDER-MANAGEMENT",
+    "SKL-STAKEHOLDER-COMMUNICATION",
+    "SKL-STAKEHOLDER-COORDINATION",
+    "SKL-CROSS-FUNCTIONAL-LEADERSHIP",
+    "SKL-EXECUTIVE-COMMUNICATION",
+    "SKL-EXECUTIVE-ALIGNMENT"
+   ],
+   "transferable_skills": [],
+   "transferable_role_families": [],
+   "transfer_rationale": "Managing accounts, leading people and coordinating delivery all require aligning people with different goals.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "F1",
+     "stance": "supports",
+     "note": "Stakeholder relationship management: practitioner"
+    },
+    {
+     "source": "F3",
+     "stance": "qualifies",
+     "note": "Team-performance module is optional (N9011)"
+    },
+    {
+     "source": "F4",
+     "stance": "supports"
+    },
+    {
+     "source": "J1",
+     "stance": "supports"
+    },
+    {
+     "source": "J2",
+     "stance": "supports"
+    },
+    {
+     "source": "J3",
+     "stance": "supports"
+    },
+    {
+     "source": "J4",
+     "stance": "supports"
+    },
+    {
+     "source": "J5",
+     "stance": "supports"
+    },
+    {
+     "source": "J6",
+     "stance": "supports"
+    },
+    {
+     "source": "J7",
+     "stance": "supports"
+    },
+    {
+     "source": "J8",
+     "stance": "supports"
+    },
+    {
+     "source": "J9",
+     "stance": "supports"
+    },
+    {
+     "source": "J10",
+     "stance": "supports"
+    },
+    {
+     "source": "J11",
+     "stance": "supports",
+     "note": "Working effectively without direct authority"
+    }
+   ]
+  },
+  {
+   "key": "C6",
+   "requirement_class": "core",
+   "applies_to_level": "all",
+   "title": "Iterative delivery across the product lifecycle",
+   "description": "Ship, measure and iterate, from launch to retirement.",
+   "contexts": [],
+   "direct_areas": [
+    "delivery_execution"
+   ],
+   "transferable_areas": [
+    "quality_testing",
+    "operations_process",
+    "technical_engineering"
+   ],
+   "direct_skills": [
+    "SKL-AGILE",
+    "SKL-DELIVERY"
+   ],
+   "transferable_skills": [
+    "SKL-PROGRAM-DELIVERY",
+    "SKL-PROGRAM-MANAGEMENT"
+   ],
+   "transferable_role_families": [],
+   "transfer_rationale": "Testing, operations and engineering work are part of shipping and running a product iteratively.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "F1",
+     "stance": "supports",
+     "note": "Agile and lean practices; life cycle management"
+    },
+    {
+     "source": "F3",
+     "stance": "supports"
+    },
+    {
+     "source": "F4",
+     "stance": "supports"
+    },
+    {
+     "source": "J4",
+     "stance": "supports"
+    },
+    {
+     "source": "J6",
+     "stance": "supports"
+    },
+    {
+     "source": "J10",
+     "stance": "supports"
+    },
+    {
+     "source": "J11",
+     "stance": "qualifies",
+     "note": "Definition through UAT to production for data products"
+    }
+   ]
+  },
+  {
+   "key": "X1",
+   "requirement_class": "context_dependent",
+   "applies_to_level": "all",
+   "title": "Hands-on analytics (SQL, dashboards, experimentation tooling)",
+   "description": "Query and analyse product data directly.",
+   "contexts": [
+    "growth_analytics",
+    "platform_api",
+    "data_product"
+   ],
+   "direct_areas": [
+    "data_analysis"
+   ],
+   "transferable_areas": [],
+   "direct_skills": [
+    "SKL-SQL",
+    "SKL-PRODUCT-ANALYTICS",
+    "SKL-FUNNEL-ANALYTICS",
+    "SKL-EXPERIMENTATION",
+    "SKL-TABLEAU",
+    "SKL-POWER-BI",
+    "SKL-ANALYTICS",
+    "SKL-BUSINESS-ANALYTICS"
+   ],
+   "transferable_skills": [
+    "SKL-PYTHON",
+    "SKL-METRICS"
+   ],
+   "transferable_role_families": [],
+   "transfer_rationale": "Programming or metric work supports learning product analytics tooling.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "J12",
+     "stance": "supports",
+     "note": "Closed posting: comfortable writing SQL, setting up funnels"
+    },
+    {
+     "source": "J2",
+     "stance": "supports"
+    },
+    {
+     "source": "J3",
+     "stance": "supports"
+    },
+    {
+     "source": "J4",
+     "stance": "supports"
+    },
+    {
+     "source": "J5",
+     "stance": "supports"
+    },
+    {
+     "source": "J11",
+     "stance": "qualifies",
+     "note": "Strong analytics fluency; SQL not named"
+    },
+    {
+     "source": "J10",
+     "stance": "qualifies",
+     "note": "Experiments and data; SQL not named"
+    },
+    {
+     "source": "F1",
+     "stance": "silent",
+     "note": "Asks for data-informed decisions, not hands-on analytics"
+    },
+    {
+     "source": "F3",
+     "stance": "silent"
+    },
+    {
+     "source": "F4",
+     "stance": "silent"
+    }
+   ]
+  },
+  {
+   "key": "X2",
+   "requirement_class": "context_dependent",
+   "applies_to_level": "all",
+   "title": "Owning go-to-market",
+   "description": "Plan and run a product's launch and adoption with sales and marketing.",
+   "contexts": [
+    "commercial_product"
+   ],
+   "direct_areas": [
+    "go_to_market_growth"
+   ],
+   "transferable_areas": [
+    "customer_account_management"
+   ],
+   "direct_skills": [
+    "SKL-GTM",
+    "SKL-GROWTH",
+    "SKL-MARKETING-STRATEGY",
+    "SKL-ENTERPRISE-SALES",
+    "SKL-GROWTH-MARKETING",
+    "SKL-FULL-FUNNEL-CAMPAIGNS"
+   ],
+   "transferable_skills": [
+    "SKL-CUSTOMER-SUCCESS",
+    "SKL-ONBOARDING",
+    "SKL-CONSUMER-ENGAGEMENT"
+   ],
+   "transferable_role_families": [],
+   "transfer_rationale": "Customer-facing account and success work exposes how products are adopted and sold.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "F3",
+     "stance": "supports",
+     "note": "N8404 go-to-market (core module)"
+    },
+    {
+     "source": "J1",
+     "stance": "supports"
+    },
+    {
+     "source": "J2",
+     "stance": "supports"
+    },
+    {
+     "source": "J10",
+     "stance": "supports",
+     "note": "B2B go-to-market alignment with sales and customer success"
+    },
+    {
+     "source": "J7",
+     "stance": "qualifies",
+     "note": "Works with go-to-market teams"
+    },
+    {
+     "source": "F1",
+     "stance": "silent",
+     "note": "Public sector"
+    },
+    {
+     "source": "J11",
+     "stance": "silent",
+     "note": "Internal data products"
+    }
+   ]
+  },
+  {
+   "key": "X3",
+   "requirement_class": "context_dependent",
+   "applies_to_level": "all",
+   "title": "Technical depth: APIs, platform and data architecture, security",
+   "description": "Work at engineering depth on APIs, systems or data platforms.",
+   "contexts": [
+    "platform_api",
+    "data_product"
+   ],
+   "direct_areas": [
+    "technical_engineering"
+   ],
+   "transferable_areas": [],
+   "direct_skills": [
+    "SKL-APIS",
+    "SKL-SYSTEM-DESIGN",
+    "SKL-INTEGRATIONS",
+    "SKL-CLOUD",
+    "SKL-SOFTWARE-ENGINEERING",
+    "SKL-PLATFORM-PRODUCTS",
+    "SKL-DEVELOPER-EXPERIENCE"
+   ],
+   "transferable_skills": [
+    "SKL-TECHNICAL-DOCUMENTATION",
+    "SKL-PYTHON",
+    "SKL-FRONTEND-ENGINEERING"
+   ],
+   "transferable_role_families": [
+    "software_engineering",
+    "qa_testing",
+    "data_science"
+   ],
+   "transfer_rationale": "Engineering, testing or data-science roles build working knowledge of systems and data that platform PM work relies on.",
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "J3",
+     "stance": "supports",
+     "note": "APIs, distributed systems; a CS degree is not required"
+    },
+    {
+     "source": "J7",
+     "stance": "supports"
+    },
+    {
+     "source": "J8",
+     "stance": "supports"
+    },
+    {
+     "source": "J10",
+     "stance": "supports",
+     "note": "APIs, multi-tenant SaaS, enterprise authentication"
+    },
+    {
+     "source": "J11",
+     "stance": "supports",
+     "note": "Medallion architecture, lakehouse, lineage and cost"
+    }
+   ]
+  },
+  {
+   "key": "X4",
+   "requirement_class": "context_dependent",
+   "applies_to_level": "all",
+   "title": "Domain and regulatory knowledge",
+   "description": "Know the domain's customers, rules and regulation.",
+   "contexts": [
+    "regulated_domain"
+   ],
+   "direct_areas": [],
+   "transferable_areas": [],
+   "direct_skills": [
+    "SKL-FINTECH",
+    "SKL-PAYMENTS"
+   ],
+   "transferable_skills": [],
+   "transferable_role_families": [],
+   "transfer_rationale": "Assessed only from stated domain skills; employer industry is shown as context, never as proof of domain knowledge.",
+   "gap_basis": "not_inferable",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "J3",
+     "stance": "supports",
+     "note": "Indian KYC regulation, DPDP Act"
+    },
+    {
+     "source": "J4",
+     "stance": "supports",
+     "note": "Fintech strongly preferred"
+    },
+    {
+     "source": "J5",
+     "stance": "supports",
+     "note": "NPCI/RBI"
+    },
+    {
+     "source": "J8",
+     "stance": "supports",
+     "note": "Privacy frameworks"
+    },
+    {
+     "source": "J9",
+     "stance": "supports",
+     "note": "E-commerce valued"
+    },
+    {
+     "source": "J10",
+     "stance": "supports",
+     "note": "Enterprise IT, data residency"
+    },
+    {
+     "source": "J11",
+     "stance": "supports",
+     "note": "Identity resolution, householding, consent"
+    }
+   ]
+  },
+  {
+   "key": "X5",
+   "requirement_class": "context_dependent",
+   "applies_to_level": "all",
+   "title": "Value, business case and unit economics",
+   "description": "Reason about cost, revenue or public value of product decisions.",
+   "contexts": [
+    "commercial_product"
+   ],
+   "direct_areas": [],
+   "transferable_areas": [
+    "outcome_ownership",
+    "strategy_portfolio"
+   ],
+   "direct_skills": [
+    "SKL-PRICING",
+    "SKL-MONETISATION",
+    "SKL-FINANCIAL-MODELLING"
+   ],
+   "transferable_skills": [
+    "SKL-BUSINESS-STRATEGY"
+   ],
+   "transferable_role_families": [],
+   "transfer_rationale": "Owning outcomes or strategy involves weighing value against cost.",
+   "gap_basis": "not_inferable",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "F1",
+     "stance": "supports",
+     "note": "Creating value for money"
+    },
+    {
+     "source": "F3",
+     "stance": "qualifies",
+     "note": "Revenue optimisation is an optional module"
+    },
+    {
+     "source": "J2",
+     "stance": "supports",
+     "note": "Unit economics to P&L"
+    },
+    {
+     "source": "J11",
+     "stance": "qualifies",
+     "note": "Translate capability into measurable business outcomes"
+    }
+   ]
+  },
+  {
+   "key": "X6",
+   "requirement_class": "context_dependent",
+   "applies_to_level": "all",
+   "title": "Practical AI and LLM experience",
+   "description": "Emerging and time-sensitive: hands-on work with AI products, agents or evaluation.",
+   "contexts": [
+    "ai_product"
+   ],
+   "direct_areas": [],
+   "transferable_areas": [],
+   "direct_skills": [
+    "SKL-AGENTIC-WORKFLOWS",
+    "SKL-AI-COPILOT",
+    "SKL-EVALUATION",
+    "SKL-LANGGRAPH",
+    "SKL-MACHINE-LEARNING",
+    "SKL-ML-SYSTEMS",
+    "SKL-MLOPS",
+    "SKL-MODEL-DEPLOYMENT",
+    "SKL-RAG",
+    "SKL-RECOMMENDATION-SYSTEMS",
+    "SKL-AI-PRODUCT"
+   ],
+   "transferable_skills": [],
+   "transferable_role_families": [
+    "data_science"
+   ],
+   "transfer_rationale": "Data-science roles build familiarity with models and evaluation; the taxonomy has no responsibility area for AI work.",
+   "gap_basis": "not_inferable",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "J12",
+     "stance": "supports",
+     "note": "Closed posting: built agents, evals"
+    },
+    {
+     "source": "F4",
+     "stance": "supports",
+     "note": "All levels use AI"
+    },
+    {
+     "source": "J2",
+     "stance": "supports"
+    },
+    {
+     "source": "J3",
+     "stance": "supports"
+    },
+    {
+     "source": "J4",
+     "stance": "supports"
+    },
+    {
+     "source": "J7",
+     "stance": "supports"
+    },
+    {
+     "source": "J8",
+     "stance": "supports"
+    },
+    {
+     "source": "J5",
+     "stance": "qualifies",
+     "note": "Preferred"
+    },
+    {
+     "source": "J6",
+     "stance": "qualifies",
+     "note": "Leveraging AI"
+    },
+    {
+     "source": "J10",
+     "stance": "supports",
+     "note": "Requirements for HITL and agentic workflows"
+    },
+    {
+     "source": "J11",
+     "stance": "silent"
+    },
+    {
+     "source": "F1",
+     "stance": "silent"
+    },
+    {
+     "source": "F3",
+     "stance": "silent"
+    }
+   ]
+  },
+  {
+   "key": "X7",
+   "requirement_class": "context_dependent",
+   "applies_to_level": "all",
+   "title": "Data governance and data quality",
+   "description": "Certify, monitor and control access to data products.",
+   "contexts": [
+    "data_product"
+   ],
+   "direct_areas": [],
+   "transferable_areas": [
+    "quality_testing",
+    "data_analysis"
+   ],
+   "direct_skills": [],
+   "transferable_skills": [],
+   "transferable_role_families": [],
+   "transfer_rationale": "Quality and data-analysis work involve checking and reconciling data; the taxonomy has no governance area or skill.",
+   "gap_basis": "not_inferable",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "J11",
+     "stance": "supports",
+     "note": "Critical, not optional"
+    },
+    {
+     "source": "J8",
+     "stance": "supports",
+     "note": "Privacy"
+    },
+    {
+     "source": "J10",
+     "stance": "qualifies",
+     "note": "Compliance and auditability"
+    }
+   ]
+  },
+  {
+   "key": "L1",
+   "requirement_class": "differentiator",
+   "applies_to_level": "senior_pm",
+   "title": "Scope: several products or a complex, high-risk product",
+   "description": "Own a group of products, or one complex or high-risk product.",
+   "contexts": [],
+   "direct_areas": [
+    "strategy_portfolio"
+   ],
+   "transferable_areas": [
+    "roadmap_ownership"
+   ],
+   "direct_skills": [
+    "SKL-PORTFOLIO-STRATEGY",
+    "SKL-PORTFOLIO-PLANNING",
+    "SKL-PORTFOLIO-PRIORITISATION"
+   ],
+   "transferable_skills": [],
+   "transferable_role_families": [],
+   "transfer_rationale": "Owning a roadmap is the single-product form of portfolio scope.",
+   "gap_basis": "not_inferable",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "F1",
+     "stance": "supports",
+     "note": "Senior PM level description"
+    },
+    {
+     "source": "F4",
+     "stance": "supports",
+     "note": "P4: adjacent groups"
+    },
+    {
+     "source": "J4",
+     "stance": "supports",
+     "note": "Multiple concurrent initiatives"
+    },
+    {
+     "source": "J9",
+     "stance": "supports",
+     "note": "12+ month, multi-domain horizon"
+    }
+   ]
+  },
+  {
+   "key": "L2",
+   "requirement_class": "differentiator",
+   "applies_to_level": "senior_pm",
+   "title": "Coaching, mentoring and product leadership",
+   "description": "Develop other product people and lead without a title.",
+   "contexts": [],
+   "direct_areas": [
+    "people_leadership"
+   ],
+   "transferable_areas": [],
+   "direct_skills": [
+    "SKL-LEADERSHIP",
+    "SKL-TEAM-LEADERSHIP",
+    "SKL-PEOPLE-LEADERSHIP"
+   ],
+   "transferable_skills": [],
+   "transferable_role_families": [],
+   "transfer_rationale": null,
+   "gap_basis": "reviewed_classified_evidence",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "F1",
+     "stance": "supports",
+     "note": "Product management at expert level, coaching"
+    },
+    {
+     "source": "F4",
+     "stance": "supports",
+     "note": "P4 mentors junior PMs"
+    },
+    {
+     "source": "J4",
+     "stance": "supports"
+    },
+    {
+     "source": "J7",
+     "stance": "supports"
+    },
+    {
+     "source": "J9",
+     "stance": "supports"
+    }
+   ]
+  },
+  {
+   "key": "L3",
+   "requirement_class": "differentiator",
+   "applies_to_level": "senior_pm",
+   "title": "Executive-level communication",
+   "description": "Present direction, risks and results to senior leaders.",
+   "contexts": [],
+   "direct_areas": [],
+   "transferable_areas": [
+    "stakeholder_management"
+   ],
+   "direct_skills": [
+    "SKL-EXECUTIVE-COMMUNICATION",
+    "SKL-EXECUTIVE-ALIGNMENT"
+   ],
+   "transferable_skills": [
+    "SKL-STAKEHOLDER-COMMUNICATION"
+   ],
+   "transferable_role_families": [],
+   "transfer_rationale": "Stakeholder management builds the communication executive work extends.",
+   "gap_basis": "not_inferable",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "F4",
+     "stance": "supports",
+     "note": "Exec-ready narratives"
+    },
+    {
+     "source": "J4",
+     "stance": "supports",
+     "note": "Senior leadership"
+    },
+    {
+     "source": "J8",
+     "stance": "supports",
+     "note": "Presents to directors and VPs"
+    }
+   ]
+  },
+  {
+   "key": "L4",
+   "requirement_class": "differentiator",
+   "applies_to_level": "senior_pm",
+   "title": "Planning across teams and functions",
+   "description": "Plan work that spans several teams and manage the dependencies.",
+   "contexts": [],
+   "direct_areas": [],
+   "transferable_areas": [
+    "delivery_execution",
+    "stakeholder_management"
+   ],
+   "direct_skills": [
+    "SKL-CROSS-FUNCTIONAL-LEADERSHIP"
+   ],
+   "transferable_skills": [
+    "SKL-PROGRAM-MANAGEMENT",
+    "SKL-PROGRAM-DELIVERY"
+   ],
+   "transferable_role_families": [],
+   "transfer_rationale": "Coordinating delivery and stakeholders across a programme is the closest existing experience.",
+   "gap_basis": "not_inferable",
+   "level_notes": null,
+   "evidence": [
+    {
+     "source": "F1",
+     "stance": "supports",
+     "note": "Plan work across multiple teams"
+    },
+    {
+     "source": "F4",
+     "stance": "supports",
+     "note": "Manages cross-team dependencies"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+skill_family,label,description
+product_management,Product management,"Product strategy, roadmap, backlog, requirements and monetisation."
+discovery_research,Discovery and research,"Customer, user and market discovery and research."
+analytics_data,Analytics and data,"Metrics, experimentation, analysis and BI tools."
+ai_ml,AI and machine learning,"Machine learning, AI products and LLM tooling."
+engineering_technical,Engineering and technical,"Software engineering, APIs, systems and platforms."
+design_ux,Design and UX,"Interaction design, prototyping and design tools."
+quality_testing,Quality and testing,"Quality engineering, testing and incident analysis."
+business_strategy,Business strategy and analysis,"Business strategy, analysis, modelling and process design."
+go_to_market_growth,Go-to-market and growth,"Marketing, growth, sales and customer adoption."
+leadership_people,Leadership and people,Leading and managing people and teams.
+stakeholder_communication,Stakeholder communication,Stakeholder and executive communication and alignment.
+delivery_execution,Delivery and execution,"Agile delivery, program management and backlog coordination."
+operations_process,Operations and process,"Operations, workflow and process improvement, risk."
+domain_industry,Domain and industry,"Industry, domain and business-model knowledge."

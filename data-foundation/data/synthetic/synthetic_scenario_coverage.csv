@@ -1,0 +1,42 @@
+profile_id,scenario,career_sequence,test_tags,dataset_class,analytics_eligible,synthetic_demo_allowed
+SYN-001,software_engineer_to_apm_pm,Software Engineer -> Associate Product Manager -> Product Manager,non_pm_to_pm|direct_company_move|engineering_background,synthetic_test_fixture,false,true
+SYN-002,qa_to_ba_to_pm,QA Engineer -> Business Analyst -> Product Manager,non_pm_to_pm|intermediate_route|qa_background,synthetic_test_fixture,false,true
+SYN-003,qa_direct_to_pm,Quality Engineer -> Associate Product Manager -> Product Manager,non_pm_to_pm|direct_route|qa_background,synthetic_test_fixture,false,true
+SYN-004,data_analyst_to_product_analyst_to_pm,Data Analyst -> Product Analyst -> Associate Product Manager -> Product Manager,non_pm_to_pm|intermediate_route|analytics_background,synthetic_test_fixture,false,true
+SYN-005,business_analyst_to_pm,Business Analyst -> Product Manager,non_pm_to_pm|direct_route|business_analysis,synthetic_test_fixture,false,true
+SYN-006,consultant_to_product_analyst_to_pm,Management Consultant -> Product Analyst -> Product Manager,non_pm_to_pm|intermediate_route|consulting_background,synthetic_test_fixture,false,true
+SYN-007,marketing_to_growth_pm,Marketing Manager -> Growth Product Manager,non_pm_to_pm|direct_route|marketing_background,synthetic_test_fixture,false,true
+SYN-008,sales_to_b2b_pm,Account Manager -> Product Manager,non_pm_to_pm|direct_route|sales_background,synthetic_test_fixture,false,true
+SYN-009,customer_success_to_apm_pm,Customer Success Manager -> Associate Product Manager -> Product Manager,non_pm_to_pm|intermediate_route|customer_success,synthetic_test_fixture,false,true
+SYN-010,ux_designer_to_apm_pm,UX Designer -> Associate Product Manager -> Product Manager,non_pm_to_pm|intermediate_route|design_background,synthetic_test_fixture,false,true
+SYN-011,project_manager_to_apm_pm,Project Manager -> Associate Product Manager -> Product Manager,non_pm_to_pm|intermediate_route|project_management,synthetic_test_fixture,false,true
+SYN-012,operations_to_product_analyst_to_pm,Operations Manager -> Product Analyst -> Product Manager,non_pm_to_pm|intermediate_route|operations,synthetic_test_fixture,false,true
+SYN-013,finance_to_fintech_pm,Financial Analyst -> Product Manager,non_pm_to_pm|direct_route|finance_background,synthetic_test_fixture,false,true
+SYN-014,hr_analyst_to_hrtech_pm,HR Operations Analyst -> Product Manager,non_pm_to_pm|direct_route|hr_background,synthetic_test_fixture,false,true
+SYN-015,support_engineer_to_technical_pm,Support Engineer -> Product Manager,non_pm_to_pm|direct_route|support_background,synthetic_test_fixture,false,true
+SYN-016,data_scientist_to_pm,Data Scientist -> Product Manager,non_pm_to_pm|direct_route|data_science_background,synthetic_test_fixture,false,true
+SYN-017,apm_to_pm_external,Associate Product Manager -> Product Manager,pm_to_pm|seniority_progression|external_move,synthetic_test_fixture,false,true
+SYN-018,pm_fintech_to_pm_marketplace,Product Manager -> Product Manager,pm_to_pm|lateral_move|industry_change,synthetic_test_fixture,false,true
+SYN-019,startup_pm_to_enterprise_pm,Product Manager -> Product Manager,pm_to_pm|lateral_move|company_scale_change,synthetic_test_fixture,false,true
+SYN-020,pm_to_spm_internal,Product Manager -> Senior Product Manager,pm_to_pm|seniority_progression|internal_promotion,synthetic_test_fixture,false,true
+SYN-021,pm_to_spm_external,Product Manager -> Senior Product Manager,pm_to_pm|seniority_progression|external_move,synthetic_test_fixture,false,true
+SYN-022,spm_to_director_internal,Senior Product Manager -> Director of Product,pm_to_pm|seniority_progression|internal_promotion,synthetic_test_fixture,false,true
+SYN-023,spm_to_director_external,Senior Product Manager -> Director of Product,pm_to_pm|seniority_progression|external_move,synthetic_test_fixture,false,true
+SYN-024,product_owner_to_pm,Product Owner -> Product Manager,pm_to_pm|title_transition|external_move,synthetic_test_fixture,false,true
+SYN-025,agency_pm_to_inhouse_pm,Product Manager -> Product Manager,pm_to_pm|lateral_move|business_model_change,synthetic_test_fixture,false,true
+SYN-026,regional_pm_to_larger_company_pm,Product Manager -> Product Manager,pm_to_pm|lateral_move|scale_change,synthetic_test_fixture,false,true
+SYN-027,manufacturing_pm_to_saas_pm,Product Manager -> Product Manager,pm_to_pm|lateral_move|industry_change,synthetic_test_fixture,false,true
+SYN-028,pm_to_spm_startup_scope,Product Manager -> Senior Product Manager,pm_to_pm|seniority_progression|internal_promotion,synthetic_test_fixture,false,true
+SYN-029,media_pm_to_fintech_pm,Product Manager -> Product Manager,pm_to_pm|lateral_move|industry_change,synthetic_test_fixture,false,true
+SYN-030,pm_b2b_saas_to_platform_pm,Product Manager -> Product Manager,pm_to_pm|lateral_move|product_scope_change,synthetic_test_fixture,false,true
+SYN-031,apm_pm_spm_progression,Associate Product Manager -> Product Manager -> Senior Product Manager,pm_to_pm|seniority_progression|internal_promotion,synthetic_test_fixture,false,true
+SYN-032,director_cross_company_move,Director of Product -> Director of Product,pm_to_pm|same_seniority_company_move,synthetic_test_fixture,false,true
+SYN-033,same_month_internal_promotion,Associate Product Manager -> Product Manager -> Senior Product Manager,same_month_boundary|internal_promotion|pm_progression|edge_case,synthetic_test_fixture,false,true
+SYN-034,overlapping_primary_roles_and_parallel_freelance,Software Engineer -> Product Consultant (Freelance) -> Associate Product Manager -> Product Manager,overlapping_jobs|parallel_freelance|services_to_product|edge_case,synthetic_test_fixture,false,true
+SYN-035,unresolved_intermediate_role,Software Engineer -> Associate -> Product Manager,unresolved_intermediate_role|ambiguous_title|edge_case,synthetic_test_fixture,false,true
+SYN-036,ambiguous_product_owner_needs_review,QA Engineer -> Product Owner -> Product Manager,ambiguous_title|product_owner_needs_review|edge_case,synthetic_test_fixture,false,true
+SYN-037,year_precision_dates,Business Analyst -> Associate Product Manager -> Product Manager,incomplete_dates|year_precision|edge_case,synthetic_test_fixture,false,true
+SYN-038,unknown_dates_and_internship,Product Management Intern -> Data Analyst -> Product Analyst -> Associate Product Manager,incomplete_dates|unknown_dates|internship|edge_case,synthetic_test_fixture,false,true
+SYN-039,career_break_full_time_mba,Software Engineer -> Product Manager Intern -> Associate Product Manager -> Product Manager,career_break|education_gap|mba|internship_during_education|edge_case,synthetic_test_fixture,false,true
+SYN-040,founder_then_lead_and_principal_pm,Product Manager -> Co-founder -> Lead Product Manager -> Principal Product Manager,founder_in_sequence|lead_pm|principal_pm|edge_case|explicit_founder_classification,synthetic_test_fixture,false,true
+SYN-041,reclassified_full_time_internship,Product Management Intern (12-month programme) -> Associate Product Manager -> Product Manager,internship_reclassified|explicit_classification_override|edge_case,synthetic_test_fixture,false,true

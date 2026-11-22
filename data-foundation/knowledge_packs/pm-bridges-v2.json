@@ -1,0 +1,325 @@
+{
+ "key": "pm-bridges-v2",
+ "kind": "bridge_role_catalogue",
+ "role_family": "product_management",
+ "requirements_pack": "pm-v1.2",
+ "sources_from": "pm-bridges-v1",
+ "approved_on": "2026-11-16",
+ "approval_note": "Content corrections from the Phase 4 review and D31-D35 (2026-11-16).",
+ "curation_note": "Each bridge separates source facts (responsibilities, levels, stated entry requirements) from Trace's curated reading (which pack requirements it develops fully or partly) and from hypotheses (transitions no cited source establishes). Partial development never closes a gap (D32): each partial requirement states what the bridge develops, what remains incomplete and what responsibility to seek. Program Manager is not a bridge (D27). Product Owner is alternative-only (D34).",
+ "bridges": [
+  {
+   "target_role_id": "PM-PM",
+   "bridge_role_id": "PM-APM",
+   "responsibilities": [
+    "Works with product managers to advocate for user needs and prioritise delivery of the greatest value",
+    "Manages a smaller product with support, or a subset of features of a larger product",
+    "Learns product management approaches and methods (prioritisation, roadmapping, evidence-based decisions)",
+    "Works in multidisciplinary teams to plan and deliver product increments"
+   ],
+   "develops": [
+    "C1",
+    "C3",
+    "C5",
+    "C6"
+   ],
+   "partly_develops": [
+    "C2",
+    "C4",
+    "X5",
+    "L2"
+   ],
+   "develops_note": "F1 sets the associate level at 'working' in user-centred insight, product management, stakeholder relationships and agile practice (C1, C3, C5, C6 developed), and at 'awareness' in strategic ownership, managing product outcomes, value for money and product leadership (C2, C4, X5, L2 only partly).",
+   "entry_basis": "open_entry",
+   "entry_requirements_stated": "No formal requirements are stated. F1 says the level 'can be an entry-level role for civil servants who are looking to move into a digital role' (UK public sector); applying this to other employers is Trace's reading.",
+   "entry_signal_families": [],
+   "entry_signal_requirements": [],
+   "suitable_backgrounds": "People moving into product work from other roles, including other digital roles; the framework names business analyst and delivery roles among those that share product manager skills.",
+   "suitability_note": "Suits someone whose profile does not yet show several core product management responsibilities: the role gives supervised ownership of features before owning a product.",
+   "tradeoff_note": "Associate is a more junior level than Product Manager; for an experienced professional it can mean a step down in level before moving up.",
+   "level_step": false,
+   "source_keys": [
+    "pm-v1:F1"
+   ],
+   "source_notes": {
+    "pm-v1:F1": "Role levels: associate product manager (skills at working and awareness levels; routes in)"
+   },
+   "requirements_pack": "pm-v1.2",
+   "entry_evidence": "source_stated_context",
+   "progression_evidence": "source_stated",
+   "may_be_primary": true,
+   "partial_development": {
+    "C2": {
+     "develops": "Roadmapping and prioritisation methods for features or a smaller product (F1: product management, working).",
+     "incomplete": "Ownership of a product's strategy and direction (F1: strategic ownership, awareness only).",
+     "seek": "Ask to own the roadmap for a feature area and to contribute to the product's strategy."
+    },
+    "C4": {
+     "develops": "Recommending evidence-based decisions using insight and data, and awareness of measuring outcomes.",
+     "incomplete": "Defining and owning outcome metrics and deciding from them (F1: managing product outcomes, awareness only).",
+     "seek": "Ask to define and own the success metric of a feature you manage, and to make the follow-up decision."
+    },
+    "X5": {
+     "develops": "Awareness of value for money.",
+     "incomplete": "Building or owning a business case.",
+     "seek": "Contribute the cost and value analysis to a business case."
+    },
+    "L2": {
+     "develops": "Awareness of product leadership.",
+     "incomplete": "Coaching or leading other product practitioners.",
+     "seek": "Mentor a newer team member on product work."
+    }
+   }
+  },
+  {
+   "target_role_id": "PM-PM",
+   "bridge_role_id": "ROLE-PAN",
+   "responsibilities": [
+    "Analyses product data for product managers, engineers and designers",
+    "Defines product metrics and builds dashboards that show whether the product is succeeding",
+    "Finds opportunities in data to improve adoption, retention, engagement or monetisation",
+    "Helps design, run and evaluate A/B tests on the user journey"
+   ],
+   "develops": [
+    "C4",
+    "C5",
+    "X1"
+   ],
+   "partly_develops": [
+    "C1",
+    "X5"
+   ],
+   "develops_note": "Curated reading of the GitLab definition: the analyst is the technical owner of product KPIs, defines the metrics that show success and evaluates experiments with recommendations (C4, under the D35 standard of defining metrics and using them to influence decisions; the decision itself stays with the product manager), works with product teams (C5) and does hands-on analytics (X1). Learning about users is through data only (C1 partly). It does not involve roadmaps (C2), requirements (C3) or delivery (C6).",
+   "entry_basis": "signals",
+   "entry_requirements_stated": "Employer-specific (GitLab): 3+ years of data analysis, 2+ years on feature and usage metrics or A/B testing, experience supporting a product team, advanced SQL. Other employers set their own criteria. The move from Product Analyst to Product Manager is not described by the source (a curated hypothesis).",
+   "entry_signal_families": [
+    "data_analytics",
+    "data_science",
+    "product_analytics"
+   ],
+   "entry_signal_requirements": [
+    "X1"
+   ],
+   "suitable_backgrounds": "Data analysis, data science or analytics roles, or any background with demonstrated hands-on analytics.",
+   "suitability_note": "Suits someone with analytics evidence whose gaps are in understanding users and owning outcome metrics: the role works on those with product teams every day.",
+   "tradeoff_note": "An analyst role supports product decisions rather than owning them; a later move is still needed to own a product.",
+   "level_step": false,
+   "source_keys": [
+    "pm-bridges-v1:B1"
+   ],
+   "source_notes": {
+    "pm-bridges-v1:B1": "Responsibilities and base requirements of the Product Analyst (Intermediate) level"
+   },
+   "requirements_pack": "pm-v1.2",
+   "entry_evidence": "employer_stated",
+   "progression_evidence": "hypothesis",
+   "may_be_primary": true,
+   "partial_development": {
+    "C1": {
+     "develops": "Learning about users through product data, segmentation and experiments.",
+     "incomplete": "Direct research with users, and deciding what matters from it.",
+     "seek": "Join the product manager's discovery interviews and propose priorities from what you learn."
+    },
+    "X5": {
+     "develops": "Monetisation and revenue analysis.",
+     "incomplete": "Owning a business case.",
+     "seek": "Prepare the value case for one product decision."
+    }
+   }
+  },
+  {
+   "target_role_id": "PM-PM",
+   "bridge_role_id": "ROLE-OWNER",
+   "responsibilities": [
+    "Is accountable for maximising the value of the product resulting from the team's work",
+    "Develops and communicates the Product Goal",
+    "Creates and communicates backlog items and orders the backlog",
+    "Keeps the backlog transparent and understood; stakeholders who want changes must convince the Product Owner"
+   ],
+   "develops": [
+    "C3",
+    "C5",
+    "C6"
+   ],
+   "partly_develops": [
+    "C2"
+   ],
+   "develops_note": "Develops turning problems into requirements and priorities (C3), stakeholder communication (C5) and iterative delivery (C6). The Product Goal is a step towards product direction (C2, partly). Discovery (C1) and outcome metrics (C4) are not part of the accountability as defined.",
+   "entry_basis": "signals",
+   "entry_requirements_stated": "The Scrum Guide states no entry requirements. Business Analyst to Product Owner and Product Owner to Product Manager are curated hypotheses (D34): the source supports the responsibilities, not the career moves.",
+   "entry_signal_families": [
+    "business_analysis"
+   ],
+   "entry_signal_requirements": [
+    "C3"
+   ],
+   "suitable_backgrounds": "Business analysis, or any background with demonstrated or transferable requirements and prioritisation work.",
+   "suitability_note": "Suits someone whose gaps are in owning priorities and delivery with a team, and who already writes or works with requirements.",
+   "tradeoff_note": "Employers use 'Product Owner' in different ways; some roles are backlog administration with little product direction. Check the responsibilities of a specific role.",
+   "level_step": false,
+   "source_keys": [
+    "pm-bridges-v1:B2"
+   ],
+   "source_notes": {
+    "pm-bridges-v1:B2": "The Product Owner accountability, Product Goal and Product Backlog"
+   },
+   "requirements_pack": "pm-v1.2",
+   "entry_evidence": "hypothesis",
+   "progression_evidence": "hypothesis",
+   "may_be_primary": false,
+   "partial_development": {
+    "C2": {
+     "develops": "Developing and communicating the Product Goal for one product.",
+     "incomplete": "Product strategy and a roadmap beyond the current goal.",
+     "seek": "Ask to set the roadmap beyond the current Product Goal, with the people who own the product's strategy."
+    }
+   }
+  },
+  {
+   "target_role_id": "PM-SPM",
+   "bridge_role_id": "PM-PM",
+   "responsibilities": [
+    "Owns a product or product area end to end: discovery, direction, priorities, delivery and outcomes",
+    "Defines and tracks the product's success measures",
+    "Works across functions and with stakeholders on the product's decisions"
+   ],
+   "develops": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6"
+   ],
+   "partly_develops": [
+    "L2",
+    "L3",
+    "L4"
+   ],
+   "develops_note": "F1: a product manager works at 'practitioner' level in user insight, product management, stakeholder relationships and agile practice, and 'working' in strategic ownership, managing outcomes and product leadership. All core requirements are developed; senior differentiators only partly. Portfolio scope (L1) is not developed.",
+   "entry_basis": "target_assessment",
+   "entry_requirements_stated": "Assessed with the Product Manager requirements of the approved pack; employers set their own criteria.",
+   "entry_signal_families": [],
+   "entry_signal_requirements": [],
+   "suitable_backgrounds": "Anyone moving into product management for the first time who aims at a senior level.",
+   "suitability_note": "Suits someone without product management experience who targets Senior Product Manager: the frameworks place Product Manager as the level before it.",
+   "tradeoff_note": "One more move before the senior level.",
+   "level_step": true,
+   "source_keys": [
+    "pm-v1:F1",
+    "pm-v1:F4"
+   ],
+   "source_notes": {
+    "pm-v1:F1": "Role levels: product manager, then senior product manager",
+    "pm-v1:F4": "Job family levels: P3 Product Manager, then P4 Senior Product Manager"
+   },
+   "requirements_pack": "pm-v1.2",
+   "entry_evidence": "target_plan",
+   "progression_evidence": "source_stated",
+   "may_be_primary": true,
+   "partial_development": {
+    "L2": {
+     "develops": "Product leadership at working level (F1).",
+     "incomplete": "Coaching and leading other product practitioners.",
+     "seek": "Mentor an associate or a newer product manager."
+    },
+    "L3": {
+     "develops": "Presenting your product's decisions to stakeholders.",
+     "incomplete": "Regular communication with senior leaders.",
+     "seek": "Present your product's progress and risks to senior leaders."
+    },
+    "L4": {
+     "develops": "Coordinating your product's dependencies.",
+     "incomplete": "Planning across several teams.",
+     "seek": "Lead the planning of one initiative that spans several teams."
+    }
+   }
+  }
+ ],
+ "candidate_pool": {
+  "source": "pm-v1:F1",
+  "note": "D33: the digital roles F1 explicitly lists as sharing product manager skills ('Roles that share product manager skills'), under their original names. A candidate pool only: none is an approved bridge. Ambiguous mappings are left unmapped.",
+  "roles": [
+   {
+    "f1_role": "Business analyst",
+    "trace_role_family": "business_analysis",
+    "mapping_confidence": "source_direct",
+    "summary": "Leads small to medium projects and supports larger, more complex ones; manages stakeholder relationships.",
+    "shared_skills": [
+     "Stakeholder relationship management"
+    ],
+    "develops": [
+     "C5"
+    ],
+    "suitable_backgrounds": "Business analysis."
+   },
+   {
+    "f1_role": "Service owner",
+    "trace_role_family": null,
+    "mapping_confidence": "unmapped",
+    "summary": "Accountable for the quality, performance, benefits and outcomes of a service; ensures a strategy is in place and prioritises development.",
+    "shared_skills": [
+     "Applying user-centred insights",
+     "Life cycle management",
+     "Stakeholder relationship management",
+     "Strategic ownership"
+    ],
+    "develops": [
+     "C1",
+     "C2",
+     "C5",
+     "C6"
+    ],
+    "suitable_backgrounds": "Not established; no equivalent Trace role family (not forced)."
+   },
+   {
+    "f1_role": "Delivery manager",
+    "trace_role_family": "project_program_management",
+    "mapping_confidence": "curated_hypothesis",
+    "summary": "Accountable for the performance of the team; removes obstacles and focuses the team on what matters most to delivery.",
+    "shared_skills": [
+     "Agile and Lean practices",
+     "Life cycle management"
+    ],
+    "develops": [
+     "C6"
+    ],
+    "suitable_backgrounds": "Project or delivery management (curated reading; the Trace family also covers non-digital project management)."
+   },
+   {
+    "f1_role": "Programme delivery manager",
+    "trace_role_family": "project_program_management",
+    "mapping_confidence": "curated_hypothesis",
+    "summary": "Accountable for delivering complex products and services; manages dependencies, risks and complex stakeholder groups.",
+    "shared_skills": [
+     "Agile and Lean practices",
+     "Life cycle management"
+    ],
+    "develops": [
+     "C6",
+     "L4"
+    ],
+    "suitable_backgrounds": "Programme management. Not a default bridge to product management (D27)."
+   },
+   {
+    "f1_role": "Agile coach",
+    "trace_role_family": null,
+    "mapping_confidence": "unmapped",
+    "summary": "An expert in Agile and Lean practices who coaches individuals and teams.",
+    "shared_skills": [
+     "Agile and Lean practices"
+    ],
+    "develops": [
+     "C6"
+    ],
+    "suitable_backgrounds": "Not established; no equivalent Trace role family (not forced)."
+   }
+  ]
+ },
+ "not_bridges": [
+  {
+   "role_id": "ROLE-PGM",
+   "reason": "Program Manager is not a default stepping stone into product management (D27). It may appear only as an observed route from eligible real career histories."
+  }
+ ]
+}

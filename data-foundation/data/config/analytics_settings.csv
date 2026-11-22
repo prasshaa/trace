@@ -1,0 +1,6 @@
+setting_key,value_numeric,unit,description
+min_profiles_limited,5,profiles,Minimum distinct eligible individuals for evidence_class=limited. Also the minimum cell size for showing any count to a user.
+min_profiles_moderate,15,profiles,Minimum distinct eligible individuals for evidence_class=moderate.
+min_profiles_strong,40,profiles,Minimum distinct eligible individuals for evidence_class=strong.
+min_dated_profiles_for_timeline,20,profiles,Minimum individuals with month-precision route dates before percentile timelines may be displayed.
+min_mapping_confidence,0.8,ratio,Minimum mapping_confidence for an employment to enter a confirmed transition (it must also be confirmed or auto_high_confidence).

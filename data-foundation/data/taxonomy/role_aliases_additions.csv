@@ -1,0 +1,11 @@
+alias_id,alias,role_id,seniority_hint_code,context_required,default_confidence,mapping_rule
+ALS-0107,Software QA Engineer,ROLE-QA,,false,0.9,
+ALS-0108,Software Test Engineer,ROLE-QA,,false,0.9,
+ALS-0109,Quality Assurance Engineer,ROLE-QA,,false,0.9,
+ALS-0110,QA Analyst,ROLE-QA,,false,0.85,
+ALS-0111,Automation Test Engineer,ROLE-QA,,false,0.9,
+ALS-0112,Cofounder,ROLE-ENT,,false,0.95,
+ALS-0113,Co founder,ROLE-ENT,,false,0.95,
+ALS-0114,Founder & CEO,ROLE-ENT,,false,0.9,
+ALS-0115,Co-founder & CEO,ROLE-ENT,,false,0.9,
+ALS-0116,Global Product Manager,PM-PM,,false,0.85,

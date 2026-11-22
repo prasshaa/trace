@@ -1,0 +1,45 @@
+education_id,profile_id,qualification_level,field_of_study,study_mode,completion_status,start_year,start_month,start_precision,end_year,end_month,end_precision
+SYN-001-EDU-01,SYN-001,bachelor,Computer Science,unknown,completed,,,unknown,,,unknown
+SYN-002-EDU-01,SYN-002,bachelor,Information Technology,unknown,completed,,,unknown,,,unknown
+SYN-003-EDU-01,SYN-003,bachelor,Electronics,unknown,completed,,,unknown,,,unknown
+SYN-004-EDU-01,SYN-004,bachelor,Statistics,unknown,completed,,,unknown,,,unknown
+SYN-005-EDU-01,SYN-005,mba,Operations,unknown,completed,,,unknown,,,unknown
+SYN-006-EDU-01,SYN-006,mba,Strategy,unknown,completed,,,unknown,,,unknown
+SYN-007-EDU-01,SYN-007,bachelor,"Commerce, Marketing",unknown,completed,,,unknown,,,unknown
+SYN-008-EDU-01,SYN-008,bachelor,Business Administration,unknown,completed,,,unknown,,,unknown
+SYN-009-EDU-01,SYN-009,bachelor,Economics,unknown,completed,,,unknown,,,unknown
+SYN-010-EDU-01,SYN-010,bachelor,Interaction Design,unknown,completed,,,unknown,,,unknown
+SYN-011-EDU-01,SYN-011,bachelor,Computer Science,unknown,completed,,,unknown,,,unknown
+SYN-012-EDU-01,SYN-012,bachelor,Commerce,unknown,completed,,,unknown,,,unknown
+SYN-013-EDU-01,SYN-013,mba,Finance,unknown,completed,,,unknown,,,unknown
+SYN-014-EDU-01,SYN-014,mba,Human Resources,unknown,completed,,,unknown,,,unknown
+SYN-015-EDU-01,SYN-015,bachelor,Information Technology,unknown,completed,,,unknown,,,unknown
+SYN-016-EDU-01,SYN-016,master,Data Science,unknown,completed,,,unknown,,,unknown
+SYN-017-EDU-01,SYN-017,bachelor,Computer Science,unknown,completed,,,unknown,,,unknown
+SYN-018-EDU-01,SYN-018,mba,General Management,unknown,completed,,,unknown,,,unknown
+SYN-019-EDU-01,SYN-019,bachelor,Electronics,unknown,completed,,,unknown,,,unknown
+SYN-020-EDU-01,SYN-020,bachelor,Business Administration,unknown,completed,,,unknown,,,unknown
+SYN-021-EDU-01,SYN-021,mba,Strategy,unknown,completed,,,unknown,,,unknown
+SYN-022-EDU-01,SYN-022,mba,General Management,unknown,completed,,,unknown,,,unknown
+SYN-023-EDU-01,SYN-023,bachelor,,unknown,completed,,,unknown,,,unknown
+SYN-023-EDU-02,SYN-023,mba,General Management,unknown,completed,,,unknown,,,unknown
+SYN-024-EDU-01,SYN-024,bachelor,Computer Engineering,unknown,completed,,,unknown,,,unknown
+SYN-025-EDU-01,SYN-025,bachelor,Commerce,unknown,completed,,,unknown,,,unknown
+SYN-026-EDU-01,SYN-026,bachelor,Computer Science,unknown,completed,,,unknown,,,unknown
+SYN-027-EDU-01,SYN-027,bachelor,Mechanical Engineering,unknown,completed,,,unknown,,,unknown
+SYN-028-EDU-01,SYN-028,bachelor,Business Administration,unknown,completed,,,unknown,,,unknown
+SYN-029-EDU-01,SYN-029,bachelor,Information Technology,unknown,completed,,,unknown,,,unknown
+SYN-030-EDU-01,SYN-030,bachelor,Computer Science,unknown,completed,,,unknown,,,unknown
+SYN-031-EDU-01,SYN-031,bachelor,Electronics,unknown,completed,,,unknown,,,unknown
+SYN-032-EDU-01,SYN-032,mba,General Management,unknown,completed,,,unknown,,,unknown
+SYN-033-EDU-01,SYN-033,bachelor,Computer Science,unknown,completed,,,unknown,,,unknown
+SYN-034-EDU-01,SYN-034,bachelor,Computer Engineering,unknown,completed,,,unknown,,,unknown
+SYN-035-EDU-01,SYN-035,bachelor,Information Technology,unknown,completed,,,unknown,,,unknown
+SYN-036-EDU-01,SYN-036,bachelor,Electronics,unknown,completed,,,unknown,,,unknown
+SYN-037-EDU-01,SYN-037,bachelor,Commerce,unknown,completed,,,unknown,,,unknown
+SYN-038-EDU-01,SYN-038,bachelor,Statistics,unknown,completed,,,unknown,,,unknown
+SYN-039-EDU-01,SYN-039,bachelor,Information Technology,unknown,completed,,,unknown,,,unknown
+SYN-039-EDU-02,SYN-039,mba,Strategy,full_time,completed,2019,6,month,2021,4,month
+SYN-040-EDU-01,SYN-040,bachelor,,unknown,completed,,,unknown,,,unknown
+SYN-040-EDU-02,SYN-040,mba,General Management,unknown,completed,,,unknown,,,unknown
+SYN-041-EDU-01,SYN-041,bachelor,Computer Science,unknown,completed,,,unknown,,,unknown

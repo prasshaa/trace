@@ -1,0 +1,22 @@
+role_family,label,is_product_management,description
+product_management,Product management,true,Formal product-management roles from intern to executive.
+product_ownership,Product ownership,false,Product Owner roles. Kept separate from product management until responsibility evidence is reviewed.
+product_analytics,Product analytics,false,Product Analyst roles. Not product management by default.
+software_engineering,Software engineering,false,Software development and engineering roles.
+engineering_management,Engineering management,false,Engineering people-management roles.
+qa_testing,QA and testing,false,Quality assurance and test engineering roles.
+business_analysis,Business analysis,false,Business and systems analyst roles.
+data_analytics,Data analytics,false,Data and business-intelligence analyst roles.
+data_science,Data science,false,Data science and applied machine-learning roles.
+marketing_growth,Marketing and growth,false,"Marketing, performance marketing and growth roles outside product management."
+sales,Sales and account management,false,Sales and account-management roles.
+customer_success,Customer success,false,Customer success roles.
+customer_support,Customer and technical support,false,Customer and technical support roles.
+operations,Operations,false,Business operations roles.
+project_program_management,Project and program management,false,"Project, program and technical program management. Not product management."
+design_ux,Design and UX,false,"UX, UI and product design roles."
+consulting,Consulting,false,"Management, strategy and technology consulting roles."
+finance,Finance,false,Finance and financial-analysis roles.
+human_resources,Human resources,false,HR and people-operations roles.
+entrepreneurship,Entrepreneurship,false,Founder and co-founder activity.
+unknown,Unresolved,false,Role cannot be resolved from the title and evidence. Preserved in the career sequence but never used in confirmed transitions.

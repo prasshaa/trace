@@ -1,0 +1,12 @@
+# Replit Deployments for Trace (release, D52). The existing FastAPI application serves the API and the static frontend
+# (/app/) from one process. Configuration lives in Replit Secrets (docs/DEPLOYMENT.md); nothing secret is in this file.
+modules = ["python-3.12"]
+
+[deployment]
+deploymentTarget = "cloudrun"
+build = ["sh", "-c", "python -m pip install --no-cache-dir -r backend/requirements.txt"]
+run = ["sh", "-c", "cd backend && exec python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 2 --proxy-headers --forwarded-allow-ips='*' --no-server-header"]
+
+[[ports]]
+localPort = 8000
+externalPort = 80

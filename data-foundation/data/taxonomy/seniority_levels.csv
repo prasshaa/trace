@@ -1,0 +1,16 @@
+seniority_code,label,rank,description
+intern,Intern,10,Internship or trainee position. Not counted as full-time experience unless explicitly reclassified.
+junior,Junior / Entry level,20,Entry-level professional position.
+associate,Associate,30,Associate-level position such as Associate Product Manager.
+mid,Mid level,40,Default level for an unqualified professional title such as Product Manager or Business Analyst.
+senior,Senior,50,Senior individual contributor such as Senior Product Manager.
+lead,Lead,60,Lead individual contributor or first-line lead such as Lead Product Manager.
+principal,Principal,65,Principal-level individual contributor.
+group,Group / multi-team lead,70,Leads several product areas or product managers such as Group Product Manager.
+head,Head of function,75,Head of a function or product line. Organisation-dependent; often comparable to director.
+director,Director,80,Director-level leader such as Director of Product.
+senior_director,Senior Director,85,Senior Director-level leader.
+vp,Vice President,90,Vice-President-level leader.
+executive,Executive / C-level,100,Chief officer such as Chief Product Officer.
+founder,Founder (not ranked),,Founder or co-founder. Not comparable on the employee seniority ladder.
+unknown,Unknown,,Seniority cannot be determined from the available evidence.
