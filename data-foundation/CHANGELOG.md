@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.35.0 — 2026-11-23 (semantic retrieval, Phase 3: hybrid candidates)
+
+| Change | Files | Why |
+|---|---|---|
+| `trace_semantic.hybrid_candidates(profile, queries jsonb, model, version)`: for one query family (≤ 64), the caller's ELIGIBLE records only (same set as `my_embedding_sources`) with provenance (source, parent employment or activity, review status), the user's CURRENT categorisation (stale ones not returned), and per query the lexical (full-text, english, `ts_rank_cd`) and semantic (cosine over the current embedding) RANKS both ways: line within query, query within line. Security definer, owned by `trace_embedding_writer`, `trace_app_user` only; refuses calls without a request identity | migration 52 | Phase 3 hybrid retrieval: ranks computed where the data is; similarity values never leave the database (D53) |
+| Column grants to `trace_embedding_writer`: evidence `area_classification`, `area_classification_is_stale`, `area_classification_none`, `candidate_employment_id`, `candidate_activity_id`; activities `related_employment_id` | migration 52 | Provenance and the user's own categorisation; nothing else (`area_qualifiers` stays unreadable) |
+| pgTAP `trace_semantic_hybrid_candidates.test.sql` (11). Rollback (drops the function and revokes the column grants; no data), rehearsed and re-applied | tests, rollback | |
+
+## 2.34.0 — 2026-11-23 (semantic retrieval, Phase 2: pgvector storage)
+
+| Change | Files | Why |
+|---|---|---|
+| `create extension vector` (schema `extensions`); schema `trace_semantic`; NOLOGIN role `trace_embedding_writer` | migration 51 | D53: embeddings generated inside Trace (local gte-small, 384 dimensions) |
+| `trace_private.candidate_embeddings`: one row per (reviewed evidence line or career activity, model, version); content SHA-256, no text; FK `on delete cascade` to the source record, the profile and the account; RLS on the request identity; no client grant. Functions (security definer, `trace_app_user` only, owned by the writer): `my_embedding_sources`, `store_my_embeddings` (stores only the caller's eligible records whose CURRENT text has the given hash), `match_my_evidence` (cosine; stale, unreviewed and rejected records excluded) | migration 51 | Private corpus: strict ownership; deleted on clear, replace or account deletion; never returned stale |
+| `trace_ref.knowledge_embeddings` (corpus constrained to `role_knowledge`; areas, capability requirements, action templates), read by `trace_reference_reader`; `trace_semantic.match_knowledge` | migration 51 | Shared role knowledge, kept separate; the research corpus can't be written here |
+| No vector index (exact scan: tens of rows per person, ~100 knowledge rows). pgTAP `trace_semantic_embeddings.test.sql` (12). Rollback (drops only what v2.34.0 added; embeddings are regenerable), rehearsed and re-applied | tests, rollback | |
+
 ## 2.33.0 — 2026-11-22 (release: clear my career profile and start over)
 
 | Change | Files | Why |

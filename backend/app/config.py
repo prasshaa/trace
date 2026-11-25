@@ -106,6 +106,15 @@ class Settings(BaseSettings):
     trace_career_origins: bool = False
     trace_career_origins_artifact: Optional[Path] = None      # default: the artifact shipped with the service
 
+    # Embeddings (D53): local gte-small, in process. Off by default; nothing in the product uses them until the
+    # semantic-retrieval flag (Phase 3) is on. Model files are pinned and verified (scripts/fetch_embedding_model.py).
+    trace_embeddings: bool = False
+    trace_embedding_model_dir: Path = BACKEND_DIR / ".models" / "gte-small"
+    trace_embedding_threads: int = Field(default=1, ge=1, le=8)
+    # Hybrid retrieval (Phase 3): structured + full-text + semantic, fused by rank. Off by default; needs
+    # TRACE_EMBEDDINGS too. Off, or on any failure, retrieval uses Trace's deterministic reader. Nothing in the product
+    # calls it yet (the capability assessment and pathways are unchanged until Phase 4).
+    trace_semantic_retrieval: bool = False
     # Strict-Transport-Security on every response. Only for a deployment served over HTTPS (release, D52).
     trace_hsts: bool = False
     # Interactive API docs (/docs, /redoc, /openapi.json). Off by default; enable only for local development.

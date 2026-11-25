@@ -114,7 +114,9 @@ def test_fixture_profiles_are_namespaced_and_never_in_the_database(base_settings
 
 
 def test_the_harness_never_touches_a_database_or_the_app():
-    src = "\n".join(p.read_text() for p in (BACKEND / "evaluation").rglob("*.py"))
+    # evaluation/retrieval (semantic-retrieval workstream) needs the LOCAL database for its full-text leg and the local
+    # API for latency; it has its own guard (tests/test_retrieval_evaluation.py: local stack only, never production).
+    src = "\n".join(p.read_text() for p in (BACKEND / "evaluation").rglob("*.py") if "retrieval" not in p.relative_to(BACKEND / "evaluation").parts)
     assert not re.search(r"from app import db|app\.db|psycopg|connect\(|get_settings|TestClient|requests\.|urllib", src)
     app_src = "\n".join(p.read_text() for p in (BACKEND / "app").rglob("*.py"))
     assert "evaluation" not in re.findall(r"^(?:from|import) (\w+)", app_src, re.M)          # the app never imports it

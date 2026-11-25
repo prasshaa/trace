@@ -11,3 +11,8 @@ pypdf==7.0.1
 # (BSD-3/Apache-2.0), Pillow (MIT-CMU), lxml (BSD-3). No network access, no models, no telemetry.
 pdfplumber==0.11.10
 python-docx==1.2.0
+# Embeddings (D53): local gte-small inference, in process. MIT (onnxruntime), Apache-2.0 (tokenizers), BSD (numpy).
+# No network access at runtime; model files are pinned and checksum-verified (scripts/fetch_embedding_model.py).
+onnxruntime==1.23.2
+tokenizers==0.22.1
+numpy==2.5.5

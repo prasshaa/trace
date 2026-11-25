@@ -50,7 +50,8 @@ cd data-foundation && ../backend/.venv/bin/python -m pytest -q   # static SQL an
 5. **Privacy:** at least 5 distinct eligible profiles behind any shown evidence; check combinations; exclude the
    caller's own contribution; never show small exact counts.
 6. **Backend decides, browser renders.** No client-side counts, statistics, labels or ranking.
-7. **The deterministic engine works without an LLM.** No external AI calls or embeddings until D1 is approved. The LLM
+7. **The deterministic engine works without an LLM.** No external AI calls. Embeddings only as D53 allows (local
+   gte-small, inside Trace; never candidate text to a third party). The LLM
    never counts, invents routes or confirms profile changes.
 8. **Suitability is not evidence breadth;** never treat a larger group as a better recommendation. Production ranking
    changes pass the evaluation gate. The Phase 8.2 relevance prototype stays in shadow mode (D6).

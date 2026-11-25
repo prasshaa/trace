@@ -77,8 +77,12 @@ class SecurityModel(unittest.TestCase):
                            '  for select to trace_plan_writer using (state_fingerprint is not null);')
         for expected in snapshot_writer:
             self.assertEqual(sum(1 for p in pols if p == expected), 1)
+        # v2.34.0 (D53): the role-knowledge embeddings are read by the same reader, restricted further to that corpus.
+        knowledge = ("create policy knowledge_embeddings_reader_select on trace_ref.knowledge_embeddings\n"
+                     "  for select to trace_reference_reader using (corpus = 'role_knowledge');")
+        self.assertEqual(sum(1 for p in pols if p == knowledge), 1)
         for pol in pols:
-            if pol in snapshot_writer:
+            if pol in snapshot_writer or pol == knowledge:
                 continue
             with self.subTest(policy=pol[:60]):
                 self.assertRegex(pol, r"for select to trace_reference_reader using \(true\);$")

@@ -10,7 +10,7 @@ import psycopg
 
 from app.config import Settings
 
-APP_SCHEMAS = ("public", "trace_ref", "trace_ingest", "trace_review", "trace_util", "trace_private", "trace_ops")
+APP_SCHEMAS = ("public", "trace_ref", "trace_ingest", "trace_review", "trace_util", "trace_private", "trace_ops", "trace_semantic")
 IDENTITY_CHECK = """
 select r.rolsuper, r.rolbypassrls,
        exists (select 1 from pg_catalog.pg_class c join pg_catalog.pg_namespace n on n.oid = c.relnamespace
