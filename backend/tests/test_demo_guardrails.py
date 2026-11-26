@@ -165,10 +165,10 @@ def test_the_request_deadline_is_the_whole_call_and_a_5xx_is_retried_once(monkey
             pass
 
     started = _time.monotonic()
-    def hang(req, timeout=None):
+    def hang(req, timeout=None, socks=None):
         _time.sleep(2)
         raise AssertionError("the caller should have stopped waiting")
-    monkeypatch.setattr(urllib.request, "urlopen", hang)
+    monkeypatch.setattr("app.services.ai_assessment.client._open", hang)
     slow = OpenAICompatible(provider="xai", base_url="https://api.x.ai/v1", model="grok-4.7", api_key="secret-not-logged", timeout=0.35)
     with pytest.raises(LlmError, match="timed out"):
         slow.complete_json("system", "user")
@@ -176,24 +176,24 @@ def test_the_request_deadline_is_the_whole_call_and_a_5xx_is_retried_once(monkey
     assert slow.last_meta["attempts"] == 1
     assert "secret-not-logged" not in str(slow.last_meta)
     flaky_n = {"n": 0}
-    def flaky(req, timeout=None):
+    def flaky(req, timeout=None, socks=None):
         flaky_n["n"] += 1
         if flaky_n["n"] == 1:
             raise TimeoutError("slow")
         return Resp()
-    monkeypatch.setattr(urllib.request, "urlopen", flaky)
+    monkeypatch.setattr("app.services.ai_assessment.client._open", flaky)
     retry = OpenAICompatible(provider="xai", base_url="https://api.x.ai/v1", model="grok-4.7", api_key="secret-not-logged", timeout=5)
     assert retry.complete_json("system", "user") == {"opening": "ok"}
     assert retry.last_meta["attempts"] == 2
 
     calls = {"n": 0, "effort": []}
-    def once(req, timeout=None):
+    def once(req, timeout=None, socks=None):
         calls["n"] += 1
         calls["effort"].append(_json.loads(req.data.decode()).get("reasoning_effort"))
         if calls["n"] == 1:
             raise urllib.error.HTTPError(req.full_url, 503, "busy", {}, None)
         return Resp()
-    monkeypatch.setattr(urllib.request, "urlopen", once)
+    monkeypatch.setattr("app.services.ai_assessment.client._open", once)
     client = OpenAICompatible(provider="xai", base_url="https://api.x.ai/v1", model="grok-4.7", api_key="secret-not-logged",
                               timeout=5, reasoning_effort="low")
     assert client.complete_json("system", "user") == {"opening": "ok"}
@@ -203,9 +203,172 @@ def test_the_request_deadline_is_the_whole_call_and_a_5xx_is_retried_once(monkey
     blank = OpenAICompatible(provider="xai", base_url="https://api.x.ai/v1", model="grok-4.7", api_key="secret-not-logged",
                              timeout=5, reasoning_effort="")
     calls["n"] = 1
-    monkeypatch.setattr(urllib.request, "urlopen", lambda req, timeout=None: (calls["effort"].append(_json.loads(req.data.decode()).get("reasoning_effort")) or Resp()))
+    monkeypatch.setattr(
+        "app.services.ai_assessment.client._open",
+        lambda req, timeout=None, socks=None: (calls["effort"].append(_json.loads(req.data.decode()).get("reasoning_effort")) or Resp()),
+    )
     blank.complete_json("system", "user")
     assert calls["effort"][-1] is None
+
+
+def test_headers_then_a_slow_body_cannot_outrun_the_deadline():
+    """Headers at t=deadline-1, then a trickle. The call must return at the deadline, not when the body ends."""
+    import socket
+    import threading
+    import time as _time
+
+    srv = socket.socket()
+    srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    srv.bind(("127.0.0.1", 0))
+    srv.listen(1)
+    srv.settimeout(5)
+    port = srv.getsockname()[1]
+    trickled = {"n": 0}
+
+    def handle(conn):
+        try:
+            conn.settimeout(2)
+            data = b""
+            while b"\r\n\r\n" not in data:
+                chunk = conn.recv(4096)
+                if not chunk:
+                    return
+                data += chunk
+            _time.sleep(1.0)
+            conn.sendall(
+                b"HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: 4000\r\nConnection: close\r\n\r\n"
+            )
+            for _ in range(400):
+                conn.sendall(b"x" * 10)
+                trickled["n"] += 10
+                _time.sleep(0.02)
+        except OSError:
+            pass
+        finally:
+            try:
+                conn.close()
+            except OSError:
+                pass
+
+    def accept():
+        try:
+            conn, _ = srv.accept()
+        except OSError:
+            return
+        handle(conn)
+
+    threading.Thread(target=accept, daemon=True).start()
+    client = OpenAICompatible(
+        provider="xai", base_url=f"http://127.0.0.1:{port}/v1", model="grok-4.7",
+        api_key="secret-not-logged", timeout=2.0, first_attempt_seconds=2.0,
+    )
+    started = _time.monotonic()
+    with pytest.raises(LlmError, match="timed out"):
+        client.complete_json("system", "user")
+    elapsed = _time.monotonic() - started
+    srv.close()
+    assert elapsed < 2.8
+    assert trickled["n"] < 4000
+
+
+def test_the_first_attempt_leaves_time_for_a_retry():
+    import socket
+    import threading
+    import time as _time
+
+    srv = socket.socket()
+    srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    srv.bind(("127.0.0.1", 0))
+    srv.listen(4)
+    srv.settimeout(5)
+    port = srv.getsockname()[1]
+    seen = {"n": 0}
+    done = threading.Event()
+
+    def handle(conn, which):
+        try:
+            conn.settimeout(2)
+            data = b""
+            while b"\r\n\r\n" not in data:
+                chunk = conn.recv(4096)
+                if not chunk:
+                    return
+                data += chunk
+            if which == 1:
+                _time.sleep(0.2)
+                conn.sendall(
+                    b"HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: 5000\r\nConnection: close\r\n\r\n"
+                )
+                for _ in range(250):
+                    conn.sendall(b"y" * 20)
+                    _time.sleep(0.02)
+            else:
+                payload = b'{"choices":[{"message":{"content":"{\\"opening\\": \\"ok\\"}"}}],"usage":{"prompt_tokens":1,"completion_tokens":1}}'
+                head = f"HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: {len(payload)}\r\nConnection: close\r\n\r\n".encode()
+                conn.sendall(head + payload)
+        except OSError:
+            pass
+        finally:
+            try:
+                conn.close()
+            except OSError:
+                pass
+
+    def accept_loop():
+        while not done.is_set():
+            try:
+                conn, _ = srv.accept()
+            except OSError:
+                return
+            seen["n"] += 1
+            threading.Thread(target=handle, args=(conn, seen["n"]), daemon=True).start()
+
+    threading.Thread(target=accept_loop, daemon=True).start()
+    client = OpenAICompatible(
+        provider="xai", base_url=f"http://127.0.0.1:{port}/v1", model="grok-4.7",
+        api_key="secret-not-logged", timeout=4.0, first_attempt_seconds=1.0,
+    )
+    started = _time.monotonic()
+    assert client.complete_json("system", "user") == {"opening": "ok"}
+    elapsed = _time.monotonic() - started
+    done.set()
+    srv.close()
+    assert client.last_meta["attempts"] == 2
+    assert elapsed < 2.5
+    assert seen["n"] >= 2
+
+
+def test_round3_false_positives_and_the_length_cap():
+    from app.services.ai_assessment.guardrails import keep_claim
+    cited = "Worked with the client's product lead. I did not own the product after the project ended."
+    kept, reason = keep_claim(
+        {"text": "On your next client workshop, ask to own the problem statement and the success measure, while the product lead keeps the product.",
+         "evidence_ids": ["F04-L2"], "why": "That is the next piece of the workshop you already run."},
+        {"F04-L2": {"id": "F04-L2", "text": cited}}, require_citation=False, kind="step")
+    assert kept and reason is None
+    themes = "Supported the product team with the top ten ticket themes each month."
+    out = apply_guardrails(
+        {"questions": [{"text": "Which of the top ten themes hurt customers most?", "evidence_id": "F07-L2"}]},
+        [{"id": "F07-L2", "text": themes}])
+    assert out["questions"] and out["questions"][0]["evidence_id"] == "F07-L2"
+    kept, reason = keep_claim(
+        {"text": "Run a 30-minute session on the ticket themes you already share.", "evidence_ids": ["F07-L2"], "why": ""},
+        {"F07-L2": {"id": "F07-L2", "text": themes}}, require_citation=False, kind="step")
+    assert kept and reason is None, reason
+    line = "Shipped the seller form and wrote the notes the squad used the next day."
+    pad = " ".join(["detail"] * 35)
+    many = {
+        "opening": "You shipped the seller form. The gap is a written trade-off.",
+        "strengths": [{"text": f"You shipped the seller form. {pad}", "evidence_ids": ["L1"], "why": pad} for _ in range(4)],
+        "transferable": [{"text": f"This work carries into product discovery. {pad}", "evidence_ids": ["L1"], "why": pad} for _ in range(3)],
+        "gaps": [{"text": f"You have not written the trade-off. {pad}", "why": pad} for _ in range(3)],
+        "questions": [{"text": f"What did the squad do with the notes the next day? {pad}", "evidence_id": "L1"} for _ in range(3)],
+        "steps": [{"text": f"Ask to draft the trade-off from the notes you already wrote. {pad}", "evidence_ids": ["L1"], "why": pad} for _ in range(3)],
+    }
+    capped = apply_guardrails(many, [{"id": "L1", "text": line}])
+    assert capped["transferable"]
+    assert len(capped["questions"]) < 3
+    assert capped["dropped_reasons"].get("trimmed", 0) >= 1
 
 
 def test_guardrail_probes_from_the_review():

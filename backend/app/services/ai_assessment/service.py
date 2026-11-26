@@ -43,7 +43,7 @@ Shape the JSON object exactly like this:
 - transferable: up to 3 items, only when they are not already in product. How this experience maps to product work, cited the same way. Empty for someone already a product manager.
 - gaps: at most 3, ranked, the ones that matter most for this target. {"text", "why"}. The why explains the hiring signal once.
 - questions: up to 3. {"text", "evidence_id"}.
-- steps: at most 3. {"text", "evidence_ids", "why"}. At least one is something they can do in the job they have now. At least one is an interview or portfolio artefact (a one-page PRD, a metric teardown, or a case write-up) they could finish in about two weeks.
+- steps: at most 3. {"text", "evidence_ids", "why"}. At least one is something they can do in the job they have now. At least one is an interview or portfolio artefact they could finish in about two weeks. Choose the artefact from this person's evidence: a metric teardown when they have a measure, a case write-up when they shipped something, a short requirement when they have user notes, or a PRD when they already write recommendations. Name the actual work (the queue, the workshop, the dashboard). Do not give everyone the same one-page PRD for a product-sense round.
 
 India, at most one route in the whole reading, matched to the move:
 - Into an associate role: one mention of either an APM programme or a product-sense round.

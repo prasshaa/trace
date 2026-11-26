@@ -46,13 +46,14 @@ The narrative is off until these are set in the environment (or `.env`, which is
 | `TRACE_LLM_BASE_URL` | OpenAI-compatible origin. For xAI, `https://api.x.ai/v1` |
 | `TRACE_LLM_MODEL` | Model name the provider expects, for example `grok-4.7` |
 | `TRACE_LLM_API_KEY` | Secret. Never commit it |
-| `TRACE_LLM_TIMEOUT` | Seconds before the call is abandoned. Default `120` |
+| `TRACE_LLM_TIMEOUT` | Seconds for the whole reading, including one retry. Default `120` |
+| `TRACE_LLM_FIRST_ATTEMPT_SECONDS` | First try stops here. Default `70`, so a timeout still leaves time for the retry |
 | `TRACE_LLM_REASONING_EFFORT` | `low` by default. grok-4.7 accepts `low`, `medium`, `high`, `xhigh` on chat completions. Omitting it makes xAI use `high` |
 | `TRACE_EMBEDDINGS` | `1` to compute gte-small vectors locally |
 | `TRACE_SEMANTIC_RETRIEVAL` | `1` to use the pgvector hybrid function |
 
 The plan returns immediately. The page shows “Reading your experience.” After about 30 seconds it says it is still working, and if the first call times out or the provider returns a server error it tries once more. The wait stops on its own. It does not hang.
-The model call itself has a deadline for the whole request. A slow trickle of bytes cannot keep it open past `TRACE_LLM_TIMEOUT`.
+The model call shuts the socket down when its budget ends, including when headers have already arrived and the body is still arriving. The first try uses `TRACE_LLM_FIRST_ATTEMPT_SECONDS` (default 70). A timeout or a server error is tried once more with the time still left inside `TRACE_LLM_TIMEOUT`.
 A short profile (eight excerpts or fewer) is passed in full. A longer one is ranked with local gte-small, and with
 pgvector when `TRACE_SEMANTIC_RETRIEVAL=1` and the database is available. A denial and a measured result are always kept.
 The key is sent only as an `Authorization` header. Logs record latency and token counts, not the text and not the key.

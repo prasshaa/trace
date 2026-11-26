@@ -6,6 +6,7 @@ Omitting it makes grok-4.7 reason at high. Trace sends low unless TRACE_LLM_REAS
 """
 from __future__ import annotations
 
+import http.client
 import json
 import logging
 import socket
@@ -13,7 +14,7 @@ import threading
 import time
 import urllib.error
 import urllib.request
-from typing import Callable, Optional
+from typing import Callable, List, Optional
 
 from pydantic import SecretStr
 
@@ -30,12 +31,14 @@ class LlmError(Exception):
 
 class OpenAICompatible:
     def __init__(self, *, provider: str, base_url: str, model: str, api_key: str, timeout: float = 120.0,
-                 reasoning_effort: Optional[str] = "low"):
+                 reasoning_effort: Optional[str] = "low", first_attempt_seconds: float = 70.0):
         self.provider = provider or "openai"
         self.base_url = base_url.rstrip("/")
         self.model = model
         self._key = api_key
         self.timeout = timeout
+        # The first try stops early enough that a timeout still leaves time for one retry inside `timeout`.
+        self.first_attempt_seconds = float(first_attempt_seconds or timeout)
         # None uses the demo default (low). An empty string omits the field so the provider uses its own default.
         if reasoning_effort is None:
             self.reasoning_effort: Optional[str] = "low"
@@ -46,9 +49,9 @@ class OpenAICompatible:
     def complete_json(self, system: str, user: str, on_attempt: Optional[Callable[[int], None]] = None) -> dict:
         """POST {base}/chat/completions and parse a JSON object. The key stays on the Authorization header.
 
-        The timeout is a deadline for the whole request, not for each socket read. A timeout or an HTTP 5xx is
-        tried once more with whatever time is left. Latency and token counts are logged. The prompt, the reply
-        and the key are not.
+        The timeout is a deadline for the whole request. The first try uses at most first_attempt_seconds, and a
+        timeout or an HTTP 5xx is tried once more with the time still left. Latency and token counts are logged.
+        The prompt, the reply and the key are not.
         """
         url = f"{self.base_url}/chat/completions"
         payload = {
@@ -71,9 +74,12 @@ class OpenAICompatible:
                 break
             if on_attempt is not None:
                 on_attempt(attempt)
+            budget = remaining
+            if attempt == 1:
+                budget = min(remaining, self.first_attempt_seconds)
             started = time.perf_counter()
             try:
-                raw = _post_bounded(url, body, self._key, remaining)
+                raw = _post_bounded(url, body, self._key, budget)
             except urllib.error.HTTPError as exc:
                 latency = round(time.perf_counter() - started, 3)
                 attempt_log.append({"n": attempt, "ok": False, "error": f"http_{exc.code}", "latency_s": latency})
@@ -134,16 +140,18 @@ class OpenAICompatible:
 
 
 def _post_bounded(url: str, body: bytes, api_key: str, budget: float) -> bytes:
-    """POST and read the body. Return within budget seconds even if the server trickles bytes.
+    """POST and read the body. Return within budget seconds even if headers arrive and the body then trickles.
 
-    urllib's timeout is re-armed on every socket read, so a slow stream can outlive it. The read runs on a
-    daemon thread and the socket is closed when the deadline passes.
+    urllib's timeout resets on every socket read, and HTTPResponse.close waits on the same lock as read, so a
+    late header plus a slow body used to run on past the deadline. The read is abandoned by shutting the socket
+    down. close() is never called from this thread.
     """
     req = urllib.request.Request(url, data=body, method="POST", headers={
         "Content-Type": "application/json",
         "Authorization": f"Bearer {api_key}",
     })
     box: dict = {}
+    socks: List[socket.socket] = []
     deadline = time.monotonic() + budget
 
     def run() -> None:
@@ -152,14 +160,14 @@ def _post_bounded(url: str, body: bytes, api_key: str, budget: float) -> bytes:
             remaining = deadline - time.monotonic()
             if remaining <= 0:
                 raise TimeoutError("request deadline exceeded")
-            resp = urllib.request.urlopen(req, timeout=remaining)
+            resp = _open(req, remaining, socks)
             box["resp"] = resp
             chunks = []
             while True:
                 remaining = deadline - time.monotonic()
                 if remaining <= 0:
                     raise TimeoutError("request deadline exceeded")
-                _arm(resp, remaining)
+                _arm(socks, remaining)
                 block = resp.read(65536)
                 if not block:
                     break
@@ -168,6 +176,7 @@ def _post_bounded(url: str, body: bytes, api_key: str, budget: float) -> bytes:
         except Exception as exc:                                          # noqa: BLE001 - the caller classifies it
             box["exc"] = exc
         finally:
+            # Same thread as read(), so this does not wait on the caller's deadline.
             if resp is not None:
                 try:
                     resp.close()
@@ -178,13 +187,7 @@ def _post_bounded(url: str, body: bytes, api_key: str, budget: float) -> bytes:
     worker.start()
     worker.join(budget)
     if worker.is_alive():
-        resp = box.get("resp")
-        if resp is not None:
-            try:
-                resp.close()
-            except Exception:                                              # noqa: BLE001
-                pass
-            worker.join(1.0)
+        _shutdown(socks)
         raise TimeoutError("request deadline exceeded")
     exc = box.get("exc")
     if isinstance(exc, (TimeoutError, socket.timeout)):
@@ -194,17 +197,51 @@ def _post_bounded(url: str, body: bytes, api_key: str, budget: float) -> bytes:
     return box.get("raw") or b""
 
 
-def _arm(resp, seconds: float) -> None:
-    """Cap the next blocking read at the time still left. Missing the socket is safe: the caller still joins."""
-    sock = None
-    fp = getattr(resp, "fp", None)
-    raw = getattr(fp, "raw", None) if fp is not None else None
-    if raw is not None:
-        sock = getattr(raw, "_sock", None) or getattr(getattr(raw, "_fp", None), "raw", None)
-        if sock is not None and not hasattr(sock, "settimeout"):
-            sock = getattr(sock, "_sock", None)
-    if sock is not None and hasattr(sock, "settimeout"):
-        sock.settimeout(max(0.1, seconds))
+def _open(req: urllib.request.Request, timeout: float, socks: List[socket.socket]):
+    """Open the request and remember the live socket so the caller can shut it down."""
+    class _HTTP(http.client.HTTPConnection):
+        def connect(self):
+            super().connect()
+            if self.sock is not None:
+                socks.append(self.sock)
+
+    class _HTTPS(http.client.HTTPSConnection):
+        def connect(self):
+            super().connect()
+            if self.sock is not None:
+                socks.append(self.sock)
+
+    class _HTTPHandler(urllib.request.HTTPHandler):
+        def http_open(self, request):
+            return self.do_open(_HTTP, request)
+
+    class _HTTPSHandler(urllib.request.HTTPSHandler):
+        def https_open(self, request):
+            return self.do_open(_HTTPS, request)
+
+    return urllib.request.build_opener(_HTTPHandler(), _HTTPSHandler()).open(req, timeout=timeout)
+
+
+def _shutdown(socks: List[socket.socket]) -> None:
+    """Unblock a read in another thread. shutdown does not take the response lock that close() waits on."""
+    for sock in list(socks):
+        try:
+            sock.shutdown(socket.SHUT_RDWR)
+        except OSError:
+            pass
+        try:
+            sock.close()
+        except OSError:
+            pass
+
+
+def _arm(socks: List[socket.socket], seconds: float) -> None:
+    """Cap the next blocking read at the time still left."""
+    for sock in socks:
+        try:
+            sock.settimeout(max(0.05, seconds))
+        except OSError:
+            pass
 
 
 def _json_object(text: str) -> dict:
@@ -238,4 +275,5 @@ def client_from_settings(settings) -> Optional[OpenAICompatible]:
         api_key=raw,
         timeout=float(getattr(settings, "trace_llm_timeout", 120) or 120),
         reasoning_effort="low" if effort is None else effort,
+        first_attempt_seconds=float(getattr(settings, "trace_llm_first_attempt_seconds", 70) or 70),
     )

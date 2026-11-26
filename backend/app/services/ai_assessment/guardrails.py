@@ -64,11 +64,14 @@ _ADVICE_WORDS = re.compile(
     r"(?:minute|minutes|hour|hours|day|days|week|weeks|month|months)\b",
     re.I,
 )
+# Base form only, so "Ran the roadmap" is still a claim. A leading "On your next workshop, ask to…" counts.
 _ADVICE_LEAD = re.compile(
-    r"^(?:(?:in|over|within|during|after)\b[^,]{0,60},\s*)?"
-    r"(?:ask to|ask|propose|volunteer|plan to|write|draft|prepare|build|rewrite|start|make|sit|talk|share|"
-    r"map|pick|offer|bring|turn|outline|sketch|list|spend|block|book|schedule)\b",
-    re.I,
+    r"^(?:(?:In|Over|Within|During|After|On|in|over|within|during|after|on)\b[^,]{0,80},\s*)?"
+    r"(?:Ask to|ask to|Ask|ask|Propose|propose|Volunteer|volunteer|Plan to|plan to|"
+    r"Write|write|Draft|draft|Prepare|prepare|Build|build|Rewrite|rewrite|Start|start|"
+    r"Make|make|Sit|sit|Talk|talk|Share|share|Map|map|Pick|pick|Offer|offer|Bring|bring|"
+    r"Turn|turn|Outline|outline|Sketch|sketch|List|list|Spend|spend|Block|block|Book|book|"
+    r"Schedule|schedule|Run|run)\b"
 )
 _CLAIM_AS_FACT = re.compile(
     r"\b(?:tell\b.{0,40}\byou\s+(?:owned|led|headed)|say you|claim you|you already own|you owned|you led|"
@@ -167,7 +170,9 @@ def invented_number(claim: str, cited: str, *, advice: bool = False) -> bool:
         if word.lower() not in blob:
             return True
     for phrase in _SPELLED_QTY.findall(text):
-        if phrase.lower() not in blob:
+        # "top ten themes" is the same figure as "top ten ticket themes". The number word is what was cited.
+        number = phrase.split()[0].lower()
+        if number not in blob and phrase.lower() not in blob:
             return True
     for phrase in _FRACTION.findall(text):
         if phrase.lower() not in blob:
@@ -361,18 +366,20 @@ def _reading_words(reading: dict) -> int:
     return len(" ".join(parts).split())
 
 
-def _limit_reading(reading: dict) -> None:
-    """About 380 words. Why-clauses are already short. Extra items go before the opening does."""
+def _limit_reading(reading: dict, reasons: Dict[str, int]) -> None:
+    """About 380 words. Questions go first. A non-empty transferable list keeps one item."""
+    keep_transferable = 1 if reading.get("transferable") else 0
     while _reading_words(reading) > 380:
         removed = False
-        for key, floor in (("transferable", 0), ("questions", 0), ("strengths", 1), ("steps", 1), ("gaps", 1)):
+        for key, floor in (("questions", 0), ("strengths", 1), ("steps", 1), ("gaps", 1),
+                           ("transferable", keep_transferable)):
             items = reading.get(key) or []
             if len(items) > floor:
                 items.pop()
+                _bump(reasons, "trimmed")
                 removed = True
                 break
         if not removed:
-            reading["opening"] = _trim(reading.get("opening") or "", 45)
             break
 
 
@@ -399,7 +406,7 @@ def apply_guardrails(raw: dict, lines: List[dict]) -> dict:
         "questions": questions,
         "steps": steps,
     }
-    _limit_reading(reading)
+    _limit_reading(reading, reasons)
     return {
         **reading,
         # Names the previous prompt used. Same objects, so older callers keep working.
