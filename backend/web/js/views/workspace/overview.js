@@ -9,7 +9,7 @@
 // or estimated here, and a hidden or banded research figure stays hidden.
 import { api } from "../../api.js";
 import { h } from "../../dom.js";
-import { button, loading, notice } from "../../ui.js";
+import { button, notice } from "../../ui.js";
 import { GOAL_NOTE, goalEditor, goalPhrase, icon, lower, pageHead, scopeAnswers, sectionHref, syntheticNote, textLink } from "./common.js";
 
 const STATE_CHIP = { evidence_found: ["Evidence found", ""], needs_context: ["Needs more context", ".is-info"],
@@ -189,24 +189,60 @@ function cite(ws, ids) {
   return (ids || []).map((id) => by[id]).filter(Boolean);
 }
 
+function later(a, b) {
+  return a > b ? a : b;
+}
+
+function aiStatusMessage(elapsed, attempt, phase) {
+  if (attempt > 1 || phase === "retrying") return "Still working — trying once more. This will not hang.";
+  if (elapsed >= 30 || phase === "still_working") return "Still working. A careful reading can take about a minute and a half.";
+  return "Reading your experience. This usually takes about a minute.";
+}
+
 function aiPanel(ws) {
   const ai = ws.rm.ai;
   if (!ai || !ai.status) return null;
   const head = h("div.ws-section-head", h("h2.ws-h2", { id: "ov-ai" }, h("span.ov-letter", "A"), "What your experience shows"));
-  if (ai.status === "pending" || ai.status === "not_started") {
+  if (aiPanel.forTarget !== ws.target) {
+    aiPanel.forTarget = ws.target;
+    aiPanel.started = null;
+    aiPanel.gaveUp = false;
+    if (aiPanel.timer) { clearInterval(aiPanel.timer); aiPanel.timer = null; }
+  }
+  if ((ai.status === "pending" || ai.status === "not_started") && !aiPanel.gaveUp) {
+    if (!aiPanel.started) aiPanel.started = Date.now() - (Number(ai.elapsed_s) || 0) * 1000;
+    const waited = () => later((Date.now() - aiPanel.started) / 1000, Number(ai.elapsed_s) || 0);
     if (!aiPanel.timer) {
       aiPanel.timer = setInterval(async () => {
-        try {
-          const next = await api.aiNarrative(ws.target);
-          if (!next || next.status === "pending" || next.status === "not_started") return;
+        const local = (Date.now() - aiPanel.started) / 1000;
+        if (local > 240) {
           clearInterval(aiPanel.timer);
           aiPanel.timer = null;
+          aiPanel.gaveUp = true;
+          aiPanel.started = null;
+          if (ws.refreshAi) ws.refreshAi({ status: "provider_error", detail: "The reading took too long, so it was stopped. Your saved plan below is unchanged." });
+          return;
+        }
+        try {
+          const next = await api.aiNarrative(ws.target);
+          const label = document.getElementById("ov-ai-status");
+          if (!next || next.status === "pending" || next.status === "not_started") {
+            const elapsed = later(local, Number(next && next.elapsed_s) || 0);
+            if (label) label.textContent = aiStatusMessage(elapsed, (next && next.attempt) || 1, next && next.phase);
+            return;
+          }
+          clearInterval(aiPanel.timer);
+          aiPanel.timer = null;
+          aiPanel.started = null;
           if (ws.refreshAi) ws.refreshAi(next);
         } catch (_) { /* the next tick tries again */ }
       }, 2000);
     }
     return h("section.ws-section.ov-ai", { "aria-labelledby": "ov-ai", "aria-busy": "true" }, head,
-      h("article.ws-card", loading("Reading your experience… This usually takes about a minute.")));
+      h("article.ws-card",
+        h("div.loading", { role: "status", "aria-live": "polite" },
+          h("span.spinner", { "aria-hidden": "true" }),
+          h("span", { id: "ov-ai-status" }, aiStatusMessage(waited(), ai.attempt || 1, ai.phase)))));
   }
   if (aiPanel.timer) { clearInterval(aiPanel.timer); aiPanel.timer = null; }
   if (ai.status !== "ready") {

@@ -2,7 +2,9 @@
 
     cd backend && python -m evaluation.ai_demo
 
-TRACE_LLM_TIMEOUT (seconds) and TRACE_LLM_REASONING_EFFORT are read from the environment when a model is configured.
+TRACE_LLM_TIMEOUT (seconds) is read from the environment when a model is configured. The first try uses
+TRACE_LLM_FIRST_ATTEMPT_SECONDS (default 70) so a timeout still leaves time for one retry. TRACE_LLM_REASONING_EFFORT
+defaults to low for grok-4.7; set it to medium, high or xhigh to override, or to an empty value to omit it.
 With no key the files are status not_configured. Nothing is invented.
 """
 from __future__ import annotations
@@ -20,6 +22,13 @@ from evaluation.ai_demo.personas import PERSONAS, lines_for
 OUT = Path(__file__).resolve().parent / "outputs"
 
 
+def _reasoning_effort():
+    """Unset means low. An explicit empty value omits the field."""
+    if "TRACE_LLM_REASONING_EFFORT" not in os.environ:
+        return "low"
+    return (os.environ.get("TRACE_LLM_REASONING_EFFORT") or "").strip()
+
+
 def _client():
     """Built from the environment only. No key is read from the repository."""
     if os.environ.get("TRACE_AI_ASSESSMENT") != "1":
@@ -33,11 +42,16 @@ def _client():
         timeout = float(raw_timeout)
     except ValueError:
         timeout = 120.0
+    raw_first = (os.environ.get("TRACE_LLM_FIRST_ATTEMPT_SECONDS") or "70").strip()
+    try:
+        first_attempt = float(raw_first)
+    except ValueError:
+        first_attempt = 70.0
     return OpenAICompatible(
         provider=(os.environ.get("TRACE_LLM_PROVIDER") or "openai").strip(),
         base_url=(os.environ.get("TRACE_LLM_BASE_URL") or "https://api.openai.com/v1").strip(),
-        model=model, api_key=key, timeout=timeout,
-        reasoning_effort=(os.environ.get("TRACE_LLM_REASONING_EFFORT") or "").strip() or None)
+        model=model, api_key=key, timeout=timeout, first_attempt_seconds=first_attempt,
+        reasoning_effort=_reasoning_effort())
 
 
 def main() -> None:
@@ -70,6 +84,7 @@ def main() -> None:
                 packet["status"] = packet["narrative"]["status"]
                 packet["latency_s"] = packet["narrative"].get("latency_s")
                 packet["usage"] = packet["narrative"].get("usage")
+                packet["attempts"] = packet["narrative"].get("attempts")
             except Exception as exc:                                  # noqa: BLE001
                 packet["status"] = "provider_error"
                 packet["detail"] = type(exc).__name__

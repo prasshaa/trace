@@ -6,6 +6,7 @@ The process stores the result only. It does not store the API key or the prompt.
 from __future__ import annotations
 
 import threading
+import time
 from typing import Callable, Dict, Optional
 
 _lock = threading.Lock()
@@ -18,7 +19,7 @@ def launch(key: str, work: Callable[[], dict]) -> dict:
         current = _jobs.get(key)
         if current and current["status"] in ("pending", "ready"):
             return _public(current)
-        job = {"status": "pending", "result": None}
+        job = {"status": "pending", "result": None, "started": time.monotonic(), "attempt": 1, "phase": "reading"}
         _jobs[key] = job
 
     def run() -> None:
@@ -31,7 +32,16 @@ def launch(key: str, work: Callable[[], dict]) -> dict:
             job["result"] = result
 
     threading.Thread(target=run, name="trace-ai-narrative", daemon=True).start()
-    return {"status": "pending"}
+    return _public(job)
+
+
+def note(key: str, *, attempt: int, phase: str) -> None:
+    """The model call reports which attempt it is on, so the page can say it is trying once more."""
+    with _lock:
+        job = _jobs.get(key)
+        if job and job["status"] == "pending":
+            job["attempt"] = attempt
+            job["phase"] = phase
 
 
 def lookup(owner: str, target: str) -> Optional[dict]:
@@ -46,5 +56,9 @@ def lookup(owner: str, target: str) -> Optional[dict]:
 
 def _public(job: dict) -> dict:
     if job["status"] == "pending" or job.get("result") is None:
-        return {"status": "pending"}
+        elapsed = time.monotonic() - job.get("started", time.monotonic())
+        phase = job.get("phase") or "reading"
+        if phase == "reading" and elapsed >= 30:
+            phase = "still_working"
+        return {"status": "pending", "elapsed_s": round(elapsed, 1), "attempt": job.get("attempt") or 1, "phase": phase}
     return job["result"]
