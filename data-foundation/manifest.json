@@ -767,8 +767,8 @@
     },
     {
       "path": "supabase/migrations/20261127001000_trace_peer_pattern_wording.sql",
-      "bytes": 24584,
-      "sha256": "7144f4cdeeb6228540b97fe479a852c255c0808d43b77409998fb5331bbdb5de"
+      "bytes": 24630,
+      "sha256": "a1ee57f4e19a8c421d1d0229c9c8217663b91f8c817431922aeea0e6bc581dfd"
     },
     {
       "path": "supabase/rollback/20261111150000_trace_candidate_review_enforcement.rollback.sql",

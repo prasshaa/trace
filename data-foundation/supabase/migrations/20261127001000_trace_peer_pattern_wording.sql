@@ -407,13 +407,13 @@ as $$
       select case
         when n >= 10 and median is not null
         then 'Among the ' || n || ' closest PMs with a dated path, about '
-             || trace_peer_cohort.duration_phrase(round(median))
+             || trace_peer_cohort.duration_phrase(round(median::numeric))
              || ' to a first PM role'
              || case
                   when low is not null and high is not null
                    and round(high / 6.0) * 6 > round(low / 6.0) * 6
                   then '; the middle half took '
-                       || trace_peer_cohort.duration_span(round(low / 6.0) * 6, round(high / 6.0) * 6)
+                       || trace_peer_cohort.duration_span((round((low / 6.0)::numeric) * 6), (round((high / 6.0)::numeric) * 6))
                   else ''
                 end
              || '.'
@@ -459,7 +459,7 @@ as $$
         when n >= 10 and median is not null and median > 0
         then 'Among the ' || n || ' closest PMs at ' || (select target from args)
              || ', the middle time since career start was about '
-             || trace_peer_cohort.duration_phrase(median * 12) || '.'
+             || trace_peer_cohort.duration_phrase((median * 12)::numeric) || '.'
         else null
       end, 'career', 15 from career_years
     ) raw
