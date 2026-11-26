@@ -31,6 +31,7 @@ Safety, which overrides tone:
 - "worked with", "supported", "partnered" and "collaborated" are collaboration, not ownership. Do not say the person already owned or led that work.
 - If an excerpt says they did not own, set, define, decide, choose, manage, or run one thing, do not say they did that thing. A different thing in the same excerpt can still be theirs.
 - Do not introduce a percentage, count, money figure, fraction, or a word like "doubled" that is not written in the cited excerpt.
+- When peer patterns are listed, use at least one in the opening. Cite its PEER id in evidence_ids. Keep its numbers exactly. Do not describe one person in that group, and do not say a background guarantees a move. You may say "Most PMs with a path like yours" only together with the exact count from that pattern.
 - A strength is only what they did. A disclaimer is not a strength.
 - A step may tell them to ask to own something next. That is advice. Do not tell them to tell a recruiter they already owned something the excerpt denies.
 - A step may name a duration (for example two weeks) or a small count of pages.
@@ -69,8 +70,16 @@ def confirmed_lines(profile) -> List[dict]:
     return out
 
 
+def _peer_lines(roadmap: Optional[dict]) -> List[dict]:
+    peers = (roadmap or {}).get("peers") or {}
+    if not peers.get("available"):
+        return []
+    return [{"id": item["id"], "text": item["text"], "job": "PMs with a similar career path"}
+            for item in (peers.get("patterns") or []) if item.get("id") and item.get("text")]
+
+
 def _user_prompt(target: str, move: str, lines: List[dict], requirements: Sequence[dict], answers: Optional[List[dict]],
-                 retrieval_mode: str) -> str:
+                 retrieval_mode: str, peers: Optional[dict] = None) -> str:
     reqs = []
     for r in list(requirements)[:12]:
         note = ""
@@ -82,10 +91,17 @@ def _user_prompt(target: str, move: str, lines: List[dict], requirements: Sequen
     if answers:
         answered = "\nThe person answered:\n" + "\n".join(
             f"- {a.get('question')}: {a.get('answer')}" for a in answers if a.get("question") and a.get("answer"))
+    peer_rows = _peer_lines({"peers": peers} if peers is not None else None)
+    peer_block = ""
+    if peer_rows:
+        listed = "\n".join(f"- {row['id']} | peers | {row['text']}" for row in peer_rows)
+        peer_block = ("\n\nPeer patterns, group totals only. Use at least one. Do not change its numbers. "
+                      "Do not describe one person:\n" + listed)
     return (
         f"Target role: {target}\nMove: {move or 'not stated'}\n"
         f"How the excerpts were chosen (do not mention this): {retrieval_mode}. Use only the excerpts below.\n\n"
         f"What this target is hired for:\n" + "\n".join(reqs) + "\n\nExperience excerpts:\n" + "\n".join(ev) + answered
+        + peer_block
     )
 
 
@@ -93,6 +109,23 @@ def _env_status() -> dict:
     return {"status": "not_configured", "env": ["TRACE_AI_ASSESSMENT", "TRACE_LLM_API_KEY", "TRACE_LLM_MODEL",
                                                 "TRACE_LLM_BASE_URL", "TRACE_LLM_PROVIDER", "TRACE_LLM_TIMEOUT",
                                                 "TRACE_LLM_REASONING_EFFORT", "TRACE_SEMANTIC_RETRIEVAL", "TRACE_EMBEDDINGS"]}
+
+
+def _keep_peer_pattern(guarded: dict, peers: dict) -> dict:
+    """If the model left the group pattern out, state the first pattern in its own words. No new figure is added."""
+    patterns = (peers or {}).get("patterns") or []
+    if not (peers or {}).get("available") or not patterns:
+        return guarded
+    blob = " ".join(
+        [guarded.get("opening") or ""]
+        + [item.get("text") or "" for key in ("strengths", "transferable", "gaps", "steps") for item in guarded.get(key) or []]
+        + [str(item.get("evidence_ids") or "") for key in ("strengths", "transferable", "steps") for item in guarded.get(key) or []]
+    )
+    sentence = patterns[0]["text"]
+    if any(item["id"] in blob for item in patterns) or sentence in (guarded.get("opening") or ""):
+        return guarded
+    guarded["opening"] = (sentence + " " + (guarded.get("opening") or "")).strip()
+    return guarded
 
 
 def narrative_for(conn, ctx, profile, roadmap: dict, requirements: Sequence[dict] = (), answers: Optional[List[dict]] = None,
@@ -112,15 +145,19 @@ def narrative_for(conn, ctx, profile, roadmap: dict, requirements: Sequence[dict
                 "proves": [], "missing": []}
     target = (roadmap or {}).get("target_role") or target_id or "the target role"
     move = ((roadmap or {}).get("move") or {}).get("text") or ""
+    peers = (roadmap or {}).get("peers") or {}
+    peer_rows = _peer_lines(roadmap)
     try:
-        raw = client.complete_json(SYSTEM, _user_prompt(target, move, shown, rubric, answers, retrieval.get("mode") or ""),
-                                   on_attempt=on_attempt)
+        raw = client.complete_json(
+            SYSTEM, _user_prompt(target, move, shown, rubric, answers, retrieval.get("mode") or "", peers or None),
+            on_attempt=on_attempt)
     except LlmError as exc:
         logger.warning("narrative provider failed: %s", type(exc).__name__)
         meta = getattr(client, "last_meta", None) or {}
         return {"status": "provider_error", "retrieval": {k: retrieval[k] for k in ("mode", "reason") if k in retrieval},
                 "detail": str(exc), "attempts": meta.get("attempts"), "latency_s": meta.get("latency_s")}
-    guarded = apply_guardrails(raw, shown)
+    guarded = apply_guardrails(raw, shown + peer_rows)
+    guarded = _keep_peer_pattern(guarded, peers)
     meta = getattr(client, "last_meta", None) or {}
     return {"status": "ready", "provider": client.provider, "model": client.model,
             "retrieval": retrieval, "lines": shown, "latency_s": meta.get("latency_s"), "usage": meta.get("usage"),

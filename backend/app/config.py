@@ -105,6 +105,11 @@ class Settings(BaseSettings):
     # (v3 final). Off by default. Product exposure needs a separate data-use and privacy review; enable only locally.
     trace_career_origins: bool = False
     trace_career_origins_artifact: Optional[Path] = None      # default: the artifact shipped with the service
+    # Peer path matching (demo). Off by default. When on, the plan asks trace_peer_cohort.peer_patterns for group
+    # totals of the closest de-identified profiles. It does not read the Career Origins artifact and it does not
+    # change TRACE_CAREER_ORIGINS. The cohort file is loaded separately and is not in the repository.
+    trace_peer_matching: bool = False
+    trace_peer_cohort_version: str = "india-pm-v3"
 
     # Embeddings (D53): local gte-small, in process. Off by default; nothing in the product uses them until the
     # semantic-retrieval flag (Phase 3) is on. Model files are pinned and verified (scripts/fetch_embedding_model.py).

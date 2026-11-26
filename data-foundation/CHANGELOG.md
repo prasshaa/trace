@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.39.0 — 2026-11-26 (peer career-path patterns)
+
+| Change | Files | Why |
+|---|---|---|
+| Schema `trace_peer_cohort` holds de-identified career-path rows and a local embedding. It is not a user table, a contribution, or a reference profile. RLS is on. No client role can read the table. `peer_patterns` is security definer, returns one jsonb of counts, and is executable by `trace_app_runtime` only | migration 56 | The plan can match a career path to the closest profiles without returning a person |
+| Rollback drops the schema | rollback | |
+
 ## 2.38.0 — 2026-11-26 (anonymous recommendation use is the default)
 
 | Change | Files | Why |

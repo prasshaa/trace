@@ -183,6 +183,22 @@ function relates(ws) {
       h("p.small.muted", "Where a line is cited, the words are from your profile. A job title alone is not evidence.")));
 }
 
+function peerPanel(ws) {
+  const peers = ws.rm.peers;
+  if (!peers || !peers.available) return null;
+  const patterns = peers.patterns || [];
+  const takeaways = peers.takeaways || [];
+  return h("section.ws-section.ov-peers", { "aria-labelledby": "ov-peers" },
+    h("div.ws-section-head", h("h2.ws-h2", { id: "ov-peers" }, h("span.ov-letter", "A"), peers.headline || "PMs with paths like yours")),
+    h("article.ws-card.ov-peers-card",
+      h("p.ov-kind", peers.match_line || "Matched by similarity of career path."),
+      peers.neighbour_count ? h("p.ws-display-sm", `${peers.neighbour_count} closest PMs`) : null,
+      h("p", peers.disclaimer || "These are patterns across the closest profiles, not a prediction and not a guarantee."),
+      patterns.length ? h("ul.ov-caps", patterns.map((item) => h("li.ov-cap", h("p", item.text)))) : null,
+      takeaways.length ? h("div", h("h3.ws-h3", "What they did"), h("ul.plain-list", takeaways.map((line) => h("li", line)))) : null,
+      h("p.small.muted", peers.note || "")));
+}
+
 function cite(ws, ids) {
   const lines = ((ws.rm.ai || {}).lines) || [];
   const by = Object.fromEntries(lines.map((row) => [row.id, row]));
@@ -320,7 +336,7 @@ export function render(ws) {
     pending ? notice(`${pending} ${pending === 1 ? "detail is" : "details are"} still waiting for your review, so ${pending === 1 ? "it isn't" : "they aren't"} `
       + "used yet. Everything you've confirmed is already in this plan.", { tone: "info",
       action: h("a.btn.btn-secondary.btn-sm", { href: "#/profile" }, "Review them") }) : null,
-    ...numbered([aiPanel(ws), startingPoint(ws), research(ws), routes(ws), relates(ws), nextSteps(ws)]),
+    ...numbered([peerPanel(ws), aiPanel(ws), startingPoint(ws), research(ws), routes(ws), relates(ws), nextSteps(ws)]),
   ];
 }
 

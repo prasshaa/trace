@@ -322,6 +322,17 @@ def negation_as_positive(claim: str, cited: str) -> bool:
     return False
 
 
+def _peer_claim_problem(text: str, ids: Iterable[str]) -> Optional[str]:
+    """A peer citation may repeat the group pattern. It may not name a person or promise an outcome."""
+    if not any(str(i).startswith("PEER-") for i in ids):
+        return None
+    if re.search(r"\b(guarantee|guarantees|guaranteed|probability|likely to|will become|you will|percent chance)\b", text or "", re.I):
+        return "peer_claim"
+    if re.search(r"\b(she|he|one person|this person|named)\b", text or "", re.I):
+        return "peer_individual"
+    return None
+
+
 def keep_claim(claim: dict, lines: Dict[str, dict], *, require_citation: bool, kind: str) -> Tuple[Optional[dict], Optional[str]]:
     """The claim and None, or None and a drop reason."""
     if not isinstance(claim, dict):
@@ -347,6 +358,9 @@ def keep_claim(claim: dict, lines: Dict[str, dict], *, require_citation: bool, k
         return None, "invented_number"
     if raw_why and invented_number(remove_ids(raw_why, known), universe, advice=advice):
         return None, "invented_number"
+    peer_reason = _peer_claim_problem(raw_text + " " + raw_why, ids)
+    if peer_reason:
+        return None, peer_reason
     if ids and not advice and collaboration_as_ownership(raw_text, cited):
         return None, "collaboration_as_ownership"
     if ids and not _skips_negation(raw_text, kind) and negation_as_positive(raw_text, cited):
@@ -379,8 +393,13 @@ def _opening(raw, by_id, lines, reasons) -> str:
         sentence = sentence.strip()
         if not sentence:
             continue
-        if invented_number(remove_ids(sentence, by_id), universe):
+        peerish = bool(re.search(r"closest PMs|path like yours", sentence, re.I))
+        number_universe = " ".join(row["text"] for row in lines if str(row.get("id", "")).startswith("PEER-")) if peerish else universe
+        if invented_number(remove_ids(sentence, by_id), number_universe):
             _bump(reasons, "invented_number")
+            continue
+        if peerish and _peer_claim_problem(sentence, ["PEER-1"]):
+            _bump(reasons, "peer_claim")
             continue
         kept.append(sentence)
     return _trim(" ".join(kept), 45)

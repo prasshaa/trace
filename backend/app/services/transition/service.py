@@ -332,6 +332,13 @@ class TransitionPlanService:
         depth = support_depth(current_id, run["target_role_id"])
         from app.services.transition.roadmap import apply_support_depth
         apply_support_depth(out, depth, out.get("target_role"))
+        try:
+            from app.services.peer_matching.service import peer_section
+            out["peers"] = peer_section(self._conn, profile, run["target_role_id"], out.get("target_role") or "")
+        except Exception as exc:                                          # noqa: BLE001 - the plan must still render
+            import logging
+            logging.getLogger(__name__).warning("peer section unavailable: %s", type(exc).__name__)
+            out["peers"] = {"available": False}
         out["ai"] = _ai_narrative(self._conn, ctx, profile, out, reqs)
         if out["move"]["kind"] == "same_role" and out["recommendation"]["kind"] == "direct":
             out["recommendation"]["headline"] = \

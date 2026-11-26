@@ -35,6 +35,15 @@ Apply database migrations only to this local stack (or a preview project). Do no
 v2.36.0 is required for the private-by-default sharing preference and for account deletion.
 v2.37.0 grants the owner role usage of `trace_private` so that deletion can actually be called. It grants no table access.
 v2.34.0 and v2.35.0 are required before semantic retrieval can use pgvector.
+v2.39.0 adds `trace_peer_cohort`. It is off until `TRACE_PEER_MATCHING=1`. The real cohort file is not in this
+repository. Load a local CSV with:
+
+```sh
+cd backend && .venv/bin/python -m scripts.load_peer_cohort --csv PATH --dsn-env DATABASE_URL --cohort-version india-pm-v3
+```
+
+`DATABASE_URL` is the admin connection string, read from the environment and never printed. The plan then shows
+"PMs with paths like yours" from group patterns only. `TRACE_CAREER_ORIGINS` is unchanged.
 
 ## Model and retrieval
 
