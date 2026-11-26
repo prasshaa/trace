@@ -85,7 +85,14 @@ def test_peer_numbers_must_match_the_pattern_and_a_person_is_dropped():
     kept, reason = keep_claim(
         {"text": "24 of the 40 closest PMs moved into a product role from inside the employer.", "evidence_ids": ["PEER-1"]},
         lines, require_citation=False, kind="step")
-    assert reason is None and "24" in kept["text"]
+    assert reason is None and "PEER-1" not in kept["evidence_ids"]
+    progressed, progressed_why = keep_claim(
+        {"text": "A next step is to notice that 12 of the 16 cohort PMs who started as APM are now Product Manager or above.",
+         "evidence_ids": ["PEER-2"]},
+        {"PEER-2": {"id": "PEER-2", "text": "12 of the 16 cohort PMs who started as APM are now Product Manager or above."},
+         "L1": lines["L1"]},
+        require_citation=False, kind="step")
+    assert progressed_why is None and progressed["evidence_ids"] == ["PEER-2"]
     blocked, blocked_why = keep_claim(
         {"text": "24 of the 40 closest PMs moved into a product role from inside the employer.", "evidence_ids": ["PEER-1"]},
         lines, require_citation=True, kind="strength")
@@ -112,7 +119,7 @@ def test_peer_numbers_must_match_the_pattern_and_a_person_is_dropped():
     assert "use at least one" not in SYSTEM.lower()
     prompt = _user_prompt("Product Manager", "step up", [{"id": "L1", "text": "Shipped the queue.", "job": "PM"}],
                           [{"title": "Discovery", "description": "Talk to users"}], None, "in_process",
-                          {"available": True, "patterns": [{"id": "PEER-1", "text": lines["PEER-1"]["text"]}]})
+                          {"available": True, "patterns": [{"id": "PEER-1", "text": "24 of the 40 closest PMs came from software before a product role."}]})
     assert "PEER-1" in prompt
     assert "24 of the 40" in prompt
 
@@ -243,10 +250,11 @@ def test_duplicate_rows_keep_distinct_keys_and_backgrounds_match():
 
 
 def test_the_level_nudge_is_small_and_patterns_are_the_distinctive_ones():
-    sql = (ROOT / "data-foundation/supabase/migrations/20261126230000_trace_peer_rerank_pool.sql").read_text()
+    sql = (ROOT / "data-foundation/supabase/migrations/20261126233000_trace_peer_aggregates_only.sql").read_text()
     body = sql.split("as $$", 1)[1].split("$$;", 1)[0]
-    assert "120" in body and "0.15" not in body and "profile_key" not in body
-    assert "candidates" in body
+    assert "limit 120" in body and "enable_indexscan" in body
+    assert "profile_key" not in body and "'candidates'" not in body
+    assert "grant execute on function trace_peer_cohort.peer_patterns(extensions.vector, jsonb, text) to trace_app_runtime" in sql
     cohort = [_row(final_entry_move="external", final_primary_prior_function="Business / Consulting / Finance / Operations")
               for _ in range(30)]
     cohort += [_row(final_entry_move="internal", final_primary_prior_function="Design / UX",
@@ -297,9 +305,18 @@ def test_a_structured_opening_stays_prose_and_the_limit_ends_on_a_sentence():
     started += [_row(final_first_pm_group="APM", norm_seniority_group="APM", final_n_pm_roles="1") for _ in range(4)]
     progressed = patterns_from_neighbours(started, "Product Manager", started, user={"in_pm": True, "first_pm_level": "APM", "target_level": "Product Manager"})
     assert any("started as APM" in item["text"] and "Product Manager or above" in item["text"] for item in progressed["patterns"])
-    hidden_start = patterns_from_neighbours(started, "Senior Product Manager", started,
-                                           user={"in_pm": True, "first_pm_level": "Product Manager", "target_level": "Senior Product Manager"})
-    assert all("started as Product Manager" not in item["text"] for item in hidden_start.get("patterns") or [])
+    seniors = [_row(final_first_pm_group="Product Manager", norm_seniority_group="Senior Product Manager", final_n_pm_roles="3") for _ in range(12)]
+    climbed = patterns_from_neighbours(seniors, "Senior Product Manager", seniors,
+                                       user={"in_pm": True, "first_pm_level": "Product Manager", "target_level": "Senior Product Manager"})
+    assert any("started as Product Manager" in item["text"] and "Senior Product Manager or above" in item["text"]
+               for item in climbed["patterns"])
+    from app.services.peer_matching.aggregate import _share, _takeaways
+    compared, _lift = _share(24, 30, "started as APM.", 40, 400, 439)
+    assert "APM.," not in compared and compared.endswith("PMs.")
+    minority = [{"text": "from inside the employer", "rate": 0.38, "cohort_rate": 0.2}]
+    assert _takeaways(minority, 14, 23) == []
+    refused = _from_payload({"headline": "PMs with paths like yours", "patterns": [], "candidates": []}, {})
+    assert refused["available"] is False
     design_rows = [_row(final_primary_prior_function="Design / UX") for _ in range(2)]
     engineering = [_row(final_primary_prior_function="Software Engineering / QA / IT", final_entry_move="internal") for _ in range(20)]
     base = [_row() for _ in range(20)]

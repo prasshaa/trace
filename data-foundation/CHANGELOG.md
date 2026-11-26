@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.42.0 — 2026-11-26 (peer patterns are counts again)
+
+| Change | Files | Why |
+|---|---|---|
+| `peer_patterns(vector, jsonb, text)` reranks inside the database and returns aggregate sentences. The previous signature, which returned one attribute object per neighbour, is dropped. The call turns index scans off and reads 120 neighbours by exact distance. Counts under 5 are omitted and 5–9 stay a band. Execute stays with `trace_app_runtime` only | migration 59 | v2.41 exposed neighbour attributes to the app, and the HNSW default stopped the pool at about 40 |
+| Rollback restores the v2.41.0 function | rollback | |
+
 ## 2.41.0 — 2026-11-26 (peer search returns a candidate pool)
 
 | Change | Files | Why |

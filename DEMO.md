@@ -40,8 +40,8 @@ For the demo, set `TRACE_CONTRIBUTION_POLICY=anonymous`. Continuing sign-up then
 is queued for a shared pool. `disabled` is the public-site setting: it records private instead.
 
 v2.39.0 adds `trace_peer_cohort`. v2.40.0 lets a blank degree or pre-PM count stay unknown.
-v2.41.0 returns the closest 120 anonymous profiles so the app can rerank them. The path sentence also changed,
-so reload the cohort after applying v2.41.0. It is off until `TRACE_PEER_MATCHING=1`. The real cohort file is not in this
+v2.42.0 keeps the rerank inside the database and returns group sentences only. The embedded sentences are unchanged,
+so a cohort loaded for v2.41.0 does not need to be loaded again. It is off until `TRACE_PEER_MATCHING=1`. The real cohort file is not in this
 repository. Load a local CSV with:
 
 ```sh

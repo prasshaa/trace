@@ -162,10 +162,12 @@ def _share(count: int, known: int, rest: str, cohort_count: int, cohort_known: i
         head = f"5–9 of the {known} closest PMs"
     else:
         head = f"{count} of the {known} closest PMs"
-    text = f"{head} {rest}"
+    text = f"{head} {rest.strip().rstrip('.')}"
     if cohort_known >= 10 and cohort_n >= 10:
         pct = int(round((cohort_rate * 100) / 5.0) * 5)
-        text += f", compared with about {pct}% of all {cohort_n} PMs"
+        text += f", compared with about {pct}% of all {cohort_n} PMs."
+    elif not text.endswith("."):
+        text += "."
     return text, lift
 
 
@@ -294,8 +296,6 @@ def progression_lines(by_first: dict, user: Optional[dict]) -> list:
     target = user.get("target_level") or ""
     if start not in LEVELS or target not in LEVELS or start not in (by_first or {}):
         return []
-    if LEVELS.index(target) > LEVELS.index("Product Manager") and start == "Product Manager":
-        return []
     block = by_first[start] or {}
     n = int(block.get("n") or 0)
     reached = int((block.get("reached") or {}).get(target) or 0)
@@ -372,7 +372,7 @@ def present(group: dict, cohort: Optional[dict] = None, user: Optional[dict] = N
         "preface": preface,
         "disclaimer": "These are patterns across the closest profiles, not a prediction and not a guarantee.",
         "patterns": patterns,
-        "takeaways": _takeaways(ranked),
+        "takeaways": _takeaways(ranked, group.get("internal") or 0, group.get("external") or 0),
         "note": "Your profile is not in this group. A pattern shared by fewer than 5 people is left out. "
                 "A pattern shared by 5 to 9 people is shown as a range.",
     }
@@ -392,14 +392,14 @@ def patterns_from_neighbours(rows: Sequence[dict], target_level: str, cohort_row
     return present(stats_from_rows(rows), stats_from_rows(cohort_rows), features, by_first_from_rows(cohort_rows), counts)
 
 
-def _takeaways(patterns: Sequence[dict]) -> list:
-    """A frequent-path line only when the pattern is above the cohort rate and at least about 30% of the group."""
+def _takeaways(patterns: Sequence[dict], internal: int = 0, external: int = 0) -> list:
+    """A frequent-path line only when it beats the cohort, covers about 30%, and inside moves are the majority."""
     out = []
     for item in patterns:
         if item.get("rate", 0) < 0.30 or item.get("rate", 0) <= item.get("cohort_rate", 0):
             continue
         text = item["text"]
-        if "from inside the employer" in text and len(out) < 3:
+        if "from inside the employer" in text and internal > external and len(out) < 3:
             out.append("A common step in this group was moving into product inside the same employer.")
         elif "came from Software Engineering" in text and len(out) < 3:
             out.append("Software engineering, QA or IT was a frequent path into product in this group.")

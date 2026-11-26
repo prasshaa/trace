@@ -31,7 +31,7 @@ Safety, which overrides tone:
 - "worked with", "supported", "partnered" and "collaborated" are collaboration, not ownership. Do not say the person already owned or led that work.
 - If an excerpt says they did not own, set, define, decide, choose, manage, or run one thing, do not say they did that thing. A different thing in the same excerpt can still be theirs.
 - Do not introduce a percentage, count, money figure, fraction, or a word like "doubled" that is not written in the cited excerpt.
-- A PEER id is a group total. It may be cited only on the opening or on a step that discusses that group. Strengths cite only this person's excerpts. Do not change a peer number, describe one person, or say a background guarantees a move.
+- At most one step may cite one PEER id, and only when that step is about a progression or a background in that pattern. Do not cite a PEER id on a strength or in the opening. Do not change its numbers.
 - A strength is only what they did. A disclaimer is not a strength.
 - A step may tell them to ask to own something next. That is advice. Do not tell them to tell a recruiter they already owned something the excerpt denies.
 - A step may name a duration (for example two weeks) or a small count of pages.
@@ -74,18 +74,24 @@ def _peer_lines(roadmap: Optional[dict]) -> List[dict]:
     peers = (roadmap or {}).get("peers") or {}
     if not peers.get("available"):
         return []
-    return [{"id": item["id"], "text": item["text"], "job": "PMs with a similar career path"}
-            for item in (peers.get("patterns") or [])[:4] if item.get("id") and item.get("text")]
+    chosen = []
+    for item in peers.get("patterns") or []:
+        text = item.get("text") or ""
+        if item.get("id") and ("started as" in text or "came from" in text):
+            chosen.append({"id": item["id"], "text": text, "job": "PMs with a similar career path"})
+        if len(chosen) == 2:
+            break
+    return chosen
 
 
 def _user_prompt(target: str, move: str, lines: List[dict], requirements: Sequence[dict], answers: Optional[List[dict]],
                  retrieval_mode: str, peers: Optional[dict] = None) -> str:
     reqs = []
-    for r in list(requirements)[:6]:
+    for r in list(requirements)[:4]:
         desc = " ".join((r.get("description") or "").split())[:140]
         note = f" (context for you, do not repeat: {r['level_note']})" if r.get("level_note") else ""
         reqs.append(f"- {r.get('title') or r.get('requirement_key')}: {desc}{note}".strip())
-    ev = [f"- {row['id']} | {row.get('job') or 'role not named'} | {row['text']}" for row in lines[:8]]
+    ev = [f"- {row['id']} | {row.get('job') or 'role not named'} | {row['text']}" for row in lines[:6]]
     answered = ""
     if answers:
         answered = "\nAnswered:\n" + "\n".join(
@@ -94,7 +100,7 @@ def _user_prompt(target: str, move: str, lines: List[dict], requirements: Sequen
     peer_block = ""
     if peer_rows:
         listed = "\n".join(f"- {row['id']}: {row['text']}" for row in peer_rows)
-        peer_block = "\n\nPeer group totals. Not evidence of what this person did. Do not change the numbers:\n" + listed
+        peer_block = "\n\nOptional, at most one step, only if it matches that step. Do not change the numbers:\n" + listed
     del retrieval_mode
     return (
         f"Target: {target}\nMove: {move or 'not stated'}\n\n"
@@ -156,8 +162,11 @@ def narrative_for(conn, ctx, profile, roadmap: dict, requirements: Sequence[dict
     except LlmError as exc:
         logger.warning("narrative provider failed: %s", type(exc).__name__)
         meta = getattr(client, "last_meta", None) or {}
-        return {"status": "provider_error", "retrieval": {k: retrieval[k] for k in ("mode", "reason") if k in retrieval},
-                "detail": str(exc), "attempts": meta.get("attempts"), "latency_s": meta.get("latency_s")}
+        timed_out = "timed out" in str(exc)
+        return {"status": "retry" if timed_out else "provider_error",
+                "retrieval": {k: retrieval[k] for k in ("mode", "reason") if k in retrieval},
+                "detail": "The reading took too long. It can be tried again. Your plan is unchanged." if timed_out else str(exc),
+                "attempts": meta.get("attempts"), "latency_s": meta.get("latency_s")}
     guarded = apply_guardrails(raw, shown + peer_rows)
     guarded = _keep_peer_pattern(guarded, peers)
     meta = getattr(client, "last_meta", None) or {}

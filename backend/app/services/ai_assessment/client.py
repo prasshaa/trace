@@ -57,6 +57,7 @@ class OpenAICompatible:
         payload = {
             "model": self.model,
             "temperature": 0.2,
+            "max_tokens": 800,
             "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
             "response_format": {"type": "json_object"},
         }
@@ -84,7 +85,7 @@ class OpenAICompatible:
                 latency = round(time.perf_counter() - started, 3)
                 attempt_log.append({"n": attempt, "ok": False, "error": f"http_{exc.code}", "latency_s": latency})
                 self._remember(attempt_log, None, time.perf_counter() - started_all)
-                if 500 <= exc.code <= 599 and attempt == 1:
+                if 500 <= exc.code <= 599 and attempt == 1 and latency < self.timeout * 0.5 and (deadline - time.monotonic()) >= 1:
                     logger.info("llm call provider=%s model=%s attempt=%s http=%s latency_s=%.3f",
                                 self.provider, self.model, attempt, exc.code, latency)
                     continue
@@ -96,7 +97,8 @@ class OpenAICompatible:
                 logger.info("llm call provider=%s model=%s attempt=%s timeout latency_s=%.3f",
                             self.provider, self.model, attempt, latency)
                 last_error = "the model provider timed out"
-                if attempt == 1:
+                # A first try that already used most of the deadline is not sent again.
+                if attempt == 1 and latency < self.timeout * 0.5 and (deadline - time.monotonic()) >= 1:
                     continue
                 raise LlmError(last_error) from None
             except OSError as exc:

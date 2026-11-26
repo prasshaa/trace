@@ -237,7 +237,7 @@ function aiPanel(ws) {
           aiPanel.timer = null;
           aiPanel.gaveUp = true;
           aiPanel.started = null;
-          if (ws.refreshAi) ws.refreshAi({ status: "provider_error", detail: "The reading took too long, so it was stopped. Your saved plan below is unchanged." });
+          if (ws.refreshAi) ws.refreshAi({ status: "retry", detail: "The reading took too long. It can be tried again. Your plan is unchanged." });
           return;
         }
         try {
@@ -268,7 +268,9 @@ function aiPanel(ws) {
       h("article.ws-card",
         h("p", ai.status === "not_configured"
           ? "The live reading is off until a model is configured. Trace will not invent one."
-          : "The model didn't return a reading this time. Your saved plan below is unchanged."),
+          : ai.status === "retry"
+            ? "The reading took too long. Open the plan again to try once more. Your saved plan is unchanged."
+            : "The model didn't return a reading this time. Your saved plan below is unchanged."),
         h("p.small.muted", ai.status === "not_configured" ? `Set ${env}. The key stays in the environment.` : (ai.detail || ""))));
   }
   const quote = (ids) => {

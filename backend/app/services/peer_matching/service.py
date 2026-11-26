@@ -11,7 +11,6 @@ from pathlib import Path
 
 from app.config import get_settings
 from app.services.embeddings.provider import EmbeddingUnavailable, GteSmallOnnx
-from app.services.peer_matching.aggregate import present, rerank, stats_from_rows
 from app.services.peer_matching.text import user_match_features
 
 logger = logging.getLogger(__name__)
@@ -49,8 +48,17 @@ def peer_section(conn, profile, target_role_id: str, target_title: str) -> dict:
     try:
         with conn.transaction():
             row = conn.execute(
-                "select trace_peer_cohort.peer_patterns(%s::extensions.vector, %s, %s, %s, %s)",
-                (_vector_literal(vector), user["target_level"], [], 120, settings.trace_peer_cohort_version),
+                "select trace_peer_cohort.peer_patterns(%s::extensions.vector, %s::jsonb, %s)",
+                (_vector_literal(vector), json.dumps({
+                    "prior": user.get("prior") or "",
+                    "move": user.get("move") or "",
+                    "n_pre": user.get("n_pre"),
+                    "mba": user.get("mba"),
+                    "start_year": user.get("start_year"),
+                    "in_pm": bool(user.get("in_pm")),
+                    "first_pm_level": user.get("first_pm_level") or "",
+                    "target_level": user.get("target_level") or "",
+                }), settings.trace_peer_cohort_version),
             ).fetchone()
     except Exception as exc:                                              # noqa: BLE001 - the plan must still render
         logger.warning("peer patterns unavailable: %s", type(exc).__name__)
@@ -63,92 +71,31 @@ def peer_section(conn, profile, target_role_id: str, target_title: str) -> dict:
     return _from_payload(payload, user)
 
 
-def _stats_from_sql(block: dict) -> dict:
-    """The function's count object, with list fields the ranker already understands."""
-    months = block.get("months") or {}
-    month_values = []
-    if int(months.get("n") or 0) >= 10 and months.get("median") is not None:
-        # A list of the median, repeated, is enough for the middle value. The span uses low and high.
-        n = int(months["n"])
-        median = int(round(float(months["median"])))
-        low = int(round(float(months["low"]))) if months.get("low") is not None else median
-        high = int(round(float(months["high"]))) if months.get("high") is not None else median
-        month_values = [low] * (n // 4) + [median] * (n // 2) + [high] * (n - n // 4 - n // 2)
-    pre_values = []
-    if block.get("pre_n") and int(block["pre_n"]) >= 10 and block.get("pre_median") is not None:
-        pre_values = [int(round(float(block["pre_median"])))] * int(block["pre_n"])
-    priors = block.get("priors") or {}
-    if isinstance(priors, list):
-        priors = {item.get("label"): int(item.get("count") or 0) for item in priors if item.get("label")}
-    first = block.get("first") or block.get("first_pm") or {}
-    if isinstance(first, list):
-        first = {item.get("label"): int(item.get("count") or 0) for item in first if item.get("label")}
-    if isinstance(first, dict) and "label" in first and "count" in first:
-        first = {first["label"]: int(first["count"])}
-    total = int(block.get("n") or block.get("neighbour_count") or 0)
-    prior_map = {str(k): int(v) for k, v in priors.items()} if isinstance(priors, dict) else {}
-    first_map = {str(k): int(v) for k, v in first.items()} if isinstance(first, dict) else {}
-    return {
-        "n": total,
-        "internal": int(block.get("internal") or 0),
-        "external": int(block.get("external") or 0),
-        "move_known": int(block.get("move_known") or (int(block.get("internal") or 0) + int(block.get("external") or 0))),
-        "priors": prior_map,
-        "prior_known": int(block.get("prior_known") or sum(prior_map.values())),
-        "months": month_values,
-        "pre": pre_values,
-        "mba": int(block.get("mba") or 0),
-        "mba_known": int(block["mba_known"]) if block.get("mba_known") is not None else total,
-        "degree": int(block.get("degree") or 0),
-        "degree_known": int(block["degree_known"]) if block.get("degree_known") is not None else 0,
-        "first": first_map,
-        "first_known": int(block["first_known"]) if block.get("first_known") is not None else sum(first_map.values()),
-    }
-
-
-def _rows_from_candidates(candidates: list) -> list:
-    rows = []
-    for item in candidates:
-        if not isinstance(item, dict):
-            continue
-        if any(key in item for key in ("profile_key", "path_text", "embedding", "norm_city")):
-            return []
-        rows.append({
-            "norm_seniority_group": item.get("level") or "",
-            "final_primary_prior_function": item.get("prior") or "",
-            "final_entry_move": item.get("move") or "",
-            "final_first_pm_group": item.get("first") or "",
-            "final_n_pre_pm_roles": item.get("n_pre"),
-            "final_n_pm_roles": item.get("n_pm"),
-            "has_mba": item.get("mba"),
-            "norm_career_start_year": item.get("start_year"),
-            "final_has_history": bool(item.get("has_history")),
-            "final_months_to_first_pm_from_earliest_nonintern": item.get("months"),
-            "cosine": item.get("cosine"),
-        })
-    return rows
-
-
 def _from_payload(payload: dict, user: dict) -> dict:
-    """Rerank the anonymous candidate attributes, then publish group patterns only."""
-    if any(key in payload for key in ("profile_key", "path_text", "embedding", "norm_city")):
+    """The database function already aggregated. A payload that still carries profile rows is refused."""
+    del user
+    if any(key in payload for key in ("candidates", "profile_key", "path_text", "embedding", "norm_city", "neighbours", "by_first")):
         logger.warning("peer payload included profile fields; they were discarded")
         return {"available": False, "reason": "refused"}
-    candidates = payload.get("candidates")
-    if isinstance(candidates, list):
-        rows = _rows_from_candidates(candidates)
-        if candidates and not rows:
+    patterns = payload.get("patterns")
+    if not isinstance(patterns, list) or not payload.get("headline"):
+        return {"available": False, "reason": "unavailable"}
+    clean = []
+    for item in patterns:
+        if not isinstance(item, dict) or not item.get("text"):
+            continue
+        if any(key in item for key in ("profile_key", "prior", "level", "embedding")):
             return {"available": False, "reason": "refused"}
-        chosen = rerank(rows, None, user, 40)
-        cohort = _stats_from_sql(payload.get("cohort") or {})
-        if not cohort.get("n"):
-            cohort = stats_from_rows(rows)
-        view = present(stats_from_rows(chosen), cohort, user, payload.get("by_first") or {}, payload.get("backgrounds") or {})
-    elif isinstance(payload.get("group"), dict):
-        view = present(_stats_from_sql(payload["group"]), _stats_from_sql(payload.get("cohort") or payload["group"]), user)
-    else:
-        block = _stats_from_sql(payload)
-        view = present(block, block, user)
-    if view.get("available"):
-        view["synthetic"] = bool(payload.get("synthetic"))
-    return view
+        clean.append({"id": item.get("id") or f"PEER-{len(clean) + 1}", "text": item["text"]})
+    return {
+        "available": bool(payload.get("available", True)) and (bool(clean) or bool(payload.get("preface"))),
+        "synthetic": bool(payload.get("synthetic")),
+        "neighbour_count": payload.get("neighbour_count"),
+        "headline": payload.get("headline"),
+        "match_line": payload.get("match_line") or "Matched by similarity of career path.",
+        "preface": payload.get("preface") or "",
+        "disclaimer": payload.get("disclaimer") or "These are patterns across the closest profiles, not a prediction and not a guarantee.",
+        "patterns": clean,
+        "takeaways": [line for line in (payload.get("takeaways") or []) if isinstance(line, str)],
+        "note": payload.get("note") or "",
+    }

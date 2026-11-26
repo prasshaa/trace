@@ -344,13 +344,17 @@ def keep_claim(claim: dict, lines: Dict[str, dict], *, require_citation: bool, k
     if _EVAL_ID.search(raw_text) or _UUID.search(raw_text):
         return None, "leaked_id"
     ids = [str(i) for i in (claim.get("evidence_ids") or []) if i]
-    if kind in ("strength", "transferable", "gap", "question") and any(i.startswith("PEER-") for i in ids):
-        return None, "peer_evidence"
     if any(i.startswith("PEER-") for i in ids):
         peer_reason = _peer_claim_problem(raw_text + " " + raw_why, ids)
         if peer_reason:
             return None, peer_reason
-        if kind == "step" and not re.search(r"closest PMs|path like yours|cohort PMs", raw_text, re.I):
+        if kind != "step":
+            return None, "peer_evidence"
+        peer_ids = [i for i in ids if i.startswith("PEER-")]
+        cited = " ".join((lines.get(i) or {}).get("text") or "" for i in peer_ids)
+        relates = bool(re.search(r"started as|or above|came from", raw_text, re.I))
+        allowed = bool(re.search(r"started as .+ or above|came from ", cited, re.I))
+        if len(peer_ids) != 1 or not relates or not allowed:
             ids = [i for i in ids if not i.startswith("PEER-")]
     if any(i and i.lower() in raw_text.lower() for i in ids):
         return None, "leaked_id"
@@ -527,7 +531,7 @@ def apply_guardrails(raw: dict, lines: List[dict]) -> dict:
     transferable = _collect(raw.get("transferable") or [], by_id, "transferable", True, reasons)[:3]
     gaps = _gaps(raw.get("gaps") or raw.get("missing") or [], by_id, reasons)[:3]
     questions = _questions(raw.get("questions") or [], by_id, reasons)[:3]
-    steps = _collect(raw.get("steps") or [], by_id, "step", False, reasons)[:3]
+    steps = _one_peer_step(_collect(raw.get("steps") or [], by_id, "step", False, reasons), by_id)[:3]
     opening = _opening(raw.get("opening"), by_id, lines, reasons)
     reading = {
         "opening": opening,
@@ -546,6 +550,28 @@ def apply_guardrails(raw: dict, lines: List[dict]) -> dict:
         "dropped": sum(reasons.values()),
         "dropped_reasons": reasons,
     }
+
+
+def _one_peer_step(steps: List[dict], by_id: Dict[str, dict]) -> List[dict]:
+    """At most one step keeps a single peer citation, and only when that citation is the step's subject."""
+    seen = False
+    out = []
+    for step in steps:
+        ids = [str(i) for i in (step.get("evidence_ids") or []) if i]
+        peer = [i for i in ids if i.startswith("PEER-")]
+        if not peer:
+            out.append(step)
+            continue
+        cited = (by_id.get(peer[0]) or {}).get("text") or ""
+        relates = bool(re.search(r"started as|or above|came from", step.get("text") or "", re.I))
+        allowed = bool(re.search(r"started as .+ or above|came from ", cited, re.I))
+        if not seen and len(peer) == 1 and relates and allowed:
+            seen = True
+            out.append(step)
+            continue
+        kept = [i for i in ids if not i.startswith("PEER-")]
+        out.append({**step, "evidence_ids": kept})
+    return out
 
 
 def _collect(items, by_id, kind, require, reasons) -> List[dict]:

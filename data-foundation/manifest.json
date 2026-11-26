@@ -22,8 +22,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 76576,
-      "sha256": "fd715c0c5779338a1d82f0dc252eb819c52e7db192fb932673d6b18a4e708c03"
+      "bytes": 77203,
+      "sha256": "8ea82dd2fe95ac6d7442b6bb12fb6e48eeb59fd88f70a0d0fe67deb3c608306e"
     },
     {
       "path": "README.md",
@@ -756,6 +756,11 @@
       "sha256": "a3364a00de19572f3f336e9f9942f1746d2eee5953f58fa38540aa88f7a0e79e"
     },
     {
+      "path": "supabase/migrations/20261126233000_trace_peer_aggregates_only.sql",
+      "bytes": 14595,
+      "sha256": "9cd8816defacefadff180e2e43ffeed805a53ad656261553ffb2836edb299fa0"
+    },
+    {
       "path": "supabase/rollback/20261111150000_trace_candidate_review_enforcement.rollback.sql",
       "bytes": 13064,
       "sha256": "55def97a842ecca5eb8bf29289b831aa4b10bd0a035378d5b4d57b6fc4c304a5"
@@ -979,6 +984,11 @@
       "path": "supabase/rollback/20261126230000_trace_peer_rerank_pool.rollback.sql",
       "bytes": 5511,
       "sha256": "7373cc087b8432a1737e393f9009218f16dca3ddb45b8ce158d3a2ce87d7049c"
+    },
+    {
+      "path": "supabase/rollback/20261126233000_trace_peer_aggregates_only.rollback.sql",
+      "bytes": 6891,
+      "sha256": "51d2f3cfede4a4276f33e2110529dd18719f23c8fac8354efced28141b46b2d6"
     },
     {
       "path": "supabase/seeds/synthetic_fixtures.sql",
