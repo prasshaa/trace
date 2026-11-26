@@ -10,6 +10,7 @@ When the model is not configured the status is `not_configured` and nothing is s
 from __future__ import annotations
 
 import logging
+import re
 from typing import Dict, List, Optional, Sequence
 
 from app.config import get_settings
@@ -119,21 +120,51 @@ def _env_status() -> dict:
 
 def _paraphrases_pattern(opening: str, pattern: str) -> bool:
     """True when the opening already states this pattern's 'N of the M' figure."""
-    import re
     numbers = re.findall(r"\d+", pattern or "")
     if len(numbers) < 2:
         return pattern in opening if pattern else False
     return bool(re.search(rf"\b{numbers[0]}\s+of\s+(?:the\s+)?{numbers[1]}\b", opening or ""))
 
 
+_SKIP_PEER = re.compile(
+    r"\bMBAs?\b|uncommon among these PMs|middle half|middle number|middle time|"
+    r"to reach a first PM role|dated path",
+    re.I,
+)
+_MOVE_PEER = re.compile(
+    r"inside the employer|from outside the employer|moved into a product|moved internally|inside the same employer",
+    re.I,
+)
+_LEVEL_PEER = re.compile(r"\bare at \b|or above|started as|started in product as", re.I)
+
+
 def _peer_sentence(pattern: str) -> str:
-    """A contextual sentence. The pattern's own words and numbers stay intact."""
+    """The pattern in its own words. Casing stays. A pattern that already names the group is not wrapped again."""
     text = " ".join((pattern or "").split())
     if not text:
         return ""
     if text[-1] not in ".!?":
         text += "."
-    return "Of PMs with paths like yours, " + text[0].lower() + text[1:]
+    if re.search(r"closest PMs|of the \d+|paths like yours", text, re.I):
+        return text
+    return "PMs with paths like yours: " + text
+
+
+def _pattern_to_append(patterns: list) -> Optional[dict]:
+    """A move, then a level or progression. MBA and duration lines are not a fallback."""
+    ranked = []
+    for item in patterns:
+        text = item.get("text") or ""
+        if not text or _SKIP_PEER.search(text):
+            continue
+        if _MOVE_PEER.search(text):
+            ranked.append((0, item))
+        elif _LEVEL_PEER.search(text):
+            ranked.append((1, item))
+    if not ranked:
+        return None
+    ranked.sort(key=lambda pair: pair[0])
+    return ranked[0][1]
 
 
 def _already_uses_peer(guarded: dict, patterns: list) -> bool:
@@ -155,7 +186,8 @@ def _keep_peer_pattern(guarded: dict, peers: dict) -> dict:
         return guarded
     if _already_uses_peer(guarded, patterns):
         return guarded
-    sentence = _peer_sentence(patterns[0]["text"])
+    chosen = _pattern_to_append(patterns)
+    sentence = _peer_sentence(chosen["text"]) if chosen else ""
     if sentence:
         guarded["opening"] = (opening + " " + sentence).strip()
     return guarded

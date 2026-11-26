@@ -360,11 +360,42 @@ def test_a_structured_opening_stays_prose_and_the_limit_ends_on_a_sentence():
         {"opening": "You shipped the onboarding queue and have not set a success metric."},
         {"available": True, "patterns": [{"id": "PEER-1", "text": "24 of the 40 closest PMs moved internally."}]})
     assert opening["opening"].startswith("You shipped")
-    assert "Of PMs with paths like yours, 24 of the 40" in opening["opening"]
+    assert opening["opening"].endswith("24 of the 40 closest PMs moved internally.")
+    assert "Of PMs with paths like yours, 24 of the 40" not in opening["opening"]
     paraphrased = _keep_peer_pattern(
         {"opening": "24 of the 40 people with a similar path moved internally. You shipped the queue."},
         {"available": True, "patterns": [{"id": "PEER-1", "text": "24 of the 40 closest PMs moved internally."}]})
     assert paraphrased["opening"].startswith("24 of the 40")
+
+
+def test_the_fallback_peer_sentence_keeps_casing_and_skips_mba_and_duration():
+    from app.services.ai_assessment.service import _keep_peer_pattern
+    mba = "MBAs are uncommon among these PMs: about 4% of all 439."
+    duration = ("Among the 40 closest PMs with a dated path, it took about 8 years to reach a first PM role; "
+                "the middle half took 5 to 10 years.")
+    move = "17 of the 40 closest PMs with a recorded move moved into a product role from inside the employer."
+    level = "12 of the 16 cohort PMs who started as APM are now Product Manager or above."
+    only_weak = _keep_peer_pattern(
+        {"opening": "You shipped the onboarding queue."},
+        {"available": True, "patterns": [{"id": "PEER-1", "text": mba}, {"id": "PEER-2", "text": duration}]})
+    assert only_weak["opening"] == "You shipped the onboarding queue."
+    picked = _keep_peer_pattern(
+        {"opening": "You shipped the onboarding queue."},
+        {"available": True, "patterns": [
+            {"id": "PEER-1", "text": mba},
+            {"id": "PEER-2", "text": duration},
+            {"id": "PEER-3", "text": level},
+            {"id": "PEER-4", "text": move},
+        ]})
+    assert picked["opening"].endswith(move)
+    assert "mBA" not in picked["opening"]
+    assert "Of PMs with paths like yours," not in picked["opening"]
+    assert "middle half" not in picked["opening"]
+    level_only = _keep_peer_pattern(
+        {"opening": "You shipped the onboarding queue."},
+        {"available": True, "patterns": [{"id": "PEER-2", "text": level}]})
+    assert level_only["opening"].endswith(level)
+    assert level_only["opening"].startswith("You shipped")
     zeros = [_row(final_n_pre_pm_roles="0", final_months_to_first_pm_from_earliest_nonintern=str(60 + i)) for i in range(12)]
     real = [_row(final_n_pre_pm_roles=str(2 + (i % 2)), final_months_to_first_pm_from_earliest_nonintern=str(48 + i)) for i in range(12)]
     from app.services.peer_matching.aggregate import stats_from_rows
