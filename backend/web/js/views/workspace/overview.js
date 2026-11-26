@@ -7,8 +7,9 @@
 // Three kinds of statement are always labelled apart: observed in the research, from your confirmed profile, and Trace's
 // recommendation. Presentation only: every fact, count, share and state comes from the API; nothing is counted, ranked
 // or estimated here, and a hidden or banded research figure stays hidden.
+import { api } from "../../api.js";
 import { h } from "../../dom.js";
-import { button, notice } from "../../ui.js";
+import { button, loading, notice } from "../../ui.js";
 import { GOAL_NOTE, goalEditor, goalPhrase, icon, lower, pageHead, scopeAnswers, sectionHref, syntheticNote, textLink } from "./common.js";
 
 const STATE_CHIP = { evidence_found: ["Evidence found", ""], needs_context: ["Needs more context", ".is-info"],
@@ -192,6 +193,22 @@ function aiPanel(ws) {
   const ai = ws.rm.ai;
   if (!ai || !ai.status) return null;
   const head = h("div.ws-section-head", h("h2.ws-h2", { id: "ov-ai" }, h("span.ov-letter", "A"), "What your experience shows"));
+  if (ai.status === "pending" || ai.status === "not_started") {
+    if (!aiPanel.timer) {
+      aiPanel.timer = setInterval(async () => {
+        try {
+          const next = await api.aiNarrative(ws.target);
+          if (!next || next.status === "pending" || next.status === "not_started") return;
+          clearInterval(aiPanel.timer);
+          aiPanel.timer = null;
+          if (ws.refreshAi) ws.refreshAi(next);
+        } catch (_) { /* the next tick tries again */ }
+      }, 2000);
+    }
+    return h("section.ws-section.ov-ai", { "aria-labelledby": "ov-ai", "aria-busy": "true" }, head,
+      h("article.ws-card", loading("Reading your experience… This usually takes about a minute.")));
+  }
+  if (aiPanel.timer) { clearInterval(aiPanel.timer); aiPanel.timer = null; }
   if (ai.status !== "ready") {
     const env = (ai.env || ["TRACE_AI_ASSESSMENT", "TRACE_LLM_API_KEY", "TRACE_LLM_MODEL", "TRACE_LLM_BASE_URL"]).join(", ");
     return h("section.ws-section.ov-ai", { "aria-labelledby": "ov-ai" }, head,
@@ -205,21 +222,25 @@ function aiPanel(ws) {
     const rows = cite(ws, ids);
     return rows.length ? h("ul.plain-list.small", rows.map((row) => h("li", `“${row.text}”`, h("span.muted", ` · ${row.job}`)))) : null;
   };
+  const strengths = ai.strengths || ai.proves || [];
+  const gaps = ai.gaps || ai.missing || [];
   return h("section.ws-section.ov-ai", { "aria-labelledby": "ov-ai" }, head,
     h("article.ws-card",
-      h("p.ov-kind", `From your confirmed lines · ${ai.provider || "model"} · retrieval ${((ai.retrieval || {}).mode) || "not recorded"}`),
+      h("p.ov-kind", "From your own experience"),
       ai.opening ? h("p.ws-display-sm", ai.opening) : null,
       h("div.ov-routes",
-        h("div", h("h3.ws-h3", "What it proves"),
-          (ai.proves || []).length ? h("ul.ov-caps", ai.proves.map((item) => h("li.ov-cap", h("p", item.text), item.why ? h("p.small.muted", item.why) : null, quote(item.evidence_ids))))
-            : h("p.muted", "Nothing in the retrieved lines was strong enough to state.")),
-        h("div", h("h3.ws-h3", "What is still open"),
-          (ai.missing || []).length ? h("ul.plain-list", ai.missing.map((item) => h("li", item.text))) : h("p.muted", "No gap was stated."))),
+        h("div", h("h3.ws-h3", "What stands out"),
+          strengths.length ? h("ul.ov-caps", strengths.map((item) => h("li.ov-cap", h("p", item.text), item.why ? h("p.small.muted", item.why) : null, quote(item.evidence_ids))))
+            : h("p.muted", "Nothing in the experience shown was strong enough to state.")),
+        h("div", h("h3.ws-h3", "The gap that matters"),
+          gaps.length ? h("ul.plain-list", gaps.map((item) => h("li", item.text, item.why ? h("p.small.muted", item.why) : null))) : h("p.muted", "No gap was stated."))),
+      (ai.transferable || []).length ? h("div", h("h3.ws-h3", "How this carries over"),
+        h("ul.ov-caps", ai.transferable.map((item) => h("li.ov-cap", h("p", item.text), quote(item.evidence_ids))))) : null,
       (ai.questions || []).length ? h("div", h("h3.ws-h4", "A question, if you want the reading to be sharper"),
         h("ul.plain-list", ai.questions.map((q) => h("li", q.text)))) : null,
-      (ai.steps || []).length ? h("div", h("h3.ws-h3", "What to do next"),
+      (ai.steps || []).length ? h("div", h("h3.ws-h3", "Concrete steps"),
         h("ol.ov-actions", ai.steps.map((step) => h("li.ov-action", h("p.ws-strong", step.text), step.why ? h("p.small", step.why) : null, quote(step.evidence_ids))))) : null,
-      h("p.small.muted", "Every stated result cites a line from your profile. A figure that was not in that line is dropped.")));
+      h("p.small.muted", "Every result quotes your own experience. A figure that was not in that quote is left out.")));
 }
 
 // ------------------------------------------------------------------------------------------------ E. what next

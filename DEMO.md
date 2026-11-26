@@ -42,18 +42,22 @@ The narrative is off until these are set in the environment (or `.env`, which is
 | Variable | Purpose |
 |---|---|
 | `TRACE_AI_ASSESSMENT` | `1` to turn the narrative on |
-| `TRACE_LLM_PROVIDER` | A label, such as `openai` |
-| `TRACE_LLM_BASE_URL` | OpenAI-compatible origin, for example `https://api.openai.com/v1` |
-| `TRACE_LLM_MODEL` | Model name the provider expects |
+| `TRACE_LLM_PROVIDER` | A label. For xAI Grok, `xai` |
+| `TRACE_LLM_BASE_URL` | OpenAI-compatible origin. For xAI, `https://api.x.ai/v1` |
+| `TRACE_LLM_MODEL` | Model name the provider expects, for example `grok-4.7` |
 | `TRACE_LLM_API_KEY` | Secret. Never commit it |
+| `TRACE_LLM_TIMEOUT` | Seconds before the call is abandoned. Default `120` |
+| `TRACE_LLM_REASONING_EFFORT` | Optional. Sent only when set, for example `low` |
 | `TRACE_EMBEDDINGS` | `1` to compute gte-small vectors locally |
 | `TRACE_SEMANTIC_RETRIEVAL` | `1` to use the pgvector hybrid function |
 
-The assessment calls retrieval first. When pgvector and the local model are available, the model sees those lines.
-If retrieval falls back, the response says so. The key is sent only as an `Authorization` header and is not logged.
+The plan returns immediately. The page shows “Reading your experience…” and asks again until the reading is ready.
+A short profile (eight excerpts or fewer) is passed in full. A longer one is ranked with local gte-small, and with
+pgvector when `TRACE_SEMANTIC_RETRIEVAL=1` and the database is available. A denial and a measured result are always kept.
+The key is sent only as an `Authorization` header. Logs record latency and token counts, not the text and not the key.
 
-Confirmed lines are sent to the configured provider when the narrative runs. Say that before a demo with anyone
-else's text. Embeddings are not sent to the provider.
+Confirmed experience is sent to the configured provider when the narrative runs. Say that before a demo with anyone
+else's text. Embeddings are not sent to the provider. The same `TRACE_LLM_TIMEOUT` is read by `python -m evaluation.ai_demo`.
 
 ## Fictional evaluation set
 

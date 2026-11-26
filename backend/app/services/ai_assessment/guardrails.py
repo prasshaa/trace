@@ -1,24 +1,64 @@
 """Checks on a model's reading. The model may suggest; these rules drop anything it cannot support.
 
-A claim is kept only when it cites a line that was actually supplied, every number in the claim appears in that line,
-a negation in the line is not restated as a positive, and a collaboration verb is not rewritten as ownership.
+A claim is kept only when every number it states is in the cited experience, a negation is not flipped into
+ownership, and collaboration is not rewritten as ownership. Steps may advise future ownership ("ask to own") and
+may name a duration or a small count. Evidence ids are removed before the number check, because a UUID is full of
+digits, and they are stripped from anything the user will read.
 """
 from __future__ import annotations
 
 import re
-from typing import Dict, Iterable, List, Optional
-
-from app.services.capability.interpret import NEGATE, interpret
+from typing import Dict, Iterable, List, Optional, Tuple
 
 _NUM = re.compile(r"\d+(?:\.\d+)?%?")
-_OWNERSHIP_WORD = re.compile(r"\b(own(?:s|ed|ing)?|ownership|led|leading|defined|drove|drive)\b", re.I)
+_EVAL_ID = re.compile(r"\bF\d{2,}-L\d+\b", re.I)
+_UUID = re.compile(r"\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b", re.I)
+_OWNERSHIP_WORD = re.compile(
+    r"\b(own(?:s|ed|ing)?|ownership|led|leading|leads|defined|define|defining|drove|drive|"
+    r"set|managed|manage|headed|head|ran|run|responsible for|decided|decide|chose|choose)\b",
+    re.I,
+)
 _COLLAB = re.compile(r"\b(worked with|working with|supported|supporting|partnered|partnering|collaborated|collaborating)\b", re.I)
-_CLEAR_OWNER = re.compile(r"\b(owned|led|defined|drove|built|launched|shipped)\b", re.I)
-_DENIED = re.compile(r"\b(?:did not|didn't|never|without)\b(?:\s+\w+){0,5}\s+(?:own\w*|lead\w*|led)\b", re.I)
-
-
-def _numbers(text: str) -> List[str]:
-    return _NUM.findall(text or "")
+_CLEAR_OWNER = re.compile(r"\b(owned|led|defined|drove|built|launched|shipped|headed|managed|decided)\b", re.I)
+_DENIED = re.compile(
+    r"\b(?:did not|didn't|do not|don't|never|not|without)\b"
+    r"(?:\s+\w+){0,6}\s+"
+    r"(?:own|lead|led|set|define|decide|choose|chose|manage|managed|run|ran)\w*",
+    re.I,
+)
+_MULTIPLIER = re.compile(r"\b(doubled|tripled|halved|twice|quadrupled)\b", re.I)
+_SPELLED_QTY = re.compile(
+    r"\b((?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|twenty|thirty|forty|fifty|"
+    r"hundred|thousand)(?:\s+\w+){0,3}\s+(?:percent|percentage|points?|users?|merchants?|customers?|"
+    r"hours?|rupees?|lakhs?|crores?))\b",
+    re.I,
+)
+_ADVICE_NUM = re.compile(
+    r"\b\d+\s*[-–]?\s*(?:minute|min|hour|hr|day|week|month)s?\b"
+    r"|\b(?:one|two|three|four|five|six|seven|eight|nine|ten)\s+(?:minute|hour|day|week|month)s?\b"
+    r"|\b(?:[1-9]|10)\s*[-–]\s*(?:[1-9]|10)\s*(?:items?|steps?|pages?|slides?|bullets?)\b"
+    r"|\b(?:[1-9]|10)\s*(?:items?|steps?|pages?|slides?|bullets?)\b",
+    re.I,
+)
+_ADVICE_WORDS = re.compile(
+    r"\b(?:one|two|three|four|five|six|seven|eight|nine|ten)\s+"
+    r"(?:minute|minutes|hour|hours|day|days|week|weeks|month|months)\b",
+    re.I,
+)
+_FUTURE = re.compile(
+    r"\b(ask to|asks to|propose|volunteer|take on|next|will|write|draft|prepare|build a|in the next)\b",
+    re.I,
+)
+_JARGON = (
+    (re.compile(r"\bno line shows\b", re.I), "Nothing in your experience shows"),
+    (re.compile(r"\bthe confirmed lines\b", re.I), "your experience"),
+    (re.compile(r"\bconfirmed lines\b", re.I), "your experience"),
+    (re.compile(r"\bthis line\b", re.I), "this"),
+    (re.compile(r"\bthe lines\b", re.I), "your experience"),
+    (re.compile(r"\bevidence ids?\b", re.I), ""),
+    (re.compile(r"\bretrieval\b", re.I), ""),
+)
+_DISCLAIMER = re.compile(r"^(?:no |you did not|they did not|this does not|it does not|that does not)\b", re.I)
 
 
 def _cited_text(ids: Iterable[str], lines: Dict[str, dict]) -> Optional[str]:
@@ -31,107 +71,200 @@ def _cited_text(ids: Iterable[str], lines: Dict[str, dict]) -> Optional[str]:
     return "\n".join(parts)
 
 
-def invented_number(claim: str, cited: str) -> bool:
-    """True when the claim states a figure the cited line does not contain."""
-    blob = cited or ""
-    for n in _numbers(claim):
-        if n not in blob and n.rstrip("%") not in blob:
+def remove_ids(text: str, known_ids: Iterable[str] = ()) -> str:
+    """Take evidence ids out of a sentence before any number check, and before the user sees it."""
+    out = text or ""
+    for i in known_ids:
+        if i:
+            out = re.sub(re.escape(str(i)), " ", out, flags=re.I)
+    out = _EVAL_ID.sub(" ", out)
+    out = _UUID.sub(" ", out)
+    return " ".join(out.split())
+
+
+def _scrub(text: str, known_ids: Iterable[str]) -> str:
+    out = remove_ids(text, known_ids)
+    for rx, repl in _JARGON:
+        out = rx.sub(repl, out)
+    return " ".join(out.split())
+
+
+def invented_number(claim: str, cited: str, *, advice: bool = False) -> bool:
+    """True when the claim states a figure the cited experience does not contain."""
+    blob = (cited or "").lower()
+    text = claim or ""
+    if advice:
+        text = _ADVICE_NUM.sub(" ", text)
+        text = _ADVICE_WORDS.sub(" ", text)
+    for n in _NUM.findall(text):
+        if n.lower() not in blob and n.rstrip("%").lower() not in blob:
+            return True
+    for word in _MULTIPLIER.findall(text):
+        if word.lower() not in blob:
+            return True
+    for phrase in _SPELLED_QTY.findall(text):
+        if phrase.lower() not in blob:
             return True
     return False
 
 
+def _future(text: str) -> bool:
+    return bool(_FUTURE.search(text or ""))
+
+
 def collaboration_as_ownership(claim: str, cited: str) -> bool:
-    """True when the claim says the person owned or led the work, and the line only collaborates."""
-    if not _OWNERSHIP_WORD.search(claim or "") or NEGATE.search(claim or ""):
+    """True when the claim says the person already owned the work, and the experience only collaborates."""
+    if _future(claim):
+        return False
+    if not _OWNERSHIP_WORD.search(claim or ""):
+        return False
+    if re.search(r"\b(?:did not|didn't|do not|don't|never|not)\b", claim or "", re.I):
         return False
     if not _COLLAB.search(cited or ""):
         return False
-    if _CLEAR_OWNER.search(cited or ""):
-        return False
-    reading = interpret(cited)
-    if reading.clear.keys() & {"roadmap_ownership", "strategy_portfolio", "outcome_ownership"}:
+    if _CLEAR_OWNER.search(cited or "") and not _DENIED.search(cited or ""):
         return False
     return True
 
 
 def negation_as_positive(claim: str, cited: str) -> bool:
-    """True when the line denies ownership and the claim states it anyway."""
+    """True when the experience denies an action and the claim states that action as done."""
+    if _future(claim):
+        return False
     if not _DENIED.search(cited or ""):
         return False
-    if NEGATE.search(claim or ""):
+    if re.search(r"\b(?:did not|didn't|do not|don't|never|not)\b", claim or "", re.I):
         return False
-    return bool(_OWNERSHIP_WORD.search(claim or "") or re.search(r"\broadmap\b", claim or "", re.I))
+    return bool(_OWNERSHIP_WORD.search(claim or ""))
 
 
-def keep_claim(claim: dict, lines: Dict[str, dict], *, require_citation: bool) -> Optional[dict]:
-    """The claim, or None when a guardrail rejects it."""
+def keep_claim(claim: dict, lines: Dict[str, dict], *, require_citation: bool, kind: str) -> Tuple[Optional[dict], Optional[str]]:
+    """The claim and None, or None and a drop reason."""
     if not isinstance(claim, dict):
-        return None
-    text = " ".join(str(claim.get("text") or "").split())
-    if not text:
-        return None
+        return None, "empty"
+    raw_text = " ".join(str(claim.get("text") or "").split())
+    raw_why = " ".join(str(claim.get("why") or "").split())
+    if not raw_text:
+        return None, "empty"
+    if _EVAL_ID.search(raw_text) or _UUID.search(raw_text):
+        return None, "leaked_id"
     ids = [str(i) for i in (claim.get("evidence_ids") or []) if i]
-    cited = _cited_text(ids, lines) if ids else ""
-    if require_citation and cited is None:
-        return None
+    if any(i and i.lower() in raw_text.lower() for i in ids):
+        return None, "leaked_id"
+    known = list(lines)
     if require_citation and not ids:
-        return None
+        return None, "no_citation"
+    cited = _cited_text(ids, lines) if ids else ""
     if cited is None:
-        return None
-    if invented_number(text, cited if ids else " ".join(row["text"] for row in lines.values())):
-        return None
-    if ids and (collaboration_as_ownership(text, cited) or negation_as_positive(text, cited)):
-        return None
-    why = " ".join(str(claim.get("why") or "").split())
-    if why and invented_number(why, cited if ids else " ".join(row["text"] for row in lines.values())):
-        return None
-    return {"text": text, "evidence_ids": ids, "why": why}
+        return None, "unknown_citation"
+    universe = cited if ids else " ".join(row.get("text") or "" for row in lines.values())
+    advice = kind == "step"
+    if invented_number(remove_ids(raw_text, known), universe, advice=advice):
+        return None, "invented_number"
+    if raw_why and invented_number(remove_ids(raw_why, known), universe, advice=advice):
+        return None, "invented_number"
+    if ids and not advice and collaboration_as_ownership(raw_text, cited):
+        return None, "collaboration_as_ownership"
+    if ids and not advice and negation_as_positive(raw_text, cited):
+        return None, "negation"
+    if kind == "strength" and _DISCLAIMER.search(raw_text):
+        return None, "disclaimer"
+    text = _scrub(raw_text, known)
+    why = _scrub(raw_why, known)
+    if len(text) < 8:
+        return None, "leaked_id"
+    return {"text": text, "evidence_ids": ids, "why": why}, None
+
+
+def _bump(reasons: Dict[str, int], reason: Optional[str]) -> None:
+    if reason:
+        reasons[reason] = reasons.get(reason, 0) + 1
 
 
 def apply_guardrails(raw: dict, lines: List[dict]) -> dict:
-    """Drop unsupported claims. Gaps may be uncited, but they may not invent a number."""
+    """Drop unsupported claims. Counts each drop by reason. User-facing text has ids and audit jargon removed."""
     by_id = {row["id"]: row for row in lines}
-    proves = []
-    for item in raw.get("proves") or []:
-        kept = keep_claim(item, by_id, require_citation=True)
+    reasons: Dict[str, int] = {}
+    strengths = _collect(raw.get("strengths") or raw.get("proves") or [], by_id, "strength", True, reasons)[:5]
+    transferable = _collect(raw.get("transferable") or [], by_id, "strength", True, reasons)[:3]
+    gaps = _gaps(raw.get("gaps") or raw.get("missing") or [], by_id, reasons)[:3]
+    questions = _questions(raw.get("questions") or [], by_id, reasons)[:3]
+    steps = _collect(raw.get("steps") or [], by_id, "step", False, reasons)[:3]
+    opening = _scrub(" ".join(str(raw.get("opening") or "").split()), by_id)
+    if invented_number(remove_ids(str(raw.get("opening") or ""), by_id), " ".join(r["text"] for r in lines)):
+        opening = ""
+        _bump(reasons, "invented_number")
+    return {
+        "opening": opening,
+        "strengths": strengths,
+        "transferable": transferable,
+        "gaps": gaps,
+        "questions": questions,
+        "steps": steps,
+        # Names the previous prompt used. Same objects, so older callers keep working.
+        "proves": strengths,
+        "missing": gaps,
+        "dropped": sum(reasons.values()),
+        "dropped_reasons": reasons,
+    }
+
+
+def _collect(items, by_id, kind, require, reasons) -> List[dict]:
+    out = []
+    for item in items:
+        kept, reason = keep_claim(item, by_id, require_citation=require, kind=kind)
         if kept:
-            proves.append(kept)
-    steps = []
-    for item in raw.get("steps") or []:
-        kept = keep_claim(item, by_id, require_citation=False)
-        if kept and (not kept["evidence_ids"] or _cited_text(kept["evidence_ids"], by_id) is not None):
-            # A step that cites must cite a real line. A step with no citation is advice, and still cannot invent a number.
-            if kept["evidence_ids"] and _cited_text(kept["evidence_ids"], by_id) is None:
-                continue
-            steps.append(kept)
-    missing = []
-    universe = " ".join(row["text"] for row in lines)
-    for item in raw.get("missing") or []:
+            out.append(kept)
+        else:
+            _bump(reasons, reason)
+    return out
+
+
+def _gaps(items, by_id, reasons) -> List[dict]:
+    universe = " ".join(row["text"] for row in by_id.values())
+    out = []
+    for item in items:
         if not isinstance(item, dict):
+            _bump(reasons, "empty")
             continue
         text = " ".join(str(item.get("text") or "").split())
-        if text and not invented_number(text, universe):
-            missing.append({"text": text, "why": " ".join(str(item.get("why") or "").split())})
-    questions = []
-    for item in raw.get("questions") or []:
+        why = " ".join(str(item.get("why") or "").split())
+        if not text:
+            _bump(reasons, "empty")
+            continue
+        if invented_number(remove_ids(text, by_id), universe) or (why and invented_number(remove_ids(why, by_id), universe)):
+            _bump(reasons, "invented_number")
+            continue
+        cleaned = _scrub(text, by_id)
+        if len(cleaned) < 8:
+            _bump(reasons, "leaked_id")
+            continue
+        out.append({"text": cleaned, "why": _scrub(why, by_id)})
+    return out
+
+
+def _questions(items, by_id, reasons) -> List[dict]:
+    universe = " ".join(row["text"] for row in by_id.values())
+    out = []
+    for item in items:
         if not isinstance(item, dict):
+            _bump(reasons, "empty")
             continue
         text = " ".join(str(item.get("text") or "").split())
         eid = str(item["evidence_id"]) if item.get("evidence_id") else None
         if not text:
+            _bump(reasons, "empty")
             continue
         if eid and eid not in by_id:
+            _bump(reasons, "unknown_citation")
             continue
-        if invented_number(text, by_id[eid]["text"] if eid else universe):
+        cited = by_id[eid]["text"] if eid else universe
+        if invented_number(remove_ids(text, by_id), cited):
+            _bump(reasons, "invented_number")
             continue
-        questions.append({"text": text, "evidence_id": eid})
-    opening = " ".join(str(raw.get("opening") or "").split())
-    if invented_number(opening, universe):
-        opening = ""
-    dropped = int(raw.get("_offered") or 0)  # filled by the caller when it counted the raw lists
-    return {"opening": opening, "proves": proves[:6], "missing": missing[:5], "questions": questions[:4], "steps": steps[:5],
-            "dropped": max(0, _count(raw) - (len(proves) + len(missing) + len(questions) + len(steps))) if not dropped else dropped}
-
-
-def _count(raw: dict) -> int:
-    return sum(len(raw.get(k) or []) for k in ("proves", "missing", "questions", "steps"))
+        cleaned = _scrub(text, by_id)
+        if len(cleaned) < 8:
+            _bump(reasons, "leaked_id")
+            continue
+        out.append({"text": cleaned, "evidence_id": eid})
+    return out

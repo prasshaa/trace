@@ -476,6 +476,15 @@ def put_goal(payload: GoalUpdate, response: Response, target: str = TARGET, ctx:
     return _goal_view(target, service.set_goal(ctx, target, payload.timeframe, payload.target_date, payload.weekly_hours, dates))
 
 
+@router.get("/ai-narrative", dependencies=[Depends(limit("read"))])
+def ai_narrative(response: Response, target: str = TARGET, ctx: OwnerContext = Depends(owner_context)) -> Dict[str, Any]:
+    """The in-progress or finished model reading for this target. Pending means the call is still running."""
+    from app.services.ai_assessment.jobs import lookup
+    response.headers["Cache-Control"] = "no-store"
+    found = lookup(str(ctx.owner_user_id), target)
+    return found or {"status": "not_started"}
+
+
 @router.get("/transition-plan/{run_id}/roadmap", response_model=RoadmapView, response_model_by_alias=True,
             dependencies=[Depends(limit("read"))])
 def get_roadmap(response: Response, run_id: UUID = Path(), ctx: OwnerContext = Depends(owner_context),

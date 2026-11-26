@@ -181,6 +181,7 @@ export const api = {
   setMovePreference: (target, body) => send("PUT", `/api/v1/move-preference?target=${q(target)}`, { body }),
   setGoal: (target, body) => send("PUT", `/api/v1/transition-goal?target=${q(target)}`, { body }),
   roadmap: (runId) => send("GET", `/api/v1/transition-plan/${q(runId)}/roadmap`),
+  aiNarrative: (target) => send("GET", `/api/v1/ai-narrative?target=${q(target)}`),
   // Career Origins & Transitions (internal preview, off unless the server enables it): research-cohort aggregates, with the
   // research group matching the confirmed current role of this saved plan. 404 means the feature is off.
   careerOrigins: (runId) => send("GET", `/api/v1/career-origins?plan=${q(runId)}`),
