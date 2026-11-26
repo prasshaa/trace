@@ -5,6 +5,7 @@ It does not predict a move, and it does not describe one person.
 """
 from __future__ import annotations
 
+import math
 import re
 from typing import Optional, Sequence
 
@@ -22,14 +23,20 @@ def band_count(n: int) -> Optional[str]:
     return str(n)
 
 
+# Path texts are a template, so cosine already sits in a narrow band. A large bonus would
+# turn the search into a level filter. Same level is a small nudge; an adjacent level is smaller.
+SAME_LEVEL_BONUS = 0.03
+ADJACENT_LEVEL_BONUS = 0.02
+
+
 def level_bonus(profile_level: str, target_level: str) -> float:
     if profile_level not in LEVELS or target_level not in LEVELS:
         return 0.0
     distance = abs(LEVELS.index(profile_level) - LEVELS.index(target_level))
     if distance == 0:
-        return 0.15
+        return SAME_LEVEL_BONUS
     if distance == 1:
-        return 0.08
+        return ADJACENT_LEVEL_BONUS
     return 0.0
 
 
@@ -74,61 +81,157 @@ def _median(values: Sequence[int]) -> Optional[int]:
     return int(round((ordered[mid - 1] + ordered[mid]) / 2))
 
 
-def _of(display: Optional[str], total: int, rest: str) -> Optional[str]:
-    if not display:
+def _shown(n: int) -> Optional[str]:
+    return band_count(n)
+
+
+def _share(count: int, known: int, rest: str) -> Optional[str]:
+    """A share over the profiles that have the field. Both the count and that denominator respect the minimum of 5."""
+    if known < 5 or count < 5:
         return None
-    return f"{display} of the {total} closest PMs {rest}"
+    count_text = _shown(count)
+    known_text = _shown(known) if known < 10 else str(known)
+    if not count_text or not known_text:
+        return None
+    return f"{count_text} of the {known_text} closest PMs {rest}"
 
 
-def patterns_from_neighbours(rows: Sequence[dict], target_level: str) -> dict:
-    """The public pattern object. No profile key, city, or raw count under 5 leaves this function."""
-    total = len(rows)
-    if total < 5:
-        return {"available": False, "reason": "too_few"}
-    internal = sum(1 for r in rows if r.get("final_entry_move") == "internal")
-    external = sum(1 for r in rows if r.get("final_entry_move") == "external")
+def _rate(count: int, known: int) -> Optional[float]:
+    if known <= 0:
+        return None
+    return count / known
+
+
+def _lift(neighbour: Optional[float], cohort: Optional[float]) -> float:
+    if neighbour is None:
+        return 0.0
+    if not cohort:
+        return 2.0 if neighbour else 0.0
+    if neighbour <= 0:
+        return 0.0
+    return neighbour / cohort
+
+
+def stats_from_rows(rows: Sequence[dict]) -> dict:
+    """Counts over known values only. A blank prior, move, month, pre-PM count or degree is skipped."""
     priors: dict = {}
+    first: dict = {}
+    months = []
+    pre = []
+    internal = external = 0
+    mba = degree_yes = 0
+    mba_known = degree_known = 0
     for row in rows:
+        move = row.get("final_entry_move") or ""
+        if move == "internal":
+            internal += 1
+        elif move == "external":
+            external += 1
         label = (row.get("final_primary_prior_function") or "").strip()
         if label:
             priors[label] = priors.get(label, 0) + 1
-    months = [r["final_months_to_first_pm_from_earliest_nonintern"] for r in rows
-              if isinstance(r.get("final_months_to_first_pm_from_earliest_nonintern"), int)]
-    pre = [r.get("final_n_pre_pm_roles") or 0 for r in rows]
-    mba = sum(1 for r in rows if r.get("has_mba"))
-    degree = sum(1 for r in rows if r.get("norm_edu_has_degree"))
-    first: dict = {}
-    for row in rows:
-        label = (row.get("final_first_pm_group") or "").strip()
-        if label:
-            first[label] = first.get(label, 0) + 1
-    at_target = sum(1 for r in rows if r.get("norm_seniority_group") == target_level)
-    patterns = []
+        if isinstance(row.get("final_months_to_first_pm_from_earliest_nonintern"), int):
+            months.append(row["final_months_to_first_pm_from_earliest_nonintern"])
+        if row.get("final_has_history") and isinstance(row.get("final_n_pre_pm_roles"), int):
+            pre.append(row["final_n_pre_pm_roles"])
+        if row.get("has_mba") is not None:
+            mba_known += 1
+            if row.get("has_mba"):
+                mba += 1
+        if row.get("norm_edu_has_degree") is not None:
+            degree_known += 1
+            if row.get("norm_edu_has_degree"):
+                degree_yes += 1
+        started = (row.get("final_first_pm_group") or "").strip()
+        if started:
+            first[started] = first.get(started, 0) + 1
+    return {
+        "n": len(rows),
+        "internal": internal,
+        "external": external,
+        "move_known": internal + external,
+        "priors": priors,
+        "prior_known": sum(priors.values()),
+        "months": months,
+        "pre": pre,
+        "mba": mba,
+        "mba_known": mba_known,
+        "degree": degree_yes,
+        "degree_known": degree_known,
+        "first": first,
+        "first_known": sum(first.values()),
+    }
 
-    def add(text: Optional[str]) -> None:
-        if text:
-            patterns.append({"id": f"PEER-{len(patterns) + 1}", "text": text})
 
-    add(_of(band_count(internal), total, "moved into a product role from inside the employer."))
-    add(_of(band_count(external), total, "moved into a product role from outside the employer."))
-    for label, count in sorted(priors.items(), key=lambda item: (-item[1], item[0]))[:3]:
-        add(_of(band_count(count), total, f"came from {label} before a product role."))
+def _candidates(group: dict, cohort: dict) -> list:
+    """One candidate pattern per share, scored by how far it sits from the whole cohort."""
+    out = []
+
+    def add(count, known, cohort_count, cohort_known, text, kind, raw):
+        if not text:
+            return
+        score = abs(math.log(_lift(_rate(count, known), _rate(cohort_count, cohort_known)) or 1.0))
+        out.append({"text": text, "score": score, "count": count, "kind": kind, "raw": raw})
+
+    add(group["internal"], group["move_known"], cohort.get("internal", 0), cohort.get("move_known", 0),
+        _share(group["internal"], group["move_known"], "with a recorded move moved into a product role from inside the employer."),
+        "internal", group["internal"])
+    add(group["external"], group["move_known"], cohort.get("external", 0), cohort.get("move_known", 0),
+        _share(group["external"], group["move_known"], "with a recorded move moved into a product role from outside the employer."),
+        "external", group["external"])
+    for label, count in group["priors"].items():
+        add(count, group["prior_known"], cohort.get("priors", {}).get(label, 0), cohort.get("prior_known", 0),
+            _share(count, group["prior_known"], f"with a recorded background came from {label} before a product role."),
+            "prior", count)
+    for label, count in group["first"].items():
+        add(count, group["first_known"], cohort.get("first", {}).get(label, 0), cohort.get("first_known", 0),
+            _share(count, group["first_known"], f"with a recorded first product level started in product as {label}."),
+            "first", count)
+    add(group["mba"], group["mba_known"], cohort.get("mba", 0), cohort.get("mba_known", 0),
+        _share(group["mba"], group["mba_known"], "had an MBA."), "mba", group["mba"])
+    add(group["degree"], group["degree_known"], cohort.get("degree", 0), cohort.get("degree_known", 0),
+        _share(group["degree"], group["degree_known"], "with a recorded degree had a degree."), "degree", group["degree"])
+    months = group.get("months") or []
+    cohort_months = cohort.get("months") or []
     median = _median(months)
     if median is not None:
-        add(f"Among the {total} closest PMs with a dated path, the middle time to a first product role was about {median} months.")
+        base = _median(cohort_months)
+        gap = abs(median - base) / max(base or 1, 1) if base is not None else 0.5
+        text = (f"Among the {len(months)} closest PMs with a dated path, the middle time to a first product role "
+                f"was about {median} months.")
+        out.append({"text": text, "score": gap, "count": len(months), "kind": "months", "raw": median})
         span = _rounded_span(months)
         if span:
-            add(f"Most of those dated paths took about {span[0]} to {span[1]} months.")
+            out.append({"text": f"Most of those dated paths took about {span[0]} to {span[1]} months.",
+                        "score": gap, "count": len(months), "kind": "span", "raw": span[0]})
+    pre = group.get("pre") or []
     pre_med = _median(pre)
     if pre_med is not None:
-        add(f"Among the {total} closest PMs, the middle number of roles before a product role was about {pre_med}.")
-    add(_of(band_count(mba), total, "had an MBA."))
-    add(_of(band_count(degree), total, "had a degree."))
-    if first:
-        label, count = sorted(first.items(), key=lambda item: (-item[1], item[0]))[0]
-        add(_of(band_count(count), total, f"started in product as {label}."))
-    add(_of(band_count(at_target), total, f"are at {target_level}."))
-    takeaways = _takeaways(patterns)
+        base = _median(cohort.get("pre") or [])
+        gap = abs(pre_med - base) / max(base or 1, 1) if base is not None else 0.5
+        out.append({"text": (f"Among the {len(pre)} closest PMs with roles recorded before product, the middle number "
+                             f"of those roles was about {pre_med}."),
+                    "score": gap, "count": len(pre), "kind": "pre", "raw": pre_med})
+    return out
+
+
+def _rank(candidates: list) -> list:
+    """Up to 10 patterns. Distinctive ones lead. A near-match to the whole cohort is kept only to fill the section."""
+    ordered = sorted(candidates, key=lambda item: (-item["score"], -item["count"], item["text"]))
+    distinctive = [item for item in ordered if item["score"] >= 0.15]
+    chosen = distinctive[:10] if len(distinctive) >= 3 else ordered[:10]
+    return [{"id": f"PEER-{i + 1}", "text": item["text"], "kind": item["kind"]} for i, item in enumerate(chosen)]
+
+
+def present(group: dict, cohort: Optional[dict] = None) -> dict:
+    """The public section. `cohort` is the same counts for every loaded profile, used only to rank."""
+    cohort = cohort or group
+    total = int(group.get("n") or 0)
+    if total < 5:
+        return {"available": False, "reason": "too_few"}
+    patterns = _rank(_candidates(group, cohort))
+    if not patterns:
+        return {"available": False, "reason": "too_few"}
     return {
         "available": True,
         "synthetic": False,
@@ -136,28 +239,37 @@ def patterns_from_neighbours(rows: Sequence[dict], target_level: str) -> dict:
         "headline": "PMs with paths like yours",
         "match_line": "Matched by similarity of career path.",
         "disclaimer": "These are patterns across the closest profiles, not a prediction and not a guarantee.",
-        "patterns": patterns[:8],
-        "takeaways": takeaways,
+        "patterns": patterns,
+        "takeaways": _takeaways(patterns, group.get("internal") or 0, group.get("external") or 0),
         "note": "Your profile is not in this group. A pattern shared by fewer than 5 people is left out. "
                 "A pattern shared by 5 to 9 people is shown as a range.",
     }
 
 
-def _takeaways(patterns: Sequence[dict]) -> list:
-    """Up to three short lines, using words already in the patterns. No new figure."""
+def patterns_from_neighbours(rows: Sequence[dict], target_level: str, cohort_rows: Optional[Sequence[dict]] = None) -> dict:
+    """The public pattern object. No profile key, city, or raw count under 5 leaves this function."""
+    del target_level
+    return present(stats_from_rows(rows), stats_from_rows(cohort_rows if cohort_rows is not None else rows))
+
+
+def _takeaways(patterns: Sequence[dict], internal: int, external: int) -> list:
+    """Up to three short lines. The inside-move line is used only when inside moves are the larger group."""
     out = []
-    for item in patterns:
-        text = item["text"]
-        if "moved into a product role from inside" in text and len(out) < 3:
-            out.append("A common step in this group was moving into product inside the same employer.")
-        elif "came from Software Engineering" in text and len(out) < 3:
-            out.append("Software engineering, QA or IT was a frequent path into product in this group.")
-        elif "came from Business" in text and len(out) < 3:
-            out.append("Business, consulting, finance or operations was a frequent path into product in this group.")
-        elif "had an MBA" in text and len(out) < 3:
-            out.append("An MBA shows up in this group, and it is not described as a requirement.")
-        elif "middle time" in text and len(out) < 3:
-            out.append("The time to a first product role, for those with dates, is stated as a middle value for the group.")
+    shown = " ".join(item["text"] for item in patterns)
+    if internal > external and "from inside the employer" in shown and len(out) < 3:
+        out.append("A common step in this group was moving into product inside the same employer.")
+    if "came from Software Engineering" in shown and len(out) < 3:
+        out.append("Software engineering, QA or IT was a frequent path into product in this group.")
+    if "came from Business" in shown and len(out) < 3:
+        out.append("Business, consulting, finance or operations was a frequent path into product in this group.")
+    if "came from Design / UX" in shown and len(out) < 3:
+        out.append("Design was a frequent path into product in this group.")
+    if "came from Data / Analytics" in shown and len(out) < 3:
+        out.append("Data, analytics or research was a frequent path into product in this group.")
+    if "had an MBA" in shown and len(out) < 3:
+        out.append("An MBA shows up in this group, and it is not described as a requirement.")
+    if "middle time" in shown and len(out) < 3:
+        out.append("The time to a first product role, for those with dates, is stated as a middle value for the group.")
     return out[:3]
 
 

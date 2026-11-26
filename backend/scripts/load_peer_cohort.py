@@ -4,8 +4,8 @@
 
 The CSV is not read from the repository's real cohort. Pass a local file. The connection string is taken from the
 named environment variable and is never printed. Embeddings are computed locally with gte-small. Rows are upserted
-by a surrogate key of the cohort version and the row contents, then rows of that version missing from the file are
-removed. Re-running the same file does not duplicate profiles.
+by a surrogate key of the cohort version, the row contents and the row number. Identical attribute rows are kept,
+because coarse fields can describe different people. Re-running the same file replaces that cohort version.
 """
 from __future__ import annotations
 
@@ -30,8 +30,9 @@ def read_rows(path: str) -> list:
         return [parse_row(dict(row)) for row in reader]
 
 
-def surrogate(version: str, row: dict) -> str:
-    blob = version + "|" + "|".join(str(row[name]) for name in (
+def surrogate(version: str, row: dict, ordinal: int) -> str:
+    """Hash of the version, the row and its position. The position keeps exact duplicate rows apart."""
+    blob = f"{version}|{ordinal}|" + "|".join(str(row.get(name)) for name in (
         "norm_seniority_group", "final_primary_prior_function", "final_entry_move", "final_first_pm_group",
         "final_months_to_first_pm_from_earliest_nonintern", "final_n_pre_pm_roles", "has_mba", "norm_edu_has_degree",
         "norm_city", "final_background_status", "final_n_roles", "final_n_pm_roles", "norm_career_start_year"))
@@ -55,8 +56,8 @@ def main(argv=None) -> int:
     keys = []
     with psycopg.connect(dsn) as conn:
         with conn.transaction():
-            for row, vector in zip(rows, vectors):
-                key = surrogate(args.cohort_version, row)
+            for ordinal, (row, vector) in enumerate(zip(rows, vectors)):
+                key = surrogate(args.cohort_version, row, ordinal)
                 keys.append(key)
                 conn.execute(
                     """insert into trace_peer_cohort.profiles (

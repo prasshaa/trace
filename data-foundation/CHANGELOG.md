@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.40.0 — 2026-11-26 (peer patterns stay a similarity search)
+
+| Change | Files | Why |
+|---|---|---|
+| `peer_patterns` uses a 0.03 same-level nudge and a 0.02 adjacent nudge, and returns neighbour counts beside whole-cohort counts. A blank degree and a pre-PM count with no history can be null | migration 57 | The previous 0.15 nudge dominated the narrow cosine range, and a blank was being stored as false or zero |
+| Rollback restores the v2.39.0 function and the not-null columns | rollback | |
+
 ## 2.39.0 — 2026-11-26 (peer career-path patterns)
 
 | Change | Files | Why |

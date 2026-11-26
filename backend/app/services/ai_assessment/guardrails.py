@@ -384,10 +384,42 @@ def _trim(text: str, limit: int) -> str:
     return cut
 
 
+def plain_text(raw) -> str:
+    """A model's opening may be a string or an object with a text field. Never pass the object through str()."""
+    if isinstance(raw, dict):
+        return plain_text(raw.get("text"))
+    if isinstance(raw, list):
+        return " ".join(part for part in (plain_text(item) for item in raw) if part)
+    if raw is None:
+        return ""
+    return str(raw)
+
+
+def trim_at_sentence(text: str, limit: int) -> str:
+    """Keep whole sentences that fit. Do not stop in the middle of a phrase."""
+    text = " ".join((text or "").split())
+    if len(text.split()) <= limit:
+        return text
+    kept = []
+    count = 0
+    for sentence in re.split(r"(?<=[.!?])\s+", text):
+        sentence = sentence.strip()
+        if not sentence:
+            continue
+        words = len(sentence.split())
+        if kept and count + words > limit:
+            break
+        if not kept and words > limit:
+            return ""
+        kept.append(sentence)
+        count += words
+    return " ".join(kept)
+
+
 def _opening(raw, by_id, lines, reasons) -> str:
     """Keep every sentence that does not invent a figure. One bad sentence does not blank the rest."""
     universe = " ".join(row["text"] for row in lines)
-    scrubbed = _scrub(" ".join(str(raw or "").split()), by_id)
+    scrubbed = _scrub(" ".join(plain_text(raw).split()), by_id)
     kept = []
     for sentence in re.split(r"(?<=[.!?])\s+", scrubbed):
         sentence = sentence.strip()
@@ -402,7 +434,7 @@ def _opening(raw, by_id, lines, reasons) -> str:
             _bump(reasons, "peer_claim")
             continue
         kept.append(sentence)
-    return _trim(" ".join(kept), 45)
+    return trim_at_sentence(" ".join(kept), 45)
 
 
 def _reading_words(reading: dict) -> int:

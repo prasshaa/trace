@@ -121,10 +121,13 @@ def _keep_peer_pattern(guarded: dict, peers: dict) -> dict:
         + [item.get("text") or "" for key in ("strengths", "transferable", "gaps", "steps") for item in guarded.get(key) or []]
         + [str(item.get("evidence_ids") or "") for key in ("strengths", "transferable", "steps") for item in guarded.get(key) or []]
     )
+    from app.services.ai_assessment.guardrails import plain_text, trim_at_sentence
     sentence = patterns[0]["text"]
-    if any(item["id"] in blob for item in patterns) or sentence in (guarded.get("opening") or ""):
+    opening = plain_text(guarded.get("opening"))
+    if any(item["id"] in blob for item in patterns) or sentence in opening:
+        guarded["opening"] = opening
         return guarded
-    guarded["opening"] = (sentence + " " + (guarded.get("opening") or "")).strip()
+    guarded["opening"] = trim_at_sentence(f"{sentence} {opening}".strip(), 45)
     return guarded
 
 

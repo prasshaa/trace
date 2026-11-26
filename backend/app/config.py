@@ -64,7 +64,10 @@ class Settings(BaseSettings):
     trace_enabled_cohorts: str = "synthetic"
 
     # Shared career-intelligence contribution policy (server-controlled). "opt_in": an explicit, separate decision;
-    # never inferred from uploads or terms. "disabled": contribution consent is not offered. Anything else fails closed.
+    # never inferred from uploads or terms. "disabled": the onboarding notice records private and contribution consent
+    # is not offered. "anonymous": the demo. The sign-up notice records shared (anonymous use to improve
+    # recommendations) and a contribution grant is still refused, so nothing is queued for a shared pool.
+    # Anything else fails closed.
     trace_contribution_policy: str = "opt_in"
 
     # A user's own resume (Phase 6.1): POST /api/v1/real-resumes. Off by default; enable deliberately per environment.

@@ -63,56 +63,66 @@ def peer_section(conn, profile, target_role_id: str, target_title: str) -> dict:
     return _from_payload(payload, level)
 
 
+def _stats_from_sql(block: dict) -> dict:
+    """The function's count object, with list fields the ranker already understands."""
+    months = block.get("months") or {}
+    month_values = []
+    if int(months.get("n") or 0) >= 10 and months.get("median") is not None:
+        # A list of the median, repeated, is enough for the middle value. The span uses low and high.
+        n = int(months["n"])
+        median = int(round(float(months["median"])))
+        low = int(round(float(months["low"]))) if months.get("low") is not None else median
+        high = int(round(float(months["high"]))) if months.get("high") is not None else median
+        month_values = [low] * (n // 4) + [median] * (n // 2) + [high] * (n - n // 4 - n // 2)
+    pre_values = []
+    if block.get("pre_n") and int(block["pre_n"]) >= 10 and block.get("pre_median") is not None:
+        pre_values = [int(round(float(block["pre_median"])))] * int(block["pre_n"])
+    priors = block.get("priors") or {}
+    if isinstance(priors, list):
+        priors = {item.get("label"): int(item.get("count") or 0) for item in priors if item.get("label")}
+    first = block.get("first") or block.get("first_pm") or {}
+    if isinstance(first, list):
+        first = {item.get("label"): int(item.get("count") or 0) for item in first if item.get("label")}
+    if isinstance(first, dict) and "label" in first and "count" in first:
+        first = {first["label"]: int(first["count"])}
+    total = int(block.get("n") or block.get("neighbour_count") or 0)
+    prior_map = {str(k): int(v) for k, v in priors.items()} if isinstance(priors, dict) else {}
+    first_map = {str(k): int(v) for k, v in first.items()} if isinstance(first, dict) else {}
+    return {
+        "n": total,
+        "internal": int(block.get("internal") or 0),
+        "external": int(block.get("external") or 0),
+        "move_known": int(block.get("move_known") or (int(block.get("internal") or 0) + int(block.get("external") or 0))),
+        "priors": prior_map,
+        "prior_known": int(block.get("prior_known") or sum(prior_map.values())),
+        "months": month_values,
+        "pre": pre_values,
+        "mba": int(block.get("mba") or 0),
+        "mba_known": int(block["mba_known"]) if block.get("mba_known") is not None else total,
+        "degree": int(block.get("degree") or 0),
+        "degree_known": int(block["degree_known"]) if block.get("degree_known") is not None else 0,
+        "first": first_map,
+        "first_known": int(block["first_known"]) if block.get("first_known") is not None else sum(first_map.values()),
+    }
+
+
 def _from_payload(payload: dict, target_level: str) -> dict:
     """Band the aggregate counts. The payload is counts, never profiles."""
-    hidden = ("neighbours", "profile_key", "path_text", "embedding", "norm_city")
-    if any(key in payload for key in hidden):
+    del target_level
+    if any(key in payload for key in ("profile_key", "path_text", "embedding", "norm_city")):
         logger.warning("peer payload included profile fields; they were discarded")
         return {"available": False, "reason": "refused"}
-    total = int(payload.get("neighbour_count") or 0)
-    if total < 5:
-        return {"available": False, "reason": "too_few"}
-    return _patterns_from_counts(payload, target_level, total)
-
-
-def _patterns_from_counts(payload: dict, target_level: str, total: int) -> dict:
-    from app.services.peer_matching.aggregate import _of, _takeaways, band_count
-    patterns = []
-
-    def add(text):
-        if text:
-            patterns.append({"id": f"PEER-{len(patterns) + 1}", "text": text})
-
-    add(_of(band_count(int(payload.get("internal") or 0)), total, "moved into a product role from inside the employer."))
-    add(_of(band_count(int(payload.get("external") or 0)), total, "moved into a product role from outside the employer."))
-    for item in payload.get("priors") or []:
-        add(_of(band_count(int(item.get("count") or 0)), total, f"came from {item.get('label')} before a product role."))
-    months = payload.get("months") or {}
-    if int(months.get("n") or 0) >= 10 and months.get("median") is not None:
-        add(f"Among the {total} closest PMs with a dated path, the middle time to a first product role was about {int(round(float(months['median'])))} months.")
-        if months.get("low") is not None and months.get("high") is not None:
-            low = int(round(float(months["low"]) / 6.0) * 6)
-            high = int(round(float(months["high"]) / 6.0) * 6)
-            if high > low:
-                add(f"Most of those dated paths took about {low} to {high} months.")
-    pre = payload.get("pre_pm_roles_median")
-    if pre is not None and int(payload.get("neighbour_count") or 0) >= 10:
-        add(f"Among the {total} closest PMs, the middle number of roles before a product role was about {int(round(float(pre)))}.")
-    add(_of(band_count(int(payload.get("mba") or 0)), total, "had an MBA."))
-    add(_of(band_count(int(payload.get("degree") or 0)), total, "had a degree."))
-    first = payload.get("first_pm") or {}
-    if first.get("label"):
-        add(_of(band_count(int(first.get("count") or 0)), total, f"started in product as {first['label']}."))
-    add(_of(band_count(int(payload.get("at_target") or 0)), total, f"are at {target_level}."))
-    return {
-        "available": True,
-        "synthetic": bool(payload.get("synthetic")),
-        "neighbour_count": total,
-        "headline": "PMs with paths like yours",
-        "match_line": "Matched by similarity of career path.",
-        "disclaimer": "These are patterns across the closest profiles, not a prediction and not a guarantee.",
-        "patterns": patterns[:8],
-        "takeaways": _takeaways(patterns),
-        "note": "Your profile is not in this group. A pattern shared by fewer than 5 people is left out. "
-                "A pattern shared by 5 to 9 people is shown as a range.",
-    }
+    if isinstance(payload.get("neighbours"), list):
+        logger.warning("peer payload included profile rows; they were discarded")
+        return {"available": False, "reason": "refused"}
+    from app.services.peer_matching.aggregate import present
+    if isinstance(payload.get("group"), dict):
+        group = _stats_from_sql(payload["group"])
+        cohort = _stats_from_sql(payload.get("cohort") or payload["group"])
+        view = present(group, cohort)
+    else:
+        group = _stats_from_sql(payload)
+        view = present(group, group)
+    if view.get("available"):
+        view["synthetic"] = bool(payload.get("synthetic"))
+    return view

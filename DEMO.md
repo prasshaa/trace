@@ -35,7 +35,12 @@ Apply database migrations only to this local stack (or a preview project). Do no
 v2.36.0 is required for the private-by-default sharing preference and for account deletion.
 v2.37.0 grants the owner role usage of `trace_private` so that deletion can actually be called. It grants no table access.
 v2.34.0 and v2.35.0 are required before semantic retrieval can use pgvector.
-v2.39.0 adds `trace_peer_cohort`. It is off until `TRACE_PEER_MATCHING=1`. The real cohort file is not in this
+For the demo, set `TRACE_CONTRIBUTION_POLICY=anonymous`. Continuing sign-up then stores the shared default
+(anonymous use to improve recommendations) and shows that notice. A contribution grant is still refused, so nothing
+is queued for a shared pool. `disabled` is the public-site setting: it records private instead.
+
+v2.39.0 adds `trace_peer_cohort`. v2.40.0 narrows the level nudge and lets a blank degree or pre-PM count stay unknown.
+Reload the cohort after applying v2.40.0. It is off until `TRACE_PEER_MATCHING=1`. The real cohort file is not in this
 repository. Load a local CSV with:
 
 ```sh

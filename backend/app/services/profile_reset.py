@@ -77,12 +77,14 @@ class ProfileResetService:
                 "sharing": {"preference": mode, "source": source},
                 "note": "This file is your data only. It does not include anyone else's profile."}
 
-    def delete_account(self, ctx: OwnerContext, confirm: str) -> Dict:
-        """Delete the auth user for this caller. Career data follows the existing cascades. Requires the exact phrase."""
+    def delete_account(self, ctx, confirm: str) -> Dict:
+        """Delete the auth user for this caller. A missing career profile does not block it.
+        Career data, when there is any, follows the existing cascades. Requires the exact phrase."""
+        owner = ctx.owner_user_id if hasattr(ctx, "owner_user_id") else ctx
         if (confirm or "").strip().lower() != DELETE_PHRASE:
             raise ClearNotConfirmed("type the confirmation to delete your account")
-        if self._fixture(ctx.owner_user_id):
+        if self._fixture(owner):
             raise FixtureProfileConflict("this profile holds a synthetic sample; it can't be deleted here")
-        with owner_session(self._conn, ctx.owner_user_id):
+        with owner_session(self._conn, owner):
             self._conn.execute("select trace_private.delete_my_account()")
         return {"status": "deleted"}
