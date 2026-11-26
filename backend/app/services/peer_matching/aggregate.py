@@ -13,6 +13,7 @@ from app.services.peer_matching.text import LEVELS
 K = 40
 POOL = 120
 MIN_LIFT = 1.2
+OWN_LIFT = 1.1
 BACKGROUND_WEIGHT = 0.20
 MOVE_WEIGHT = 0.08
 LEVEL_WEIGHT = 0.12
@@ -145,15 +146,44 @@ def _median(values: Sequence[int]) -> Optional[int]:
     return int(round((ordered[mid - 1] + ordered[mid]) / 2))
 
 
+def duration_phrase(months: float) -> str:
+    """Months up to 24 stay in months. Longer durations are the nearest half year."""
+    rounded = int(round(months))
+    if rounded <= 24:
+        unit = "month" if rounded == 1 else "months"
+        return f"{rounded} {unit}"
+    halves = round(months / 6.0) / 2.0
+    whole = int(halves)
+    number = str(whole) if abs(halves - whole) < 1e-9 else f"{whole}½"
+    if number == "1":
+        return "1 year"
+    return f"{number} years"
+
+
+def duration_span(low: float, high: float) -> str:
+    """The middle half. Both ends share a unit when they are in the same one."""
+    if round(low) <= 24 and round(high) <= 24:
+        return f"{int(round(low))} to {duration_phrase(high)}"
+    if round(low) > 24 and round(high) > 24:
+        halves = round(low / 6.0) / 2.0
+        whole = int(halves)
+        number = str(whole) if abs(halves - whole) < 1e-9 else f"{whole}½"
+        return f"{number} to {duration_phrase(high)}"
+    return f"{duration_phrase(low)} to {duration_phrase(high)}"
+
+
 def _share(count: int, known: int, rest: str, cohort_count: int, cohort_known: int, cohort_n: int,
-           require_lift: bool = True):
-    """(sentence or None, lift). A base under 10 is not phrased as 'most of the N'."""
+           min_lift: Optional[float] = MIN_LIFT):
+    """(sentence or None, lift). A base under 10 is not phrased as 'most of the N'.
+
+    min_lift None skips the lift check. Lines about the user's own move or target level use 1.1.
+    """
     if known < 10 or count < 5:
         return None, 0.0
     neighbour_rate = count / known
     cohort_rate = (cohort_count / cohort_known) if cohort_known else 0.0
     lift = (neighbour_rate / cohort_rate) if cohort_rate else (2.0 if neighbour_rate else 0.0)
-    if require_lift and lift < MIN_LIFT:
+    if min_lift is not None and lift + 1e-9 < min_lift:
         return None, lift
     if count < 10 and neighbour_rate < 0.5:
         return None, lift
@@ -227,8 +257,8 @@ def _candidates(group: dict, cohort: dict, cohort_n: int, user: Optional[dict] =
     out = []
     user = user or {}
 
-    def add(count, known, cohort_count, cohort_known, rest, kind, rate_count, require_lift=True):
-        text, lift = _share(count, known, rest, cohort_count, cohort_known, cohort_n, require_lift=require_lift)
+    def add(count, known, cohort_count, cohort_known, rest, kind, rate_count, min_lift=MIN_LIFT):
+        text, lift = _share(count, known, rest, cohort_count, cohort_known, cohort_n, min_lift=min_lift)
         if not text:
             return
         out.append({"text": text, "score": lift, "count": count, "known": known, "kind": kind,
@@ -237,10 +267,10 @@ def _candidates(group: dict, cohort: dict, cohort_n: int, user: Optional[dict] =
     user_move = user.get("move") or ""
     add(group["internal"], group["move_known"], cohort.get("internal", 0), cohort.get("move_known", 0),
         "with a recorded move moved into a product role from inside the employer.", "internal", group["internal"],
-        require_lift=user_move != "internal")
+        min_lift=OWN_LIFT if user_move == "internal" else MIN_LIFT)
     add(group["external"], group["move_known"], cohort.get("external", 0), cohort.get("move_known", 0),
         "with a recorded move moved into a product role from outside the employer.", "external", group["external"],
-        require_lift=user_move != "external")
+        min_lift=OWN_LIFT if user_move == "external" else MIN_LIFT)
     target = user.get("target_level") or ""
     own = (user.get("prior") or "").strip()
     for label, count in group["priors"].items():
@@ -252,30 +282,45 @@ def _candidates(group: dict, cohort: dict, cohort_n: int, user: Optional[dict] =
         text, lift = _share(group["first"].get(target, 0), group["first_known"],
                             f"with a recorded first product level started in product as {target}.",
                             cohort.get("first", {}).get(target, 0), cohort.get("first_known", 0), cohort_n,
-                            require_lift=False)
+                            min_lift=OWN_LIFT)
         if text:
             out.append({"text": text, "score": max(lift, MIN_LIFT), "count": group["first"].get(target, 0),
                         "known": group["first_known"], "kind": "first", "rate": 1, "cohort_rate": 0})
-    text, lift = _share(group["mba"], group["mba_known"], "had an MBA.",
-                        cohort.get("mba", 0), cohort.get("mba_known", 0), cohort_n,
-                        require_lift=not (bool(user.get("mba")) or bool(user.get("in_pm"))))
-    if text:
-        out.append({"text": text, "score": max(lift, MIN_LIFT), "count": group["mba"], "known": group["mba_known"],
-                    "kind": "mba", "rate": group["mba"] / group["mba_known"] if group["mba_known"] else 0,
-                    "cohort_rate": (cohort.get("mba", 0) / cohort["mba_known"]) if cohort.get("mba_known") else 0})
+    if user.get("mba"):
+        mba_count = int(cohort.get("mba") or 0)
+        if cohort_n >= 10 and mba_count >= 5:
+            pct = int(round(100 * mba_count / cohort_n))
+            if pct < 15:
+                mba_text = f"MBAs are uncommon among these PMs: about {pct}% of all {cohort_n}."
+            else:
+                mba_text = f"About {pct}% of all {cohort_n} PMs have an MBA."
+            out.append({"text": mba_text, "score": MIN_LIFT, "count": mba_count, "known": cohort_n, "kind": "mba",
+                        "rate": mba_count / cohort_n, "cohort_rate": mba_count / cohort_n})
+    else:
+        text, lift = _share(group["mba"], group["mba_known"], "had an MBA.",
+                            cohort.get("mba", 0), cohort.get("mba_known", 0), cohort_n, min_lift=MIN_LIFT)
+        if text:
+            out.append({"text": text, "score": max(lift, MIN_LIFT), "count": group["mba"], "known": group["mba_known"],
+                        "kind": "mba", "rate": group["mba"] / group["mba_known"] if group["mba_known"] else 0,
+                        "cohort_rate": (cohort.get("mba", 0) / cohort["mba_known"]) if cohort.get("mba_known") else 0})
+    if not user.get("in_pm"):
+        neighbour_pre = group.get("pre") or []
+        cohort_pre = cohort.get("pre") or []
+        add(sum(1 for n in neighbour_pre if n in (1, 2)), len(neighbour_pre),
+            sum(1 for n in cohort_pre if n in (1, 2)), len(cohort_pre),
+            "who had a role before product had 1 or 2 roles before a product role.", "roles",
+            sum(1 for n in neighbour_pre if n in (1, 2)), min_lift=None)
     months = group.get("months") or []
     median = _median(months)
     if median is not None:
-        out.append({"text": (f"Among the {len(months)} closest PMs with a dated path, the middle time to a first product role "
-                             f"was about {median} months."),
-                    "score": MIN_LIFT, "count": len(months), "known": len(months), "kind": "months",
-                    "rate": 1, "cohort_rate": 0})
+        sentence = (f"Among the {len(months)} closest PMs with a dated path, about {duration_phrase(median)} "
+                    f"to a first PM role")
         span = _rounded_span(months)
         if span:
-            out.append({"text": (f"Among the {len(months)} closest PMs with a dated path, most took about "
-                                 f"{span[0]} to {span[1]} months."),
-                        "score": MIN_LIFT, "count": len(months), "known": len(months), "kind": "span",
-                        "rate": 1, "cohort_rate": 0})
+            sentence += f"; the middle half took {duration_span(span[0], span[1])}"
+        out.append({"text": sentence + ".",
+                    "score": MIN_LIFT, "count": len(months), "known": len(months), "kind": "months",
+                    "rate": 1, "cohort_rate": 0})
     pre = group.get("pre") or []
     pre_med = _median(pre)
     if pre_med is not None and pre_med > 0:
@@ -398,6 +443,61 @@ def present(group: dict, cohort: Optional[dict] = None, user: Optional[dict] = N
     }
 
 
+def _reached(level: str, target: str) -> bool:
+    return level in LEVELS and target in LEVELS and LEVELS.index(level) >= LEVELS.index(target)
+
+
+def in_pm_lines(rows: Sequence[dict], cohort_rows: Sequence[dict], user: dict) -> list:
+    """Lines for someone already in product: the level, the background mix, and years since career start."""
+    if not user.get("in_pm"):
+        return []
+    target = user.get("target_level") or ""
+    if target not in LEVELS:
+        return []
+    lines = []
+    count = sum(1 for row in rows if _reached(row.get("norm_seniority_group") or "", target))
+    cohort_count = sum(1 for row in cohort_rows if _reached(row.get("norm_seniority_group") or "", target))
+    text, _lift = _share(count, len(rows), f"are at {target} or above.", cohort_count, len(cohort_rows), len(cohort_rows),
+                         min_lift=OWN_LIFT)
+    if text:
+        lines.append(text)
+    reached = [row for row in rows if _reached(row.get("norm_seniority_group") or "", target)]
+    counts: dict = {}
+    for row in reached:
+        label = (row.get("final_primary_prior_function") or "").strip()
+        if label:
+            counts[label] = counts.get(label, 0) + 1
+    kept = sorted(((label, n) for label, n in counts.items() if n >= 5), key=lambda item: (-item[1], item[0]))
+    if len(reached) >= 5 and kept:
+        if len(reached) < 10:
+            if len(kept) == 1:
+                lines.append("Among the closest PMs at " + target + " or above, the most common background before product was "
+                             + kept[0][0] + ".")
+            else:
+                names = " and ".join(label for label, _n in kept)
+                lines.append("Among the closest PMs at " + target + " or above, backgrounds before product include "
+                             + names + ".")
+        else:
+            bits = ["5–9 came from " + label if n < 10 else f"{n} came from {label}" for label, n in kept]
+            lines.append(f"Among the {len(reached)} closest PMs at {target} or above, {' and '.join(bits)} before product.")
+    from datetime import date
+    years = []
+    for row in rows:
+        if (row.get("norm_seniority_group") or "") != target:
+            continue
+        start = row.get("norm_career_start_year")
+        if isinstance(start, int) and date.today().year >= start:
+            years.append(date.today().year - start)
+    if len(years) >= 10:
+        ordered = sorted(years)
+        mid = len(ordered) // 2
+        median = ordered[mid] if len(ordered) % 2 else (ordered[mid - 1] + ordered[mid]) / 2
+        if median > 0:
+            lines.append(f"Among the {len(years)} closest PMs at {target}, the middle time since career start was about "
+                         f"{duration_phrase(float(median) * 12)}.")
+    return lines
+
+
 def patterns_from_neighbours(rows: Sequence[dict], target_level: str, cohort_rows: Optional[Sequence[dict]] = None,
                              user: Optional[dict] = None) -> dict:
     """The public pattern object. No profile key, city, or raw count under 5 leaves this function."""
@@ -409,7 +509,13 @@ def patterns_from_neighbours(rows: Sequence[dict], target_level: str, cohort_row
         label = (row.get("final_primary_prior_function") or "").strip()
         if label:
             counts[label] = counts.get(label, 0) + 1
-    return present(stats_from_rows(rows), stats_from_rows(cohort_rows), features, by_first_from_rows(cohort_rows), counts)
+    view = present(stats_from_rows(rows), stats_from_rows(cohort_rows), features, by_first_from_rows(cohort_rows), counts)
+    if view.get("available"):
+        for line in in_pm_lines(rows, cohort_rows, features):
+            if len(view["patterns"]) >= 10:
+                break
+            view["patterns"].append({"id": f"PEER-{len(view['patterns']) + 1}", "text": line})
+    return view
 
 
 def _takeaways(patterns: Sequence[dict], internal: int = 0, external: int = 0) -> list:

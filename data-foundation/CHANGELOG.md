@@ -7,11 +7,18 @@
 | `peer_patterns(vector, jsonb, text)` reranks in a CTE and returns aggregate sentences. The distance sort cannot use the HNSW index, so the pool is 120 rather than the index default of about 40. The v2.41 five-argument function is left in place so the running app still resolves during rollout. A pattern needs 10 known profiles before it is phrased as "most of the N". The caller's own background is a match line, not a pattern. A switcher always gets the target-level start, the months median (the range only beside it), and the MBA line when they have an MBA. Someone already in product gets the target-level line, years in product, and an MBA comparison. Execute on the new function stays with `trace_app_runtime` only | migration 59 | v2.41 exposed neighbour attributes, and a stable function that built temporary tables could not be called |
 | Rollback restores the v2.41.0 function | rollback | |
 
+## 2.44.0 — 2026-11-27 (peer pattern wording)
+
+| Change | Files | Why |
+|---|---|---|
+| Replace `peer_patterns(vector, jsonb, text)`. A duration over 24 months is the nearest half year. The 25th–75th range is folded into the median sentence as "the middle half took", and it is not a separate pattern. An MBA holder sees how uncommon an MBA is in the whole cohort. Someone already in product also sees the pre-PM background mix among people at their target level, and the typical years since career start at that level. Lines about the caller's own move or target level use a lift of 1.1 | migration 61 | The range was being read as "most", and an MBA comparison overstated a rare credential |
+| Rollback restores the v2.42.0 function | rollback | |
+
 ## 2.43.0 — 2026-11-26 (drop the per-profile peer function)
 
 | Change | Files | Why |
 |---|---|---|
-| Drop `peer_patterns(vector, text, text[], integer, text)`, the v2.41 function that returned one attribute object per neighbour | migration 60 | Apply only after the app that calls `peer_patterns(vector, jsonb, text)` is deployed |
+| Drop `peer_patterns(vector, text, text[], integer, text)`, the v2.41 function that returned one attribute object per neighbour. The file is `20261126235900_trace_peer_drop_row_function.sql` | migration 60 | Apply only after the app that calls `peer_patterns(vector, jsonb, text)` is deployed |
 | Rollback recreates that five-argument function | rollback | |
 
 ## 2.41.0 — 2026-11-26 (peer search returns a candidate pool)

@@ -159,7 +159,8 @@ def test_the_synthetic_cohort_matches_by_path_and_hides_a_group_of_three():
     assert "degree" not in blob.lower()
     assert "came from Software Engineering" not in blob
     assert "Matched on your background: Software Engineering / QA / IT" in view["match_line"]
-    assert "middle time to a first product role" in blob
+    assert "to a first PM role" in blob
+    assert "most took" not in blob
     assert "compared with about" in blob
     assert raw_counts_hidden(view)
     assert "not a guarantee" in view["disclaimer"]
@@ -362,24 +363,96 @@ def test_a_structured_opening_stays_prose_and_the_limit_ends_on_a_sentence():
 def test_a_switcher_gets_six_patterns_without_restating_their_background():
     neighbours = [_row(norm_seniority_group="APM", final_primary_prior_function="Software Engineering / QA / IT",
                        final_entry_move="internal", final_first_pm_group="APM", final_n_pre_pm_roles="2",
-                       has_mba="True", final_months_to_first_pm_from_earliest_nonintern=str(48 + i))
+                       has_mba="False", final_months_to_first_pm_from_earliest_nonintern=str(48 + i))
                   for i in range(24)]
     others = [_row(final_primary_prior_function="Business / Consulting / Finance / Operations",
                    final_entry_move="external", final_first_pm_group="Product Manager", final_n_pre_pm_roles="1",
-                   has_mba="False", final_months_to_first_pm_from_earliest_nonintern=str(20 + (i % 8)))
-              for i in range(80)]
-    user = {"prior": "Software Engineering / QA / IT", "target_level": "APM", "mba": True, "in_pm": False, "n_pre": 2}
+                   has_mba="True" if i < 5 else "False",
+                   final_months_to_first_pm_from_earliest_nonintern=str(20 + (i % 8)))
+              for i in range(101)]
+    user = {"prior": "Software Engineering / QA / IT", "target_level": "APM", "mba": True, "in_pm": False,
+            "move": "internal", "n_pre": 2}
     view = patterns_from_neighbours(neighbours, "APM", neighbours + others, user=user)
     blob = " ".join(item["text"] for item in view["patterns"])
+    months = [item["text"] for item in view["patterns"] if "first PM role" in item["text"] or "middle half" in item["text"]]
     assert len(view["patterns"]) >= 6
+    assert len(months) == 1
     assert "came from Software Engineering" not in blob
     assert "Matched on your background: Software Engineering / QA / IT" in view["match_line"]
     assert "started in product as APM" in blob
-    assert "had an MBA" in blob
-    assert "middle time to a first product role" in blob
+    assert "MBAs are uncommon among these PMs: about 4% of all 125." in blob
+    assert "to a first PM role" in months[0]
+    assert "the middle half took" in months[0]
+    assert "most took" not in blob
+    assert "½" in months[0]
     assert "Most of the 7" not in blob
     design_rows = [_row(final_primary_prior_function="Design / UX") for _ in range(2)]
     engineering = [_row(final_primary_prior_function="Software Engineering / QA / IT", final_entry_move="internal") for _ in range(20)]
     base = [_row() for _ in range(20)]
     thin = patterns_from_neighbours(engineering, "APM", design_rows + engineering + base, user={"prior": "Design / UX", "target_level": "APM"})
     assert thin.get("preface", "").startswith("Few PMs in our data came from design")
+
+
+def test_durations_over_two_years_are_half_years_and_the_range_is_not_its_own_pattern():
+    from app.services.peer_matching.aggregate import duration_phrase, duration_span
+    assert duration_phrase(24) == "24 months"
+    assert duration_phrase(90) == "7½ years"
+    assert duration_phrase(126) == "10½ years"
+    assert duration_phrase(60) == "5 years"
+    assert duration_span(60, 126) == "5 to 10½ years"
+
+
+def test_own_move_and_target_level_use_a_lift_of_about_1_1():
+    def others(internal, first_apm, n=360):
+        return [_row(final_entry_move="internal" if i < internal else "external",
+                     final_first_pm_group="APM" if i < first_apm else "Product Manager")
+                for i in range(n)]
+
+    neighbours = [_row(final_entry_move="internal" if i < 22 else "external",
+                       final_first_pm_group="APM" if i < 22 else "Product Manager",
+                       norm_seniority_group="APM") for i in range(40)]
+    # 22 of 40 against 200 of 400 is a lift of 1.1. The other 360 supply the remaining 178.
+    cohort = neighbours + others(178, 178)
+    shown = patterns_from_neighbours(neighbours, "APM", cohort,
+                                     user={"target_level": "APM", "move": "internal", "in_pm": False})
+    shown_text = " ".join(item["text"] for item in shown["patterns"])
+    assert "inside the employer" in shown_text
+    assert "started in product as APM" in shown_text
+    hidden = patterns_from_neighbours(neighbours, "APM", cohort,
+                                      user={"target_level": "APM", "move": "", "in_pm": False})
+    hidden_text = " ".join(item["text"] for item in hidden["patterns"])
+    assert "inside the employer" not in hidden_text
+    low = [_row(final_entry_move="internal" if i < 21 else "external",
+                final_first_pm_group="APM" if i < 21 else "Product Manager") for i in range(40)]
+    below = patterns_from_neighbours(low, "APM", low + others(179, 179),
+                                     user={"target_level": "APM", "move": "internal", "in_pm": False})
+    below_text = " ".join(item["text"] for item in below["patterns"])
+    assert "inside the employer" not in below_text
+    assert "started in product as APM" not in below_text
+
+
+def test_an_in_product_user_gets_the_target_mix_and_years_since_career_start():
+    from datetime import date
+    neighbours = []
+    for i in range(20):
+        neighbours.append(_row(
+            norm_seniority_group="Senior Product Manager",
+            final_primary_prior_function="Software Engineering / QA / IT" if i < 12 else "Design / UX",
+            final_first_pm_group="APM",
+            norm_career_start_year="2012",
+            has_mba="False",
+            final_n_pm_roles="3",
+        ))
+    rest = [_row(norm_seniority_group="Junior PM", has_mba="True" if i < 5 else "False", final_first_pm_group="Junior PM")
+            for i in range(105)]
+    user = {"in_pm": True, "target_level": "Senior Product Manager", "first_pm_level": "APM", "mba": True,
+            "prior": "Design / UX"}
+    view = patterns_from_neighbours(neighbours, "Senior Product Manager", neighbours + rest, user=user)
+    blob = " ".join(item["text"] for item in view["patterns"])
+    assert "are at Senior Product Manager or above" in blob
+    assert "12 came from Software Engineering / QA / IT" in blob
+    assert "5–9 came from Design / UX" in blob
+    assert "before product" in blob
+    years = date.today().year - 2012
+    assert f"the middle time since career start was about {years} years" in blob
+    assert "MBAs are uncommon among these PMs: about 4% of all 125." in blob

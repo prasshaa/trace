@@ -22,8 +22,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 77980,
-      "sha256": "fbabf7476a224f34317ffc8cbbbaaa8cb2c270f691fedc3a549a435de9e9ceec"
+      "bytes": 78798,
+      "sha256": "f05765f91deb3107c7f0947ba629f43e12a58a4ee92e5722b3dda92e2a889372"
     },
     {
       "path": "README.md",
@@ -761,9 +761,14 @@
       "sha256": "d73dc729047bc2009118c500598cb832decc2a108866f5449c683d07625d5ae1"
     },
     {
-      "path": "supabase/migrations/20261126240000_trace_peer_drop_row_function.sql",
+      "path": "supabase/migrations/20261126235900_trace_peer_drop_row_function.sql",
       "bytes": 404,
       "sha256": "f9d66cc8ab4935f755c3951bf7ade02b46b27b15a19f6d20a7894b4cf46a69e1"
+    },
+    {
+      "path": "supabase/migrations/20261127001000_trace_peer_pattern_wording.sql",
+      "bytes": 24584,
+      "sha256": "7144f4cdeeb6228540b97fe479a852c255c0808d43b77409998fb5331bbdb5de"
     },
     {
       "path": "supabase/rollback/20261111150000_trace_candidate_review_enforcement.rollback.sql",
@@ -996,9 +1001,14 @@
       "sha256": "290473ea06dcd87c1e5ca732a4ee19536b80f75aa3b65f3366c18ea3653aa1a5"
     },
     {
-      "path": "supabase/rollback/20261126240000_trace_peer_drop_row_function.rollback.sql",
+      "path": "supabase/rollback/20261126235900_trace_peer_drop_row_function.rollback.sql",
       "bytes": 6782,
       "sha256": "6bdf9740bda8d6fbba95a1438e2cb3d8529c45ffeab974192005703f8c10dd66"
+    },
+    {
+      "path": "supabase/rollback/20261127001000_trace_peer_pattern_wording.rollback.sql",
+      "bytes": 18135,
+      "sha256": "09038e1bd6e0902404eb60a1527d73509253f0f09a708b3d6117867ed7499aa0"
     },
     {
       "path": "supabase/seeds/synthetic_fixtures.sql",
