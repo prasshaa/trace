@@ -115,6 +115,14 @@ class Settings(BaseSettings):
     # TRACE_EMBEDDINGS too. Off, or on any failure, retrieval uses Trace's deterministic reader. Nothing in the product
     # calls it yet (the capability assessment and pathways are unchanged until Phase 4).
     trace_semantic_retrieval: bool = False
+    # Demo assessment (founder direction, 2026-11-26). Off unless TRACE_AI_ASSESSMENT=1. When on, the plan's narrative
+    # is written by the configured OpenAI-compatible model from semantically retrieved lines. The key is never logged
+    # and never has a default. Production deploy config does not set this.
+    trace_ai_assessment: bool = False
+    trace_llm_provider: str = "openai"                         # a label; the base URL is what is called
+    trace_llm_base_url: str = "https://api.openai.com/v1"      # OpenAI-compatible, no trailing path
+    trace_llm_model: str = ""                                  # required when assessment is on; no default model is called
+    trace_llm_api_key: Optional[SecretStr] = None
     # Strict-Transport-Security on every response. Only for a deployment served over HTTPS (release, D52).
     trace_hsts: bool = False
     # Interactive API docs (/docs, /redoc, /openapi.json). Off by default; enable only for local development.

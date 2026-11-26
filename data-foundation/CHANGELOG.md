@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.36.0 — 2026-11-26 (private sharing default, account deletion)
+
+| Change | Files | Why |
+|---|---|---|
+| `trace_contrib.acknowledge_data_use_notice` records `private` when the caller has no preference yet. An existing choice is still never overwritten. No consent event is written | migration 53 | Sharing is opt-in. Continuing the notice must not turn sharing on |
+| `trace_private.delete_my_account()` deletes `auth.users` for the request identity only. Career rows, plans, drafts and contributions follow existing `on delete cascade` foreign keys. `trace_app_user` only | migration 53 | The owner can delete their account. The function cannot name another user |
+| pgTAP: the onboarding assertion expects `private`. Rollback restores the previous function body and drops `delete_my_account` (preferences already stored are not rewritten) | tests, rollback | |
+
 ## 2.35.0 — 2026-11-23 (semantic retrieval, Phase 3: hybrid candidates)
 
 | Change | Files | Why |

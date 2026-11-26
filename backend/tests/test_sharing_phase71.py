@@ -17,7 +17,7 @@ from tests.test_real_resume_contributions import (admin_row, confirm_all, contri
                                                   rc, ready_user, state)
 
 pytestmark = pytest.mark.integration
-NOTICE = "trace-data-use-notice-v2"
+NOTICE = "trace-data-use-notice-v3"
 SHARED_VERSION = demo_consent.CONTRIBUTION_VERSION
 
 
@@ -48,20 +48,20 @@ def test_the_notice_records_the_default_preference_and_never_a_consent(rc, users
     assert (first["preference"], first["notice_acknowledged"], first["activation"]) == (None, False, "not_chosen")
     assert first["notice"]["version"] == NOTICE and first["notice"]["is_consent_record"] is False
     text = " ".join(first["notice"]["paragraphs"])
-    assert "cannot promise complete anonymity" in text and "Your sharing preference is set to on by default" in text
-    assert "won't be added to shared recommendations until you confirm sharing" in text          # the real sequence
+    assert "cannot promise complete anonymity" in text and "Sharing is off until you choose it" in text
+    assert "not added to shared recommendations unless you turn" in text
     assert "is shared" not in text and "has been shared" not in text
     assert "anonymous" not in text.replace("anonymity", "")                     # no promise of anonymity
     assert acknowledge(rc, h, "trace-data-use-notice-v0").status_code == 409    # only the version shown
     r = acknowledge(rc, h)
     assert r.status_code == 200
     s = r.json()
-    assert (s["preference"], s["preference_source"], s["notice_acknowledged"]) == ("shared", "onboarding_default", True)
-    assert (s["explicit_permission"], s["activation"]) == (False, "confirmation_required")
+    assert (s["preference"], s["preference_source"], s["notice_acknowledged"]) == ("private", "onboarding_default", True)
+    assert (s["explicit_permission"], s["activation"]) == (False, "private")
     assert s["confirmation_notice"]["consent_version"] == SHARED_VERSION
     assert s["status"]["included"] is False
     assert consent_events(base_settings, u) == 0                                 # an acknowledgement, not a consent
-    assert acknowledge(rc, h).json()["preference"] == "shared"                   # idempotent
+    assert acknowledge(rc, h).json()["preference"] == "private"                  # idempotent
     assert admin_row(base_settings, "select count(*) from trace_private.sharing_preference_events where user_id = %s", u)[0] == 1
 
 
@@ -71,7 +71,7 @@ def test_the_default_preference_alone_never_shares_a_profile(rc, users, base_set
     acknowledge(rc, h)
     process_pending(Settings())
     s = sharing(rc, h)
-    assert (s["status"]["state"], s["status"]["included"], s["activation"]) == ("not_enabled", False, "confirmation_required")
+    assert (s["status"]["state"], s["status"]["included"], s["activation"]) == ("not_enabled", False, "private")
     assert contribution_of(base_settings, u) is None
     assert admin_row(base_settings, "select count(*) from trace_private.contribution_requests where user_id = %s", u)[0] == 0
 

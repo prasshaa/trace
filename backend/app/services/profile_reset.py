@@ -1,4 +1,4 @@
-"""Clear my career profile and start over (D52).
+"""Clear my career profile and start over (D52), export the owner's data, and delete the account.
 
 The owner's candidate profile and everything derived from it are deleted in ONE owner transaction, then a fresh, empty
 profile is created so the account can start again at the upload step. What goes, through the owner's own rights:
@@ -17,6 +17,7 @@ preferences (target role, goal, where to move), which hold no career facts; and 
 copy already shared under the sharing choice is removed only by turning sharing off (D42), and the page says so.
 Nothing outside the caller's own rows is touched: every statement is owner-scoped and RLS applies.
 """
+from datetime import datetime, timezone
 from typing import Dict
 from uuid import UUID
 
@@ -28,6 +29,7 @@ from app.services.real_resume import FixtureProfileConflict
 
 KEPT = ("account", "consent_choices", "planning_preferences", "sharing_choice")
 CONFIRM_PHRASE = "clear my career profile"
+DELETE_PHRASE = "delete my account"
 
 
 class ClearNotConfirmed(InvalidRecord):
@@ -62,3 +64,25 @@ class ProfileResetService:
                 return {"status": "already_clear", "deleted": counts}
             repo.clear_career_profile(ctx.candidate_profile_id)
         return {"status": "cleared", "deleted": counts}
+
+    def export(self, ctx: OwnerContext) -> Dict:
+        """The caller's own profile and sharing preference, as JSON. RLS applies: nothing from any other account."""
+        from app.services.candidate_profile import CandidateProfileService
+        profile = CandidateProfileService(self._conn).get_profile(ctx)
+        with owner_session(self._conn, ctx.owner_user_id):
+            row = self._conn.execute("select mode, source from trace_contrib.my_sharing_preference()").fetchone()
+        mode, source = row if row else (None, None)
+        return {"exported_at": datetime.now(timezone.utc).isoformat(), "owner_user_id": str(ctx.owner_user_id),
+                "profile": profile.model_dump(mode="json"),
+                "sharing": {"preference": mode, "source": source},
+                "note": "This file is your data only. It does not include anyone else's profile."}
+
+    def delete_account(self, ctx: OwnerContext, confirm: str) -> Dict:
+        """Delete the auth user for this caller. Career data follows the existing cascades. Requires the exact phrase."""
+        if (confirm or "").strip().lower() != DELETE_PHRASE:
+            raise ClearNotConfirmed("type the confirmation to delete your account")
+        if self._fixture(ctx.owner_user_id):
+            raise FixtureProfileConflict("this profile holds a synthetic sample; it can't be deleted here")
+        with owner_session(self._conn, ctx.owner_user_id):
+            self._conn.execute("select trace_private.delete_my_account()")
+        return {"status": "deleted"}

@@ -29,7 +29,7 @@ import re
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Sequence, Tuple
 
-INTERPRETER_VERSION = "trace-reading-1.0"
+INTERPRETER_VERSION = "trace-reading-1.1"
 
 # ----------------------------------------------------------------------------------------------- verbs and their weight
 _CLEAR = r"""own(?:ed|s|ing)?|led|lead(?:s|ing)?|drove|driv(?:e|es|ing|en)|defin(?:ed|e|es|ing)|set|sets|setting|shap(?:ed|e|es|ing)|
@@ -39,13 +39,14 @@ _CLEAR = r"""own(?:ed|s|ing)?|led|lead(?:s|ing)?|drove|driv(?:e|es|ing|en)|defin
     identif(?:ied|y|ies|ying)|conduct(?:ed|s|ing)?|wr(?:ote|ite|ites|iting|itten)|author(?:ed|s|ing)?|plann?(?:ed|ing)?|plan|
     integrat(?:ed|e|ing)|migrat(?:ed|e|ing)|re-?architect(?:ed|ing)?|architect(?:ed|ing)?|implement(?:ed|s|ing)?|
     mentor(?:ed|s|ing)?|coach(?:ed|es|ing)?|hir(?:ed|e|ing)|negotiat(?:ed|e|ing)|present(?:ed|s|ing)?|align(?:ed|s|ing)?|
-    partner(?:ed|s|ing)?|collaborat(?:ed|e|es|ing)|coordinat(?:ed|e|es|ing)|facilitat(?:ed|e|ing)|interview(?:ed|s|ing)?|
+    coordinat(?:ed|e|es|ing)|facilitat(?:ed|e|ing)|interview(?:ed|s|ing)?|
     analy[sz](?:ed|e|es|ing)|measur(?:ed|e|es|ing)|track(?:ed|s|ing)?|monitor(?:ed|s|ing)?|test(?:ed|s|ing)?|evaluat(?:ed|e|es|ing)|
     validat(?:ed|e|es|ing)|automat(?:ed|e|es|ing)|optimi[sz](?:ed|e|es|ing)|improv(?:ed|e|es|ing)|reduc(?:ed|e|es|ing)|
     cut|cutting|increas(?:ed|e|es|ing)|grew|grow(?:s|ing|n)?|sav(?:ed|e|es|ing)|lift(?:ed|s|ing)?|generat(?:ed|e|es|ing)|
     unlock(?:ed|s|ing)?|achiev(?:ed|e|es|ing)|resolv(?:ed|e|es|ing)|enabl(?:ed|e|es|ing)|onboard(?:ed|s|ing)?|
     co-?founded|founded|communicat(?:ed|e|es|ing)|report(?:ed|s|ing)?|demo(?:ed|s)?|work(?:ed|s|ing)?|ran|took|take|turn(?:ed|ing)?|bring|brought|bringing|rebuil[td]|rebuild(?:s|ing)?|rewr(?:ote|ite|itten)|revamp(?:ed|ing)?|overhaul(?:ed|ing)?|mov(?:ed|e|ing)|port(?:ed|ing)|streamlin(?:ed|e|ing)|standardi[sz](?:ed|e|ing)|rolled|roll(?:s|ing)?|deploy(?:ed|s|ing)?|start(?:ed|s|ing)?|decid(?:ed|e|es|ing)|ch(?:ose|oose|oosing|osen)|select(?:ed|ing)?|compar(?:ed|e|ing)|sequenc(?:ed|e|ing)|rank(?:ed|ing)?|agree(?:d)?|redesign(?:ed|ing)?|lead|served|serv(?:e|ing)|own"""
 _WEAK = r"""support(?:ed|s|ing)?|assist(?:ed|s|ing)?|help(?:ed|s|ing)?|contribut(?:ed|e|es|ing)|participat(?:ed|e|es|ing)|
+    partner(?:ed|s|ing)?|collaborat(?:ed|e|es|ing)|
     involved|exposure|exposed|shadow(?:ed|ing)?|observ(?:ed|e|ing)|attend(?:ed|s|ing)?|familiar|aware|influenc(?:ed|e|es|ing)|
     input|inputs|responsible|accountable"""
 _NEGATE = r"\b(?:never|not|no|without|didn't|did not|wasn't|lack(?:ed|ing)?)\b"
@@ -56,8 +57,10 @@ CLEAR_VERB = _rx(r"\b(?:" + _CLEAR.rstrip("|") + r")\b")
 WEAK_VERB = _rx(r"\b(?:" + _WEAK + r")\b")
 NEGATE = re.compile(_NEGATE, re.I)
 LEARN = re.compile(_LEARN, re.I)
+# A headcount ("12 merchants", "40 users") is scope, not a measured outcome. Percentages, money, multipliers
+# and an explicit change ("91% to 96%") are.
 QUANT = re.compile(r"(?:\d[\d,.]*\s?(?:%|percent|x\b|×|k\b|m\b|mn\b|bn\b|cr\b|crore|lakh|hours?|hrs|days?|weeks?|months?|"
-                   r"users?|customers?|clients?|merchants?|points?|bps)|[$₹€£]\s?\d|\d+\s?(?:→|->|to)\s?\d+\s?%|0\s?(?:→|->|to)\s?1)",
+                   r"points?|bps)|[$₹€£]\s?\d|\d+\s?(?:→|->|to)\s?\d+\s?%|0\s?(?:→|->|to)\s?1)",
                    re.I)
 
 
@@ -195,9 +198,33 @@ class Reading:
 # only mentions them ("revenue for the current clients") is not read as that kind of work.
 LEAD_OK = frozenset({"roadmap_ownership", "strategy_portfolio", "requirements_analysis", "product_discovery", "delivery_execution",
                      "go_to_market_growth", "design_research", "prioritisation_backlog", "data_analysis"})
+# Owning these needs an ownership verb. "Worked with", "supported" and "partnered" are collaboration, not ownership.
+OWNERSHIP_AREAS = frozenset({"roadmap_ownership", "strategy_portfolio", "outcome_ownership"})
 WORD = re.compile(r"[A-Za-z][A-Za-z'’-]*")
+_WITH = frozenset({"worked", "work", "working", "works"})
 LOOKBACK = 8                                   # words before a responsibility phrase that may hold its verb
 SENTENCE = re.compile(r"(?<=[.!?])\s+(?=[A-Z])|\s*[;•]\s*")
+
+
+_NOUN_AFTER = {"with", "and", "the", "a", "an", "of", "for", "on", "to", "our", "their"}
+# Words that are verbs in the list and also ordinary nouns ("with design", "the plan").
+_NOUN_VERB = {"design", "designs", "plan", "plans", "set", "run", "work", "works", "report", "reports"}
+
+
+def _verb_kind(words: Sequence[str], i: int) -> Optional[str]:
+    """clear, weak, or None. 'Worked with' is collaboration, not the ownership verb 'worked'."""
+    w = words[i]
+    nxt = words[i + 1].lower() if i + 1 < len(words) else ""
+    prev = words[i - 1].lower() if i else ""
+    if w.lower() in _NOUN_VERB and prev in _NOUN_AFTER:
+        return None
+    if w.lower() in _WITH and nxt == "with":
+        return "weak"
+    if WEAK_VERB.fullmatch(w):
+        return "weak"
+    if CLEAR_VERB.fullmatch(w):
+        return "clear"
+    return None
 
 
 def _governing(prefix: str) -> Optional[str]:
@@ -205,31 +232,52 @@ def _governing(prefix: str) -> Optional[str]:
     words = [m.group(0) for m in WORD.finditer(prefix)]
     for i in range(len(words) - 1, max(-1, len(words) - 1 - LOOKBACK), -1):
         w = words[i]
-        if NEGATE.fullmatch(w):
+        if NEGATE.fullmatch(w) or w.lower() in {"didn't", "wasn't", "don't", "isn't"}:
             return "neg"
-        kind = "weak" if WEAK_VERB.fullmatch(w) else "clear" if CLEAR_VERB.fullmatch(w) else None
+        kind = _verb_kind(words, i)
         if kind:
-            return "neg" if any(NEGATE.fullmatch(x) for x in words[max(0, i - 2):i]) else kind
+            before = words[max(0, i - 3):i]
+            if any(NEGATE.fullmatch(x) or x.lower() in {"didn't", "wasn't", "don't"} for x in before):
+                return "neg"
+            # "did not" is two words; "not" is already caught. A curly apostrophe is normalised before this runs.
+            return kind
     return None
 
 
 def _lead(sentence: str) -> Optional[str]:
     """The opening verb of a resume line or sentence ("Owned", "Built and scaled"), if it has one."""
-    words = [m.group(0) for m in WORD.finditer(sentence)][:3]
-    if any(NEGATE.fullmatch(w) for w in words):
+    words = [m.group(0) for m in WORD.finditer(sentence)][:4]
+    if any(NEGATE.fullmatch(w) or w.lower() in {"didn't", "wasn't"} for w in words):
         return None
-    for w in words:
-        if WEAK_VERB.fullmatch(w):
-            return "weak"
-        if CLEAR_VERB.fullmatch(w):
-            return "clear"
+    for i, w in enumerate(words[:3]):
+        kind = _verb_kind(words, i)
+        if kind:
+            return kind
     return None
+
+
+def _normalise(text: str) -> str:
+    """Straighten apostrophes so "didn't" and "didn’t" negate the same way, and collapse whitespace."""
+    return " ".join((text or "").replace("\u2019", "'").replace("\u2018", "'").replace("`", "'").split())
+
+
+def _retracted(sentence: str) -> set:
+    """Areas a later clause takes back: 'built the roadmap but did not own the roadmap'."""
+    parts = re.split(r"\b(?:but|although|however|though|except|without)\b", sentence, flags=re.I)
+    out = set()
+    for span in parts[1:]:
+        if not NEGATE.search(span):
+            continue
+        for cue in CUES:
+            if cue.pattern.search(span):
+                out.add(cue.area)
+    return out
 
 
 def interpret(text: str, evidence_type: Optional[str] = None) -> Reading:
     """Trace's reading of one confirmed line. Pure and deterministic."""
     out = Reading()
-    text = " ".join((text or "").split())
+    text = _normalise(text)
     if not text:
         return out
     for sentence in [x for x in SENTENCE.split(text) if x and x.strip()]:
@@ -246,6 +294,10 @@ def interpret(text: str, evidence_type: Optional[str] = None) -> Reading:
                     if cue.needs_action:
                         continue
                     gov = "weak"
+                # Collaboration ("supported", "partnered", "worked with") is not ownership of the roadmap,
+                # the strategy, or the outcome. It can still be related evidence of another area.
+                if gov == "weak" and cue.area in OWNERSHIP_AREAS:
+                    continue
                 strength = "clear" if gov == "clear" and cue.strength != "partial" else "partial"
                 hit = (m.group(0), cue.why)
                 if strength == "clear":
@@ -267,6 +319,11 @@ def interpret(text: str, evidence_type: Optional[str] = None) -> Reading:
                     continue
                 out.clear.setdefault(area, (m.group(0), why))
                 out.partial.pop(area, None)
+    for sentence in [x for x in SENTENCE.split(text) if x and x.strip()]:
+        for area in _retracted(sentence):
+            if any(c.area == area and c.pattern.search(sentence) for c in CUES):
+                out.clear.pop(area, None)
+                out.partial.pop(area, None)
     _outcomes(text, out)
     for (area, q), rx in QUALIFIERS.items():
         if area in out.clear and rx.search(text) and not NEGATE.search(text[:40]):
@@ -285,11 +342,13 @@ def _outcomes(text: str, out: Reading) -> None:
     decided = re.search(r"decid|decision|prioriti|go/no-go|direction|chose|choos", text, re.I)
     owned_result = re.search(r"^(?:drove|led|owned|delivered|shipped|launched|grew|built|achieved)\b[^.;]{0,200}", text, re.I)
     quant = QUANT.search(text)
+    if quant and NEGATE.search(text[max(0, quant.start() - 40):quant.end()]):
+        quant = None
     out.clear.pop("outcome_ownership", None)
     out.partial.pop("outcome_ownership", None)
-    if defined and (decided or quant) and not NEGATE.search(text[:max(0, defined.start())][-30:]):
+    if defined and (decided or quant) and not NEGATE.search(text[:max(0, defined.start())][-40:]):
         out.clear["outcome_ownership"] = (defined.group(0), "defines how success is measured and acts on it")
-    elif quant and owned_result:
+    elif quant and owned_result and not NEGATE.search(text[:owned_result.end()]):
         out.partial["outcome_ownership"] = (quant.group(0), "owns a measured result; it doesn't say who defined the measure")
     elif quant:
         out.partial["outcome_ownership"] = (quant.group(0), "shows a measured result; it doesn't say who defined the measure")

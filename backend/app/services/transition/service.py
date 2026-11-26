@@ -6,7 +6,8 @@
                  eligibility (assessment 2) and four-stage actions -> saved through the trusted append-only writer
                  (D30) -> returned as stored.
     plan         the caller's own saved run (latest for a target, or by id). Other users' runs are invisible (RLS).
-No external AI, no embeddings, no scores. The deterministic engine works without an LLM.
+The saved route is still the deterministic planner. When TRACE_AI_ASSESSMENT=1, the narrative on top of that plan
+is written by the configured model from semantically retrieved lines, then checked by guardrails. No scores.
 """
 from datetime import date, datetime, timezone
 from typing import Dict, Iterable, List, Optional
@@ -60,6 +61,24 @@ def readiness(profile, run: dict, rm: dict) -> dict:
             "needs_context": [c["key"] for c in caps if c["state"] == "needs_context"]}
 
 
+# Deep support is the product ladder Trace can assess: into an Associate or Product Manager role from outside
+# product, from Associate to Product Manager, and from Product Manager to Senior Product Manager.
+# Every other move still gets a plan, labelled Limited support: evidence and positioning, no capability status.
+_DEEP_RUNGS = {"PM-APM", "PM-PM", "PM-SPM"}
+_DEEP_PAIRS = {("non_pm", "PM-APM"), ("non_pm", "PM-PM"), ("PM-APM", "PM-PM"), ("PM-PM", "PM-SPM")}
+# Lead and above are on the product ladder but are not the non-PM entry path.
+_HIGHER_PM = {"PM-LEAD", "PM-PRINCIPAL", "PM-GPM", "PM-HEAD", "PM-DIR", "PM-SDIR", "PM-VP", "PM-CPO"}
+
+
+def support_depth(current_role_id: Optional[str], target_role_id: str) -> str:
+    """'deep' for the four supported moves; 'limited' for every other move Trace will still describe."""
+    if current_role_id in _DEEP_RUNGS or current_role_id in _HIGHER_PM:
+        current = current_role_id
+    else:
+        current = "non_pm"
+    return "deep" if (current, target_role_id) in _DEEP_PAIRS else "limited"
+
+
 def describe_move(current: Optional[dict], target: Optional[dict]) -> dict:
     """How the target relates to the confirmed current role, for the plan's wording only (Phase 5, D51). Any valid target
     is allowed: a lateral move, a step up or a step back is the user's decision, never a restriction or a ranking."""
@@ -82,6 +101,17 @@ def describe_move(current: Optional[dict], target: Optional[dict]) -> dict:
 
 class PlanNotFound(RecordNotFound):
     """No saved plan for this target (or no such run for this user)."""
+
+
+def _ai_narrative(conn, ctx, profile, roadmap: dict, requirements: List[dict]) -> dict:
+    """The demo narrative. Never raises into the plan: a missing key or a provider error is a status, not a 500."""
+    try:
+        from app.services.ai_assessment.service import narrative_for
+        return narrative_for(conn, ctx, profile, roadmap, requirements)
+    except Exception as exc:                                              # noqa: BLE001 - the plan must still render
+        import logging
+        logging.getLogger(__name__).warning("ai narrative unavailable: %s", type(exc).__name__)
+        return {"status": "unavailable"}
 
 
 def _iso(v):
@@ -298,6 +328,10 @@ class TransitionPlanService:
         from app.services.transition.roadmap import next_actions
         out["next_actions"] = next_actions(out["capabilities"], out["move"], out["target_role"], (run.get("decision") or {}).get("rule"),
                                            out["recommendation"]["route"])
+        depth = support_depth(current_id, run["target_role_id"])
+        from app.services.transition.roadmap import apply_support_depth
+        apply_support_depth(out, depth, out.get("target_role"))
+        out["ai"] = _ai_narrative(self._conn, ctx, profile, out, reqs)
         if out["move"]["kind"] == "same_role" and out["recommendation"]["kind"] == "direct":
             out["recommendation"]["headline"] = \
                 f"Make your next move as a {out['target_role']}, somewhere new."

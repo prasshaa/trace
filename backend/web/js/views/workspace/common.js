@@ -242,3 +242,41 @@ export function sourceIndex(plan) {
   }
   return out;
 }
+
+/** Yes / No / Not sure for a scope question. The answer is saved on the line it refers to and the plan is rebuilt,
+ *  so the deterministic assessment uses it. "Not sure" is not saved and is never read as no. */
+export function scopeAnswers(ws, c) {
+  const asks = (c.asks || []).filter((a) => a && a.text);
+  if (!asks.length) return null;
+  return h("div.ov-asks", asks.map((ask) => {
+    if (!ask.evidence_id || !ask.area) {
+      return h("p.small.ov-cap-q", ask.text, " ", h("a", { href: "#/profile" }, "Answer this on the line in your profile."));
+    }
+    const name = uid("ask");
+    const status = h("span.small.muted");
+    const choose = (label, value) => {
+      const id = uid("asko");
+      const input = h("input", { type: "radio", name, id });
+      input.addEventListener("change", async () => {
+        if (value === null) {
+          status.textContent = "Left unanswered. Trace does not read that as a no.";
+          return;
+        }
+        status.textContent = "Saving…";
+        try {
+          await api.classify(ask.evidence_id, {
+            areas: ask.areas && ask.areas.length ? ask.areas : [ask.area],
+            none: false,
+            qualifiers: { [ask.area]: { [ask.key]: value } },
+          });
+          status.textContent = "Saved. Updating your plan…";
+          if (ws.replan) await ws.replan(null)();
+        } catch (err) {
+          status.textContent = (err && err.message) || "That wasn't saved.";
+        }
+      });
+      return h("label.ask-opt", { for: id }, input, h("span", label));
+    };
+    return h("fieldset.ov-ask", h("legend", ask.text), choose("Yes", true), choose("No", false), choose("Not sure", null), status);
+  }));
+}

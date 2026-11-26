@@ -1,0 +1,37 @@
+{
+  "fictional": true,
+  "id": "F09",
+  "name_note": "FICTIONAL RESUME — Sana Iqbal is not a real person.",
+  "move": "apm_to_pm",
+  "target_id": "PM-PM",
+  "retrieval": {
+    "mode": "in_process_overlap",
+    "reason": "pgvector_not_applied",
+    "ids": [
+      "F09-L1",
+      "F09-L2",
+      "F09-L3"
+    ]
+  },
+  "lines": [
+    {
+      "id": "F09-L1",
+      "text": "Ran discovery interviews with 15 clinic coordinators and wrote the problem brief.",
+      "job": "Associate Product Manager, Lumen Health"
+    },
+    {
+      "id": "F09-L2",
+      "text": "Supported the product manager on prioritisation. Did not own the roadmap.",
+      "job": "Associate Product Manager, Lumen Health"
+    },
+    {
+      "id": "F09-L3",
+      "text": "Shipped a referral form that cut duplicate data entry, with no published percentage.",
+      "job": "Associate Product Manager, Lumen Health"
+    }
+  ],
+  "system": "You are Trace, reading one person's confirmed experience for a product-management move in India.\nYou receive only the lines and the role requirements that retrieval selected. You do not invent employers, dates, tools, or numbers.\nRules:\n- Every item in \"proves\" cites one or more evidence_ids from the lines you were given, and says what that line actually shows for the target role.\n- \"worked with\", \"supported\", \"partnered\" and \"collaborated\" are collaboration, not ownership. Do not say the person owned or led that work.\n- If a line says they did not own or never owned something, do not count it as ownership.\n- Do not introduce a percentage, count, or money figure that is not written in the cited line.\n- \"missing\" names a real gap for the target role without inventing a metric.\n- \"questions\" ask one thing the line leaves ambiguous. Cite the line when the question is about it.\n- \"steps\" are concrete things they can do next in their current work. Cite a line when the step builds on it.\n- Write in plain, specific sentences. No scores, no percentages of fit, no \"certainly\".\nReturn a JSON object with keys opening, proves, missing, questions, steps.\nproves and steps items are {\"text\", \"evidence_ids\", \"why\"}. missing items are {\"text\", \"why\"}. questions are {\"text\", \"evidence_id\"}.\n",
+  "user": "Target role: PM-PM\nMove: apm_to_pm\nRetrieval: in_process_overlap. Use only the lines below.\n\nRole requirements:\n- Understand users: Learn what users need and use it to decide.\n- Roadmap and strategy: Own the direction and the order of work.\n- Outcomes: Define a measure and decide with it.\n- Stakeholders: Bring other functions to a decision.\n- Coaching: Develop another product person.\n\nConfirmed lines:\n- F09-L1 | Associate Product Manager, Lumen Health | Ran discovery interviews with 15 clinic coordinators and wrote the problem brief.\n- F09-L2 | Associate Product Manager, Lumen Health | Supported the product manager on prioritisation. Did not own the roadmap.\n- F09-L3 | Associate Product Manager, Lumen Health | Shipped a referral form that cut duplicate data entry, with no published percentage.",
+  "status": "not_configured",
+  "narrative": null
+}

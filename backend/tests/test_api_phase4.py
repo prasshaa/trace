@@ -101,8 +101,8 @@ def test_target_roles_and_responsibility_areas(demo_client, users):
     assert roles.status_code == 200
     assert [r["role_id"] for r in roles.json()] == TARGETS
     assert all(set(r) == {"role_id", "label", "report_available"} and r["label"] for r in roles.json())   # POC: + report_available
-    assert roles.json()[0] == {"role_id": "PM-APM", "label": "Associate Product Manager", "report_available": False}
-    assert [r["role_id"] for r in roles.json() if r["report_available"]] == ["PM-PM", "PM-SPM"]
+    assert roles.json()[0] == {"role_id": "PM-APM", "label": "Associate Product Manager", "report_available": True}
+    assert [r["role_id"] for r in roles.json() if r["report_available"]] == ["PM-APM", "PM-PM", "PM-SPM"]
     areas = demo_client.get("/api/v1/taxonomy/responsibility-areas", headers=h)
     assert areas.status_code == 200 and len(areas.json()) == 20          # taxonomy v2 (Phase 3.1): 16 + 4 new areas
     assert all(set(a) == {"code", "label", "is_pm_ownership_signal", "description", "examples", "questions",

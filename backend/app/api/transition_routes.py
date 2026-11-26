@@ -450,6 +450,10 @@ class RoadmapView(_View):
     move: Dict[str, Any] = {}
     readiness: Dict[str, Any] = {}
     next_actions: List[Dict[str, Any]] = []
+    # deep: the four assessed moves. limited: evidence and positioning, never a capability status.
+    support: Dict[str, Any] = {}
+    # Present when the AI demo path ran or explained why it did not. Absent on older saved responses only.
+    ai: Dict[str, Any] = {}
 
 
 def _goal_view(target: str, g: Optional[dict]) -> GoalView:

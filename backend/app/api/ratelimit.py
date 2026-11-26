@@ -11,10 +11,15 @@ there is no fallback to unlimited requests.
 
 Backend "memory": an in-process sliding window for isolated tests only; refused unless TRACE_RATE_LIMIT_ALLOW_MEMORY=1.
 
-The client IP is the socket peer (request.client.host); X-Forwarded-For is NOT trusted, so behind a proxy the IP limit
-applies to the proxy until a trusted-proxy configuration is added.
+The client IP is never taken from the leftmost X-Forwarded-For entry. That entry is client-supplied, and
+``--forwarded-allow-ips='*'`` would let a caller spoof it. Fly's proxy overwrites ``Fly-Client-IP``; that value is
+used when it is one IP address. Otherwise the socket peer is used (the platform proxy, when the wildcard is not set).
+On Cloud Run, set ``TRACE_TRUST_APPENDED_FORWARDED=1`` so the last X-Forwarded-For hop (the one the frontend appended)
+is used. Deploy config must not pass ``--forwarded-allow-ips='*'``.
 """
+import ipaddress
 import logging
+import os
 import threading
 import time
 from collections import deque
@@ -105,6 +110,26 @@ def get_memory_limiter(request: Request) -> SlidingWindowLimiter:
     return limiter
 
 
+def _one_ip(value: str) -> bool:
+    try:
+        ipaddress.ip_address(value)
+    except ValueError:
+        return False
+    return True
+
+
+def client_ip(request: Request) -> str:
+    """The address the per-IP limit uses. Never the leftmost forwarded address."""
+    fly = (request.headers.get("fly-client-ip") or "").strip()
+    if _one_ip(fly):
+        return fly
+    if os.environ.get("TRACE_TRUST_APPENDED_FORWARDED") == "1":
+        parts = [p.strip() for p in (request.headers.get("x-forwarded-for") or "").split(",") if p.strip()]
+        if parts and _one_ip(parts[-1]):
+            return parts[-1]
+    return request.client.host if request.client and request.client.host else "unknown"
+
+
 def limit(bucket: str):
     """Dependency factory: enforce the bucket's per-user and per-IP limits for the verified caller."""
     if bucket not in BUCKETS:
@@ -119,7 +144,7 @@ def limit(bucket: str):
             ip_rule = parse_rule(getattr(settings, f"rate_limit_{bucket}_ip"))
         except ValueError as exc:
             raise RateLimiterUnavailable("invalid rate limit configuration") from exc
-        ip = request.client.host if request.client else "unknown"
+        ip = client_ip(request)
         ns = settings.trace_rate_limit_namespace
         rules = [(f"{ns}:{bucket}:user:{owner}", user_rule), (f"{ns}:{bucket}:ip:{ip}", ip_rule)]
         backend = settings.trace_rate_limit_backend

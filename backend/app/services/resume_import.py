@@ -542,10 +542,30 @@ def plan_education(d: "_Draft", req: ConfirmRequest) -> List[PlannedEducation]:
     return out
 
 
+def _edu_bound(d: DateInput, end: bool) -> Optional[int]:
+    """Month index for ordering. A year-only start is January; a year-only end is December, so '2018' can complete a
+    course that started in June 2018."""
+    if not d.year or d.precision not in ("month", "year"):
+        return None
+    if d.precision == "month" and d.month:
+        return d.year * 12 + d.month
+    return d.year * 12 + (12 if end else 1)
+
+
+def _edu_date_ok(d: DateInput) -> bool:
+    """A qualification date is a month and year, or a year alone when the resume only states the year. The month is
+    never invented."""
+    if d.precision == "month":
+        return bool(d.year and d.month)
+    if d.precision == "year":
+        return bool(d.year)
+    return False
+
+
 def education_contract(items: List[PlannedEducation]) -> List[dict]:
-    """Phase 5: a qualification needs its name, institution, start month and year, and a completion month and year
-    unless the user says they are still studying. Field of study stays optional (not every qualification has one).
-    Nothing is invented: a year-only date from the resume asks the user for the month."""
+    """A qualification needs its name, institution, and a start year (month if the resume states one). Completion is
+    a year, or a month and year, unless the user is still studying. Field of study stays optional. A year-only date
+    is kept as a year; Trace does not invent a month."""
     errors: List[dict] = []
 
     def err(item, fld, msg):
@@ -555,16 +575,16 @@ def education_contract(items: List[PlannedEducation]) -> List[dict]:
             err(q.key, "qualification", "Enter the qualification.")
         if not q.institution:
             err(q.key, "institution", "Enter the university, college or school.")
-        s_ok = q.start.precision == "month" and q.start.year and q.start.month
+        s_ok = _edu_date_ok(q.start)
         if not s_ok:
-            err(q.key, "start", "Enter the start month and year.")
+            err(q.key, "start", "Enter the start year. Add the month if you know it.")
         elif _lo(q.start) > MONTH_NOW():
             err(q.key, "start", "The start date can't be in the future.")
         if not q.studying:
-            e_ok = q.end.precision == "month" and q.end.year and q.end.month
+            e_ok = _edu_date_ok(q.end)
             if not e_ok:
-                err(q.key, "end", "Enter the completion month and year, or tick “Currently studying”.")
-            elif s_ok and _lo(q.end) < _lo(q.start):
+                err(q.key, "end", "Enter the completion year, or tick “Currently studying”. Add the month if you know it.")
+            elif s_ok and _edu_bound(q.end, True) < _edu_bound(q.start, False):
                 err(q.key, "end", "The completion date is before the start date.")
             elif _lo(q.end) > MONTH_NOW():
                 err(q.key, "end", "The completion date is in the future. If you're still studying, tick “Currently studying”.")

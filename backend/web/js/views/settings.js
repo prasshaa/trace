@@ -1,8 +1,8 @@
 // Profile settings -> Data & privacy: how Trace uses your career information.
 //
 // Two mutually exclusive modes, saved with an explicit action (PUT /api/v1/sharing):
-//   shared   use my career information to improve recommendations for everyone (the default after onboarding)
-//   private  use it only for my recommendations
+//   shared   use my career information to improve recommendations for everyone (opt in, in these settings)
+//   private  use it only for my recommendations (the default)
 // The sharing PREFERENCE and the profile's actual STATUS in the shared pool are shown separately, both from
 // GET /api/v1/sharing. "Included" appears only when the API says eligible AND included. Nothing is shown as changed
 // until the API confirms it. Reviewer and administrative operations are not available here.
@@ -12,6 +12,7 @@
 // says plainly that nothing is being contributed. Where this server has resume upload switched off (config), it also
 // explains that nothing can be contributed yet. No setting or consent record is changed by this page's text.
 import { api } from "../api.js";
+import { signOut } from "../auth.js";
 import { h, mount, uid } from "../dom.js";
 import { PROFILE_STATUS } from "../copy.js";
 import { badge, busy, button, confirmDialog, errorState, loading, notice, pageHeader, toast } from "../ui.js";
@@ -56,7 +57,8 @@ async function load(body, ctx, pollIndex, message = null) {
     message,
     modeCard(sharing, body, ctx),
     statusCard(sharing, view, ctx),
-    analysisCard(ctx));
+    analysisCard(ctx),
+    dataCard(ctx));
   if (view.polling && pollIndex < POLL_DELAYS.length) {
     setTimeout(() => {
       if (body.isConnected) load(body, ctx, pollIndex + 1);
@@ -140,7 +142,7 @@ function modeCard(sharing, body, ctx) {
   refreshButton();
   return h("section.card.mode-card", { "aria-labelledby": "mode-title" },
     h("h2.card-title", { id: "mode-title" }, "How Trace uses your career information"),
-    saved ? null : h("p.muted", "You haven't chosen yet. After you review your profile, sharing is on by default."),
+    saved ? null : h("p.muted", "You haven't chosen yet. Sharing stays off until you turn it on here."),
     h("fieldset.mode-options", h("legend.visually-hidden", "How Trace uses your career information"), options),
     confirmNote,
     status,
@@ -239,6 +241,64 @@ function statusCard(sharing, view, ctx) {
     updated && !Number.isNaN(updated.getTime()) && sharing.activation === "active"
       ? h("p.muted.small", `Updated ${updated.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}`) : null,
     view.polling ? h("p.muted.small", { "aria-live": "polite" }, "This page checks again a few times.") : null);
+}
+
+function dataCard(ctx) {
+  const status = h("div", { "aria-live": "polite" });
+  const download = button("Download my data", { variant: "secondary" });
+  download.addEventListener("click", () => busy(download, "Preparing…", async () => {
+    try {
+      const data = await api.exportData();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = h("a", { href: url, download: "trace-data.json" });
+      document.body.append(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      mount(status, notice("Your JSON file has downloaded. It contains only your data.", { tone: "success" }));
+    } catch (err) {
+      mount(status, notice(err.message || "The download didn't start.", { tone: "error" }));
+    }
+  }));
+  const remove = button("Delete my account", { variant: "danger-ghost" });
+  remove.addEventListener("click", () => deleteAccount(ctx));
+  return h("section.card", { "aria-labelledby": "data-title" },
+    h("h2.card-title", { id: "data-title" }, "Your data"),
+    h("p.muted", "Download a JSON copy of your profile, or delete the account and the career data that belongs to it."),
+    status,
+    h("div.actions", download, remove),
+    h("p", h("a", { href: "#/privacy" }, "Privacy notice")));
+}
+
+async function deleteAccount(ctx) {
+  const typed = h("input", { type: "text", autocomplete: "off", spellcheck: "false", id: "delete-account-confirm" });
+  const go = button("Delete my account", { variant: "danger", disabled: true });
+  const cancel = button("Cancel", { variant: "ghost" });
+  const status = h("div", { "aria-live": "polite" });
+  typed.addEventListener("input", () => { go.disabled = typed.value.trim().toLowerCase() !== "delete my account"; });
+  const dialog = h("dialog.dialog",
+    h("h2.dialog-title", "Delete your account?"),
+    h("div.dialog-body",
+      h("p", "This deletes your sign-in and the career profile, plans and drafts that belong to it. It cannot be undone."),
+      h("div.field", h("label", { for: "delete-account-confirm" }, "Type “delete my account”"), typed)),
+    status,
+    h("div.dialog-actions", cancel, go));
+  const close = () => { dialog.close(); dialog.remove(); };
+  cancel.addEventListener("click", close);
+  go.addEventListener("click", async () => {
+    try {
+      await busy(go, "Deleting…", () => api.deleteAccount(typed.value));
+      close();
+      await signOut();
+      ctx.go("");
+    } catch (err) {
+      mount(status, notice(err.message || "Nothing was deleted.", { tone: "error" }));
+    }
+  });
+  document.body.append(dialog);
+  dialog.showModal();
+  typed.focus();
 }
 
 function analysisCard(ctx) {

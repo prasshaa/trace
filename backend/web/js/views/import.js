@@ -87,10 +87,10 @@ function textInput(label, value, onChange, { required = false, field = null } = 
     h("label", { for: id }, label, required ? h("span.req", { "aria-hidden": "true" }, " *") : h("span.muted", " (optional)")), input);
 }
 
-function monthYear(label, d, onChange, { field, required = true } = {}) {
+function monthYear(label, d, onChange, { field, required = true, monthOptional = false } = {}) {
   const id = uid("d");
-  const month = h("select.input.imp-month", { id: `${id}-m`, "aria-label": `${label}: month`, "aria-required": required ? "true" : null },
-    h("option", { value: "" }, "Month"), MONTHS.map((m, i) => h("option", { value: String(i + 1) }, m)));
+  const month = h("select.input.imp-month", { id: `${id}-m`, "aria-label": `${label}: month`, "aria-required": required && !monthOptional ? "true" : null },
+    h("option", { value: "" }, monthOptional ? "Month if known" : "Month"), MONTHS.map((m, i) => h("option", { value: String(i + 1) }, m)));
   const year = h("input.input.imp-year", { id: `${id}-y`, type: "number", min: "1950", max: "2100", inputmode: "numeric",
     placeholder: "Year", "aria-label": `${label}: year`, "aria-required": required ? "true" : null });
   if (d && d.year) year.value = String(d.year);
@@ -563,8 +563,7 @@ function educationCard(d, s) {
       h("p.muted", STATUS.present[1])));
     return card;
   }
-  // Phase 5: start and completion month and year; "Currently studying" replaces the completion date. Months the resume
-  // doesn't state are left for the user to fill in (never invented).
+  // A year is enough when the resume only states a year. The month is never invented.
   const studying = h("input", { type: "checkbox", id: uid("st") });
   studying.checked = Boolean(d.studying);
   const endBox = monthYear("Completed", d.studying ? null : d.end, (x) => { e().end = x; recheck(); }, { field: "end" });
@@ -576,7 +575,7 @@ function educationCard(d, s) {
       textInput("Qualification", d.qualification, (v) => { e().qualification = v; recheck(); }, { required: true, field: "qualification" }),
       textInput("Field of study", d.field_of_study, (v) => { e().field_of_study = v; }, { field: "field_of_study" }),
       textInput("University, college or school", d.institution, (v) => { e().institution = v; recheck(); }, { required: true, field: "institution" }),
-      monthYear("Started", d.start, (x) => { e().start = x; recheck(); }, { field: "start" }),
+      monthYear("Started", d.start, (x) => { e().start = x; recheck(); }, { field: "start", monthOptional: true }),
       h("div.imp-end", endBox, h("label.check.imp-current", { "data-field": "studying" }, studying, h("span", "Currently studying")))));
   return card;
 }
