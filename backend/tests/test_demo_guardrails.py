@@ -491,6 +491,70 @@ def test_later_guardrail_gaps_from_the_probe():
     assert remove_ids("You owned a roadmap", ["a"]) == "You owned a roadmap"
 
 
+def test_round4_quarter_advice_and_measured_strengths():
+    from app.services.ai_assessment.guardrails import collaboration_as_ownership, invented_number, keep_claim
+    from app.services.ai_assessment.service import SYSTEM
+    metric = "Used the loss-ratio watch again to sequence the next quarter."
+    assert not invented_number("You used it again to sequence the next quarter.", metric)
+    assert not invented_number("sequencing a quarter", metric)
+    assert invented_number("Improved onboarding by a quarter.", "Raised onboarding completion from 91% to 96%.")
+    assert invented_number("Improved onboarding by a fifth.", "Raised onboarding completion from 91% to 96%.")
+    f03 = "Reported weekly numbers to operations. I did not define the metric."
+    kept, reason = keep_claim(
+        {"text": "The weekly numbers you report can become a measure you choose on your own slice.",
+         "evidence_ids": ["F03-L3"], "why": "A future measure, not one you already defined."},
+        {"F03-L3": {"id": "F03-L3", "text": f03}}, require_citation=True, kind="transferable")
+    assert kept and reason is None
+    f15 = "I have not coached another product manager, and I do not cover a second product."
+    kept, reason = keep_claim(
+        {"text": "This quarter, start coaching one product person on a requirement you already write.",
+         "evidence_ids": ["F15-L3"], "why": "Coaching is the senior gap."},
+        {"F15-L3": {"id": "F15-L3", "text": f15}}, require_citation=False, kind="step")
+    assert kept and reason is None, reason
+    design = "Partnered with design on the error states. The designer owned the layout."
+    assert not collaboration_as_ownership(
+        "Partnering with design shows you can work a decision with design even when the designer owns the layout.",
+        design)
+    kept, reason = keep_claim(
+        {"text": "Partnering with design shows you can work a decision with design even when the designer owns the layout.",
+         "evidence_ids": ["F21-L6"], "why": "The layout stayed with design."},
+        {"F21-L6": {"id": "F21-L6", "text": design}}, require_citation=True, kind="transferable")
+    assert kept and reason is None
+    pad = " ".join(["detail"] * 40)
+    many = {
+        "opening": "You raised the retry rate. The gap is a written trade-off.",
+        "strengths": [
+            {"text": "You raised the retry job from 91% to 96% by fixing the timeout.", "evidence_ids": ["Lmet"], "why": "A measured slice."},
+            {"text": "You cut the manual refund steps from six screens to two.", "evidence_ids": ["Lsix"], "why": "A before and after on the work."},
+            {"text": f"You wrote the notes the squad used the next day. {pad}", "evidence_ids": ["Lplain"], "why": pad},
+            {"text": f"You kept a personal list of seller complaints. {pad}", "evidence_ids": ["Lplain"], "why": pad},
+        ],
+        "transferable": [{"text": f"The notes carry into discovery. {pad}", "evidence_ids": ["Lplain"], "why": pad}],
+        "gaps": [{"text": f"You have not written the trade-off. {pad}", "why": pad}],
+        "questions": [{"text": f"What did the squad do with the notes? {pad}", "evidence_id": "Lplain"} for _ in range(3)],
+        "steps": [
+            {"text": "In about two weeks, write a generic teardown of the notes.", "evidence_ids": ["Lplain"], "why": "A template."},
+            {"text": "This week, ask to own the next change to the notes you already wrote.", "evidence_ids": ["Lplain"], "why": "In the job."},
+        ],
+    }
+    capped = apply_guardrails(many, [
+        {"id": "Lmet", "text": "Raised the success rate of the retry job from 91% to 96%."},
+        {"id": "Lsix", "text": "Cut the manual refund steps from six screens to two."},
+        {"id": "Lplain", "text": "Wrote the notes the squad used the next day."},
+    ])
+    kept_text = " ".join(item["text"] for item in capped["strengths"])
+    assert "91%" in kept_text and "six screens" in kept_text
+    assert len(capped["questions"]) == 1
+    assert not any("In about two weeks, write" in step["text"] for step in capped["steps"])
+    assert capped["steps"]
+    leaked = apply_guardrails(
+        {"steps": [{"text": "Ask to own the next slice, without saying you already owned the roadmap.",
+                    "evidence_ids": ["Lplain"], "why": ""}]},
+        [{"id": "Lplain", "text": "Wrote the notes the squad used the next day."}])
+    assert leaked["steps"] and "without saying" not in leaked["steps"][0]["text"]
+    assert "without saying" in SYSTEM
+
+
 def test_the_prompt_hides_rubric_notes_and_limits_india_routes():
     from app.services.ai_assessment.rubric import requirements_for
     from app.services.ai_assessment.service import SYSTEM, _user_prompt

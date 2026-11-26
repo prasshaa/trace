@@ -46,12 +46,23 @@ _SPELLED_QTY = re.compile(
     r"hours?|rupees?|lakhs?|crores?))\b",
     re.I,
 )
+# "a quarter" in "sequencing a quarter" is a time period. Only "by a quarter" / "a quarter of" is a fraction.
 _FRACTION = re.compile(
-    r"\b(?:a|one)\s+(?:half|third|quarter|fifth|sixth|seventh|eighth)\b"
+    r"\b(?:a|one)\s+(?:half|third|fifth|sixth|seventh|eighth)\b"
+    r"|\bby\s+(?:a\s+)?quarter\b"
+    r"|\ba\s+quarter\s+of\b"
+    r"|\bone\s+quarter\b"
     r"|\bby\s+half\b"
     r"|\b\d+(?:\.\d+)?x\b",
     re.I,
 )
+_GENERIC_STEP = re.compile(r"\bin about two weeks,\s+write\b|\bin two weeks,\s+write\b", re.I)
+_PAST_OWNER = re.compile(
+    r"\byou\s+(?:owned|led|headed|chose|decided|set|defined|ran|managed|drove)\b"
+    r"|^(?:Owned|Led|Headed|Chose|Decided|Defined|Ran|Managed)\b",
+    re.I,
+)
+_OTHER_ACTOR = {"designer", "manager", "founder", "director", "lead", "engineer", "analyst", "she", "he"}
 _ADVICE_NUM = re.compile(
     r"\b\d+\s*[-–]?\s*(?:minute|min|hour|hr|day|week|month)s?\b"
     r"|\b(?:one|two|three|four|five|six|seven|eight|nine|ten)\s+(?:minute|hour|day|week|month)s?\b"
@@ -66,7 +77,8 @@ _ADVICE_WORDS = re.compile(
 )
 # Base form only, so "Ran the roadmap" is still a claim. A leading "On your next workshop, ask to…" counts.
 _ADVICE_LEAD = re.compile(
-    r"^(?:(?:In|Over|Within|During|After|On|in|over|within|during|after|on)\b[^,]{0,80},\s*)?"
+    r"^(?:(?:In|Over|Within|During|After|On|in|over|within|during|after|on)\b[^,]{0,80},\s*"
+    r"|(?:This|Next|this|next)\s+(?:week|month|quarter),?\s+)?"
     r"(?:Ask to|ask to|Ask|ask|Propose|propose|Volunteer|volunteer|Plan to|plan to|"
     r"Write|write|Draft|draft|Prepare|prepare|Build|build|Rewrite|rewrite|Start|start|"
     r"Make|make|Sit|sit|Talk|talk|Share|share|Map|map|Pick|pick|Offer|offer|Bring|bring|"
@@ -79,7 +91,7 @@ _CLAIM_AS_FACT = re.compile(
     re.I,
 )
 _LEAK = re.compile(
-    r"\b(?:you are not expected to|not claiming|do not claim|don't claim|treat that as a request|without claiming)\b",
+    r"\b(?:you are not expected to|not claiming|do not claim|don't claim|treat that as a request|without claiming|without saying)\b",
     re.I,
 )
 _STOP = {"the", "a", "an", "and", "for", "with", "your", "that", "this", "from", "into", "its", "their", "our",
@@ -206,11 +218,28 @@ def _overlaps(left: set, right: set) -> bool:
 
 
 def _claims_ownership(text: str) -> bool:
-    if _HARD_OWNER.search(text or ""):
+    """True when the user is said to own the work. 'The designer owns the layout' is not that."""
+    user_verb = False
+    for match in _HARD_OWNER.finditer(text or ""):
+        prefix = (text or "")[:match.start()].lower().split()
+        if prefix and prefix[-1] in _OTHER_ACTOR:
+            continue
+        user_verb = True
+        break
+    if user_verb:
         return True
     if re.search(r"\bto\s+(?:choose|decide|set|define|run)\b", text or "", re.I) and not _SOFT_OWNER.search(text or ""):
         return False
     return bool(_SOFT_OWNER.search(text or ""))
+
+
+def _skips_negation(text: str, kind: str) -> bool:
+    """Future advice is not a claim that they already did the thing the resume denies."""
+    if _PAST_OWNER.search(text or "") or _CLAIM_AS_FACT.search(text or ""):
+        return False
+    if _genuine_advice(text):
+        return True
+    return kind == "transferable"
 
 
 def _genuine_advice(text: str) -> bool:
@@ -313,16 +342,16 @@ def keep_claim(claim: dict, lines: Dict[str, dict], *, require_citation: bool, k
     if cited is None:
         return None, "unknown_citation"
     universe = cited if ids else " ".join(row.get("text") or "" for row in lines.values())
-    advice = kind == "step" and _genuine_advice(raw_text)
+    advice = (kind == "step" and _genuine_advice(raw_text)) or (kind == "transferable" and not _PAST_OWNER.search(raw_text))
     if invented_number(remove_ids(raw_text, known), universe, advice=advice):
         return None, "invented_number"
     if raw_why and invented_number(remove_ids(raw_why, known), universe, advice=advice):
         return None, "invented_number"
     if ids and not advice and collaboration_as_ownership(raw_text, cited):
         return None, "collaboration_as_ownership"
-    if ids and not advice and negation_as_positive(raw_text, cited):
+    if ids and not _skips_negation(raw_text, kind) and negation_as_positive(raw_text, cited):
         return None, "negation"
-    if kind == "strength" and _DISCLAIMER.search(raw_text):
+    if kind in ("strength", "transferable") and _DISCLAIMER.search(raw_text):
         return None, "disclaimer"
     text = _scrub(raw_text, known)
     why = _trim(_scrub(raw_why, known), 30)
@@ -366,21 +395,50 @@ def _reading_words(reading: dict) -> int:
     return len(" ".join(parts).split())
 
 
-def _limit_reading(reading: dict, reasons: Dict[str, int]) -> None:
-    """About 380 words. Questions go first. A non-empty transferable list keeps one item."""
-    keep_transferable = 1 if reading.get("transferable") else 0
+def _has_figure(text: str) -> bool:
+    """A digit, a percent, a multiplier, or a count such as six or two. A bare 'one' is not a figure."""
+    if _NUM.search(text or "") or _MULTIPLIER.search(text or ""):
+        return True
+    return bool(re.search(
+        r"\b(?:two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|twenty|thirty|forty|fifty)\b",
+        text or "", re.I))
+
+
+def _measured(item: dict, by_id: Dict[str, dict]) -> bool:
+    """A strength that states or cites a figure. The length cap does not remove these."""
+    if _has_figure(item.get("text") or "") or _has_figure(item.get("why") or ""):
+        return True
+    for i in item.get("evidence_ids") or []:
+        row = by_id.get(i) or {}
+        if _has_figure(row.get("text") or ""):
+            return True
+    return False
+
+
+def _limit_reading(reading: dict, reasons: Dict[str, int], by_id: Dict[str, dict]) -> None:
+    """About 380 words. Questions first (keep one), then generic steps, then unmeasured strengths.
+
+    A strength that cites a figure stays. Transferable items stay.
+    """
     while _reading_words(reading) > 380:
-        removed = False
-        for key, floor in (("questions", 0), ("strengths", 1), ("steps", 1), ("gaps", 1),
-                           ("transferable", keep_transferable)):
-            items = reading.get(key) or []
-            if len(items) > floor:
-                items.pop()
-                _bump(reasons, "trimmed")
-                removed = True
-                break
-        if not removed:
-            break
+        questions = reading.get("questions") or []
+        if len(questions) > 1:
+            questions.pop()
+            _bump(reasons, "trimmed")
+            continue
+        steps = reading.get("steps") or []
+        generic = [i for i, step in enumerate(steps) if _GENERIC_STEP.search(step.get("text") or "")]
+        if generic and len(steps) > 1:
+            steps.pop(generic[-1])
+            _bump(reasons, "trimmed")
+            continue
+        strengths = reading.get("strengths") or []
+        unmeasured = [i for i, item in enumerate(strengths) if not _measured(item, by_id)]
+        if unmeasured and len(strengths) > 1:
+            strengths.pop(unmeasured[-1])
+            _bump(reasons, "trimmed")
+            continue
+        break
 
 
 def _bump(reasons: Dict[str, int], reason: Optional[str]) -> None:
@@ -393,7 +451,7 @@ def apply_guardrails(raw: dict, lines: List[dict]) -> dict:
     by_id = {row["id"]: row for row in lines}
     reasons: Dict[str, int] = {}
     strengths = _collect(raw.get("strengths") or raw.get("proves") or [], by_id, "strength", True, reasons)[:5]
-    transferable = _collect(raw.get("transferable") or [], by_id, "strength", True, reasons)[:3]
+    transferable = _collect(raw.get("transferable") or [], by_id, "transferable", True, reasons)[:3]
     gaps = _gaps(raw.get("gaps") or raw.get("missing") or [], by_id, reasons)[:3]
     questions = _questions(raw.get("questions") or [], by_id, reasons)[:3]
     steps = _collect(raw.get("steps") or [], by_id, "step", False, reasons)[:3]
@@ -406,7 +464,7 @@ def apply_guardrails(raw: dict, lines: List[dict]) -> dict:
         "questions": questions,
         "steps": steps,
     }
-    _limit_reading(reading, reasons)
+    _limit_reading(reading, reasons, by_id)
     return {
         **reading,
         # Names the previous prompt used. Same objects, so older callers keep working.
