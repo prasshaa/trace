@@ -31,19 +31,19 @@ Safety, which overrides tone:
 - "worked with", "supported", "partnered" and "collaborated" are collaboration, not ownership. Do not say the person already owned or led that work.
 - If an excerpt says they did not own, set, define, decide, choose, manage, or run one thing, do not say they did that thing. A different thing in the same excerpt can still be theirs.
 - Do not introduce a percentage, count, money figure, fraction, or a word like "doubled" that is not written in the cited excerpt.
-- At most one step may cite one PEER id, and only when that step is about the same move as the pattern. A progression pattern belongs on a step about getting promoted or owning the roadmap. A background pattern belongs on a step about that background. Do not cite a PEER id on a generic preparation step (a write-up, a practice round, a course, or a portfolio piece), on a strength, or in the opening. Do not change its numbers.
+- Use one peer pattern, with its numbers unchanged, as one contextual sentence in the opening or in the single most relevant step. Example: Of PMs with paths like yours, 17 of the 40 closest PMs moved into product inside their employer, so an internal move is a realistic first route. A progression pattern belongs on a step about getting promoted or owning the roadmap. A background pattern belongs on a step about that background. Do not cite a PEER id on a generic preparation step, and do not use a peer pattern as evidence of what the person did.
 - A strength is only what they did. A disclaimer is not a strength.
 - A step may tell them to ask to own something next. That is advice. Do not tell them to tell a recruiter they already owned something the excerpt denies.
 - A step may name a duration (for example two weeks) or a small count of pages.
 
-Length: opening at most 45 words. Each why at most 30 words. The whole reading at most 380 words.
+Length: opening at most 40 words, plus the one peer sentence when you use it there. Each why at most 18 words. The whole reading at most 260 words.
 
 Shape the JSON object exactly like this:
-- opening: two short sentences. First, the strongest true signal for this move. Then the single most important gap.
-- strengths: up to 4 items, positive only. {"text", "evidence_ids", "why"}.
-- transferable: up to 3 items, only when they are not already in product. How this experience maps to product work, cited the same way. Empty for someone already a product manager.
-- gaps: at most 3, ranked, the ones that matter most for this target. {"text", "why"}. The why explains the hiring signal once.
-- questions: up to 3. {"text", "evidence_id"}.
+- opening: two short sentences, then the peer sentence when it belongs here. First, the strongest true signal for this move. Then the single most important gap.
+- strengths: up to 3 items, positive only, one sentence each. {"text", "evidence_ids", "why"}.
+- transferable: up to 2 items, only when they are not already in product. How this experience maps to product work, cited the same way. Empty for someone already a product manager.
+- gaps: at most 2, ranked, the ones that matter most for this target. {"text", "why"}. The why explains the hiring signal once.
+- questions: up to 2. {"text", "evidence_id"}.
 - steps: at most 3. {"text", "evidence_ids", "why"}. At least one is something they can do in the job they have now. At least one is an artefact drawn from this person's own evidence: a metric teardown when they have a measure, a case write-up when they shipped something, a short requirement when they have user notes, or a PRD when they already write recommendations. Name the actual work (the queue, the workshop, the dashboard). Vary the timing and the shape. Use "this week", "this month", or "before the next round" when that fits. Do not start the artefact step with "In about two weeks, write". Do not give everyone the same PRD.
 
 India, at most one route in the whole reading, matched to the move:
@@ -77,7 +77,7 @@ def _peer_lines(roadmap: Optional[dict]) -> List[dict]:
     chosen = []
     for item in peers.get("patterns") or []:
         text = item.get("text") or ""
-        if item.get("id") and ("started as" in text or "came from" in text):
+        if item.get("id") and text:
             chosen.append({"id": item["id"], "text": text, "job": "PMs with a similar career path"})
         if len(chosen) == 2:
             break
@@ -91,7 +91,7 @@ def _user_prompt(target: str, move: str, lines: List[dict], requirements: Sequen
         desc = " ".join((r.get("description") or "").split())[:140]
         note = f" (context for you, do not repeat: {r['level_note']})" if r.get("level_note") else ""
         reqs.append(f"- {r.get('title') or r.get('requirement_key')}: {desc}{note}".strip())
-    ev = [f"- {row['id']} | {row.get('job') or 'role not named'} | {row['text']}" for row in lines[:6]]
+    ev = [f"- {row['id']} | {row.get('job') or 'role not named'} | {row['text']}" for row in lines[:4]]
     answered = ""
     if answers:
         answered = "\nAnswered:\n" + "\n".join(
@@ -100,7 +100,8 @@ def _user_prompt(target: str, move: str, lines: List[dict], requirements: Sequen
     peer_block = ""
     if peer_rows:
         listed = "\n".join(f"- {row['id']}: {row['text']}" for row in peer_rows)
-        peer_block = "\n\nOptional, at most one step, only if it matches that step. Do not change the numbers:\n" + listed
+        peer_block = ("\n\nPeer patterns. Use one, numbers unchanged, as a sentence in the opening or the most relevant step. "
+                      "It describes similar PMs, not this person:\n" + listed)
     del retrieval_mode
     return (
         f"Target: {target}\nMove: {move or 'not stated'}\n\n"
@@ -125,15 +126,38 @@ def _paraphrases_pattern(opening: str, pattern: str) -> bool:
     return bool(re.search(rf"\b{numbers[0]}\s+of\s+(?:the\s+)?{numbers[1]}\b", opening or ""))
 
 
+def _peer_sentence(pattern: str) -> str:
+    """A contextual sentence. The pattern's own words and numbers stay intact."""
+    text = " ".join((pattern or "").split())
+    if not text:
+        return ""
+    if text[-1] not in ".!?":
+        text += "."
+    return "Of PMs with paths like yours, " + text[0].lower() + text[1:]
+
+
+def _already_uses_peer(guarded: dict, patterns: list) -> bool:
+    opening = guarded.get("opening") or ""
+    steps = " ".join((step.get("text") or "") for step in guarded.get("steps") or [])
+    blob = opening + " " + steps
+    if any(str(i).startswith("PEER-") for step in guarded.get("steps") or [] for i in (step.get("evidence_ids") or [])):
+        return True
+    return any(_paraphrases_pattern(blob, item.get("text") or "") for item in patterns)
+
+
 def _keep_peer_pattern(guarded: dict, peers: dict) -> dict:
-    """Leave the opening as the model wrote it. Do not prepend a peer sentence onto a short reading."""
+    """Keep a peer sentence the model wrote. Add one when the reading never mentions the group."""
     from app.services.ai_assessment.guardrails import plain_text
     opening = plain_text(guarded.get("opening"))
-    patterns = (peers or {}).get("patterns") or []
-    if any(_paraphrases_pattern(opening, item.get("text") or "") for item in patterns):
-        guarded["opening"] = opening
-        return guarded
     guarded["opening"] = opening
+    patterns = [item for item in ((peers or {}).get("patterns") or []) if item.get("text")]
+    if not patterns or not (peers or {}).get("available", True):
+        return guarded
+    if _already_uses_peer(guarded, patterns):
+        return guarded
+    sentence = _peer_sentence(patterns[0]["text"])
+    if sentence:
+        guarded["opening"] = (opening + " " + sentence).strip()
     return guarded
 
 

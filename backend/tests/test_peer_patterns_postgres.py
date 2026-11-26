@@ -18,6 +18,7 @@ MIGRATIONS = [
     ROOT / "data-foundation/supabase/migrations/20261126230000_trace_peer_rerank_pool.sql",
     ROOT / "data-foundation/supabase/migrations/20261126233000_trace_peer_aggregates_only.sql",
     ROOT / "data-foundation/supabase/migrations/20261127001000_trace_peer_pattern_wording.sql",
+    ROOT / "data-foundation/supabase/migrations/20261127002000_trace_peer_duration_verb.sql",
 ]
 DSN = os.environ.get("PEER_DATABASE_URL") or ""
 
@@ -108,7 +109,7 @@ def test_peer_patterns_runs_and_returns_aggregates_only(db):
     assert "Matched on your background" in payload["match_line"]
     assert "started in product as APM" in blob
     assert len(months) == 1
-    assert "to a first PM role" in months[0] and "the middle half took" in months[0]
+    assert "it took about" in months[0] and "to reach a first PM role" in months[0] and "the middle half took" in months[0]
     assert "MBAs are uncommon among these PMs: about 4% of all 150." in blob
     in_pm = json.dumps({
         "prior": "Software Engineering / QA / IT",
@@ -153,3 +154,23 @@ def test_peer_patterns_runs_and_returns_aggregates_only(db):
     if isinstance(still, str):
         still = json.loads(still)
     assert still["pool_count"] == 120 and len(still["patterns"]) >= 6
+
+
+def test_every_peer_migration_applies_and_rolls_back():
+    """Apply every peer migration, then roll them back in reverse. Each rollback must execute."""
+    if not DSN:
+        pytest.skip("PEER_DATABASE_URL is not set")
+    mig_dir = ROOT / "data-foundation/supabase/migrations"
+    rb_dir = ROOT / "data-foundation/supabase/rollback"
+    migrations = sorted(mig_dir.glob("*trace_peer*.sql"))
+    assert len(migrations) >= 7
+    with psycopg.connect(DSN, autocommit=True) as conn:
+        _bootstrap(conn)
+        conn.execute("drop schema if exists trace_peer_cohort cascade")
+        for path in migrations:
+            conn.execute(path.read_text(encoding="utf-8"))
+        for path in reversed(migrations):
+            rollback = rb_dir / (path.stem + ".rollback.sql")
+            assert rollback.is_file()
+            conn.execute(rollback.read_text(encoding="utf-8"))
+        assert conn.execute("select to_regnamespace('trace_peer_cohort')").fetchone()[0] is None

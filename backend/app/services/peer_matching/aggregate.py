@@ -313,8 +313,8 @@ def _candidates(group: dict, cohort: dict, cohort_n: int, user: Optional[dict] =
     months = group.get("months") or []
     median = _median(months)
     if median is not None:
-        sentence = (f"Among the {len(months)} closest PMs with a dated path, about {duration_phrase(median)} "
-                    f"to a first PM role")
+        sentence = (f"Among the {len(months)} closest PMs with a dated path, it took about {duration_phrase(median)} "
+                    f"to reach a first PM role")
         span = _rounded_span(months)
         if span:
             sentence += f"; the middle half took {duration_span(span[0], span[1])}"

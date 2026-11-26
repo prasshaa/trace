@@ -1,5 +1,6 @@
 -- Rollback v2.43.0. Restores the five-argument function so an older app can still call it.
 
+create or replace function trace_peer_cohort.peer_patterns(
   p_query extensions.vector(384),
   p_target_level text,
   p_near_levels text[],

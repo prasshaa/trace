@@ -80,7 +80,7 @@ def _cosine_ids(lines: Sequence[dict], requirements: Sequence[dict], vectors: Li
             best = max(best, sum(a * b for a, b in zip(line_vec, req_vec)))
         scored.append((best, lines[i]["id"]))
     scored.sort(reverse=True)
-    return [i for _, i in scored[:6]]
+    return [i for _, i in scored[:4]]
 
 
 def _hybrid_ids(conn, ctx, requirements: Sequence[dict]) -> Tuple[List[str], Optional[str]]:
@@ -149,5 +149,5 @@ def select_lines(lines: Sequence[dict], requirements: Sequence[dict], conn=None,
     for i in keep + list(ranked):
         if i in by_id and i not in ordered:
             ordered.append(i)
-    shown = [by_id[i] for i in ordered[:8]]
+    shown = [by_id[i] for i in ordered[:5]]
     return shown, {"mode": mode, "reason": reason, "ids": [r["id"] for r in shown]}

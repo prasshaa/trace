@@ -85,7 +85,7 @@ def test_peer_numbers_must_match_the_pattern_and_a_person_is_dropped():
     kept, reason = keep_claim(
         {"text": "24 of the 40 closest PMs moved into a product role from inside the employer.", "evidence_ids": ["PEER-1"]},
         lines, require_citation=False, kind="step")
-    assert reason is None and "PEER-1" not in kept["evidence_ids"]
+    assert reason is None and kept["evidence_ids"] == ["PEER-1"]
     progressed, progressed_why = keep_claim(
         {"text": "A next step is to notice that 12 of the 16 cohort PMs who started as APM are now Product Manager or above.",
          "evidence_ids": ["PEER-2"]},
@@ -133,6 +133,21 @@ def test_peer_numbers_must_match_the_pattern_and_a_person_is_dropped():
                           {"available": True, "patterns": [{"id": "PEER-1", "text": "24 of the 40 closest PMs came from software before a product role."}]})
     assert "PEER-1" in prompt
     assert "24 of the 40" in prompt
+    pattern = "17 of the 40 closest PMs with a recorded move moved into a product role from inside the employer."
+    peer_lines = [
+        {"id": "L1", "text": "Shipped the onboarding queue."},
+        {"id": "PEER-1", "text": pattern},
+    ]
+    reading = apply_guardrails({
+        "opening": ("You shipped the onboarding queue. Of PMs with paths like yours, 17 of the 40 closest PMs "
+                    "moved into product inside their employer."),
+        "strengths": [{"text": "You shipped 17 of the 40 queue items.", "evidence_ids": ["L1"], "why": ""}],
+        "steps": [{"text": "An internal move is a realistic first route: 17 of the 40 closest PMs moved inside the employer.",
+                   "evidence_ids": ["PEER-1"], "why": ""}],
+    }, peer_lines)
+    assert "17 of the 40" in reading["opening"]
+    assert not reading["strengths"]
+    assert reading["steps"] and reading["steps"][0]["evidence_ids"] == ["PEER-1"]
 
 
 def test_the_synthetic_cohort_matches_by_path_and_hides_a_group_of_three():
@@ -170,7 +185,7 @@ def test_the_synthetic_cohort_matches_by_path_and_hides_a_group_of_three():
     assert "degree" not in blob.lower()
     assert "came from Software Engineering" not in blob
     assert "Matched on your background: Software Engineering / QA / IT" in view["match_line"]
-    assert "to a first PM role" in blob
+    assert "took about" in blob and "to reach a first PM role" in blob
     assert "most took" not in blob
     assert "compared with about" in blob
     assert raw_counts_hidden(view)
@@ -345,6 +360,7 @@ def test_a_structured_opening_stays_prose_and_the_limit_ends_on_a_sentence():
         {"opening": "You shipped the onboarding queue and have not set a success metric."},
         {"available": True, "patterns": [{"id": "PEER-1", "text": "24 of the 40 closest PMs moved internally."}]})
     assert opening["opening"].startswith("You shipped")
+    assert "Of PMs with paths like yours, 24 of the 40" in opening["opening"]
     paraphrased = _keep_peer_pattern(
         {"opening": "24 of the 40 people with a similar path moved internally. You shipped the queue."},
         {"available": True, "patterns": [{"id": "PEER-1", "text": "24 of the 40 closest PMs moved internally."}]})
@@ -392,7 +408,7 @@ def test_a_switcher_gets_six_patterns_without_restating_their_background():
     assert "Matched on your background: Software Engineering / QA / IT" in view["match_line"]
     assert "started in product as APM" in blob
     assert "MBAs are uncommon among these PMs: about 4% of all 125." in blob
-    assert "to a first PM role" in months[0]
+    assert "it took about" in months[0] and "to reach a first PM role" in months[0]
     assert "the middle half took" in months[0]
     assert "most took" not in blob
     assert "½" in months[0]

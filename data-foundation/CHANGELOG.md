@@ -7,6 +7,13 @@
 | `peer_patterns(vector, jsonb, text)` reranks in a CTE and returns aggregate sentences. The distance sort cannot use the HNSW index, so the pool is 120 rather than the index default of about 40. The v2.41 five-argument function is left in place so the running app still resolves during rollout. A pattern needs 10 known profiles before it is phrased as "most of the N". The caller's own background is a match line, not a pattern. A switcher always gets the target-level start, the months median (the range only beside it), and the MBA line when they have an MBA. Someone already in product gets the target-level line, years in product, and an MBA comparison. Execute on the new function stays with `trace_app_runtime` only | migration 59 | v2.41 exposed neighbour attributes, and a stable function that built temporary tables could not be called |
 | Rollback restores the v2.41.0 function | rollback | |
 
+## 2.45.0 — 2026-11-27 (time to a first PM role)
+
+| Change | Files | Why |
+|---|---|---|
+| The dated-path sentence is "it took about 8 years to reach a first PM role" | migration 62 | "about 8 years to a first PM role" had no verb |
+| Rollback restores the v2.44.0 sentence | rollback | |
+
 ## 2.44.0 — 2026-11-27 (peer pattern wording)
 
 | Change | Files | Why |

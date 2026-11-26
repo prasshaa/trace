@@ -329,6 +329,30 @@ _PREP_STEP = re.compile(
 )
 _PROGRESSION_STEP = re.compile(r"\b(promot\w*|own the roadmap|roadmap|next level|started as|or above)\b", re.I)
 _BACKGROUND_STEP = re.compile(r"\bcame from\b|\bbefore a product\b|\bbackground\b", re.I)
+_MOVE_STEP = re.compile(
+    r"\b(internal|inside the employer|inside their employer|same employer|move into product|moved into product)\b",
+    re.I,
+)
+
+
+def _about_the_group(sentence: str) -> bool:
+    return bool(re.search(
+        r"closest PMs|paths like yours|path like yours|of PMs|inside the employer|inside their employer|moved into product",
+        sentence or "", re.I))
+
+
+def _peer_figure_text(claim: str, lines: Dict[str, dict]) -> str:
+    """The peer pattern that contains every figure in this sentence, when the sentence states at least two."""
+    nums = _NUM.findall(claim or "")
+    if len(nums) < 2:
+        return ""
+    for row in lines.values():
+        if not str(row.get("id") or "").startswith("PEER-"):
+            continue
+        blob = row.get("text") or ""
+        if blob and not invented_number(claim, blob):
+            return blob
+    return ""
 
 
 def _peer_citation_fits(step_text: str, cited: str) -> bool:
@@ -339,6 +363,10 @@ def _peer_citation_fits(step_text: str, cited: str) -> bool:
         return True
     if re.search(r"came from ", cited or "", re.I) and _BACKGROUND_STEP.search(step_text or ""):
         return True
+    if re.search(r"inside the employer|from outside the employer", cited or "", re.I) and _MOVE_STEP.search(step_text or ""):
+        return True
+    if _peer_figure_text(step_text or "", {"PEER-1": {"id": "PEER-1", "text": cited or ""}}):
+        return not bool(_PREP_STEP.search(step_text or ""))
     return False
 
 
@@ -383,6 +411,8 @@ def keep_claim(claim: dict, lines: Dict[str, dict], *, require_citation: bool, k
     if cited is None:
         return None, "unknown_citation"
     universe = cited if ids else " ".join(row.get("text") or "" for row in lines.values())
+    if kind == "step" and (_about_the_group(raw_text) or any(i.startswith("PEER-") for i in ids)):
+        universe = (universe + " " + _peer_figure_text(raw_text, lines)).strip()
     advice = (kind == "step" and _genuine_advice(raw_text)) or (kind == "transferable" and not _PAST_OWNER.search(raw_text))
     if invented_number(remove_ids(raw_text, known), universe, advice=advice):
         return None, "invented_number"
@@ -469,12 +499,12 @@ def _opening(raw, by_id, lines, reasons) -> str:
         sentence = sentence.strip()
         if not sentence:
             continue
-        peerish = bool(re.search(r"closest PMs|path like yours", sentence, re.I))
-        number_universe = " ".join(row["text"] for row in lines if str(row.get("id", "")).startswith("PEER-")) if peerish else universe
+        peer_text = _peer_figure_text(sentence, by_id) if _about_the_group(sentence) else ""
+        number_universe = (universe + " " + peer_text) if peer_text else universe
         if invented_number(remove_ids(sentence, by_id), number_universe):
             _bump(reasons, "invented_number")
             continue
-        if peerish and _peer_claim_problem(sentence, ["PEER-1"]):
+        if peer_text and _peer_claim_problem(sentence, ["PEER-1"]):
             _bump(reasons, "peer_claim")
             continue
         kept.append(sentence)
@@ -515,7 +545,7 @@ def _limit_reading(reading: dict, reasons: Dict[str, int], by_id: Dict[str, dict
 
     A strength that cites a figure stays. Transferable items stay.
     """
-    while _reading_words(reading) > 380:
+    while _reading_words(reading) > 260:
         questions = reading.get("questions") or []
         if len(questions) > 1:
             questions.pop()
@@ -545,10 +575,10 @@ def apply_guardrails(raw: dict, lines: List[dict]) -> dict:
     """Drop unsupported claims. Counts each drop by reason. User-facing text has ids and audit jargon removed."""
     by_id = {row["id"]: row for row in lines}
     reasons: Dict[str, int] = {}
-    strengths = _collect(raw.get("strengths") or raw.get("proves") or [], by_id, "strength", True, reasons)[:5]
-    transferable = _collect(raw.get("transferable") or [], by_id, "transferable", True, reasons)[:3]
-    gaps = _gaps(raw.get("gaps") or raw.get("missing") or [], by_id, reasons)[:3]
-    questions = _questions(raw.get("questions") or [], by_id, reasons)[:3]
+    strengths = _collect(raw.get("strengths") or raw.get("proves") or [], by_id, "strength", True, reasons)[:3]
+    transferable = _collect(raw.get("transferable") or [], by_id, "transferable", True, reasons)[:2]
+    gaps = _gaps(raw.get("gaps") or raw.get("missing") or [], by_id, reasons)[:2]
+    questions = _questions(raw.get("questions") or [], by_id, reasons)[:2]
     steps = _one_peer_step(_collect(raw.get("steps") or [], by_id, "step", False, reasons), by_id)[:3]
     opening = _opening(raw.get("opening"), by_id, lines, reasons)
     reading = {
