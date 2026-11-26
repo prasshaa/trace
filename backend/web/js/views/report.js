@@ -115,6 +115,10 @@ function draw(root, ctx, key) {
       cache.rm = await api.roadmap(cache.plan.run_id);
       draw(root, ctx, key);
     },
+    refreshAi: (ai) => {
+      cache.rm = { ...cache.rm, ai };
+      draw(root, ctx, key);
+    },
     replan: (portfolioScope) => async () => {
       const c = cache.plan.constraints || {};
       const plan = await api.createPlan(target, { portfolioScope: portfolioScope !== null ? portfolioScope : Boolean(c.portfolio_scope), contexts: [] });

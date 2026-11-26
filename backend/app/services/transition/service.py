@@ -104,10 +104,11 @@ class PlanNotFound(RecordNotFound):
 
 
 def _ai_narrative(conn, ctx, profile, roadmap: dict, requirements: List[dict]) -> dict:
-    """The demo narrative. Never raises into the plan: a missing key or a provider error is a status, not a 500."""
+    """Starts the narrative and returns at once. A missing key is not_configured. The model call does not block the plan."""
+    del conn, requirements
     try:
-        from app.services.ai_assessment.service import narrative_for
-        return narrative_for(conn, ctx, profile, roadmap, requirements)
+        from app.services.ai_assessment.service import start_narrative
+        return start_narrative(ctx, profile, roadmap)
     except Exception as exc:                                              # noqa: BLE001 - the plan must still render
         import logging
         logging.getLogger(__name__).warning("ai narrative unavailable: %s", type(exc).__name__)

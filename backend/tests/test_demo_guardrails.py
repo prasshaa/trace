@@ -135,12 +135,77 @@ def test_the_model_client_is_absent_without_a_key_and_json_fences_parse():
     assert client_from_settings(Settings(trace_ai_assessment=True, trace_llm_model="demo-model")) is None
     assert _json_object('```json\n{"opening": "ok"}\n```') == {"opening": "ok"}
     client = OpenAICompatible(provider="openai", base_url="https://example.invalid/v1", model="demo-model", api_key="secret-not-logged")
+    assert client.timeout == 120
     assert "secret-not-logged" not in repr(client)
     assert "secret-not-logged" not in client.base_url
+    assert Settings().trace_llm_timeout == 120
+
+
+def test_guardrail_probes_from_the_review():
+    collab = "Worked with the product manager on the roadmap. Did not own the roadmap."
+    metric = "Supported 12 merchants during a pilot. I did not set the success metric."
+    onboard = "Raised onboarding completion from 91% to 96%."
+    owned = "Built and shipped a scheduling tool and owned its short roadmap."
+    lines = [{"id": "F01-L1", "text": collab}, {"id": "F01-L2", "text": metric}, {"id": "F01-L3", "text": onboard},
+             {"id": "F08-L1", "text": owned}]
+    by = {row["id"]: row for row in lines}
+
+    def one(text, cited_id, kind="strength"):
+        kept, reason = keep_claim({"text": text, "evidence_ids": [cited_id], "why": ""}, by, require_citation=True, kind=kind)
+        return kept, reason
+
+    from app.services.ai_assessment.guardrails import keep_claim
+    for word in ("Owned the roadmap.", "Led the roadmap.", "Drove the roadmap.", "Ran the roadmap."):
+        kept, reason = one(word, "F01-L1")
+        assert kept is None and reason in {"negation", "collaboration_as_ownership"}
+    for word in ("Managed the pilot and set its success metric.", "Set the pilot's success metric.", "Headed the merchant pilot."):
+        kept, reason = one(word, "F01-L2")
+        assert kept is None and reason in {"negation", "collaboration_as_ownership"}, word
+    assert one("Doubled merchant retention in the pilot.", "F01-L2")[0] is None
+    assert one("Improved onboarding by five percentage points.", "F01-L3")[0] is None
+    assert one("Improved onboarding by 5 points.", "F01-L3")[0] is None
+    kept, reason = keep_claim(
+        {"text": "You owned the short roadmap.", "evidence_ids": ["F08-L1"], "why": "F08-L1 shows you owned the short roadmap."},
+        by, require_citation=True, kind="strength")
+    assert kept and kept["evidence_ids"] == ["F08-L1"] and "F08-L1" not in kept["why"]
+    uid = "123e4567-e89b-12d3-a456-426614174000"
+    kept, reason = keep_claim(
+        {"text": "You owned the short roadmap.", "evidence_ids": [uid], "why": f"{uid} shows the roadmap."},
+        {uid: {"id": uid, "text": owned}}, require_citation=True, kind="strength")
+    assert kept and uid not in kept["text"] and uid not in kept["why"]
+    kept, reason = keep_claim(
+        {"text": "Ask to own the order of work for one slice of the checklist.", "evidence_ids": ["F01-L1"], "why": "A next step, not a claim of ownership."},
+        by, require_citation=False, kind="step")
+    assert kept and reason is None
+    kept, reason = keep_claim(
+        {"text": "In a 30-minute session, rewrite 3-4 items on the checklist you already run.", "evidence_ids": ["F01-L3"], "why": ""},
+        by, require_citation=False, kind="step")
+    assert kept and reason is None
+
+
+def test_short_profiles_keep_every_excerpt_and_long_ones_keep_a_denial():
+    from app.services.ai_assessment.rubric import requirements_for
+    from app.services.ai_assessment.select import select_lines
+    short = [{"id": f"S{i}", "text": f"Did task {i}.", "job": "Role"} for i in range(3)]
+    shown, info = select_lines(short, requirements_for("PM-APM"), None, None)
+    assert info["mode"] == "all_lines" and len(shown) == 3
+    long = [{"id": f"L{i}", "text": f"Updated an internal document with the team on day {i}.", "job": "Role"} for i in range(12)]
+    long[4] = {"id": "Lneg", "text": "Worked with the product manager. Did not own the roadmap.", "job": "Role"}
+    long[9] = {"id": "Lmet", "text": "Raised completion from 70% to 81%.", "job": "Role"}
+    shown, info = select_lines(long, requirements_for("PM-PM"), None, None)
+    ids = {row["id"] for row in shown}
+    assert "Lneg" in ids and "Lmet" in ids
+    assert "L2" not in requirements_for("PM-APM") and "L2" not in {r["requirement_key"] for r in requirements_for("PM-PM")}
+    assert "L2" in {r["requirement_key"] for r in requirements_for("PM-SPM")}
+    assert "C2" not in {r["requirement_key"] for r in requirements_for("PM-APM")}
+    assert "C2" in {r["requirement_key"] for r in requirements_for("PM-PM")}
 
 
 def test_twenty_fictional_personas_cover_the_three_moves():
-    assert len(PERSONAS) == 20
+    assert len(PERSONAS) == 25
+    long = [p for p in PERSONAS if len(lines_for(p)) >= 10]
+    assert len(long) >= 5
+    assert sum(1 for p in long if p["move"].startswith("non_pm")) >= 2
     moves = {p["move"] for p in PERSONAS}
     assert moves == {"non_pm_to_apm", "non_pm_to_pm", "apm_to_pm", "pm_to_spm"}
     assert all(p["fictional"] and "not a real person" in p["header"] for p in PERSONAS)

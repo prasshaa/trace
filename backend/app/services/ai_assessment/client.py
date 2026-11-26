@@ -4,11 +4,15 @@ as a secret, and the key is never written to a log.
 from __future__ import annotations
 
 import json
+import logging
+import time
 import urllib.error
 import urllib.request
 from typing import Optional
 
 from pydantic import SecretStr
+
+logger = logging.getLogger(__name__)
 
 
 class LlmNotConfigured(Exception):
@@ -20,15 +24,19 @@ class LlmError(Exception):
 
 
 class OpenAICompatible:
-    def __init__(self, *, provider: str, base_url: str, model: str, api_key: str, timeout: float = 45.0):
+    def __init__(self, *, provider: str, base_url: str, model: str, api_key: str, timeout: float = 120.0,
+                 reasoning_effort: Optional[str] = None):
         self.provider = provider or "openai"
         self.base_url = base_url.rstrip("/")
         self.model = model
         self._key = api_key
         self.timeout = timeout
+        self.reasoning_effort = (reasoning_effort or "").strip() or None
+        self.last_meta: Optional[dict] = None
 
     def complete_json(self, system: str, user: str) -> dict:
-        """POST {base}/chat/completions and parse a JSON object. The key stays on the Authorization header."""
+        """POST {base}/chat/completions and parse a JSON object. The key stays on the Authorization header.
+        Latency and token counts are logged. The prompt, the reply and the key are not."""
         url = f"{self.base_url}/chat/completions"
         payload = {
             "model": self.model,
@@ -36,10 +44,13 @@ class OpenAICompatible:
             "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
             "response_format": {"type": "json_object"},
         }
+        if self.reasoning_effort:
+            payload["reasoning_effort"] = self.reasoning_effort
         req = urllib.request.Request(url, data=json.dumps(payload).encode(), method="POST", headers={
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self._key}",
         })
+        started = time.perf_counter()
         try:
             with urllib.request.urlopen(req, timeout=self.timeout) as resp:
                 raw = resp.read().decode()
@@ -47,11 +58,28 @@ class OpenAICompatible:
             raise LlmError(f"the model provider returned HTTP {exc.code}") from None
         except OSError as exc:
             raise LlmError(f"the model provider could not be reached ({type(exc).__name__})") from None
+        latency = round(time.perf_counter() - started, 3)
         try:
             body = json.loads(raw)
             text = body["choices"][0]["message"]["content"]
         except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
             raise LlmError("the model provider returned an unexpected payload") from exc
+        usage = body.get("usage") if isinstance(body.get("usage"), dict) else {}
+        details = usage.get("completion_tokens_details") if isinstance(usage.get("completion_tokens_details"), dict) else {}
+        meta = {
+            "latency_s": latency,
+            "usage": {
+                "prompt_tokens": usage.get("prompt_tokens"),
+                "completion_tokens": usage.get("completion_tokens"),
+                "reasoning_tokens": details.get("reasoning_tokens"),
+            },
+        }
+        self.last_meta = meta
+        logger.info(
+            "llm call provider=%s model=%s latency_s=%.3f prompt_tokens=%s completion_tokens=%s reasoning_tokens=%s",
+            self.provider, self.model, latency, meta["usage"]["prompt_tokens"], meta["usage"]["completion_tokens"],
+            meta["usage"]["reasoning_tokens"],
+        )
         return _json_object(text)
 
 
@@ -83,4 +111,6 @@ def client_from_settings(settings) -> Optional[OpenAICompatible]:
         base_url=(getattr(settings, "trace_llm_base_url", "") or "https://api.openai.com/v1").strip(),
         model=model,
         api_key=raw,
+        timeout=float(getattr(settings, "trace_llm_timeout", 120) or 120),
+        reasoning_effort=getattr(settings, "trace_llm_reasoning_effort", None),
     )

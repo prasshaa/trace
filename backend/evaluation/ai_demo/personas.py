@@ -119,8 +119,107 @@ PERSONAS: List[dict] = [
 ]
 
 
+def _long(pid, move, target_id, name, city, roles, education) -> dict:
+    return {"id": pid, "fictional": True, "name": name, "city": city, "move": move, "target_id": target_id,
+            "header": f"FICTIONAL RESUME — {name} is not a real person.",
+            "current_title": roles[0]["title"], "employer": roles[0]["employer"], "city_label": city,
+            "dates": roles[0].get("dates", "Jan 2021 – Present"), "roles": roles, "education": education,
+            "bullets": [b for role in roles for b in role["bullets"]]}
+
+
+PERSONAS.extend([
+    _long("F21", "non_pm_to_apm", "PM-APM", "Anika Bose", "Bengaluru", [
+        {"title": "Software Engineer", "employer": "PalmPay Labs", "bullets": [
+            "Built the refund API used by the support desk and cut the manual refund steps from six screens to two.",
+            "Worked with the product manager on the refund policy. I did not own the roadmap.",
+            "Sat in on six user calls about failed UPI payments and wrote the notes the squad used the next day.",
+            "Raised the success rate of the retry job from 91% to 96% by fixing the timeout.",
+            "Supported 14 merchants during a pilot. I tracked their tickets. I did not set the success metric.",
+            "Partnered with design on the error states. The designer owned the layout.",
+        ]},
+        {"title": "Software Engineer", "employer": "CampusKart", "bullets": [
+            "Shipped the seller onboarding form for a college marketplace with two other engineers.",
+            "Wrote the acceptance notes for that form after sitting with two sellers.",
+            "Did not choose which campus to launch in. The founder did.",
+            "Kept a personal list of the top five seller complaints and shared it in the weekly meeting.",
+        ]},
+    ], "B.Tech, Computer Science, Example Institute, 2016 – 2020"),
+    _long("F22", "non_pm_to_pm", "PM-PM", "Devika Rao", "Hyderabad", [
+        {"title": "Consultant", "employer": "Harbour Advisory", "bullets": [
+            "Facilitated workshops for a regional retailer and wrote the recommendation deck the sponsor signed.",
+            "Worked with the client's product lead. I did not own the product after the project ended.",
+            "Turned interview notes from twelve store managers into three problem statements.",
+            "Sized a market from the client's own slide. I did not run the research.",
+            "Brought finance and operations into one workshop and recorded the decision they left with.",
+            "Coached a junior analyst on how to write a problem statement. She is not a product manager.",
+        ]},
+        {"title": "Business Analyst", "employer": "Cauvery Finance", "bullets": [
+            "Wrote requirements for a collections workflow used by branch staff.",
+            "Partnered with engineering on the first release. I did not sequence the roadmap.",
+            "Reported a weekly ageing number that finance already defined. I did not define it.",
+            "Shadowed five collection calls and summarised what the agents kept repeating.",
+            "Supported the rollout in two branches and wrote the questions staff still had.",
+        ]},
+    ], "MBA, Example School of Management, 2018 – 2020"),
+    _long("F23", "apm_to_pm", "PM-PM", "Ishaan Mehta", "Mumbai", [
+        {"title": "Associate Product Manager", "employer": "Kite Logistics", "bullets": [
+            "Own the depot-manager checklist and raised completion from 70% to 88%.",
+            "Ran eleven interviews with depot managers before rewriting the checklist.",
+            "Wrote the one-page requirement and the acceptance notes for that rewrite.",
+            "Supported the product manager on the quarterly order of work. Did not own the roadmap.",
+            "Defined a simple on-time check with operations for the checklist, not for the whole network.",
+            "Partnered with design on the empty state. I did not own the visual system.",
+            "Shipped the checklist to three depots and wrote what broke in the first week.",
+            "I have not presented this to a director, and I have not coached another product manager.",
+            "Worked with support on the top ten tickets after launch.",
+            "The pricing of the depot plan is the sales lead's. I did not set it.",
+        ]},
+    ], "B.E., Example College of Engineering, 2016 – 2020"),
+    _long("F24", "pm_to_spm", "PM-SPM", "Nandita Shah", "Pune", [
+        {"title": "Product Manager", "employer": "Halcyon Insurance", "bullets": [
+            "Own the claims product for one line of business, including its quarterly roadmap.",
+            "Defined the loss-ratio watch with finance and used it to stop one feature.",
+            "Moved straight-through processing from 54% to 67% on the claims I own.",
+            "Presented the half-year recommendation to the director and got a decision on two bets.",
+            "Ran a discovery round with eighteen claimants before the last rewrite.",
+            "Brought operations, finance and engineering to the decision to drop a paper form.",
+            "Mentored one associate product manager through her first requirement. She now writes them alone.",
+            "I do not yet cover a second product, and the portfolio roadmap is the director's.",
+            "Partnered with legal on the wording of the rejection notice. I did not own the policy.",
+            "Wrote the post-launch note: what we shipped, what we measured, what we will not repeat.",
+            "The hiring plan for the squad is the engineering manager's. I did not hire.",
+            "Used the loss-ratio watch again to sequence the next quarter.",
+        ]},
+    ], "PGDM, Example Institute, 2014 – 2016"),
+    _long("F25", "non_pm_to_apm", "PM-APM", "Farah Khan", "New Delhi", [
+        {"title": "Product Designer", "employer": "Loom and Co", "bullets": [
+            "Ran eight usability sessions and lifted the task-success score from 4.1 to 4.6.",
+            "Partnered with engineering on the checkout redraw. Did not own the roadmap.",
+            "Wrote the research readout the squad used to cut two steps from checkout.",
+            "Supported the product manager by preparing the readout. She owned the decision.",
+            "Sat with six shoppers in a Delhi market and noted where the paper receipt confused them.",
+            "Did not set the success metric. The product manager set task success.",
+            "Prototyped an empty state and tested it with four people before engineering built it.",
+            "Worked with support to see the tickets that matched what shoppers said.",
+            "I have not managed a roadmap and I have not coached a product manager.",
+            "Shipped the redraw with the squad and wrote what still failed in the next test.",
+        ]},
+    ], "B.Des, Example School of Design, 2017 – 2021"),
+])
+
+
 def lines_for(persona: dict) -> List[dict]:
     """Stable evidence ids for the evaluation. The text is the bullet, nothing is added."""
+    roles = persona.get("roles")
+    if roles:
+        out = []
+        n = 1
+        for role in roles:
+            job = f"{role['title']}, {role['employer']}"
+            for text in role["bullets"]:
+                out.append({"id": f"{persona['id']}-L{n}", "text": text, "job": job})
+                n += 1
+        return out
     return [{"id": f"{persona['id']}-L{n}", "text": text,
              "job": f"{persona['current_title']}, {persona['employer']}"}
             for n, text in enumerate(persona["bullets"], 1)]

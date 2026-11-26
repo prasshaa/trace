@@ -5,121 +5,176 @@
       "id": "F01",
       "move": "non_pm_to_apm",
       "status": "not_configured",
-      "lines": 3
+      "lines": 3,
+      "retrieval": "all_lines"
     },
     {
       "id": "F02",
       "move": "non_pm_to_pm",
       "status": "not_configured",
-      "lines": 3
+      "lines": 3,
+      "retrieval": "all_lines"
     },
     {
       "id": "F03",
       "move": "non_pm_to_apm",
       "status": "not_configured",
-      "lines": 3
+      "lines": 3,
+      "retrieval": "all_lines"
     },
     {
       "id": "F04",
       "move": "non_pm_to_pm",
       "status": "not_configured",
-      "lines": 3
+      "lines": 3,
+      "retrieval": "all_lines"
     },
     {
       "id": "F05",
       "move": "non_pm_to_apm",
       "status": "not_configured",
-      "lines": 2
+      "lines": 3,
+      "retrieval": "all_lines"
     },
     {
       "id": "F06",
       "move": "non_pm_to_pm",
       "status": "not_configured",
-      "lines": 2
+      "lines": 3,
+      "retrieval": "all_lines"
     },
     {
       "id": "F07",
       "move": "non_pm_to_apm",
       "status": "not_configured",
-      "lines": 3
+      "lines": 3,
+      "retrieval": "all_lines"
     },
     {
       "id": "F08",
       "move": "non_pm_to_pm",
       "status": "not_configured",
-      "lines": 2
+      "lines": 3,
+      "retrieval": "all_lines"
     },
     {
       "id": "F09",
       "move": "apm_to_pm",
       "status": "not_configured",
-      "lines": 3
+      "lines": 3,
+      "retrieval": "all_lines"
     },
     {
       "id": "F10",
       "move": "apm_to_pm",
       "status": "not_configured",
-      "lines": 2
+      "lines": 3,
+      "retrieval": "all_lines"
     },
     {
       "id": "F11",
       "move": "apm_to_pm",
       "status": "not_configured",
-      "lines": 2
+      "lines": 3,
+      "retrieval": "all_lines"
     },
     {
       "id": "F12",
       "move": "apm_to_pm",
       "status": "not_configured",
-      "lines": 3
+      "lines": 3,
+      "retrieval": "all_lines"
     },
     {
       "id": "F13",
       "move": "apm_to_pm",
       "status": "not_configured",
-      "lines": 3
+      "lines": 3,
+      "retrieval": "all_lines"
     },
     {
       "id": "F14",
       "move": "apm_to_pm",
       "status": "not_configured",
-      "lines": 3
+      "lines": 3,
+      "retrieval": "all_lines"
     },
     {
       "id": "F15",
       "move": "pm_to_spm",
       "status": "not_configured",
-      "lines": 3
+      "lines": 3,
+      "retrieval": "all_lines"
     },
     {
       "id": "F16",
       "move": "pm_to_spm",
       "status": "not_configured",
-      "lines": 3
+      "lines": 3,
+      "retrieval": "all_lines"
     },
     {
       "id": "F17",
       "move": "pm_to_spm",
       "status": "not_configured",
-      "lines": 3
+      "lines": 3,
+      "retrieval": "all_lines"
     },
     {
       "id": "F18",
       "move": "pm_to_spm",
       "status": "not_configured",
-      "lines": 3
+      "lines": 3,
+      "retrieval": "all_lines"
     },
     {
       "id": "F19",
       "move": "pm_to_spm",
       "status": "not_configured",
-      "lines": 3
+      "lines": 3,
+      "retrieval": "all_lines"
     },
     {
       "id": "F20",
       "move": "pm_to_spm",
       "status": "not_configured",
-      "lines": 2
+      "lines": 3,
+      "retrieval": "all_lines"
+    },
+    {
+      "id": "F21",
+      "move": "non_pm_to_apm",
+      "status": "not_configured",
+      "lines": 10,
+      "retrieval": "in_process_overlap"
+    },
+    {
+      "id": "F22",
+      "move": "non_pm_to_pm",
+      "status": "not_configured",
+      "lines": 11,
+      "retrieval": "in_process_overlap"
+    },
+    {
+      "id": "F23",
+      "move": "apm_to_pm",
+      "status": "not_configured",
+      "lines": 10,
+      "retrieval": "in_process_overlap"
+    },
+    {
+      "id": "F24",
+      "move": "pm_to_spm",
+      "status": "not_configured",
+      "lines": 12,
+      "retrieval": "in_process_overlap"
+    },
+    {
+      "id": "F25",
+      "move": "non_pm_to_apm",
+      "status": "not_configured",
+      "lines": 10,
+      "retrieval": "in_process_overlap"
     }
   ]
 }
