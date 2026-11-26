@@ -157,7 +157,9 @@ def test_the_synthetic_cohort_matches_by_path_and_hides_a_group_of_three():
     blob = " ".join(item["text"] for item in view["patterns"])
     assert "3 of the" not in blob and "5–9 of the 10" not in blob
     assert "degree" not in blob.lower()
-    assert "Software Engineering / QA / IT" in blob
+    assert "came from Software Engineering" not in blob
+    assert "Matched on your background: Software Engineering / QA / IT" in view["match_line"]
+    assert "middle time to a first product role" in blob
     assert "compared with about" in blob
     assert raw_counts_hidden(view)
     assert "not a guarantee" in view["disclaimer"]
@@ -244,6 +246,25 @@ def test_duplicate_rows_keep_distinct_keys_and_backgrounds_match():
     external.employment_history[0].employer = other
     external.employment_history[1].employer = same
     assert user_match_features(external, "PM-PM", "Product Manager")["move"] == "external"
+    ordered = SimpleNamespace(employment_history=[
+        job("Software Engineer", "ROLE-SWE", "engineering"),
+        job("Associate Product Manager", "PM-APM", "product_management", current=True),
+    ], education=[])
+    ordered.employment_history[0].sequence_index = 1
+    ordered.employment_history[1].sequence_index = 2
+    ordered.employment_history[0].employer = same
+    ordered.employment_history[1].employer = same
+    assert user_match_features(ordered, "PM-PM", "Product Manager")["move"] == "internal"
+    # Dates that contradict the sequence must not reorder the path. The earlier index is the prior role.
+    crossed = SimpleNamespace(employment_history=[
+        job("Associate Product Manager", "PM-APM", "product_management", 2018, True),
+        job("Software Engineer", "ROLE-SWE", "engineering", 2022),
+    ], education=[])
+    crossed.employment_history[0].sequence_index = 2
+    crossed.employment_history[1].sequence_index = 1
+    crossed.employment_history[0].employer = same
+    crossed.employment_history[1].employer = SimpleNamespace(employer_name="  Northwind  ")
+    assert user_match_features(crossed, "PM-PM", "Product Manager")["move"] == "internal"
     sales = SimpleNamespace(employment_history=[job("Sales Manager", "", "sales")], education=[])
     assert "Sales / Marketing / Customer Success" in user_path_text(sales, "PM-PM", "Product Manager")[0]
     founder = SimpleNamespace(employment_history=[job("Founder", "ROLE-ENT", "entrepreneurship")], education=[])
@@ -336,6 +357,27 @@ def test_a_structured_opening_stays_prose_and_the_limit_ends_on_a_sentence():
     assert _takeaways(minority, 14, 23) == []
     refused = _from_payload({"headline": "PMs with paths like yours", "patterns": [], "candidates": []}, {})
     assert refused["available"] is False
+
+
+def test_a_switcher_gets_six_patterns_without_restating_their_background():
+    neighbours = [_row(norm_seniority_group="APM", final_primary_prior_function="Software Engineering / QA / IT",
+                       final_entry_move="internal", final_first_pm_group="APM", final_n_pre_pm_roles="2",
+                       has_mba="True", final_months_to_first_pm_from_earliest_nonintern=str(48 + i))
+                  for i in range(24)]
+    others = [_row(final_primary_prior_function="Business / Consulting / Finance / Operations",
+                   final_entry_move="external", final_first_pm_group="Product Manager", final_n_pre_pm_roles="1",
+                   has_mba="False", final_months_to_first_pm_from_earliest_nonintern=str(20 + (i % 8)))
+              for i in range(80)]
+    user = {"prior": "Software Engineering / QA / IT", "target_level": "APM", "mba": True, "in_pm": False, "n_pre": 2}
+    view = patterns_from_neighbours(neighbours, "APM", neighbours + others, user=user)
+    blob = " ".join(item["text"] for item in view["patterns"])
+    assert len(view["patterns"]) >= 6
+    assert "came from Software Engineering" not in blob
+    assert "Matched on your background: Software Engineering / QA / IT" in view["match_line"]
+    assert "started in product as APM" in blob
+    assert "had an MBA" in blob
+    assert "middle time to a first product role" in blob
+    assert "Most of the 7" not in blob
     design_rows = [_row(final_primary_prior_function="Design / UX") for _ in range(2)]
     engineering = [_row(final_primary_prior_function="Software Engineering / QA / IT", final_entry_move="internal") for _ in range(20)]
     base = [_row() for _ in range(20)]

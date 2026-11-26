@@ -145,21 +145,20 @@ def _median(values: Sequence[int]) -> Optional[int]:
     return int(round((ordered[mid - 1] + ordered[mid]) / 2))
 
 
-def _share(count: int, known: int, rest: str, cohort_count: int, cohort_known: int, cohort_n: int):
-    """(sentence or None, lift). A band is not placed next to a small exact denominator."""
-    if known < 5 or count < 5:
+def _share(count: int, known: int, rest: str, cohort_count: int, cohort_known: int, cohort_n: int,
+           require_lift: bool = True):
+    """(sentence or None, lift). A base under 10 is not phrased as 'most of the N'."""
+    if known < 10 or count < 5:
         return None, 0.0
     neighbour_rate = count / known
     cohort_rate = (cohort_count / cohort_known) if cohort_known else 0.0
     lift = (neighbour_rate / cohort_rate) if cohort_rate else (2.0 if neighbour_rate else 0.0)
-    if lift < MIN_LIFT:
+    if require_lift and lift < MIN_LIFT:
         return None, lift
-    if count < 10 and known < 20:
-        if neighbour_rate < 0.5:
-            return None, lift
+    if count < 10 and neighbour_rate < 0.5:
+        return None, lift
+    if count < 10:
         head = f"Most of the {known} closest PMs"
-    elif count < 10:
-        head = f"5–9 of the {known} closest PMs"
     else:
         head = f"{count} of the {known} closest PMs"
     text = f"{head} {rest.strip().rstrip('.')}"
@@ -228,38 +227,55 @@ def _candidates(group: dict, cohort: dict, cohort_n: int, user: Optional[dict] =
     out = []
     user = user or {}
 
-    def add(count, known, cohort_count, cohort_known, rest, kind, rate_count):
-        text, lift = _share(count, known, rest, cohort_count, cohort_known, cohort_n)
+    def add(count, known, cohort_count, cohort_known, rest, kind, rate_count, require_lift=True):
+        text, lift = _share(count, known, rest, cohort_count, cohort_known, cohort_n, require_lift=require_lift)
         if not text:
             return
         out.append({"text": text, "score": lift, "count": count, "known": known, "kind": kind,
                     "rate": rate_count / known if known else 0, "cohort_rate": (cohort_count / cohort_known) if cohort_known else 0})
 
+    user_move = user.get("move") or ""
     add(group["internal"], group["move_known"], cohort.get("internal", 0), cohort.get("move_known", 0),
-        "with a recorded move moved into a product role from inside the employer.", "internal", group["internal"])
+        "with a recorded move moved into a product role from inside the employer.", "internal", group["internal"],
+        require_lift=user_move != "internal")
     add(group["external"], group["move_known"], cohort.get("external", 0), cohort.get("move_known", 0),
-        "with a recorded move moved into a product role from outside the employer.", "external", group["external"])
+        "with a recorded move moved into a product role from outside the employer.", "external", group["external"],
+        require_lift=user_move != "external")
     target = user.get("target_level") or ""
-    hide_started_pm = target in LEVELS and LEVELS.index(target) > LEVELS.index("Product Manager")
+    own = (user.get("prior") or "").strip()
     for label, count in group["priors"].items():
+        if label == own:
+            continue
         add(count, group["prior_known"], cohort.get("priors", {}).get(label, 0), cohort.get("prior_known", 0),
             f"with a recorded background came from {label} before a product role.", "prior", count)
-    if not user.get("in_pm"):
-        for label, count in group["first"].items():
-            if hide_started_pm and label == "Product Manager":
-                continue
-            add(count, group["first_known"], cohort.get("first", {}).get(label, 0), cohort.get("first_known", 0),
-                f"with a recorded first product level started in product as {label}.", "first", count)
-    add(group["mba"], group["mba_known"], cohort.get("mba", 0), cohort.get("mba_known", 0),
-        "had an MBA.", "mba", group["mba"])
+    if not user.get("in_pm") and target:
+        text, lift = _share(group["first"].get(target, 0), group["first_known"],
+                            f"with a recorded first product level started in product as {target}.",
+                            cohort.get("first", {}).get(target, 0), cohort.get("first_known", 0), cohort_n,
+                            require_lift=False)
+        if text:
+            out.append({"text": text, "score": max(lift, MIN_LIFT), "count": group["first"].get(target, 0),
+                        "known": group["first_known"], "kind": "first", "rate": 1, "cohort_rate": 0})
+    text, lift = _share(group["mba"], group["mba_known"], "had an MBA.",
+                        cohort.get("mba", 0), cohort.get("mba_known", 0), cohort_n,
+                        require_lift=not (bool(user.get("mba")) or bool(user.get("in_pm"))))
+    if text:
+        out.append({"text": text, "score": max(lift, MIN_LIFT), "count": group["mba"], "known": group["mba_known"],
+                    "kind": "mba", "rate": group["mba"] / group["mba_known"] if group["mba_known"] else 0,
+                    "cohort_rate": (cohort.get("mba", 0) / cohort["mba_known"]) if cohort.get("mba_known") else 0})
     months = group.get("months") or []
     median = _median(months)
-    base = _median(cohort.get("months") or [])
-    if median is not None and (base is None or median >= base * MIN_LIFT or base >= median * MIN_LIFT):
+    if median is not None:
         out.append({"text": (f"Among the {len(months)} closest PMs with a dated path, the middle time to a first product role "
                              f"was about {median} months."),
                     "score": MIN_LIFT, "count": len(months), "known": len(months), "kind": "months",
                     "rate": 1, "cohort_rate": 0})
+        span = _rounded_span(months)
+        if span:
+            out.append({"text": (f"Among the {len(months)} closest PMs with a dated path, most took about "
+                                 f"{span[0]} to {span[1]} months."),
+                        "score": MIN_LIFT, "count": len(months), "known": len(months), "kind": "span",
+                        "rate": 1, "cohort_rate": 0})
     pre = group.get("pre") or []
     pre_med = _median(pre)
     if pre_med is not None and pre_med > 0:
@@ -299,7 +315,7 @@ def progression_lines(by_first: dict, user: Optional[dict]) -> list:
     block = by_first[start] or {}
     n = int(block.get("n") or 0)
     reached = int((block.get("reached") or {}).get(target) or 0)
-    if n < 5 or reached < 5:
+    if n < 10 or reached < 5:
         return []
     if reached < 10 and n < 20:
         if reached / n < 0.5:
@@ -368,7 +384,11 @@ def present(group: dict, cohort: Optional[dict] = None, user: Optional[dict] = N
         "synthetic": False,
         "neighbour_count": total,
         "headline": "PMs with paths like yours",
-        "match_line": "Matched by similarity of career path.",
+        "match_line": (
+            f"Matched by similarity of career path. Matched on your background: {prior}."
+            if prior and group.get("priors", {}).get(prior, 0) >= 10
+            else "Matched by similarity of career path."
+        ),
         "preface": preface,
         "disclaimer": "These are patterns across the closest profiles, not a prediction and not a guarantee.",
         "patterns": patterns,

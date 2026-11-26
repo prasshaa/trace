@@ -1,5 +1,6 @@
 -- Rollback v2.42.0. Restores the v2.41.0 function.
 drop function if exists trace_peer_cohort.peer_patterns(extensions.vector, jsonb, text);
+drop function if exists trace_peer_cohort.share_text(integer, integer, integer, integer, integer, text, boolean);
 drop function if exists trace_peer_cohort.share_text(integer, integer, integer, integer, integer, text);
 
 create or replace function trace_peer_cohort.peer_patterns(

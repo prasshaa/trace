@@ -372,24 +372,58 @@ def _employer_name(job) -> str:
     employer = getattr(job, "employer", None)
     if employer is None:
         return ""
-    return (getattr(employer, "employer_name", None) or "").strip().lower()
+    return " ".join((getattr(employer, "employer_name", None) or "").split()).lower()
+
+
+def _employer_id(job):
+    employer = getattr(job, "employer", None)
+    return getattr(employer, "candidate_employer_id", None) if employer is not None else None
+
+
+def _product_job(job) -> bool:
+    if (getattr(job, "role_family", "") or "") == "product_management":
+        return True
+    return is_product_role(getattr(job, "title_raw", "") or "", getattr(job, "role_id", "") or "")
+
+
+def _career_order(job) -> tuple:
+    """sequence_index is the career order. A start year is only a fallback when the index is missing."""
+    index = getattr(job, "sequence_index", None)
+    if isinstance(index, int):
+        return (0, index)
+    year = _year(getattr(job, "start", None))
+    if isinstance(year, int):
+        return (1, year)
+    return (2, 0)
+
+
+def _career_jobs(jobs):
+    kept = []
+    for job in jobs:
+        if getattr(job, "employment_type", None) == "internship":
+            continue
+        if getattr(job, "primary_career_sequence", True) is False:
+            continue
+        kept.append(job)
+    return sorted(kept, key=_career_order)
 
 
 def _entry_move(jobs, first_pm) -> str:
     """Internal when the role just before the first product role was at the same employer."""
     if first_pm is None:
         return ""
-    first_year = _year(getattr(first_pm, "start", None)) or 9999
-    earlier = [job for job in jobs if job is not first_pm and (_year(getattr(job, "start", None)) or 9999) <= first_year
-               and not is_product_role(getattr(job, "title_raw", "") or "", getattr(job, "role_id", "") or "")]
-    if not earlier:
+    ordered = _career_jobs(jobs)
+    if first_pm not in ordered:
         return ""
-    previous = max(earlier, key=lambda job: _year(getattr(job, "start", None)) or 0)
-    before = _employer_name(previous)
-    there = _employer_name(first_pm)
-    if before and there and before == there:
+    pos = ordered.index(first_pm)
+    if pos == 0:
+        return ""
+    previous = ordered[pos - 1]
+    same_id = _employer_id(previous) and _employer_id(previous) == _employer_id(first_pm)
+    before, there = _employer_name(previous), _employer_name(first_pm)
+    if same_id or (before and there and before == there):
         return "internal"
-    if before or there:
+    if before or there or _employer_id(previous) or _employer_id(first_pm):
         return "external"
     return ""
 
@@ -400,9 +434,10 @@ def user_match_features(profile, target_role_id: str, target_title: str) -> dict
     reviewed = ("user_confirmed", "user_corrected")
     jobs = [j for j in (getattr(profile, "employment_history", None) or [])
             if getattr(getattr(j, "provenance", None), "review_status", "") in reviewed]
-    pm_jobs = [j for j in jobs if is_product_role(getattr(j, "title_raw", "") or "", getattr(j, "role_id", "") or "")]
+    ordered = _career_jobs(jobs)
+    pm_jobs = [j for j in ordered if _product_job(j)]
     priors = []
-    for job in jobs:
+    for job in ordered:
         if job in pm_jobs:
             continue
         fn = _function_for_title(getattr(job, "title_raw", "") or "", getattr(job, "role_family", "") or "")
@@ -415,15 +450,8 @@ def user_match_features(profile, target_role_id: str, target_title: str) -> dict
                  if getattr(getattr(e, "provenance", None), "review_status", "") in reviewed]
     titles = " ".join((getattr(e, "qualification_title_raw", "") or "") for e in education).lower()
     mba = True if ("mba" in titles or "pgdm" in titles) else (False if education else None)
-    first = ""
-    earliest = None
-    first_job = None
-    for job in pm_jobs:
-        year = _year(getattr(job, "start", None)) or 9999
-        if earliest is None or year < earliest:
-            earliest = year
-            first_job = job
-            first = ROLE_LEVEL.get(getattr(job, "role_id", "") or "", "") or ""
+    first_job = pm_jobs[0] if pm_jobs else None
+    first = ROLE_LEVEL.get(getattr(first_job, "role_id", "") or "", "") if first_job else ""
     return {
         "text": text,
         "target_level": target_level,

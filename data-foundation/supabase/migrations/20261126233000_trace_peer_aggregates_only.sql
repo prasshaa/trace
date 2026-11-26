@@ -11,21 +11,21 @@ create function trace_peer_cohort.share_text(
   p_cohort_count integer,
   p_cohort_known integer,
   p_cohort_n integer,
-  p_rest text
+  p_rest text,
+  p_require_lift boolean
 ) returns text
 language sql
 immutable
 set search_path = ''
 as $$
   select case
-    when p_known < 5 or p_count < 5 or p_cohort_known <= 0 then null
-    when p_cohort_count > 0
+    when p_known < 10 or p_count < 5 or p_cohort_known <= 0 then null
+    when p_require_lift and p_cohort_count > 0
      and (p_count::numeric / p_known) / (p_cohort_count::numeric / p_cohort_known) < 1.2 then null
-    when p_count < 10 and p_known < 20 and p_count::numeric / p_known < 0.5 then null
+    when p_count < 10 and p_count::numeric / p_known < 0.5 then null
     else rtrim(
       case
-        when p_count < 10 and p_known < 20 then 'Most of the ' || p_known || ' closest PMs'
-        when p_count < 10 then '5–9 of the ' || p_known || ' closest PMs'
+        when p_count < 10 then 'Most of the ' || p_known || ' closest PMs'
         else p_count::text || ' of the ' || p_known || ' closest PMs'
       end || ' ' || rtrim(p_rest, '.'), '.')
       || ', compared with about '
@@ -34,7 +34,7 @@ as $$
   end;
 $$;
 
-revoke all on function trace_peer_cohort.share_text(integer, integer, integer, integer, integer, text)
+revoke all on function trace_peer_cohort.share_text(integer, integer, integer, integer, integer, text, boolean)
   from public, anon, authenticated, service_role, trace_app_user, trace_app_runtime;
 
 create function trace_peer_cohort.peer_patterns(
@@ -124,19 +124,22 @@ as $$
              (select count(*) from cohort where move = 'internal')::integer,
              (select count(*) from cohort where move in ('internal', 'external'))::integer,
              (select count(*) from cohort)::integer,
-             'with a recorded move moved into a product role from inside the employer.') as internal_text,
+             'with a recorded move moved into a product role from inside the employer.',
+             not (args.move = 'internal')) as internal_text,
            trace_peer_cohort.share_text(
              (select count(*) from ranked where move = 'external')::integer,
              (select count(*) from ranked where move in ('internal', 'external'))::integer,
              (select count(*) from cohort where move = 'external')::integer,
              (select count(*) from cohort where move in ('internal', 'external'))::integer,
              (select count(*) from cohort)::integer,
-             'with a recorded move moved into a product role from outside the employer.') as external_text
+             'with a recorded move moved into a product role from outside the employer.',
+             not (args.move = 'external')) as external_text
+      from args
   ),
   prior_lines as (
     select trace_peer_cohort.share_text(
              g.cnt, g.known, g.ccnt, g.cknown, g.cohort_n,
-             'with a recorded background came from ' || g.label || ' before a product role.') as text,
+             'with a recorded background came from ' || g.label || ' before a product role.', true) as text,
            g.label, g.cnt, g.known, g.ccnt, g.cknown
       from (
         select r.prior as label,
@@ -146,7 +149,7 @@ as $$
                (select count(*) from cohort where prior <> '')::integer as cknown,
                (select count(*) from cohort)::integer as cohort_n
           from ranked r
-         where r.prior <> ''
+         where r.prior <> '' and r.prior <> (select prior from args)
          group by r.prior
          order by count(*) desc, r.prior
          limit 4
@@ -154,25 +157,41 @@ as $$
   ),
   first_line as (
     select trace_peer_cohort.share_text(
-             g.cnt, g.known, g.ccnt, g.cknown, g.cohort_n,
-             'with a recorded first product level started in product as ' || g.label || '.') as text
-      from (
-        select r.first_pm as label,
-               count(*)::integer as cnt,
-               (select count(*) from ranked where first_pm <> '')::integer as known,
-               (select count(*) from cohort where first_pm = r.first_pm)::integer as ccnt,
-               (select count(*) from cohort where first_pm <> '')::integer as cknown,
-               (select count(*) from cohort)::integer as cohort_n
-          from ranked r
-          cross join args
-         where r.first_pm <> ''
-           and not args.in_pm
-           and not (array_position((select names from levels), args.target) > array_position((select names from levels), 'Product Manager')
-                    and r.first_pm = 'Product Manager')
-         group by r.first_pm
-         order by count(*) desc, r.first_pm
-         limit 1
-      ) g
+             (select count(*) from ranked where first_pm = args.target)::integer,
+             (select count(*) from ranked where first_pm <> '')::integer,
+             (select count(*) from cohort where first_pm = args.target)::integer,
+             (select count(*) from cohort where first_pm <> '')::integer,
+             (select count(*) from cohort)::integer,
+             'with a recorded first product level started in product as ' || args.target || '.',
+             false) as text
+      from args
+     where args.target <> '' and not args.in_pm
+  ),
+  level_line as (
+    select trace_peer_cohort.share_text(
+             (select count(*) from ranked r
+               where array_position((select names from levels), r.level) >= array_position((select names from levels), args.target))::integer,
+             (select count(*) from ranked)::integer,
+             (select count(*) from cohort c
+               where array_position((select names from levels), c.level) >= array_position((select names from levels), args.target))::integer,
+             (select count(*) from cohort)::integer,
+             (select count(*) from cohort)::integer,
+             'are at ' || args.target || ' or above.',
+             false) as text
+      from args
+     where args.in_pm and args.target <> ''
+  ),
+  role_window as (
+    select trace_peer_cohort.share_text(
+             (select count(*) from ranked where n_pre in (1, 2))::integer,
+             (select count(*) from ranked where n_pre is not null and n_pre > 0)::integer,
+             (select count(*) from cohort where n_pre in (1, 2))::integer,
+             (select count(*) from cohort where n_pre is not null and n_pre > 0)::integer,
+             (select count(*) from cohort)::integer,
+             'who had a role before product had 1 or 2 roles before a product role.',
+             false) as text
+      from args
+     where not args.in_pm
   ),
   mba_line as (
     select trace_peer_cohort.share_text(
@@ -181,7 +200,9 @@ as $$
              (select count(*) from cohort where mba)::integer,
              (select count(*) from cohort)::integer,
              (select count(*) from cohort)::integer,
-             'had an MBA.') as text
+             'had an MBA.',
+             not (coalesce(args.mba, false) or args.in_pm)) as text
+      from args
   ),
   month_stats as (
     select count(months)::integer as n,
@@ -215,6 +236,18 @@ as $$
        and args.target <> ''
        and cohort.first_pm = args.first_pm
   ),
+  years_in as (
+    select count(*)::integer as n,
+           percentile_cont(0.5) within group (order by yrs) as median
+      from (
+        select (extract(year from current_date)::integer - start_year) - months / 12.0 as yrs
+          from ranked
+          cross join args
+         where args.in_pm
+           and start_year is not null and months is not null
+           and (extract(year from current_date)::integer - start_year) - months / 12.0 >= 0
+      ) s
+  ),
   preface as (
     select case
       when args.prior <> '' and (select count(*) from cohort where prior = args.prior) < 5
@@ -244,21 +277,22 @@ as $$
       union all
       select text, 'mba', 5 from mba_line
       union all
+      select text, 'level', 11 from level_line
+      union all
+      select text, 'roles', 12 from role_window
+      union all
       select case
         when n >= 10 and median is not null
-         and (select median from cohort_months) is not null
-         and (median >= (select median from cohort_months) * 1.2
-              or (select median from cohort_months) >= median * 1.2)
         then 'Among the ' || n || ' closest PMs with a dated path, the middle time to a first product role was about '
              || round(median)::integer || ' months.'
         else null
       end, 'months', 6 from month_stats
       union all
       select case
-        when n >= 10 and low is not null and high is not null
+        when n >= 10 and median is not null and low is not null and high is not null
          and round(high / 6.0) * 6 > round(low / 6.0) * 6
-        then 'Most of those dated paths took about ' || (round(low / 6.0) * 6)::integer
-             || ' to ' || (round(high / 6.0) * 6)::integer || ' months.'
+        then 'Among the ' || n || ' closest PMs with a dated path, most took about '
+             || (round(low / 6.0) * 6)::integer || ' to ' || (round(high / 6.0) * 6)::integer || ' months.'
         else null
       end, 'span', 7 from month_stats
       union all
@@ -270,15 +304,16 @@ as $$
       end, 'pre', 8 from pre_stats
       union all
       select case
-        when n >= 5 and reached >= 5 and (
-          reached >= 10 or n >= 20 or reached::numeric / n >= 0.5)
-        then case
-          when reached < 10 and n < 20 then 'Most of the ' || n
-          when reached < 10 then '5–9 of the ' || n
-          else reached::text || ' of the ' || n
-        end || ' cohort PMs who started as ' || (select first_pm from args)
-            || ' are now ' || (select target from args) || ' or above.'
-        else null
+        when n < 10 or reached < 5 then null
+        else (
+          case
+            when reached < 10 and reached::numeric / n >= 0.5 then 'Most of the ' || n
+            when reached < 10 then '5–9 of the ' || n
+            else reached::text || ' of the ' || n
+          end
+          || ' cohort PMs who started as ' || (select first_pm from args)
+          || ' are now ' || (select target from args) || ' or above.'
+        )
       end, 'progression', 9 from progress
       union all
       select case
@@ -286,6 +321,13 @@ as $$
         then 'The middle number of product roles along that path was about ' || round(roles_med)::integer || '.'
         else null
       end, 'progression', 10 from progress
+      union all
+      select case
+        when n >= 10 and median is not null and round(median) >= 0
+        then 'Among the ' || n || ' closest PMs with a dated path, the middle time in a product role was about '
+             || round(median)::integer || ' years.'
+        else null
+      end, 'years', 13 from years_in
     ) raw
     where text is not null
   ),
@@ -298,7 +340,14 @@ as $$
     'pool_count', (select count(*) from pool),
     'neighbour_count', (select count(*) from ranked),
     'headline', 'PMs with paths like yours',
-    'match_line', 'Matched by similarity of career path.',
+    'match_line', (
+      select case
+        when prior <> '' and (select count(*) from ranked where ranked.prior = args.prior) >= 10
+        then 'Matched by similarity of career path. Matched on your background: ' || prior || '.'
+        else 'Matched by similarity of career path.'
+      end
+      from args
+    ),
     'preface', (select text from preface),
     'disclaimer', 'These are patterns across the closest profiles, not a prediction and not a guarantee.',
     'patterns', coalesce((

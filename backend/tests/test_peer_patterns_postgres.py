@@ -45,7 +45,7 @@ def _load(conn):
     """150 profiles: 50 software paths and 100 consulting paths, so a switcher has a real pool of 120."""
     rows = []
     for i in range(50):
-        rows.append(("s%03d" % i, "APM", "Software Engineering / QA / IT", "internal", "APM", 3, 2, True, 2014, 90, _vector(0)))
+        rows.append(("s%03d" % i, "APM", "Software Engineering / QA / IT", "internal", "APM", 2, 2, True, 2014, 60 + (i % 40), _vector(0)))
     for i in range(100):
         rows.append(("c%03d" % i, "Product Manager", "Business / Consulting / Finance / Operations", "external", "Product Manager",
                      1, 2, False, 2018, 20, _vector(1)))
@@ -77,7 +77,7 @@ def test_peer_patterns_runs_and_returns_aggregates_only(db):
         "prior": "Software Engineering / QA / IT",
         "move": "external",
         "n_pre": 3,
-        "mba": False,
+        "mba": True,
         "start_year": 2014,
         "in_pm": False,
         "first_pm_level": "",
@@ -99,9 +99,32 @@ def test_peer_patterns_runs_and_returns_aggregates_only(db):
     texts = " ".join(item["text"] for item in payload["patterns"])
     assert "compared with about" in texts
     assert ".," not in texts
-    assert any(phrase in texts for phrase in (
-        "came from Software Engineering", "started in product as", "had an MBA",
-        "middle time", "role before product", "inside the employer"))
+    assert "came from Software Engineering" not in texts
+    assert "Matched on your background" in payload["match_line"]
+    assert "started in product as APM" in texts
+    assert "middle time to a first product role" in texts
+    assert "had an MBA" in texts
+    in_pm = json.dumps({
+        "prior": "Software Engineering / QA / IT",
+        "move": "internal",
+        "n_pre": 2,
+        "mba": True,
+        "start_year": 2014,
+        "in_pm": True,
+        "first_pm_level": "APM",
+        "target_level": "APM",
+    })
+    in_row = db.execute(
+        "select trace_peer_cohort.peer_patterns(%s::extensions.vector, %s::jsonb, 'india-pm-v3')",
+        (_vector(0), in_pm),
+    ).fetchone()[0]
+    if isinstance(in_row, str):
+        in_row = json.loads(in_row)
+    in_text = " ".join(item["text"] for item in in_row["patterns"])
+    assert len(in_row["patterns"]) >= 4
+    assert "or above" in in_text
+    assert "time in a product role" in in_text
+    assert "had an MBA" in in_text
     old = db.execute(
         "select trace_peer_cohort.peer_patterns(%s::extensions.vector, 'APM', '{}'::text[], 120, 'india-pm-v3')",
         (_vector(0),),
@@ -109,3 +132,16 @@ def test_peer_patterns_runs_and_returns_aggregates_only(db):
     if isinstance(old, str):
         old = json.loads(old)
     assert "candidates" in old
+    drop = ROOT / "data-foundation/supabase/migrations/20261126240000_trace_peer_drop_row_function.sql"
+    db.execute(drop.read_text(encoding="utf-8"))
+    gone = db.execute(
+        "select to_regprocedure('trace_peer_cohort.peer_patterns(extensions.vector,text,text[],integer,text)')"
+    ).fetchone()[0]
+    assert gone is None
+    still = db.execute(
+        "select trace_peer_cohort.peer_patterns(%s::extensions.vector, %s::jsonb, 'india-pm-v3')",
+        (_vector(0), user),
+    ).fetchone()[0]
+    if isinstance(still, str):
+        still = json.loads(still)
+    assert still["pool_count"] == 120 and len(still["patterns"]) >= 6
