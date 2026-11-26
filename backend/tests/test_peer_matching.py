@@ -227,6 +227,23 @@ def test_duplicate_rows_keep_distinct_keys_and_backgrounds_match():
     assert "Current:" not in sentence
     assert "0 roles" not in sentence
     assert "not classified" not in sentence
+    same = SimpleNamespace(employer_name="Northwind")
+    other = SimpleNamespace(employer_name="Contoso")
+    internal = SimpleNamespace(employment_history=[
+        job("Software Engineer", "ROLE-SWE", "engineering", 2018),
+        job("Associate Product Manager", "PM-APM", "product_management", 2022, True),
+    ], education=[])
+    internal.employment_history[0].employer = same
+    internal.employment_history[1].employer = same
+    from app.services.peer_matching.text import user_match_features
+    assert user_match_features(internal, "PM-PM", "Product Manager")["move"] == "internal"
+    external = SimpleNamespace(employment_history=[
+        job("Software Engineer", "ROLE-SWE", "engineering", 2018),
+        job("Associate Product Manager", "PM-APM", "product_management", 2022, True),
+    ], education=[])
+    external.employment_history[0].employer = other
+    external.employment_history[1].employer = same
+    assert user_match_features(external, "PM-PM", "Product Manager")["move"] == "external"
     sales = SimpleNamespace(employment_history=[job("Sales Manager", "", "sales")], education=[])
     assert "Sales / Marketing / Customer Success" in user_path_text(sales, "PM-PM", "Product Manager")[0]
     founder = SimpleNamespace(employment_history=[job("Founder", "ROLE-ENT", "entrepreneurship")], education=[])
@@ -251,9 +268,11 @@ def test_duplicate_rows_keep_distinct_keys_and_backgrounds_match():
 
 def test_the_level_nudge_is_small_and_patterns_are_the_distinctive_ones():
     sql = (ROOT / "data-foundation/supabase/migrations/20261126233000_trace_peer_aggregates_only.sql").read_text()
-    body = sql.split("as $$", 1)[1].split("$$;", 1)[0]
-    assert "limit 120" in body and "enable_indexscan" in body
-    assert "profile_key" not in body and "'candidates'" not in body
+    body = sql.split("create function trace_peer_cohort.peer_patterns(", 1)[1].split("as $$", 1)[1].split("$$;", 1)[0]
+    assert "limit 120" in body and "+ 0" in body
+    assert "pg_temp" not in body and "pg_catalog.greatest" not in body
+    assert "drop function if exists trace_peer_cohort.peer_patterns(extensions.vector, text" not in sql
+    assert "profile_key" not in body
     assert "grant execute on function trace_peer_cohort.peer_patterns(extensions.vector, jsonb, text) to trace_app_runtime" in sql
     cohort = [_row(final_entry_move="external", final_primary_prior_function="Business / Consulting / Finance / Operations")
               for _ in range(30)]

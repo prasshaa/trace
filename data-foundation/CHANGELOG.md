@@ -4,7 +4,7 @@
 
 | Change | Files | Why |
 |---|---|---|
-| `peer_patterns(vector, jsonb, text)` reranks inside the database and returns aggregate sentences. The previous signature, which returned one attribute object per neighbour, is dropped. The call turns index scans off and reads 120 neighbours by exact distance. Counts under 5 are omitted and 5–9 stay a band. Execute stays with `trace_app_runtime` only | migration 59 | v2.41 exposed neighbour attributes to the app, and the HNSW default stopped the pool at about 40 |
+| `peer_patterns(vector, jsonb, text)` reranks in a CTE and returns aggregate sentences. The distance sort cannot use the HNSW index, so the pool is 120 rather than the index default of about 40. The v2.41 five-argument function is left in place so the running app still resolves during rollout. Counts under 5 are omitted and 5–9 stay a band. Execute on the new function stays with `trace_app_runtime` only | migration 59 | v2.41 exposed neighbour attributes, and a stable function that built temporary tables could not be called |
 | Rollback restores the v2.41.0 function | rollback | |
 
 ## 2.41.0 — 2026-11-26 (peer search returns a candidate pool)

@@ -368,6 +368,32 @@ def user_path_text(profile, target_role_id: str, target_title: str) -> tuple:
     return " ".join(parts), target_level
 
 
+def _employer_name(job) -> str:
+    employer = getattr(job, "employer", None)
+    if employer is None:
+        return ""
+    return (getattr(employer, "employer_name", None) or "").strip().lower()
+
+
+def _entry_move(jobs, first_pm) -> str:
+    """Internal when the role just before the first product role was at the same employer."""
+    if first_pm is None:
+        return ""
+    first_year = _year(getattr(first_pm, "start", None)) or 9999
+    earlier = [job for job in jobs if job is not first_pm and (_year(getattr(job, "start", None)) or 9999) <= first_year
+               and not is_product_role(getattr(job, "title_raw", "") or "", getattr(job, "role_id", "") or "")]
+    if not earlier:
+        return ""
+    previous = max(earlier, key=lambda job: _year(getattr(job, "start", None)) or 0)
+    before = _employer_name(previous)
+    there = _employer_name(first_pm)
+    if before and there and before == there:
+        return "internal"
+    if before or there:
+        return "external"
+    return ""
+
+
 def user_match_features(profile, target_role_id: str, target_title: str) -> dict:
     """The structured side of the match. Unknowns stay None so they are not scored as a value."""
     text, target_level = user_path_text(profile, target_role_id, target_title)
@@ -391,15 +417,18 @@ def user_match_features(profile, target_role_id: str, target_title: str) -> dict
     mba = True if ("mba" in titles or "pgdm" in titles) else (False if education else None)
     first = ""
     earliest = None
+    first_job = None
     for job in pm_jobs:
-        year = _year(getattr(job, "start", None))
-        if year and (earliest is None or year < earliest):
+        year = _year(getattr(job, "start", None)) or 9999
+        if earliest is None or year < earliest:
             earliest = year
+            first_job = job
             first = ROLE_LEVEL.get(getattr(job, "role_id", "") or "", "") or ""
     return {
         "text": text,
         "target_level": target_level,
         "prior": priors[0] if priors else "",
+        "move": _entry_move(jobs, first_job),
         "n_pre": len(jobs) - len(pm_jobs) if jobs else None,
         "mba": mba,
         "start_year": min(years) if years else None,
