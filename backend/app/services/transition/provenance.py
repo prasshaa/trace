@@ -29,7 +29,8 @@ def evidence_index(profile, skill_names: Optional[Dict[str, Tuple[str, str]]] = 
     owner: Dict[str, str] = {}
     for e in profile.employment_history:
         for x in e.responsibilities + e.achievements + e.other_evidence:
-            owner[str(x.candidate_evidence_id)] = e.title_raw
+            employer = e.employer.employer_name if e.employer and e.employer.employer_name else None
+            owner[str(x.candidate_evidence_id)] = f"{e.title_raw}, {employer}" if employer else e.title_raw
     for acts in profile.career_activities.values():
         for a in acts:
             for x in a.achievements + a.other_evidence:

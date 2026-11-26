@@ -123,7 +123,8 @@ class ReviewPage {
     const r = this.records;
     const all = this.allReviewable();
     const pending = all.filter((x) => x.review.can_confirm);
-    const done = all.length - pending.length;
+    const rolePending = r.employments.filter((e) => needsRoleConfirmation(e) && !e.review.can_confirm);
+    const done = all.length - pending.length - rolePending.length;
     const untagged = [...r.employments.flatMap((e) => e.evidence), ...r.unattached_evidence]
       .filter((x) => x.review.status !== "rejected" && ["none", "stale"].includes(x.classification.state)).length;
     // Only the job that sets the starting point MUST have a role (the current-position rule); matching the others is
@@ -137,6 +138,7 @@ class ReviewPage {
 
     const attention = [
       pending.length ? h("li", badge(plural(pending.length, "detail remaining", "details remaining"), "caution")) : null,
+      rolePending.length ? h("li", badge(plural(rolePending.length, "role match still to confirm", "role matches still to confirm"), "caution")) : null,
       roleBlocking ? h("li", badge("Your current job needs a role", "caution")) : null,
       optionalUnmatched ? h("li", badge(`${plural(optionalUnmatched, "earlier job has", "earlier jobs have")} no role match (optional)`, "neutral")) : null,
     ].filter(Boolean);

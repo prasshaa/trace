@@ -186,6 +186,8 @@ export const api = {
   careerOrigins: (runId) => send("GET", `/api/v1/career-origins?plan=${q(runId)}`),
   // where a returning user lands: their most recent saved plan for any target (404 when there is none)
   latestAnyPlan: () => send("GET", "/api/v1/transition-plans/latest"),
+  exportData: () => send("GET", "/api/v1/account/export"),
+  deleteAccount: (confirm) => send("POST", "/api/v1/account", { body: { confirm } }),
 
   // DORMANT (redesign): target companies and company research are no longer part of the product flow. The endpoints
   // and data are preserved for possible future use; no view calls these.

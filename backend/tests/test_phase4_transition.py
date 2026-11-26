@@ -396,7 +396,10 @@ def test_targets_outside_the_pack_are_refused_and_the_current_role_is_allowed(c,
     assert not [r for r in same.json()["routes"] if r["route_kind"] == "observed"]       # never a zero-move observed route
     rm = c.get(f"/api/v1/transition-plan/{same.json()['run_id']}/roadmap", headers=h).json()
     assert rm["move"]["kind"] == "same_role"
-    assert c.post("/api/v1/transition-plan?target=PM-APM", headers=h).status_code == 422       # no pack yet, never a 409
+    apm = c.post("/api/v1/transition-plan?target=PM-APM", headers=h)
+    assert apm.status_code == 201, apm.text                                              # APM is a real target
+    apm_rm = c.get(f"/api/v1/transition-plan/{apm.json()['run_id']}/roadmap", headers=h).json()
+    assert apm_rm["support"]["depth"] == "limited" and apm_rm["support"]["label"] == "Limited support"
     assert c.post("/api/v1/transition-plan?target=PM-DIR", headers=h).status_code == 422
 
 

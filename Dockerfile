@@ -13,5 +13,9 @@ WORKDIR /srv/trace/backend
 # After the chown and as the app user, so the 133 MB model is stored in one layer only.
 RUN python -m scripts.fetch_embedding_model /srv/trace/backend/.models/gte-small
 EXPOSE 8080
+# Do not pass --forwarded-allow-ips='*'. That trusts every caller, so a client can spoof X-Forwarded-For and
+# dodge the per-IP rate limit. Uvicorn's default (127.0.0.1) ignores forwarded headers from the platform proxy.
+# Fly: the app reads Fly-Client-IP, which the proxy overwrites. Cloud Run: set TRACE_TRUST_APPENDED_FORWARDED=1
+# so only the last X-Forwarded-For hop (appended by the frontend) is used. See docs/DEPLOYMENT.md.
 CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080", "--workers", "2", \
-     "--proxy-headers", "--forwarded-allow-ips=*", "--no-server-header"]
+     "--proxy-headers", "--no-server-header"]

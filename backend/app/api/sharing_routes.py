@@ -2,12 +2,12 @@
 
 GET  /api/v1/sharing          the onboarding data-use notice, the caller's sharing preference and, separately, the
                               actual state of their profile in the shared pool.
-POST /api/v1/sharing/notice   Continue on the onboarding data-use notice: records the default preference ('shared')
-                              when the caller has none yet. Never overrides an earlier choice.
+POST /api/v1/sharing/notice   Continue on the onboarding data-use notice: records the default preference ('private')
+                              when the caller has none yet. Never overrides an earlier choice. Sharing is opt-in.
 PUT  /api/v1/sharing          a choice in Profile settings: {"mode": "shared" | "private", "confirm_version": ...}.
 
 Three things are kept apart and never inferred from one another:
-  preference           what the user wants ('shared' is the product default after the onboarding notice).
+  preference           what the user wants ('private' is the default after the onboarding notice; sharing is opt-in).
   explicit permission  the existing contribution consent (purpose deidentified_shared_dataset): an explicit 'granted'
                        decision under the current approved notice. Processing for the shared pool still REQUIRES it.
                        Acknowledging the onboarding notice never creates it. Choosing 'shared' in settings with
@@ -39,7 +39,7 @@ router = APIRouter(prefix="/api/v1", tags=["api"])
 
 # v2 (Phase 7.2): the last paragraph now says what the default preference does and does not do. Preferences recorded
 # under v1 keep their recorded version; nothing is re-shown or re-recorded for them.
-NOTICE_VERSION = "trace-data-use-notice-v2"
+NOTICE_VERSION = "trace-data-use-notice-v3"
 NOTICE_TITLE = "Your experience helps make Trace better."
 NOTICE_PARAGRAPHS = (
     "Trace uses your career information to understand your experience and recommend paths for you. It can also use "
@@ -49,9 +49,8 @@ NOTICE_PARAGRAPHS = (
     "experience, to understand career patterns.",
     "Other users see patterns across groups of profiles, not your individual profile. Some combinations of career "
     "details may still make a profile recognisable, so we cannot promise complete anonymity.",
-    "Your sharing preference is set to on by default. Your career details won't be added to shared recommendations until "
-    "you confirm sharing in Profile settings and your profile passes the required checks. You can change your "
-    "preference to private recommendations anytime.",
+    "Sharing is off until you choose it. Your career details are not added to shared recommendations unless you turn "
+    "sharing on in Profile settings and your profile passes the required checks. You can keep recommendations private.",
 )
 
 # Release (D52): where sharing with other users is not offered (TRACE_CONTRIBUTION_POLICY=disabled, the public site), the
