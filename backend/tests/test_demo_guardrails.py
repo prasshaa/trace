@@ -5,7 +5,7 @@ import pytest
 
 from app.api.ratelimit import client_ip
 from app.config import Settings
-from app.services.ai_assessment.client import OpenAICompatible, _json_object, client_from_settings
+from app.services.ai_assessment.client import LlmError, OpenAICompatible, _json_object, client_from_settings
 from app.services.ai_assessment.guardrails import apply_guardrails, collaboration_as_ownership, invented_number, negation_as_positive
 from app.services.capability.interpret import interpret
 from app.services.resume_import import DateInput, PlannedEducation, education_contract
@@ -139,6 +139,73 @@ def test_the_model_client_is_absent_without_a_key_and_json_fences_parse():
     assert "secret-not-logged" not in repr(client)
     assert "secret-not-logged" not in client.base_url
     assert Settings().trace_llm_timeout == 120
+    assert Settings().trace_llm_reasoning_effort == "low"
+    assert client.reasoning_effort == "low"
+
+
+def test_the_request_deadline_is_the_whole_call_and_a_5xx_is_retried_once(monkeypatch):
+    import json as _json
+    import time as _time
+    import urllib.error
+    import urllib.request
+
+    def body():
+        return _json.dumps({"choices": [{"message": {"content": '{"opening": "ok"}'}}],
+                            "usage": {"prompt_tokens": 3, "completion_tokens": 4,
+                                      "completion_tokens_details": {"reasoning_tokens": 1}}}).encode()
+
+    class Resp:
+        def __init__(self):
+            self._buf = body()
+            self.fp = None
+        def read(self, _n=-1):
+            data, self._buf = self._buf, b""
+            return data
+        def close(self):
+            pass
+
+    started = _time.monotonic()
+    def hang(req, timeout=None):
+        _time.sleep(2)
+        raise AssertionError("the caller should have stopped waiting")
+    monkeypatch.setattr(urllib.request, "urlopen", hang)
+    slow = OpenAICompatible(provider="xai", base_url="https://api.x.ai/v1", model="grok-4.7", api_key="secret-not-logged", timeout=0.35)
+    with pytest.raises(LlmError, match="timed out"):
+        slow.complete_json("system", "user")
+    assert _time.monotonic() - started < 1.2
+    assert slow.last_meta["attempts"] == 1
+    assert "secret-not-logged" not in str(slow.last_meta)
+    flaky_n = {"n": 0}
+    def flaky(req, timeout=None):
+        flaky_n["n"] += 1
+        if flaky_n["n"] == 1:
+            raise TimeoutError("slow")
+        return Resp()
+    monkeypatch.setattr(urllib.request, "urlopen", flaky)
+    retry = OpenAICompatible(provider="xai", base_url="https://api.x.ai/v1", model="grok-4.7", api_key="secret-not-logged", timeout=5)
+    assert retry.complete_json("system", "user") == {"opening": "ok"}
+    assert retry.last_meta["attempts"] == 2
+
+    calls = {"n": 0, "effort": []}
+    def once(req, timeout=None):
+        calls["n"] += 1
+        calls["effort"].append(_json.loads(req.data.decode()).get("reasoning_effort"))
+        if calls["n"] == 1:
+            raise urllib.error.HTTPError(req.full_url, 503, "busy", {}, None)
+        return Resp()
+    monkeypatch.setattr(urllib.request, "urlopen", once)
+    client = OpenAICompatible(provider="xai", base_url="https://api.x.ai/v1", model="grok-4.7", api_key="secret-not-logged",
+                              timeout=5, reasoning_effort="low")
+    assert client.complete_json("system", "user") == {"opening": "ok"}
+    assert client.last_meta["attempts"] == 2
+    assert client.last_meta["usage"]["reasoning_tokens"] == 1
+    assert calls["effort"] == ["low", "low"]
+    blank = OpenAICompatible(provider="xai", base_url="https://api.x.ai/v1", model="grok-4.7", api_key="secret-not-logged",
+                             timeout=5, reasoning_effort="")
+    calls["n"] = 1
+    monkeypatch.setattr(urllib.request, "urlopen", lambda req, timeout=None: (calls["effort"].append(_json.loads(req.data.decode()).get("reasoning_effort")) or Resp()))
+    blank.complete_json("system", "user")
+    assert calls["effort"][-1] is None
 
 
 def test_guardrail_probes_from_the_review():
@@ -181,6 +248,96 @@ def test_guardrail_probes_from_the_review():
         {"text": "In a 30-minute session, rewrite 3-4 items on the checklist you already run.", "evidence_ids": ["F01-L3"], "why": ""},
         by, require_citation=False, kind="step")
     assert kept and reason is None
+
+
+def test_f06_and_f07_keep_a_real_claim_and_drop_the_denied_one():
+    """Round 2 dropped these. Denying the roadmap must not cancel the support queue, and 'to choose' is not ownership."""
+    from app.services.ai_assessment.guardrails import keep_claim
+    f06 = [{"id": "F06-L2", "text": "Worked with the product manager to explain the charts. I did not choose the roadmap."}]
+    by06 = {row["id"]: row for row in f06}
+    kept, reason = keep_claim(
+        {"text": "This is the work of someone who has to choose what to build.", "evidence_ids": ["F06-L2"],
+         "why": "Product managers start from what customers struggle with and then decide what matters."},
+        by06, require_citation=True, kind="strength")
+    assert kept and reason is None
+    dropped, reason = keep_claim(
+        {"text": "You chose the roadmap.", "evidence_ids": ["F06-L2"], "why": ""},
+        by06, require_citation=True, kind="strength")
+    assert dropped is None and reason in {"negation", "collaboration_as_ownership"}
+    f07 = [{"id": "F07-L2", "text": "Supported the product team with the top ten ticket themes each month."},
+           {"id": "F07-L3", "text": "Did not own the product roadmap. I owned the support queue."}]
+    by07 = {row["id"]: row for row in f07}
+    kept, reason = keep_claim(
+        {"text": "You owned the support queue.", "evidence_ids": ["F07-L3"], "why": "That queue was yours."},
+        by07, require_citation=True, kind="strength")
+    assert kept and reason is None
+    kept, reason = keep_claim(
+        {"text": "The support queue shows what a product uses to decide what matters.", "evidence_ids": ["F07-L2"], "why": ""},
+        by07, require_citation=True, kind="strength")
+    assert kept and reason is None
+    dropped, reason = keep_claim(
+        {"text": "You owned the product roadmap.", "evidence_ids": ["F07-L3"], "why": ""},
+        by07, require_citation=True, kind="strength")
+    assert dropped is None and reason == "negation"
+
+
+def test_later_guardrail_gaps_from_the_probe():
+    from app.services.ai_assessment.guardrails import apply_guardrails, keep_claim, remove_ids
+    collab = "Worked with the product manager on the roadmap. Did not own the roadmap."
+    design = "Rebuilt the checklist with the design team."
+    lines = [{"id": "F01-L1", "text": collab}, {"id": "D1", "text": design},
+             {"id": "F01-L3", "text": "Raised onboarding completion from 91% to 96%."}]
+    by = {row["id"]: row for row in lines}
+
+    def one(text, cited_id, kind="strength"):
+        return keep_claim({"text": text, "evidence_ids": [cited_id], "why": ""}, by, require_citation=True, kind=kind)
+
+    for word in ("Spearheaded the pilot.", "Took charge of sprint scope.", "Was accountable for the roadmap.",
+                 "Single-handedly rebuilt the checklist."):
+        kept, reason = one(word, "F01-L1")
+        assert kept is None and reason == "collaboration_as_ownership", word
+    assert one("Improved onboarding completion by a fifth.", "F01-L3")[0] is None
+    assert one("Improved onboarding by 3x.", "F01-L3")[0] is None
+    assert one("Cut the work by half.", "F01-L3")[0] is None
+    assert one("Single-handedly rebuilt the checklist, without design.", "D1")[0] is None
+    kept, reason = keep_claim(
+        {"text": "Next, tell recruiters you owned the roadmap.", "evidence_ids": ["F01-L1"], "why": ""},
+        by, require_citation=False, kind="step")
+    assert kept is None and reason in {"negation", "collaboration_as_ownership"}
+    kept, reason = keep_claim(
+        {"text": "Keep owning the roadmap you already own.", "evidence_ids": ["F01-L1"], "why": ""},
+        by, require_citation=False, kind="step")
+    assert kept is None
+    kept, reason = keep_claim(
+        {"text": "Write 3-4 things the team should do next.", "evidence_ids": ["F01-L3"], "why": ""},
+        by, require_citation=False, kind="step")
+    assert kept and reason is None
+    out = apply_guardrails(
+        {"opening": "You shipped the scheduling tool. You improved completion by 40%.",
+         "strengths": [{"text": "You owned the short roadmap.", "evidence_ids": ["F08-L1"],
+                        "why": "You are not expected to own a company metric. The short roadmap was yours."}],
+         "steps": [{"text": "Ask to own the next slice. Treat that as a request, not an opening.",
+                    "evidence_ids": ["F01-L1"], "why": "A next step."}]},
+        lines + [{"id": "F08-L1", "text": "Built and shipped a scheduling tool and owned its short roadmap."}])
+    assert out["opening"] == "You shipped the scheduling tool."
+    assert "40%" not in out["opening"]
+    assert "not expected" not in out["strengths"][0]["why"]
+    assert "Treat that" not in out["steps"][0]["text"]
+    assert "Ask to own the next slice" in out["steps"][0]["text"]
+    assert remove_ids("See F09-L2: no roadmap ownership yet", ["F09-L2"]) == "no roadmap ownership yet"
+    assert remove_ids("You owned a roadmap", ["a"]) == "You owned a roadmap"
+
+
+def test_the_prompt_hides_rubric_notes_and_limits_india_routes():
+    from app.services.ai_assessment.rubric import requirements_for
+    from app.services.ai_assessment.service import SYSTEM, _user_prompt
+    low = SYSTEM.lower()
+    assert "at most one" in low
+    assert 'never write "you are not expected to"' in low
+    assert "current manager" in low
+    text = _user_prompt("PM-APM", "non_pm_to_apm", [{"id": "L1", "text": "Shipped it.", "job": "SWE"}],
+                        requirements_for("PM-APM"), None, "all_lines")
+    assert "context for you, do not repeat" in text
 
 
 def test_short_profiles_keep_every_excerpt_and_long_ones_keep_a_denial():

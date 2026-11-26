@@ -125,8 +125,9 @@ class Settings(BaseSettings):
     trace_llm_api_key: Optional[SecretStr] = None
     # Reasoning models (grok-4.7) often need more than a minute. 120 s is the default; raise it with TRACE_LLM_TIMEOUT.
     trace_llm_timeout: float = Field(default=120, ge=5, le=600)
-    # Optional. Sent as reasoning_effort only when set (for example "low"). Empty means the provider's own default.
-    trace_llm_reasoning_effort: str = ""
+    # grok-4.7 accepts reasoning_effort low|medium|high|xhigh on chat completions. The provider default is high.
+    # low is the demo default (a side check cut 60–170 s calls to about 25–30 s). Set the variable empty to omit it.
+    trace_llm_reasoning_effort: str = "low"
     # Strict-Transport-Security on every response. Only for a deployment served over HTTPS (release, D52).
     trace_hsts: bool = False
     # Interactive API docs (/docs, /redoc, /openapi.json). Off by default; enable only for local development.

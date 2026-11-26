@@ -22,27 +22,35 @@ logger = logging.getLogger(__name__)
 REVIEWED = ("user_confirmed", "user_corrected")
 
 SYSTEM = """You are a career coach sitting with this person, in India, helping them toward a product role.
-Speak only in the second person ("you"). Never say "line", "confirmed line", "evidence id", "retrieval", or "they".
-You are given experience excerpts and the requirements that matter for THIS target. Do not apply a senior rubric to an associate role.
-Do not invent employers, dates, tools, companies, vacancies, salaries, or numbers.
+Speak only in the second person ("you"). Never say "line", "confirmed line", "evidence id", "retrieval", or "they" for this person.
+Use only the experience excerpts. Do not invent employers, dates, tools, companies, vacancies, salaries, or numbers.
+Private notes in the prompt are for you. Never repeat them, and never write "you are not expected to", "not claiming", "do not claim", "without claiming", or "treat that as a request".
 
 Safety, which overrides tone:
 - Put citation ids only in evidence_ids / evidence_id. Never write an id, or the word "line", in text or why.
-- "worked with", "supported", "partnered" and "collaborated" are collaboration, not ownership. Do not say they already owned or led that work.
-- If the excerpt says they did not own, set, define, decide, choose, manage, or run something, do not say they did.
-- Do not introduce a percentage, count, money figure, or a word like "doubled" that is not written in the cited excerpt.
-- A strength is only what they did. A disclaimer ("you did not…") is not a strength.
-- A step may tell them to ask to own something next. That is advice, not a claim they already own it. A step may name a duration (for example two weeks) or a small count of pages.
+- "worked with", "supported", "partnered" and "collaborated" are collaboration, not ownership. Do not say the person already owned or led that work.
+- If an excerpt says they did not own, set, define, decide, choose, manage, or run one thing, do not say they did that thing. A different thing in the same excerpt can still be theirs.
+- Do not introduce a percentage, count, money figure, fraction, or a word like "doubled" that is not written in the cited excerpt.
+- A strength is only what they did. A disclaimer is not a strength.
+- A step may tell them to ask to own something next. That is advice. Do not tell them to tell a recruiter they already owned something the excerpt denies.
+- A step may name a duration (for example two weeks) or a small count of pages.
+
+Length: opening at most 45 words. Each why at most 30 words. The whole reading at most 380 words.
 
 Shape the JSON object exactly like this:
-- opening: two sentences. First, the strongest true signal for this move. Then the single most important gap.
+- opening: two short sentences. First, the strongest true signal for this move. Then the single most important gap.
 - strengths: up to 4 items, positive only. {"text", "evidence_ids", "why"}.
 - transferable: up to 3 items, only when they are not already in product. How this experience maps to product work, cited the same way. Empty for someone already a product manager.
-- gaps: at most 3, ranked, the ones that matter most for this target. {"text", "why"}. Say why it matters in Indian product hiring (an APM programme, a product-sense round, a portfolio, a referral) without inventing a fact about a named company.
+- gaps: at most 3, ranked, the ones that matter most for this target. {"text", "why"}. The why explains the hiring signal once.
 - questions: up to 3. {"text", "evidence_id"}.
-- steps: at most 3. {"text", "evidence_ids", "why"}. At least one is something they can do in the job they have now. At least one is an interview or portfolio artefact (a one-page PRD, a metric teardown, or a case write-up) they could finish in about two weeks. Where it fits, mention an Indian route: an APM programme, a product-sense round, a portfolio piece, or a referral. Do not invent an opening or a salary.
+- steps: at most 3. {"text", "evidence_ids", "why"}. At least one is something they can do in the job they have now. At least one is an interview or portfolio artefact (a one-page PRD, a metric teardown, or a case write-up) they could finish in about two weeks.
 
-Associate targets are not expected to own company strategy or to coach other product managers. Product Manager targets own one area, and are not expected to coach. Senior Product Manager targets can be asked about coaching, scope and senior stakeholders.
+India, at most one route in the whole reading, matched to the move:
+- Into an associate role: one mention of either an APM programme or a product-sense round.
+- Into a product manager role: one mention of a product-sense round together with a portfolio PRD.
+- Into a senior product manager role: one mention of a leadership or strategy case, or a senior referral. Do not mention an APM programme, a product-sense round, or a portfolio piece for a product-sense round.
+Never suggest asking their current manager, or the product manager they support, for a referral outside the company. Do not invent an opening or a salary.
+Coaching other product managers matters only for a senior product manager move.
 """
 
 
@@ -65,7 +73,9 @@ def _user_prompt(target: str, move: str, lines: List[dict], requirements: Sequen
                  retrieval_mode: str) -> str:
     reqs = []
     for r in list(requirements)[:12]:
-        note = f" {r.get('level_note')}" if r.get("level_note") else ""
+        note = ""
+        if r.get("level_note"):
+            note = f" (context for you, do not repeat: {r['level_note']})"
         reqs.append(f"- {r.get('title') or r.get('requirement_key')}: {r.get('description') or ''}{note}".strip())
     ev = [f"- {row['id']} | {row.get('job') or 'role not named'} | {row['text']}" for row in lines]
     answered = ""
@@ -85,7 +95,8 @@ def _env_status() -> dict:
                                                 "TRACE_LLM_REASONING_EFFORT", "TRACE_SEMANTIC_RETRIEVAL", "TRACE_EMBEDDINGS"]}
 
 
-def narrative_for(conn, ctx, profile, roadmap: dict, requirements: Sequence[dict] = (), answers: Optional[List[dict]] = None) -> dict:
+def narrative_for(conn, ctx, profile, roadmap: dict, requirements: Sequence[dict] = (), answers: Optional[List[dict]] = None,
+                  on_attempt=None) -> dict:
     """Status `ready` with a guarded narrative, or `not_configured` / `provider_error` with nothing invented.
     `requirements` from the caller are ignored in favour of the target rubric, so an associate is not scored on coaching."""
     del requirements
@@ -102,16 +113,18 @@ def narrative_for(conn, ctx, profile, roadmap: dict, requirements: Sequence[dict
     target = (roadmap or {}).get("target_role") or target_id or "the target role"
     move = ((roadmap or {}).get("move") or {}).get("text") or ""
     try:
-        raw = client.complete_json(SYSTEM, _user_prompt(target, move, shown, rubric, answers, retrieval.get("mode") or ""))
+        raw = client.complete_json(SYSTEM, _user_prompt(target, move, shown, rubric, answers, retrieval.get("mode") or ""),
+                                   on_attempt=on_attempt)
     except LlmError as exc:
         logger.warning("narrative provider failed: %s", type(exc).__name__)
+        meta = getattr(client, "last_meta", None) or {}
         return {"status": "provider_error", "retrieval": {k: retrieval[k] for k in ("mode", "reason") if k in retrieval},
-                "detail": str(exc)}
+                "detail": str(exc), "attempts": meta.get("attempts"), "latency_s": meta.get("latency_s")}
     guarded = apply_guardrails(raw, shown)
     meta = getattr(client, "last_meta", None) or {}
     return {"status": "ready", "provider": client.provider, "model": client.model,
             "retrieval": retrieval, "lines": shown, "latency_s": meta.get("latency_s"), "usage": meta.get("usage"),
-            **guarded}
+            "attempts": meta.get("attempts"), **guarded}
 
 
 def start_narrative(ctx, profile, roadmap: dict, requirements: Sequence[dict] = ()) -> dict:
@@ -133,7 +146,12 @@ def start_narrative(ctx, profile, roadmap: dict, requirements: Sequence[dict] = 
             except Exception as exc:                                      # noqa: BLE001
                 logger.warning("narrative database unavailable: %s", type(exc).__name__)
                 conn = None
-            return narrative_for(conn, ctx, profile, roadmap, requirements)
+            from app.services.ai_assessment.jobs import note
+
+            def on_attempt(n: int) -> None:
+                note(key, attempt=n, phase="retrying" if n > 1 else "reading")
+
+            return narrative_for(conn, ctx, profile, roadmap, requirements, on_attempt=on_attempt)
         finally:
             if conn is not None:
                 conn.close()
@@ -148,4 +166,4 @@ def narrate_packet(client, lines: List[dict], requirements: Sequence[dict], targ
     guarded = apply_guardrails(raw, lines)
     meta = getattr(client, "last_meta", None) or {}
     return {"status": "ready", "provider": getattr(client, "provider", "openai"), "model": getattr(client, "model", ""),
-            "latency_s": meta.get("latency_s"), "usage": meta.get("usage"), **guarded}
+            "latency_s": meta.get("latency_s"), "usage": meta.get("usage"), "attempts": meta.get("attempts"), **guarded}
