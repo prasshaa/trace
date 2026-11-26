@@ -240,12 +240,12 @@ as $$
     select count(*)::integer as n,
            percentile_cont(0.5) within group (order by yrs) as median
       from (
-        select (extract(year from current_date)::integer - start_year) - months / 12.0 as yrs
+        select (extract(year from current_date)::integer - ranked.start_year) - ranked.months / 12.0 as yrs
           from ranked
           cross join args
          where args.in_pm
-           and start_year is not null and months is not null
-           and (extract(year from current_date)::integer - start_year) - months / 12.0 >= 0
+           and ranked.start_year is not null and ranked.months is not null
+           and (extract(year from current_date)::integer - ranked.start_year) - ranked.months / 12.0 >= 0
       ) s
   ),
   preface as (

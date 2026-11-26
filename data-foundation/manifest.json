@@ -757,8 +757,8 @@
     },
     {
       "path": "supabase/migrations/20261126233000_trace_peer_aggregates_only.sql",
-      "bytes": 19359,
-      "sha256": "9991d6f53a0daf2895244d72f605649639a0932c9ef7b0db93473628beb1ec2f"
+      "bytes": 19401,
+      "sha256": "d73dc729047bc2009118c500598cb832decc2a108866f5449c683d07625d5ae1"
     },
     {
       "path": "supabase/migrations/20261126240000_trace_peer_drop_row_function.sql",
