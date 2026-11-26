@@ -31,7 +31,7 @@ Safety, which overrides tone:
 - "worked with", "supported", "partnered" and "collaborated" are collaboration, not ownership. Do not say the person already owned or led that work.
 - If an excerpt says they did not own, set, define, decide, choose, manage, or run one thing, do not say they did that thing. A different thing in the same excerpt can still be theirs.
 - Do not introduce a percentage, count, money figure, fraction, or a word like "doubled" that is not written in the cited excerpt.
-- At most one step may cite one PEER id, and only when that step is about a progression or a background in that pattern. Do not cite a PEER id on a strength or in the opening. Do not change its numbers.
+- At most one step may cite one PEER id, and only when that step is about the same move as the pattern. A progression pattern belongs on a step about getting promoted or owning the roadmap. A background pattern belongs on a step about that background. Do not cite a PEER id on a generic preparation step (a write-up, a practice round, a course, or a portfolio piece), on a strength, or in the opening. Do not change its numbers.
 - A strength is only what they did. A disclaimer is not a strength.
 - A step may tell them to ask to own something next. That is advice. Do not tell them to tell a recruiter they already owned something the excerpt denies.
 - A step may name a duration (for example two weeks) or a small count of pages.
@@ -112,7 +112,8 @@ def _user_prompt(target: str, move: str, lines: List[dict], requirements: Sequen
 def _env_status() -> dict:
     return {"status": "not_configured", "env": ["TRACE_AI_ASSESSMENT", "TRACE_LLM_API_KEY", "TRACE_LLM_MODEL",
                                                 "TRACE_LLM_BASE_URL", "TRACE_LLM_PROVIDER", "TRACE_LLM_TIMEOUT",
-                                                "TRACE_LLM_REASONING_EFFORT", "TRACE_SEMANTIC_RETRIEVAL", "TRACE_EMBEDDINGS"]}
+                                                "TRACE_LLM_REASONING_EFFORT", "TRACE_LLM_MAX_OUTPUT_TOKENS",
+                                                "TRACE_SEMANTIC_RETRIEVAL", "TRACE_EMBEDDINGS"]}
 
 
 def _paraphrases_pattern(opening: str, pattern: str) -> bool:
@@ -162,10 +163,18 @@ def narrative_for(conn, ctx, profile, roadmap: dict, requirements: Sequence[dict
     except LlmError as exc:
         logger.warning("narrative provider failed: %s", type(exc).__name__)
         meta = getattr(client, "last_meta", None) or {}
-        timed_out = "timed out" in str(exc)
-        return {"status": "retry" if timed_out else "provider_error",
+        message = str(exc)
+        timed_out = "timed out" in message
+        cut_off = "cut off" in message
+        if timed_out:
+            detail = "The reading took too long. It can be tried again. Your plan is unchanged."
+        elif cut_off:
+            detail = "The reading was cut off before it finished. Open the plan again to try once more. Your saved plan is unchanged."
+        else:
+            detail = message
+        return {"status": "retry" if timed_out or cut_off else "provider_error",
                 "retrieval": {k: retrieval[k] for k in ("mode", "reason") if k in retrieval},
-                "detail": "The reading took too long. It can be tried again. Your plan is unchanged." if timed_out else str(exc),
+                "detail": detail,
                 "attempts": meta.get("attempts"), "latency_s": meta.get("latency_s")}
     guarded = apply_guardrails(raw, shown + peer_rows)
     guarded = _keep_peer_pattern(guarded, peers)

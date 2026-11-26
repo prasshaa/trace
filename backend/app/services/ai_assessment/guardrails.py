@@ -322,6 +322,26 @@ def negation_as_positive(claim: str, cited: str) -> bool:
     return False
 
 
+_PREP_STEP = re.compile(
+    r"\b(write|prd|portfolio|product-sense|product sense|practise|practice|course|interview|"
+    r"case study|case write-up|mock)\b",
+    re.I,
+)
+_PROGRESSION_STEP = re.compile(r"\b(promot\w*|own the roadmap|roadmap|next level|started as|or above)\b", re.I)
+_BACKGROUND_STEP = re.compile(r"\bcame from\b|\bbefore a product\b|\bbackground\b", re.I)
+
+
+def _peer_citation_fits(step_text: str, cited: str) -> bool:
+    """A peer pattern stays only on a step about that same move. A prep step never keeps one."""
+    if _PREP_STEP.search(step_text or ""):
+        return False
+    if re.search(r"started as .+ or above|or above", cited or "", re.I) and _PROGRESSION_STEP.search(step_text or ""):
+        return True
+    if re.search(r"came from ", cited or "", re.I) and _BACKGROUND_STEP.search(step_text or ""):
+        return True
+    return False
+
+
 def _peer_claim_problem(text: str, ids: Iterable[str]) -> Optional[str]:
     """A peer citation may repeat the group pattern. It may not name a person or promise an outcome."""
     if not any(str(i).startswith("PEER-") for i in ids):
@@ -352,9 +372,7 @@ def keep_claim(claim: dict, lines: Dict[str, dict], *, require_citation: bool, k
             return None, "peer_evidence"
         peer_ids = [i for i in ids if i.startswith("PEER-")]
         cited = " ".join((lines.get(i) or {}).get("text") or "" for i in peer_ids)
-        relates = bool(re.search(r"started as|or above|came from", raw_text, re.I))
-        allowed = bool(re.search(r"started as .+ or above|came from ", cited, re.I))
-        if len(peer_ids) != 1 or not relates or not allowed:
+        if len(peer_ids) != 1 or not _peer_citation_fits(raw_text, cited):
             ids = [i for i in ids if not i.startswith("PEER-")]
     if any(i and i.lower() in raw_text.lower() for i in ids):
         return None, "leaked_id"
@@ -563,9 +581,7 @@ def _one_peer_step(steps: List[dict], by_id: Dict[str, dict]) -> List[dict]:
             out.append(step)
             continue
         cited = (by_id.get(peer[0]) or {}).get("text") or ""
-        relates = bool(re.search(r"started as|or above|came from", step.get("text") or "", re.I))
-        allowed = bool(re.search(r"started as .+ or above|came from ", cited, re.I))
-        if not seen and len(peer) == 1 and relates and allowed:
+        if not seen and len(peer) == 1 and _peer_citation_fits(step.get("text") or "", cited):
             seen = True
             out.append(step)
             continue

@@ -138,6 +138,9 @@ class Settings(BaseSettings):
     # grok-4.7 accepts reasoning_effort low|medium|high|xhigh on chat completions. The provider default is high.
     # low is the demo default (a side check cut 60–170 s calls to about 25–30 s). Set the variable empty to omit it.
     trace_llm_reasoning_effort: str = "low"
+    # Output tokens for one reading. 800 cut the JSON off (good readings use about 850–1,200). 1,800 is the default.
+    # TRACE_LLM_MAX_OUTPUT_TOKENS overrides it.
+    trace_llm_max_output_tokens: int = Field(default=1800, ge=256, le=8192)
     # Strict-Transport-Security on every response. Only for a deployment served over HTTPS (release, D52).
     trace_hsts: bool = False
     # Interactive API docs (/docs, /redoc, /openapi.json). Off by default; enable only for local development.

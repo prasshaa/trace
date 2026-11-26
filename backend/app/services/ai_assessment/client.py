@@ -31,7 +31,8 @@ class LlmError(Exception):
 
 class OpenAICompatible:
     def __init__(self, *, provider: str, base_url: str, model: str, api_key: str, timeout: float = 120.0,
-                 reasoning_effort: Optional[str] = "low", first_attempt_seconds: float = 70.0):
+                 reasoning_effort: Optional[str] = "low", first_attempt_seconds: float = 70.0,
+                 max_output_tokens: int = 1800):
         self.provider = provider or "openai"
         self.base_url = base_url.rstrip("/")
         self.model = model
@@ -39,6 +40,7 @@ class OpenAICompatible:
         self.timeout = timeout
         # The first try stops early enough that a timeout still leaves time for one retry inside `timeout`.
         self.first_attempt_seconds = float(first_attempt_seconds or timeout)
+        self.max_output_tokens = int(max_output_tokens or 1800)
         # None uses the demo default (low). An empty string omits the field so the provider uses its own default.
         if reasoning_effort is None:
             self.reasoning_effort: Optional[str] = "low"
@@ -57,7 +59,7 @@ class OpenAICompatible:
         payload = {
             "model": self.model,
             "temperature": 0.2,
-            "max_tokens": 800,
+            "max_tokens": self.max_output_tokens,
             "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
             "response_format": {"type": "json_object"},
         }
@@ -118,11 +120,35 @@ class OpenAICompatible:
             latency = round(time.perf_counter() - started, 3)
             try:
                 parsed = json.loads(raw)
-                text = parsed["choices"][0]["message"]["content"]
+                choice = parsed["choices"][0]
+                text = choice["message"]["content"]
+                finish = choice.get("finish_reason") or ""
             except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
                 attempt_log.append({"n": attempt, "ok": False, "error": "bad_payload", "latency_s": latency})
                 self._remember(attempt_log, None, time.perf_counter() - started_all)
                 raise LlmError("the model provider returned an unexpected payload") from exc
+            if finish == "length":
+                try:
+                    value = _json_object(text)
+                except LlmError:
+                    attempt_log.append({"n": attempt, "ok": False, "error": "truncated", "latency_s": latency})
+                    self._remember(attempt_log, None, time.perf_counter() - started_all)
+                    logger.info("llm call provider=%s model=%s attempt=%s truncated latency_s=%.3f",
+                                self.provider, self.model, attempt, latency)
+                    if attempt == 1 and latency < self.timeout * 0.5 and (deadline - time.monotonic()) >= 1:
+                        continue
+                    raise LlmError("the model output was cut off") from None
+                usage = parsed.get("usage") if isinstance(parsed.get("usage"), dict) else {}
+                details = usage.get("completion_tokens_details") if isinstance(usage.get("completion_tokens_details"), dict) else {}
+                clean_usage = {
+                    "prompt_tokens": usage.get("prompt_tokens"),
+                    "completion_tokens": usage.get("completion_tokens"),
+                    "reasoning_tokens": details.get("reasoning_tokens"),
+                }
+                attempt_log.append({"n": attempt, "ok": True, "latency_s": latency})
+                total = round(time.perf_counter() - started_all, 3)
+                self._remember(attempt_log, clean_usage, total)
+                return value
             usage = parsed.get("usage") if isinstance(parsed.get("usage"), dict) else {}
             details = usage.get("completion_tokens_details") if isinstance(usage.get("completion_tokens_details"), dict) else {}
             clean_usage = {
@@ -300,4 +326,5 @@ def client_from_settings(settings) -> Optional[OpenAICompatible]:
         timeout=float(getattr(settings, "trace_llm_timeout", 120) or 120),
         reasoning_effort="low" if effort is None else effort,
         first_attempt_seconds=float(getattr(settings, "trace_llm_first_attempt_seconds", 70) or 70),
+        max_output_tokens=int(getattr(settings, "trace_llm_max_output_tokens", 1800) or 1800),
     )

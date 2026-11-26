@@ -269,9 +269,11 @@ function aiPanel(ws) {
         h("p", ai.status === "not_configured"
           ? "The live reading is off until a model is configured. Trace will not invent one."
           : ai.status === "retry"
-            ? "The reading took too long. Open the plan again to try once more. Your saved plan is unchanged."
+            ? (ai.detail || "The reading didn't finish. Open the plan again to try once more. Your saved plan is unchanged.")
             : "The model didn't return a reading this time. Your saved plan below is unchanged."),
-        h("p.small.muted", ai.status === "not_configured" ? `Set ${env}. The key stays in the environment.` : (ai.detail || ""))));
+        h("p.small.muted", ai.status === "not_configured"
+          ? `Set ${env}. The key stays in the environment.`
+          : (ai.status === "retry" ? null : (ai.detail || "")))));
   }
   const quote = (ids) => {
     const rows = cite(ws, ids);

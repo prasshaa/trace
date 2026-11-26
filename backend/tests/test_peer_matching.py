@@ -93,6 +93,17 @@ def test_peer_numbers_must_match_the_pattern_and_a_person_is_dropped():
          "L1": lines["L1"]},
         require_citation=False, kind="step")
     assert progressed_why is None and progressed["evidence_ids"] == ["PEER-2"]
+    prep, prep_why = keep_claim(
+        {"text": "This week, write a one-page PRD for the queue.", "evidence_ids": ["PEER-2", "L1"]},
+        {"PEER-2": {"id": "PEER-2", "text": "12 of the 16 cohort PMs who started as APM are now Product Manager or above."},
+         "L1": lines["L1"]},
+        require_citation=False, kind="step")
+    assert prep_why is None and prep["evidence_ids"] == ["L1"]
+    promoted, promoted_why = keep_claim(
+        {"text": "Ask to own the roadmap on the way to the next level.", "evidence_ids": ["PEER-2"]},
+        {"PEER-2": {"id": "PEER-2", "text": "12 of the 16 cohort PMs who started as APM are now Product Manager or above."}},
+        require_citation=False, kind="step")
+    assert promoted_why is None and promoted["evidence_ids"] == ["PEER-2"]
     blocked, blocked_why = keep_claim(
         {"text": "24 of the 40 closest PMs moved into a product role from inside the employer.", "evidence_ids": ["PEER-1"]},
         lines, require_citation=True, kind="strength")
