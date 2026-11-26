@@ -34,7 +34,8 @@ select set_config('request.jwt.claim.sub', '00000000-0000-4000-8000-0000000000a1
 select set_config('request.jwt.claims', '{"sub": "00000000-0000-4000-8000-0000000000a1", "role": "authenticated"}', true);
 
 -- ------------------------------------------------------------------ the onboarding default
-select is(trace_contrib.acknowledge_data_use_notice('trace-data-use-notice-v1'), 'private', 'Continue records the default: private');
+select is(trace_contrib.acknowledge_data_use_notice('trace-data-use-notice-v1'), 'shared',
+          'Continue records anonymous recommendation use, not a public profile');
 select is((select source || '/' || notice_version from trace_contrib.my_sharing_preference()),
           'onboarding_default/trace-data-use-notice-v1', 'the source and the notice version are recorded');
 select is((select count(*)::int from public.trace_consent_events where user_id = '00000000-0000-4000-8000-0000000000a1'), 0,

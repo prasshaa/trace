@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.38.0 — 2026-11-26 (anonymous recommendation use is the default)
+
+| Change | Files | Why |
+|---|---|---|
+| `trace_contrib.acknowledge_data_use_notice` records `shared` when the caller has no preference yet. An existing choice is still never overwritten. No consent event is written and nothing is enqueued | migration 55 | New users default to using their data anonymously to improve recommendations. The profile is not published and is not added to the shared pool |
+| Rollback restores the v2.36.0 body (`private`). Preferences already stored are not rewritten | rollback | |
+
 ## 2.37.0 — 2026-11-26 (account deletion can be called)
 
 | Change | Files | Why |

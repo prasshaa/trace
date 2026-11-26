@@ -57,7 +57,7 @@ def test_the_notice_has_one_continue_and_no_choice():
 def test_settings_offer_exactly_two_mutually_exclusive_modes_and_separate_status():
     s = code_of("views/settings.js")
     assert '["shared", "private"].map' in s and s.count('type: "radio"') == 1   # one radio group, two options
-    assert "Use my career information to improve recommendations for everyone" in s
+    assert "Use my data anonymously to improve recommendations for everyone" in s
     assert "Use my career information only for my recommendations" in s
     assert '"Sharing preference"' in s and '"Profile status"' in s
     assert 'if (result.preference !== "private") throw' in s                  # shown only after the API confirms
