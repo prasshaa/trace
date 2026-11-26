@@ -213,7 +213,7 @@ as $$
      where args.in_pm
        and args.first_pm <> ''
        and args.target <> ''
-       and first_pm = args.first_pm
+       and cohort.first_pm = args.first_pm
   ),
   preface as (
     select case
