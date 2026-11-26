@@ -50,7 +50,8 @@ def test_the_loader_rejects_a_missing_column_and_a_bad_bool_and_keeps_a_blank_in
     sentence = cohort_path_text(parsed)
     assert sentence.startswith("Product Manager.")
     assert "Moved into PM internally." in sentence
-    assert "no MBA" in sentence
+    assert "No MBA." in sentence
+    assert "degree" not in sentence.lower()
     assert "not classified" not in sentence
     assert "0 roles" not in sentence
 
@@ -83,15 +84,19 @@ def test_peer_numbers_must_match_the_pattern_and_a_person_is_dropped():
              "L1": {"id": "L1", "text": "Shipped the onboarding queue."}}
     kept, reason = keep_claim(
         {"text": "24 of the 40 closest PMs moved into a product role from inside the employer.", "evidence_ids": ["PEER-1"]},
-        lines, require_citation=True, kind="strength")
+        lines, require_citation=False, kind="step")
     assert reason is None and "24" in kept["text"]
+    blocked, blocked_why = keep_claim(
+        {"text": "24 of the 40 closest PMs moved into a product role from inside the employer.", "evidence_ids": ["PEER-1"]},
+        lines, require_citation=True, kind="strength")
+    assert blocked is None and blocked_why == "peer_evidence"
     dropped, why = keep_claim(
         {"text": "30 of the 40 closest PMs moved into a product role from inside the employer.", "evidence_ids": ["PEER-1"]},
-        lines, require_citation=True, kind="strength")
+        lines, require_citation=False, kind="step")
     assert dropped is None and why == "invented_number"
     person, person_why = keep_claim(
         {"text": "She moved into a product role from inside the employer.", "evidence_ids": ["PEER-1"]},
-        lines, require_citation=True, kind="strength")
+        lines, require_citation=False, kind="step")
     assert person is None and person_why == "peer_individual"
     resume, resume_why = keep_claim(
         {"text": "You shipped the onboarding queue.", "evidence_ids": ["L1"]},
@@ -103,7 +108,8 @@ def test_peer_numbers_must_match_the_pattern_and_a_person_is_dropped():
     }, list(lines.values()))
     assert "30" not in reading["opening"]
     assert reading["strengths"]
-    assert "peer patterns" in SYSTEM.lower() or "PEER" in SYSTEM
+    assert "PEER" in SYSTEM
+    assert "use at least one" not in SYSTEM.lower()
     prompt = _user_prompt("Product Manager", "step up", [{"id": "L1", "text": "Shipped the queue.", "job": "PM"}],
                           [{"title": "Discovery", "description": "Talk to users"}], None, "in_process",
                           {"available": True, "patterns": [{"id": "PEER-1", "text": lines["PEER-1"]["text"]}]})
@@ -122,23 +128,33 @@ def test_the_synthetic_cohort_matches_by_path_and_hides_a_group_of_three():
         # Two directions, so a product-manager path is near the engineering rows and far from the rest.
         row["embedding"] = [1.0, 0.0] if row["final_primary_prior_function"].startswith("Software") else [0.0, 1.0]
         row["profile_key"] = f"s{index}"
-    chosen = nearest(rows, [1.0, 0.0], "Product Manager", k=40)
-    view = patterns_from_neighbours(chosen, "Product Manager")
+    from app.services.peer_matching.aggregate import match_neighbours
+    pool = []
+    for i in range(80):
+        pool.append({**_row(final_primary_prior_function="Software Engineering / QA / IT", final_entry_move="internal",
+                            norm_seniority_group="APM"), "embedding": [1.0, 0.0], "profile_key": f"e{i}"})
+    for i in range(20):
+        pool.append({**_row(final_primary_prior_function="Design / UX", final_entry_move="external",
+                            norm_seniority_group="APM"), "embedding": [0.9, 0.435], "profile_key": f"d{i}"})
+    swe = {"prior": "Software Engineering / QA / IT", "target_level": "APM", "n_pre": 2, "mba": False, "start_year": 2018}
+    design_user = {"prior": "Design / UX", "target_level": "APM", "n_pre": 2, "mba": False, "start_year": 2018}
+    swe_set = {row["profile_key"] for row in match_neighbours(pool, [1.0, 0.0], swe)}
+    design_set = {row["profile_key"] for row in match_neighbours(pool, [0.92, 0.39], design_user)}
+    assert len(swe_set & design_set) < 30
+    assert any(key.startswith("d") for key in design_set)
+    cohort = rows + [_row(final_entry_move="external", final_primary_prior_function="Business / Consulting / Finance / Operations")
+                     for _ in range(80)]
+    neighbours = [row for row in rows if row["final_primary_prior_function"].startswith("Software")][:24]
+    view = patterns_from_neighbours(neighbours, "APM", cohort, user=swe)
     assert view["available"] is True
-    assert view["headline"] == "PMs with paths like yours"
-    assert view["match_line"] == "Matched by similarity of career path."
     blob = " ".join(item["text"] for item in view["patterns"])
-    assert "3 of the" not in blob
-    assert "VP/CPO" not in blob or "5–9" in blob or "3 of" not in blob
-    assert "inside the employer" in blob
+    assert "3 of the" not in blob and "5–9 of the 10" not in blob
+    assert "degree" not in blob.lower()
     assert "Software Engineering / QA / IT" in blob
+    assert "compared with about" in blob
     assert raw_counts_hidden(view)
-    assert "LinkedIn" not in blob
     assert "not a guarantee" in view["disclaimer"]
-    hidden = patterns_from_neighbours(chosen, "VP/CPO")
-    assert "3 of the" not in " ".join(item["text"] for item in hidden["patterns"])
-    assert view["takeaways"]
-    assert "are at" not in blob
+    assert "middle value" not in " ".join(view["takeaways"])
     assert peer_section(None, None, "PM-PM", "Product Manager") == {"available": False}
 
 
@@ -205,9 +221,9 @@ def test_duplicate_rows_keep_distinct_keys_and_backgrounds_match():
     assert "0 roles" not in sentence
     assert "not classified" not in sentence
     sales = SimpleNamespace(employment_history=[job("Sales Manager", "", "sales")], education=[])
-    assert "Sales / Marketing" in user_path_text(sales, "PM-PM", "Product Manager")[0]
+    assert "Sales / Marketing / Customer Success" in user_path_text(sales, "PM-PM", "Product Manager")[0]
     founder = SimpleNamespace(employment_history=[job("Founder", "ROLE-ENT", "entrepreneurship")], education=[])
-    assert "Founder" in user_path_text(founder, "PM-PM", "Product Manager")[0]
+    assert "Entrepreneurship / Founders" in user_path_text(founder, "PM-PM", "Product Manager")[0]
     analyst = SimpleNamespace(employment_history=[job("Business Analyst", "", "analysis")], education=[])
     assert "Business / Consulting / Finance / Operations" in user_path_text(analyst, "PM-PM", "Product Manager")[0]
     data = SimpleNamespace(employment_history=[job("Data Analyst", "", "analysis")], education=[])
@@ -219,21 +235,18 @@ def test_duplicate_rows_keep_distinct_keys_and_backgrounds_match():
     pm_text, pm_level = user_path_text(pm, "PM-PM", "Product Manager")
     assert pm_level == "Product Manager"
     assert "Current: APM." in pm_text
-    assert "product roles" in pm_text
-    assert "in product" in pm_text
+    assert "1 product role." in pm_text
+    assert "years since career start" in pm_text
     assert "Software Engineering / QA / IT" in pm_text
     assert "Scope: Payments." in pm_text
     assert "not classified" not in pm_text
 
 
 def test_the_level_nudge_is_small_and_patterns_are_the_distinctive_ones():
-    from app.services.peer_matching.aggregate import SAME_LEVEL_BONUS, level_bonus
-    assert SAME_LEVEL_BONUS <= 0.03
-    assert level_bonus("Product Manager", "Product Manager") == 0.03
-    assert level_bonus("APM", "Product Manager") == 0.02
-    assert level_bonus("VP/CPO", "Product Manager") == 0.0
-    sql = (ROOT / "data-foundation/supabase/migrations/20261126223000_trace_peer_pattern_quality.sql").read_text()
-    assert "0.03" in sql and "0.15" not in sql.split("as $$", 1)[1].split("$$;", 1)[0]
+    sql = (ROOT / "data-foundation/supabase/migrations/20261126230000_trace_peer_rerank_pool.sql").read_text()
+    body = sql.split("as $$", 1)[1].split("$$;", 1)[0]
+    assert "120" in body and "0.15" not in body and "profile_key" not in body
+    assert "candidates" in body
     cohort = [_row(final_entry_move="external", final_primary_prior_function="Business / Consulting / Finance / Operations")
               for _ in range(30)]
     cohort += [_row(final_entry_move="internal", final_primary_prior_function="Design / UX",
@@ -249,7 +262,8 @@ def test_the_level_nudge_is_small_and_patterns_are_the_distinctive_ones():
     outside = [_row(final_entry_move="external") for _ in range(20)]
     outside += [_row(final_entry_move="internal") for _ in range(6)]
     external_view = patterns_from_neighbours(outside, "Product Manager", outside)
-    assert all("inside the same employer" not in line for line in external_view["takeaways"])
+    assert all("inside the same employer" not in line for line in external_view.get("takeaways") or [])
+    assert "middle value" not in " ".join(external_view.get("takeaways") or [])
     inside = [_row(final_entry_move="internal") for _ in range(20)]
     inside += [_row(final_entry_move="external") for _ in range(6)]
     inside_view = patterns_from_neighbours(inside, "Product Manager", cohort)
@@ -266,3 +280,28 @@ def test_a_structured_opening_stays_prose_and_the_limit_ends_on_a_sentence():
     second = " ".join(["beta"] * 20) + "."
     third = " ".join(["gamma"] * 30) + "."
     assert trim_at_sentence(f"{first} {second} {third}", 45) == f"{first} {second}"
+    from app.services.ai_assessment.service import _keep_peer_pattern
+    opening = _keep_peer_pattern(
+        {"opening": "You shipped the onboarding queue and have not set a success metric."},
+        {"available": True, "patterns": [{"id": "PEER-1", "text": "24 of the 40 closest PMs moved internally."}]})
+    assert opening["opening"].startswith("You shipped")
+    paraphrased = _keep_peer_pattern(
+        {"opening": "24 of the 40 people with a similar path moved internally. You shipped the queue."},
+        {"available": True, "patterns": [{"id": "PEER-1", "text": "24 of the 40 closest PMs moved internally."}]})
+    assert paraphrased["opening"].startswith("24 of the 40")
+    zeros = [_row(final_n_pre_pm_roles="0", final_months_to_first_pm_from_earliest_nonintern=str(60 + i)) for i in range(12)]
+    real = [_row(final_n_pre_pm_roles=str(2 + (i % 2)), final_months_to_first_pm_from_earliest_nonintern=str(48 + i)) for i in range(12)]
+    from app.services.peer_matching.aggregate import stats_from_rows
+    assert 0 not in stats_from_rows(zeros + real)["pre"]
+    started = [_row(final_first_pm_group="APM", norm_seniority_group="Product Manager", final_n_pm_roles="2") for _ in range(12)]
+    started += [_row(final_first_pm_group="APM", norm_seniority_group="APM", final_n_pm_roles="1") for _ in range(4)]
+    progressed = patterns_from_neighbours(started, "Product Manager", started, user={"in_pm": True, "first_pm_level": "APM", "target_level": "Product Manager"})
+    assert any("started as APM" in item["text"] and "Product Manager or above" in item["text"] for item in progressed["patterns"])
+    hidden_start = patterns_from_neighbours(started, "Senior Product Manager", started,
+                                           user={"in_pm": True, "first_pm_level": "Product Manager", "target_level": "Senior Product Manager"})
+    assert all("started as Product Manager" not in item["text"] for item in hidden_start.get("patterns") or [])
+    design_rows = [_row(final_primary_prior_function="Design / UX") for _ in range(2)]
+    engineering = [_row(final_primary_prior_function="Software Engineering / QA / IT", final_entry_move="internal") for _ in range(20)]
+    base = [_row() for _ in range(20)]
+    thin = patterns_from_neighbours(engineering, "APM", design_rows + engineering + base, user={"prior": "Design / UX", "target_level": "APM"})
+    assert thin.get("preface", "").startswith("Few PMs in our data came from design")

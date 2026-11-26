@@ -5,13 +5,20 @@ It does not predict a move, and it does not describe one person.
 """
 from __future__ import annotations
 
-import math
 import re
 from typing import Optional, Sequence
 
 from app.services.peer_matching.text import LEVELS
 
 K = 40
+POOL = 120
+MIN_LIFT = 1.2
+BACKGROUND_WEIGHT = 0.20
+MOVE_WEIGHT = 0.08
+LEVEL_WEIGHT = 0.12
+PRE_WEIGHT = 0.06
+MBA_WEIGHT = 0.04
+YEAR_WEIGHT = 0.06
 
 
 def band_count(n: int) -> Optional[str]:
@@ -44,14 +51,71 @@ def cosine(a: Sequence[float], b: Sequence[float]) -> float:
     return float(sum(x * y for x, y in zip(a, b)))
 
 
-def nearest(rows: Sequence[dict], query: Sequence[float], target_level: str, k: int = K) -> list:
-    """The k closest profiles. Vector similarity leads. A nearby seniority group is a soft bonus, not a filter."""
-    scored = []
-    for row in rows:
-        score = cosine(query, row["embedding"]) + level_bonus(row["norm_seniority_group"], target_level)
-        scored.append((score, row))
+def nearest(rows: Sequence[dict], query: Sequence[float], target_level: str, k: int = POOL) -> list:
+    """Stage 1: the closest profiles by embedding only. The level argument is unused here."""
+    del target_level
+    scored = [(cosine(query, row["embedding"]), row) for row in rows if row.get("embedding")]
     scored.sort(key=lambda item: (-item[0], item[1].get("profile_key", "")))
-    return [row for _, row in scored[: max(1, min(k, K))]]
+    return [row for _, row in scored[: max(1, min(k, POOL))]]
+
+
+def _pre_bucket(n) -> Optional[int]:
+    if not isinstance(n, int):
+        return None
+    if n <= 0:
+        return 0
+    if n == 1:
+        return 1
+    if n <= 3:
+        return 2
+    return 3
+
+
+def structured_score(row: dict, user: dict) -> float:
+    """Stage 2. Each part is zero when that fact is unknown on either side."""
+    score = 0.0
+    prior = (user or {}).get("prior") or ""
+    row_prior = (row.get("final_primary_prior_function") or "").strip()
+    if prior and row_prior and prior == row_prior:
+        score += BACKGROUND_WEIGHT
+    row_move = row.get("final_entry_move") or ""
+    if (user or {}).get("move") and row_move and user["move"] == row_move:
+        score += MOVE_WEIGHT
+    target = (user or {}).get("target_level") or ""
+    level = row.get("norm_seniority_group") or ""
+    if target in LEVELS and level in LEVELS:
+        distance = abs(LEVELS.index(level) - LEVELS.index(target))
+        score += LEVEL_WEIGHT * max(0.0, 1 - distance / 4)
+    user_bucket = _pre_bucket(user.get("n_pre") if user else None)
+    row_pre = row.get("final_n_pre_pm_roles") if row.get("final_has_history") else None
+    row_bucket = _pre_bucket(row_pre if isinstance(row_pre, int) else None)
+    if user_bucket is not None and row_bucket is not None and user_bucket == row_bucket:
+        score += PRE_WEIGHT
+    if user and user.get("mba") is not None and row.get("has_mba") is not None and bool(user["mba"]) == bool(row["has_mba"]):
+        score += MBA_WEIGHT
+    user_year = user.get("start_year") if user else None
+    row_year = row.get("norm_career_start_year")
+    if isinstance(user_year, int) and isinstance(row_year, int):
+        score += YEAR_WEIGHT * max(0.0, 1 - abs(user_year - row_year) / 15)
+    return score
+
+
+def rerank(pool: Sequence[dict], query: Sequence[float], user: dict, k: int = K) -> list:
+    """Stage 2: embedding similarity plus the structured score. The result is the neighbour set."""
+    scored = []
+    for row in pool:
+        base = row.get("cosine")
+        if base is None and query is not None and row.get("embedding"):
+            base = cosine(query, row["embedding"])
+        total = float(base or 0) + structured_score(row, user or {})
+        scored.append((total, row.get("profile_key", ""), row))
+    scored.sort(key=lambda item: (-item[0], item[1]))
+    return [row for _, _, row in scored[: max(1, min(k, K))]]
+
+
+def match_neighbours(rows: Sequence[dict], query: Sequence[float], user: dict, k: int = K) -> list:
+    """Top pool by embedding, then the structured rerank."""
+    return rerank(nearest(rows, query, (user or {}).get("target_level") or "", POOL), query, user, k)
 
 
 def _rounded_span(values: Sequence[int]) -> Optional[tuple]:
@@ -81,35 +145,28 @@ def _median(values: Sequence[int]) -> Optional[int]:
     return int(round((ordered[mid - 1] + ordered[mid]) / 2))
 
 
-def _shown(n: int) -> Optional[str]:
-    return band_count(n)
-
-
-def _share(count: int, known: int, rest: str) -> Optional[str]:
-    """A share over the profiles that have the field. Both the count and that denominator respect the minimum of 5."""
+def _share(count: int, known: int, rest: str, cohort_count: int, cohort_known: int, cohort_n: int):
+    """(sentence or None, lift). A band is not placed next to a small exact denominator."""
     if known < 5 or count < 5:
-        return None
-    count_text = _shown(count)
-    known_text = _shown(known) if known < 10 else str(known)
-    if not count_text or not known_text:
-        return None
-    return f"{count_text} of the {known_text} closest PMs {rest}"
-
-
-def _rate(count: int, known: int) -> Optional[float]:
-    if known <= 0:
-        return None
-    return count / known
-
-
-def _lift(neighbour: Optional[float], cohort: Optional[float]) -> float:
-    if neighbour is None:
-        return 0.0
-    if not cohort:
-        return 2.0 if neighbour else 0.0
-    if neighbour <= 0:
-        return 0.0
-    return neighbour / cohort
+        return None, 0.0
+    neighbour_rate = count / known
+    cohort_rate = (cohort_count / cohort_known) if cohort_known else 0.0
+    lift = (neighbour_rate / cohort_rate) if cohort_rate else (2.0 if neighbour_rate else 0.0)
+    if lift < MIN_LIFT:
+        return None, lift
+    if count < 10 and known < 20:
+        if neighbour_rate < 0.5:
+            return None, lift
+        head = f"Most of the {known} closest PMs"
+    elif count < 10:
+        head = f"5–9 of the {known} closest PMs"
+    else:
+        head = f"{count} of the {known} closest PMs"
+    text = f"{head} {rest}"
+    if cohort_known >= 10 and cohort_n >= 10:
+        pct = int(round((cohort_rate * 100) / 5.0) * 5)
+        text += f", compared with about {pct}% of all {cohort_n} PMs"
+    return text, lift
 
 
 def stats_from_rows(rows: Sequence[dict]) -> dict:
@@ -132,8 +189,9 @@ def stats_from_rows(rows: Sequence[dict]) -> dict:
             priors[label] = priors.get(label, 0) + 1
         if isinstance(row.get("final_months_to_first_pm_from_earliest_nonintern"), int):
             months.append(row["final_months_to_first_pm_from_earliest_nonintern"])
-        if row.get("final_has_history") and isinstance(row.get("final_n_pre_pm_roles"), int):
-            pre.append(row["final_n_pre_pm_roles"])
+        n_pre = row.get("final_n_pre_pm_roles")
+        if row.get("final_has_history") and isinstance(n_pre, int) and n_pre > 0:
+            pre.append(n_pre)
         if row.get("has_mba") is not None:
             mba_known += 1
             if row.get("has_mba"):
@@ -163,74 +221,147 @@ def stats_from_rows(rows: Sequence[dict]) -> dict:
     }
 
 
-def _candidates(group: dict, cohort: dict) -> list:
-    """One candidate pattern per share, scored by how far it sits from the whole cohort."""
+def _candidates(group: dict, cohort: dict, cohort_n: int, user: Optional[dict] = None) -> list:
+    """Shares that are at least 1.2 times the whole-cohort rate. Under-indexing is not promoted."""
     out = []
+    user = user or {}
 
-    def add(count, known, cohort_count, cohort_known, text, kind, raw):
+    def add(count, known, cohort_count, cohort_known, rest, kind, rate_count):
+        text, lift = _share(count, known, rest, cohort_count, cohort_known, cohort_n)
         if not text:
             return
-        score = abs(math.log(_lift(_rate(count, known), _rate(cohort_count, cohort_known)) or 1.0))
-        out.append({"text": text, "score": score, "count": count, "kind": kind, "raw": raw})
+        out.append({"text": text, "score": lift, "count": count, "known": known, "kind": kind,
+                    "rate": rate_count / known if known else 0, "cohort_rate": (cohort_count / cohort_known) if cohort_known else 0})
 
     add(group["internal"], group["move_known"], cohort.get("internal", 0), cohort.get("move_known", 0),
-        _share(group["internal"], group["move_known"], "with a recorded move moved into a product role from inside the employer."),
-        "internal", group["internal"])
+        "with a recorded move moved into a product role from inside the employer.", "internal", group["internal"])
     add(group["external"], group["move_known"], cohort.get("external", 0), cohort.get("move_known", 0),
-        _share(group["external"], group["move_known"], "with a recorded move moved into a product role from outside the employer."),
-        "external", group["external"])
+        "with a recorded move moved into a product role from outside the employer.", "external", group["external"])
+    target = user.get("target_level") or ""
+    hide_started_pm = target in LEVELS and LEVELS.index(target) > LEVELS.index("Product Manager")
     for label, count in group["priors"].items():
         add(count, group["prior_known"], cohort.get("priors", {}).get(label, 0), cohort.get("prior_known", 0),
-            _share(count, group["prior_known"], f"with a recorded background came from {label} before a product role."),
-            "prior", count)
-    for label, count in group["first"].items():
-        add(count, group["first_known"], cohort.get("first", {}).get(label, 0), cohort.get("first_known", 0),
-            _share(count, group["first_known"], f"with a recorded first product level started in product as {label}."),
-            "first", count)
+            f"with a recorded background came from {label} before a product role.", "prior", count)
+    if not user.get("in_pm"):
+        for label, count in group["first"].items():
+            if hide_started_pm and label == "Product Manager":
+                continue
+            add(count, group["first_known"], cohort.get("first", {}).get(label, 0), cohort.get("first_known", 0),
+                f"with a recorded first product level started in product as {label}.", "first", count)
     add(group["mba"], group["mba_known"], cohort.get("mba", 0), cohort.get("mba_known", 0),
-        _share(group["mba"], group["mba_known"], "had an MBA."), "mba", group["mba"])
-    add(group["degree"], group["degree_known"], cohort.get("degree", 0), cohort.get("degree_known", 0),
-        _share(group["degree"], group["degree_known"], "with a recorded degree had a degree."), "degree", group["degree"])
+        "had an MBA.", "mba", group["mba"])
     months = group.get("months") or []
-    cohort_months = cohort.get("months") or []
     median = _median(months)
-    if median is not None:
-        base = _median(cohort_months)
-        gap = abs(median - base) / max(base or 1, 1) if base is not None else 0.5
-        text = (f"Among the {len(months)} closest PMs with a dated path, the middle time to a first product role "
-                f"was about {median} months.")
-        out.append({"text": text, "score": gap, "count": len(months), "kind": "months", "raw": median})
-        span = _rounded_span(months)
-        if span:
-            out.append({"text": f"Most of those dated paths took about {span[0]} to {span[1]} months.",
-                        "score": gap, "count": len(months), "kind": "span", "raw": span[0]})
+    base = _median(cohort.get("months") or [])
+    if median is not None and (base is None or median >= base * MIN_LIFT or base >= median * MIN_LIFT):
+        out.append({"text": (f"Among the {len(months)} closest PMs with a dated path, the middle time to a first product role "
+                             f"was about {median} months."),
+                    "score": MIN_LIFT, "count": len(months), "known": len(months), "kind": "months",
+                    "rate": 1, "cohort_rate": 0})
     pre = group.get("pre") or []
     pre_med = _median(pre)
-    if pre_med is not None:
-        base = _median(cohort.get("pre") or [])
-        gap = abs(pre_med - base) / max(base or 1, 1) if base is not None else 0.5
-        out.append({"text": (f"Among the {len(pre)} closest PMs with roles recorded before product, the middle number "
+    if pre_med is not None and pre_med > 0:
+        out.append({"text": (f"Among the {len(pre)} closest PMs who had a role before product, the middle number "
                              f"of those roles was about {pre_med}."),
-                    "score": gap, "count": len(pre), "kind": "pre", "raw": pre_med})
+                    "score": MIN_LIFT, "count": len(pre), "known": len(pre), "kind": "pre",
+                    "rate": 1, "cohort_rate": 0})
     return out
 
 
 def _rank(candidates: list) -> list:
-    """Up to 10 patterns. Distinctive ones lead. A near-match to the whole cohort is kept only to fill the section."""
     ordered = sorted(candidates, key=lambda item: (-item["score"], -item["count"], item["text"]))
-    distinctive = [item for item in ordered if item["score"] >= 0.15]
-    chosen = distinctive[:10] if len(distinctive) >= 3 else ordered[:10]
-    return [{"id": f"PEER-{i + 1}", "text": item["text"], "kind": item["kind"]} for i, item in enumerate(chosen)]
+    return ordered[:10]
 
 
-def present(group: dict, cohort: Optional[dict] = None) -> dict:
-    """The public section. `cohort` is the same counts for every loaded profile, used only to rank."""
+def _background_name(label: str) -> str:
+    short = {
+        "Design / UX": "design",
+        "Software Engineering / QA / IT": "software engineering",
+        "Business / Consulting / Finance / Operations": "business or consulting",
+        "Data / Analytics / Research": "data or analytics",
+        "Sales / Marketing / Customer Success": "sales or marketing",
+        "Entrepreneurship / Founders": "founding",
+    }
+    return short.get(label, label[:1].lower() + label[1:] if label else "that background")
+
+
+def progression_lines(by_first: dict, user: Optional[dict]) -> list:
+    """Where people who started at this user's first product level are now. No timing is invented."""
+    user = user or {}
+    if not user.get("in_pm"):
+        return []
+    start = user.get("first_pm_level") or ""
+    target = user.get("target_level") or ""
+    if start not in LEVELS or target not in LEVELS or start not in (by_first or {}):
+        return []
+    if LEVELS.index(target) > LEVELS.index("Product Manager") and start == "Product Manager":
+        return []
+    block = by_first[start] or {}
+    n = int(block.get("n") or 0)
+    reached = int((block.get("reached") or {}).get(target) or 0)
+    if n < 5 or reached < 5:
+        return []
+    if reached < 10 and n < 20:
+        if reached / n < 0.5:
+            return []
+        head = f"Most of the {n} cohort PMs who started as {start}"
+    elif reached < 10:
+        head = f"5–9 of the {n} cohort PMs who started as {start}"
+    else:
+        head = f"{reached} of the {n} cohort PMs who started as {start}"
+    lines = [f"{head} are now {target} or above."]
+    roles_n = int(block.get("pm_roles_n") or 0)
+    median = block.get("pm_roles_median")
+    if roles_n >= 10 and median is not None and int(round(float(median))) > 0:
+        lines.append(f"The middle number of product roles along that path was about {int(round(float(median)))}.")
+    return lines
+
+
+def by_first_from_rows(rows: Sequence[dict]) -> dict:
+    grouped: dict = {}
+    for row in rows:
+        start = (row.get("final_first_pm_group") or "").strip()
+        level = row.get("norm_seniority_group") or ""
+        if not start:
+            continue
+        slot = grouped.setdefault(start, {"rows": []})
+        slot["rows"].append(row)
+    out = {}
+    for start, slot in grouped.items():
+        people = slot["rows"]
+        if start not in LEVELS:
+            continue
+        reached = {}
+        for level in LEVELS:
+            want = LEVELS.index(level)
+            reached[level] = sum(1 for row in people if (row.get("norm_seniority_group") or "") in LEVELS
+                                 and LEVELS.index(row["norm_seniority_group"]) >= want)
+        roles = [row.get("final_n_pm_roles") for row in people if isinstance(row.get("final_n_pm_roles"), int) and row["final_n_pm_roles"] > 0]
+        out[start] = {"n": len(people), "reached": reached, "pm_roles_n": len(roles), "pm_roles_median": _median(roles)}
+    return out
+
+
+def present(group: dict, cohort: Optional[dict] = None, user: Optional[dict] = None,
+            by_first: Optional[dict] = None, background_counts: Optional[dict] = None) -> dict:
+    """The public section. Patterns are only those well above the whole-cohort rate."""
     cohort = cohort or group
     total = int(group.get("n") or 0)
+    cohort_n = int(cohort.get("n") or 0)
     if total < 5:
         return {"available": False, "reason": "too_few"}
-    patterns = _rank(_candidates(group, cohort))
-    if not patterns:
+    ranked = _rank(_candidates(group, cohort, cohort_n, user))
+    extra = progression_lines(by_first or {}, user)
+    patterns = [{"id": f"PEER-{i + 1}", "text": item["text"]} for i, item in enumerate(ranked)]
+    for line in extra:
+        if len(patterns) >= 10:
+            break
+        patterns.append({"id": f"PEER-{len(patterns) + 1}", "text": line})
+    prior = (user or {}).get("prior") or ""
+    preface = ""
+    if prior and background_counts is not None and int(background_counts.get(prior) or 0) < 5:
+        preface = (f"Few PMs in our data came from {_background_name(prior)}; "
+                   "here is what PMs with similar experience did.")
+    if not patterns and not preface:
         return {"available": False, "reason": "too_few"}
     return {
         "available": True,
@@ -238,38 +369,46 @@ def present(group: dict, cohort: Optional[dict] = None) -> dict:
         "neighbour_count": total,
         "headline": "PMs with paths like yours",
         "match_line": "Matched by similarity of career path.",
+        "preface": preface,
         "disclaimer": "These are patterns across the closest profiles, not a prediction and not a guarantee.",
         "patterns": patterns,
-        "takeaways": _takeaways(patterns, group.get("internal") or 0, group.get("external") or 0),
+        "takeaways": _takeaways(ranked),
         "note": "Your profile is not in this group. A pattern shared by fewer than 5 people is left out. "
                 "A pattern shared by 5 to 9 people is shown as a range.",
     }
 
 
-def patterns_from_neighbours(rows: Sequence[dict], target_level: str, cohort_rows: Optional[Sequence[dict]] = None) -> dict:
+def patterns_from_neighbours(rows: Sequence[dict], target_level: str, cohort_rows: Optional[Sequence[dict]] = None,
+                             user: Optional[dict] = None) -> dict:
     """The public pattern object. No profile key, city, or raw count under 5 leaves this function."""
-    del target_level
-    return present(stats_from_rows(rows), stats_from_rows(cohort_rows if cohort_rows is not None else rows))
+    cohort_rows = list(cohort_rows if cohort_rows is not None else rows)
+    features = dict(user or {})
+    features.setdefault("target_level", target_level)
+    counts: dict = {}
+    for row in cohort_rows:
+        label = (row.get("final_primary_prior_function") or "").strip()
+        if label:
+            counts[label] = counts.get(label, 0) + 1
+    return present(stats_from_rows(rows), stats_from_rows(cohort_rows), features, by_first_from_rows(cohort_rows), counts)
 
 
-def _takeaways(patterns: Sequence[dict], internal: int, external: int) -> list:
-    """Up to three short lines. The inside-move line is used only when inside moves are the larger group."""
+def _takeaways(patterns: Sequence[dict]) -> list:
+    """A frequent-path line only when the pattern is above the cohort rate and at least about 30% of the group."""
     out = []
-    shown = " ".join(item["text"] for item in patterns)
-    if internal > external and "from inside the employer" in shown and len(out) < 3:
-        out.append("A common step in this group was moving into product inside the same employer.")
-    if "came from Software Engineering" in shown and len(out) < 3:
-        out.append("Software engineering, QA or IT was a frequent path into product in this group.")
-    if "came from Business" in shown and len(out) < 3:
-        out.append("Business, consulting, finance or operations was a frequent path into product in this group.")
-    if "came from Design / UX" in shown and len(out) < 3:
-        out.append("Design was a frequent path into product in this group.")
-    if "came from Data / Analytics" in shown and len(out) < 3:
-        out.append("Data, analytics or research was a frequent path into product in this group.")
-    if "had an MBA" in shown and len(out) < 3:
-        out.append("An MBA shows up in this group, and it is not described as a requirement.")
-    if "middle time" in shown and len(out) < 3:
-        out.append("The time to a first product role, for those with dates, is stated as a middle value for the group.")
+    for item in patterns:
+        if item.get("rate", 0) < 0.30 or item.get("rate", 0) <= item.get("cohort_rate", 0):
+            continue
+        text = item["text"]
+        if "from inside the employer" in text and len(out) < 3:
+            out.append("A common step in this group was moving into product inside the same employer.")
+        elif "came from Software Engineering" in text and len(out) < 3:
+            out.append("Software engineering, QA or IT was a frequent path into product in this group.")
+        elif "came from Business" in text and len(out) < 3:
+            out.append("Business, consulting, finance or operations was a frequent path into product in this group.")
+        elif "came from Design / UX" in text and len(out) < 3:
+            out.append("Design was a frequent path into product in this group.")
+        elif "had an MBA" in text and len(out) < 3:
+            out.append("An MBA shows up in this group, and it is not described as a requirement.")
     return out[:3]
 
 

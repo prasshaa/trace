@@ -192,6 +192,7 @@ function peerPanel(ws) {
     h("div.ws-section-head", h("h2.ws-h2", { id: "ov-peers" }, h("span.ov-letter", "A"), peers.headline || "PMs with paths like yours")),
     h("article.ws-card.ov-peers-card",
       h("p.ov-kind", peers.match_line || "Matched by similarity of career path."),
+      peers.preface ? h("p", peers.preface) : null,
       peers.neighbour_count ? h("p.ws-display-sm", `${peers.neighbour_count} closest PMs`) : null,
       h("p", peers.disclaimer || "These are patterns across the closest profiles, not a prediction and not a guarantee."),
       patterns.length ? h("ul.ov-caps", patterns.map((item) => h("li.ov-cap", h("p", item.text)))) : null,

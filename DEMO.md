@@ -39,8 +39,9 @@ For the demo, set `TRACE_CONTRIBUTION_POLICY=anonymous`. Continuing sign-up then
 (anonymous use to improve recommendations) and shows that notice. A contribution grant is still refused, so nothing
 is queued for a shared pool. `disabled` is the public-site setting: it records private instead.
 
-v2.39.0 adds `trace_peer_cohort`. v2.40.0 narrows the level nudge and lets a blank degree or pre-PM count stay unknown.
-Reload the cohort after applying v2.40.0. It is off until `TRACE_PEER_MATCHING=1`. The real cohort file is not in this
+v2.39.0 adds `trace_peer_cohort`. v2.40.0 lets a blank degree or pre-PM count stay unknown.
+v2.41.0 returns the closest 120 anonymous profiles so the app can rerank them. The path sentence also changed,
+so reload the cohort after applying v2.41.0. It is off until `TRACE_PEER_MATCHING=1`. The real cohort file is not in this
 repository. Load a local CSV with:
 
 ```sh

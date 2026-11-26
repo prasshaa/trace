@@ -167,16 +167,30 @@ def parse_row(raw: dict) -> dict:
     }
 
 
+def role_phrase(n: int, singular: str) -> str:
+    return f"{n} {singular}" if n == 1 else f"{n} {singular}s"
+
+
 def cohort_path_text(row: dict) -> str:
-    """The sentence that is embedded for one cohort profile. Unknown fields are left out, not written as zero."""
+    """The sentence that is embedded for one cohort profile. Unknown fields are left out. Degree is never stated."""
+    from datetime import date
     parts = [f"{row['norm_seniority_group']}."]
+    first = (row.get("final_first_pm_group") or "").strip()
+    if first:
+        parts.append(f"First product level: {first}.")
+    n_pm = row.get("final_n_pm_roles")
+    if isinstance(n_pm, int) and n_pm > 0:
+        parts.append(role_phrase(n_pm, "product role") + ".")
+    year = row.get("norm_career_start_year")
+    if isinstance(year, int) and 1950 <= year <= date.today().year:
+        parts.append(f"About {date.today().year - year} years since career start.")
     prior = (row.get("final_primary_prior_function") or "").strip()
     n_pre = row.get("final_n_pre_pm_roles")
     before = []
     if prior:
         before.append(prior)
-    if isinstance(n_pre, int):
-        before.append(f"{n_pre} roles")
+    if isinstance(n_pre, int) and n_pre > 0:
+        before.append(role_phrase(n_pre, "role"))
     if before:
         parts.append("Before PM: " + ", ".join(before) + ".")
     move = row.get("final_entry_move") or ""
@@ -189,17 +203,10 @@ def cohort_path_text(row: dict) -> str:
         parts.append("Moved into PM internally.")
     elif move == "external":
         parts.append("Moved into PM from outside the employer.")
-    edu = []
-    if row.get("norm_edu_has_degree") is True:
-        edu.append("Has a degree")
-    elif row.get("norm_edu_has_degree") is False:
-        edu.append("No degree recorded")
     if row.get("has_mba") is True:
-        edu.append("an MBA")
+        parts.append("Has an MBA.")
     elif row.get("has_mba") is False:
-        edu.append("no MBA")
-    if edu:
-        parts.append(", ".join(edu) + ".")
+        parts.append("No MBA.")
     return " ".join(parts)
 
 
@@ -243,10 +250,10 @@ def _function_for_title(title: str, family: str) -> str:
         return "Design / UX"
     if "research" in blob:
         return "Data / Analytics / Research"
-    if any(w in blob for w in ("sales", "marketing", "growth")):
-        return "Sales / Marketing"
-    if any(w in blob for w in ("founder", "co-founder", "cofounder")):
-        return "Founder"
+    if any(w in blob for w in ("sales", "marketing", "customer success", "growth")):
+        return "Sales / Marketing / Customer Success"
+    if any(w in blob for w in ("founder", "co-founder", "cofounder", "entrepreneur")):
+        return "Entrepreneurship / Founders"
     if re.search(r"\b(engineer|software|developer|qa|quality)\b", blob):
         return "Software Engineering / QA / IT"
     if any(w in blob for w in ("consult", "finance", "operation", "bank", "analyst")):
@@ -315,22 +322,27 @@ def user_path_text(profile, target_role_id: str, target_title: str) -> tuple:
         fn = _function_for_title(title, family)
         if fn and fn not in priors:
             priors.append(fn)
+    from datetime import date
+    first_level = ""
     parts = [f"Target: {target_level}."]
     if pm_jobs:
         current = pm_jobs[0]
+        earliest_year = None
         for job in pm_jobs:
             if getattr(job, "is_current_as_stated", False):
                 current = job
-                break
+            year = _year(getattr(job, "start", None))
+            if year and (earliest_year is None or year < earliest_year):
+                earliest_year = year
+                first_level = ROLE_LEVEL.get(getattr(job, "role_id", "") or "", "") or canonical_level(getattr(job, "title_raw", ""), required=False)
+                if first_level not in LEVELS:
+                    first_level = ""
         level = ROLE_LEVEL.get(getattr(current, "role_id", "") or "", "") or canonical_level(getattr(current, "title_raw", ""), required=False)
-        if level:
+        if level in LEVELS:
             parts.append(f"Current: {level}.")
-        detail = []
-        years = _years_in(pm_jobs)
-        if years:
-            detail.append(years)
-        detail.append(f"{len(pm_jobs)} product roles")
-        parts.append(", ".join(detail).capitalize() + "." if years else f"{len(pm_jobs)} product roles.")
+        if first_level:
+            parts.append(f"First product level: {first_level}.")
+        parts.append(role_phrase(len(pm_jobs), "product role") + ".")
         evidence = []
         for job in pm_jobs:
             for line in list(getattr(job, "responsibilities", []) or []) + list(getattr(job, "achievements", []) or []):
@@ -338,18 +350,60 @@ def user_path_text(profile, target_role_id: str, target_title: str) -> tuple:
         scope = _scope(getattr(current, "title_raw", ""), evidence)
         if scope:
             parts.append(f"Scope: {scope}.")
-    if priors:
-        parts.append(f"Before PM: {', '.join(priors[:3])}, {len([j for j in jobs if j not in pm_jobs])} roles.")
+    start_years = [_year(getattr(j, "start", None)) for j in jobs]
+    start_years = [y for y in start_years if y and 1950 <= y <= date.today().year]
+    start_year = min(start_years) if start_years else None
+    if start_year:
+        parts.append(f"About {date.today().year - start_year} years since career start.")
+    other = [j for j in jobs if j not in pm_jobs]
+    if priors and other:
+        parts.append(f"Before PM: {', '.join(priors[:3])}, {role_phrase(len(other), 'role')}.")
     education = [e for e in (getattr(profile, "education", None) or [])
                  if getattr(getattr(e, "provenance", None), "review_status", "") in reviewed]
     titles = " ".join((getattr(e, "qualification_title_raw", "") or "") for e in education).lower()
-    edu = []
-    if education:
-        edu.append("Has a degree")
     if "mba" in titles or "pgdm" in titles:
-        edu.append("an MBA")
+        parts.append("Has an MBA.")
     elif education:
-        edu.append("no MBA")
-    if edu:
-        parts.append(", ".join(edu) + ".")
+        parts.append("No MBA.")
     return " ".join(parts), target_level
+
+
+def user_match_features(profile, target_role_id: str, target_title: str) -> dict:
+    """The structured side of the match. Unknowns stay None so they are not scored as a value."""
+    text, target_level = user_path_text(profile, target_role_id, target_title)
+    reviewed = ("user_confirmed", "user_corrected")
+    jobs = [j for j in (getattr(profile, "employment_history", None) or [])
+            if getattr(getattr(j, "provenance", None), "review_status", "") in reviewed]
+    pm_jobs = [j for j in jobs if is_product_role(getattr(j, "title_raw", "") or "", getattr(j, "role_id", "") or "")]
+    priors = []
+    for job in jobs:
+        if job in pm_jobs:
+            continue
+        fn = _function_for_title(getattr(job, "title_raw", "") or "", getattr(job, "role_family", "") or "")
+        if fn and fn not in priors:
+            priors.append(fn)
+    from datetime import date
+    years = [_year(getattr(j, "start", None)) for j in jobs]
+    years = [y for y in years if y and 1950 <= y <= date.today().year]
+    education = [e for e in (getattr(profile, "education", None) or [])
+                 if getattr(getattr(e, "provenance", None), "review_status", "") in reviewed]
+    titles = " ".join((getattr(e, "qualification_title_raw", "") or "") for e in education).lower()
+    mba = True if ("mba" in titles or "pgdm" in titles) else (False if education else None)
+    first = ""
+    earliest = None
+    for job in pm_jobs:
+        year = _year(getattr(job, "start", None))
+        if year and (earliest is None or year < earliest):
+            earliest = year
+            first = ROLE_LEVEL.get(getattr(job, "role_id", "") or "", "") or ""
+    return {
+        "text": text,
+        "target_level": target_level,
+        "prior": priors[0] if priors else "",
+        "n_pre": len(jobs) - len(pm_jobs) if jobs else None,
+        "mba": mba,
+        "start_year": min(years) if years else None,
+        "in_pm": bool(pm_jobs),
+        "first_pm_level": first if first in LEVELS else "",
+        "n_pm": len(pm_jobs),
+    }

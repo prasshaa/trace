@@ -31,7 +31,7 @@ Safety, which overrides tone:
 - "worked with", "supported", "partnered" and "collaborated" are collaboration, not ownership. Do not say the person already owned or led that work.
 - If an excerpt says they did not own, set, define, decide, choose, manage, or run one thing, do not say they did that thing. A different thing in the same excerpt can still be theirs.
 - Do not introduce a percentage, count, money figure, fraction, or a word like "doubled" that is not written in the cited excerpt.
-- When peer patterns are listed, use at least one in the opening. Cite its PEER id in evidence_ids. Keep its numbers exactly. Do not describe one person in that group, and do not say a background guarantees a move. You may say "Most PMs with a path like yours" only together with the exact count from that pattern.
+- A PEER id is a group total. It may be cited only on the opening or on a step that discusses that group. Strengths cite only this person's excerpts. Do not change a peer number, describe one person, or say a background guarantees a move.
 - A strength is only what they did. A disclaimer is not a strength.
 - A step may tell them to ask to own something next. That is advice. Do not tell them to tell a recruiter they already owned something the excerpt denies.
 - A step may name a duration (for example two weeks) or a small count of pages.
@@ -75,32 +75,30 @@ def _peer_lines(roadmap: Optional[dict]) -> List[dict]:
     if not peers.get("available"):
         return []
     return [{"id": item["id"], "text": item["text"], "job": "PMs with a similar career path"}
-            for item in (peers.get("patterns") or []) if item.get("id") and item.get("text")]
+            for item in (peers.get("patterns") or [])[:4] if item.get("id") and item.get("text")]
 
 
 def _user_prompt(target: str, move: str, lines: List[dict], requirements: Sequence[dict], answers: Optional[List[dict]],
                  retrieval_mode: str, peers: Optional[dict] = None) -> str:
     reqs = []
-    for r in list(requirements)[:12]:
-        note = ""
-        if r.get("level_note"):
-            note = f" (context for you, do not repeat: {r['level_note']})"
-        reqs.append(f"- {r.get('title') or r.get('requirement_key')}: {r.get('description') or ''}{note}".strip())
-    ev = [f"- {row['id']} | {row.get('job') or 'role not named'} | {row['text']}" for row in lines]
+    for r in list(requirements)[:6]:
+        desc = " ".join((r.get("description") or "").split())[:140]
+        note = f" (context for you, do not repeat: {r['level_note']})" if r.get("level_note") else ""
+        reqs.append(f"- {r.get('title') or r.get('requirement_key')}: {desc}{note}".strip())
+    ev = [f"- {row['id']} | {row.get('job') or 'role not named'} | {row['text']}" for row in lines[:8]]
     answered = ""
     if answers:
-        answered = "\nThe person answered:\n" + "\n".join(
-            f"- {a.get('question')}: {a.get('answer')}" for a in answers if a.get("question") and a.get("answer"))
+        answered = "\nAnswered:\n" + "\n".join(
+            f"- {a.get('question')}: {a.get('answer')}" for a in answers[:3] if a.get("question") and a.get("answer"))
     peer_rows = _peer_lines({"peers": peers} if peers is not None else None)
     peer_block = ""
     if peer_rows:
-        listed = "\n".join(f"- {row['id']} | peers | {row['text']}" for row in peer_rows)
-        peer_block = ("\n\nPeer patterns, group totals only. Use at least one. Do not change its numbers. "
-                      "Do not describe one person:\n" + listed)
+        listed = "\n".join(f"- {row['id']}: {row['text']}" for row in peer_rows)
+        peer_block = "\n\nPeer group totals. Not evidence of what this person did. Do not change the numbers:\n" + listed
+    del retrieval_mode
     return (
-        f"Target role: {target}\nMove: {move or 'not stated'}\n"
-        f"How the excerpts were chosen (do not mention this): {retrieval_mode}. Use only the excerpts below.\n\n"
-        f"What this target is hired for:\n" + "\n".join(reqs) + "\n\nExperience excerpts:\n" + "\n".join(ev) + answered
+        f"Target: {target}\nMove: {move or 'not stated'}\n\n"
+        f"Hired for:\n" + "\n".join(reqs) + "\n\nExcerpts:\n" + "\n".join(ev) + answered
         + peer_block
     )
 
@@ -111,23 +109,24 @@ def _env_status() -> dict:
                                                 "TRACE_LLM_REASONING_EFFORT", "TRACE_SEMANTIC_RETRIEVAL", "TRACE_EMBEDDINGS"]}
 
 
+def _paraphrases_pattern(opening: str, pattern: str) -> bool:
+    """True when the opening already states this pattern's 'N of the M' figure."""
+    import re
+    numbers = re.findall(r"\d+", pattern or "")
+    if len(numbers) < 2:
+        return pattern in opening if pattern else False
+    return bool(re.search(rf"\b{numbers[0]}\s+of\s+(?:the\s+)?{numbers[1]}\b", opening or ""))
+
+
 def _keep_peer_pattern(guarded: dict, peers: dict) -> dict:
-    """If the model left the group pattern out, state the first pattern in its own words. No new figure is added."""
-    patterns = (peers or {}).get("patterns") or []
-    if not (peers or {}).get("available") or not patterns:
-        return guarded
-    blob = " ".join(
-        [guarded.get("opening") or ""]
-        + [item.get("text") or "" for key in ("strengths", "transferable", "gaps", "steps") for item in guarded.get(key) or []]
-        + [str(item.get("evidence_ids") or "") for key in ("strengths", "transferable", "steps") for item in guarded.get(key) or []]
-    )
-    from app.services.ai_assessment.guardrails import plain_text, trim_at_sentence
-    sentence = patterns[0]["text"]
+    """Leave the opening as the model wrote it. Do not prepend a peer sentence onto a short reading."""
+    from app.services.ai_assessment.guardrails import plain_text
     opening = plain_text(guarded.get("opening"))
-    if any(item["id"] in blob for item in patterns) or sentence in opening:
+    patterns = (peers or {}).get("patterns") or []
+    if any(_paraphrases_pattern(opening, item.get("text") or "") for item in patterns):
         guarded["opening"] = opening
         return guarded
-    guarded["opening"] = trim_at_sentence(f"{sentence} {opening}".strip(), 45)
+    guarded["opening"] = opening
     return guarded
 
 

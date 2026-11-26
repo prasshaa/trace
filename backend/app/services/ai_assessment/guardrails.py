@@ -344,6 +344,14 @@ def keep_claim(claim: dict, lines: Dict[str, dict], *, require_citation: bool, k
     if _EVAL_ID.search(raw_text) or _UUID.search(raw_text):
         return None, "leaked_id"
     ids = [str(i) for i in (claim.get("evidence_ids") or []) if i]
+    if kind in ("strength", "transferable", "gap", "question") and any(i.startswith("PEER-") for i in ids):
+        return None, "peer_evidence"
+    if any(i.startswith("PEER-") for i in ids):
+        peer_reason = _peer_claim_problem(raw_text + " " + raw_why, ids)
+        if peer_reason:
+            return None, peer_reason
+        if kind == "step" and not re.search(r"closest PMs|path like yours|cohort PMs", raw_text, re.I):
+            ids = [i for i in ids if not i.startswith("PEER-")]
     if any(i and i.lower() in raw_text.lower() for i in ids):
         return None, "leaked_id"
     known = list(lines)
@@ -410,10 +418,24 @@ def trim_at_sentence(text: str, limit: int) -> str:
         if kept and count + words > limit:
             break
         if not kept and words > limit:
-            return ""
+            return sentence if words <= 70 else ""
         kept.append(sentence)
         count += words
-    return " ".join(kept)
+    result = " ".join(kept)
+    if len(result.split()) < 12 and len(text.split()) >= 12:
+        longer = []
+        total = 0
+        for sentence in re.split(r"(?<=[.!?])\s+", text):
+            sentence = sentence.strip()
+            if not sentence:
+                continue
+            longer.append(sentence)
+            total += len(sentence.split())
+            if len(longer) == 2 or total >= 12:
+                break
+        if longer and len(" ".join(longer).split()) > len(result.split()):
+            return " ".join(longer)
+    return result
 
 
 def _opening(raw, by_id, lines, reasons) -> str:

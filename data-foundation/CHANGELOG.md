@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.41.0 — 2026-11-26 (peer search returns a candidate pool)
+
+| Change | Files | Why |
+|---|---|---|
+| `peer_patterns` returns the 120 closest anonymous attribute rows, plus cohort counts, background counts and first-level progression counts. No profile key. The level nudge is no longer applied in the database | migration 58 | The application reranks that pool. Embedding distance alone was too compressed to separate paths |
+| Rollback restores the v2.40.0 aggregate function | rollback | |
+
 ## 2.40.0 — 2026-11-26 (peer patterns stay a similarity search)
 
 | Change | Files | Why |

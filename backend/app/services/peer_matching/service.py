@@ -11,7 +11,8 @@ from pathlib import Path
 
 from app.config import get_settings
 from app.services.embeddings.provider import EmbeddingUnavailable, GteSmallOnnx
-from app.services.peer_matching.text import near_levels, user_path_text
+from app.services.peer_matching.aggregate import present, rerank, stats_from_rows
+from app.services.peer_matching.text import user_match_features
 
 logger = logging.getLogger(__name__)
 
@@ -37,20 +38,19 @@ def peer_section(conn, profile, target_role_id: str, target_title: str) -> dict:
         return {"available": False}
     if conn is None:
         return {"available": False, "reason": "no_database"}
-    text, level = user_path_text(profile, target_role_id, target_title)
+    user = user_match_features(profile, target_role_id, target_title)
     provider = _provider(settings)
     if provider is None:
         return {"available": False, "reason": "embeddings_unavailable"}
     try:
-        vector = provider.embed([text])[0]
+        vector = provider.embed([user["text"]])[0]
     except EmbeddingUnavailable:
         return {"available": False, "reason": "embeddings_unavailable"}
-    near = near_levels(level)
     try:
         with conn.transaction():
             row = conn.execute(
                 "select trace_peer_cohort.peer_patterns(%s::extensions.vector, %s, %s, %s, %s)",
-                (_vector_literal(vector), level, near, 40, settings.trace_peer_cohort_version),
+                (_vector_literal(vector), user["target_level"], [], 120, settings.trace_peer_cohort_version),
             ).fetchone()
     except Exception as exc:                                              # noqa: BLE001 - the plan must still render
         logger.warning("peer patterns unavailable: %s", type(exc).__name__)
@@ -60,7 +60,7 @@ def peer_section(conn, profile, target_role_id: str, target_title: str) -> dict:
         payload = json.loads(payload)
     if not isinstance(payload, dict):
         return {"available": False, "reason": "unavailable"}
-    return _from_payload(payload, level)
+    return _from_payload(payload, user)
 
 
 def _stats_from_sql(block: dict) -> dict:
@@ -106,23 +106,49 @@ def _stats_from_sql(block: dict) -> dict:
     }
 
 
-def _from_payload(payload: dict, target_level: str) -> dict:
-    """Band the aggregate counts. The payload is counts, never profiles."""
-    del target_level
+def _rows_from_candidates(candidates: list) -> list:
+    rows = []
+    for item in candidates:
+        if not isinstance(item, dict):
+            continue
+        if any(key in item for key in ("profile_key", "path_text", "embedding", "norm_city")):
+            return []
+        rows.append({
+            "norm_seniority_group": item.get("level") or "",
+            "final_primary_prior_function": item.get("prior") or "",
+            "final_entry_move": item.get("move") or "",
+            "final_first_pm_group": item.get("first") or "",
+            "final_n_pre_pm_roles": item.get("n_pre"),
+            "final_n_pm_roles": item.get("n_pm"),
+            "has_mba": item.get("mba"),
+            "norm_career_start_year": item.get("start_year"),
+            "final_has_history": bool(item.get("has_history")),
+            "final_months_to_first_pm_from_earliest_nonintern": item.get("months"),
+            "cosine": item.get("cosine"),
+        })
+    return rows
+
+
+def _from_payload(payload: dict, user: dict) -> dict:
+    """Rerank the anonymous candidate attributes, then publish group patterns only."""
     if any(key in payload for key in ("profile_key", "path_text", "embedding", "norm_city")):
         logger.warning("peer payload included profile fields; they were discarded")
         return {"available": False, "reason": "refused"}
-    if isinstance(payload.get("neighbours"), list):
-        logger.warning("peer payload included profile rows; they were discarded")
-        return {"available": False, "reason": "refused"}
-    from app.services.peer_matching.aggregate import present
-    if isinstance(payload.get("group"), dict):
-        group = _stats_from_sql(payload["group"])
-        cohort = _stats_from_sql(payload.get("cohort") or payload["group"])
-        view = present(group, cohort)
+    candidates = payload.get("candidates")
+    if isinstance(candidates, list):
+        rows = _rows_from_candidates(candidates)
+        if candidates and not rows:
+            return {"available": False, "reason": "refused"}
+        chosen = rerank(rows, None, user, 40)
+        cohort = _stats_from_sql(payload.get("cohort") or {})
+        if not cohort.get("n"):
+            cohort = stats_from_rows(rows)
+        view = present(stats_from_rows(chosen), cohort, user, payload.get("by_first") or {}, payload.get("backgrounds") or {})
+    elif isinstance(payload.get("group"), dict):
+        view = present(_stats_from_sql(payload["group"]), _stats_from_sql(payload.get("cohort") or payload["group"]), user)
     else:
-        group = _stats_from_sql(payload)
-        view = present(group, group)
+        block = _stats_from_sql(payload)
+        view = present(block, block, user)
     if view.get("available"):
         view["synthetic"] = bool(payload.get("synthetic"))
     return view
