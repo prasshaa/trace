@@ -353,7 +353,7 @@ class ReviewPage {
     const clarify = h("div.clarify");
     const save = button("Save role", { small: true, disabled: true });
     const status = h("div", { "aria-live": "polite" });
-    select.addEventListener("change", () => {
+    const showChoice = () => {
       const opt = byId[select.value];
       save.disabled = !opt;
       mount(clarify);
@@ -362,7 +362,10 @@ class ReviewPage {
           h("legend", "Which product responsibilities did you own in this job? Choose at least one."),
           options.pm_ownership_areas.map((code) => chip(code, this.areaLabel[code] || code, false))));
       }
-    });
+    };
+    select.addEventListener("change", showChoice);
+    const preset = options.suggested_role_id && byId[options.suggested_role_id] ? options.suggested_role_id : "";
+    if (preset) { select.value = preset; showChoice(); }
     save.addEventListener("click", () => busy(save, "Saving…", async () => {
       const opt = byId[select.value];
       const owned = [...clarify.querySelectorAll("input:checked")].map((i) => i.value);

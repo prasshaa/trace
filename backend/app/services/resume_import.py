@@ -489,7 +489,10 @@ def contract(roles: List[PlannedRole], start_key: Optional[str], role_required: 
                 err(k, "end", "The end date is in the future. If you still work here, clear the end date and tick “I currently work here”.")
         desc = description_lines(r.description)
         words = len(re.findall(r"[A-Za-z][A-Za-z'’-]+", " ".join(desc)))
-        if not desc or len(" ".join(desc)) < 20 or words < 4:
+        # Bullets already parsed from the resume are the description. An empty or short box is then enough.
+        # A role with neither a sentence nor a bullet is still refused.
+        has_bullet = any(len((text or "").strip()) >= 3 for _, _, text in r.lines)
+        if not has_bullet and (not desc or len(" ".join(desc)) < 20 or words < 4):
             err(k, "description", "Add a short description of this role: at least one sentence (20 characters) about what "
                                   "you did.")
         elif any(len(x) > 1000 for x in desc):

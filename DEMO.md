@@ -33,6 +33,7 @@ Associate Product Manager or Product Manager, and open the plan.
 
 Apply database migrations only to this local stack (or a preview project). Do not apply them to production.
 v2.36.0 is required for the private-by-default sharing preference and for account deletion.
+v2.37.0 grants the owner role usage of `trace_private` so that deletion can actually be called. It grants no table access.
 v2.34.0 and v2.35.0 are required before semantic retrieval can use pgvector.
 
 ## Model and retrieval

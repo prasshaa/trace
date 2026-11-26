@@ -115,7 +115,7 @@ Use a fictional resume. The steps, the model environment variables, and the prev
 - The capability reading is deterministic. On wording it hasn't seen, it misses evidence (a missed line shows as "needs
   more context", not as a false claim). Its evaluation set is author-annotated.
 - The career research view is off outside an authorised local preview, and its data isn't in this repository.
-- Account deletion is in Profile settings (`POST /api/v1/account`). It needs migration v2.36.0 on the database it talks to. Clearing the career profile still keeps the account.
+- Account deletion is in Profile settings (`POST /api/v1/account`). It needs migrations v2.36.0 and v2.37.0 on the database it talks to. v2.37.0 is the schema usage that lets the owner role call the function. Clearing the career profile still keeps the account.
 - No licence has been chosen yet, so all rights are reserved.
 
 Design decisions are recorded in [docs/DECISIONS.md](docs/DECISIONS.md) and the phase plan in

@@ -40,8 +40,8 @@ select ok(has_function_privilege('trace_app_runtime', 'trace_ingest.designate_fi
 -- ------------------------------------------------------------------ private mapping
 select is((select string_agg(r || ':' || has_schema_privilege(r, 'trace_private', 'USAGE'), ' ' order by r)
              from unnest(array['anon', 'authenticated', 'service_role', 'trace_app_runtime', 'trace_app_user', 'trace_reference_reader']) r),
-          'anon:false authenticated:false service_role:false trace_app_runtime:false trace_app_user:false trace_reference_reader:false',
-          'nobody but the admin identity reaches trace_private');
+          'anon:false authenticated:false service_role:false trace_app_runtime:false trace_app_user:true trace_reference_reader:false',
+          'only the owner role can resolve trace_private, and only to call delete_my_account');
 select is((select count(*)::int from information_schema.columns where table_schema = 'trace_ref'
             and column_name in ('participant_reference', 'contributor_id')), 0, 'no contributor identity column on any reference table');
 

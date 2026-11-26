@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.37.0 — 2026-11-26 (account deletion can be called)
+
+| Change | Files | Why |
+|---|---|---|
+| `USAGE` on schema `trace_private` for `trace_app_user` only, plus the existing `EXECUTE` on `trace_private.delete_my_account()`. No `CREATE`. No table privileges. `EXECUTE` stays revoked from public, anon, authenticated and service_role. The function is unchanged: security definer, empty `search_path`, deletes `auth.users` only for `trace_review.request_uid()` (`auth.uid()`) | migration 54 | v2.36.0 granted execute, but a role cannot resolve a function without schema usage, so deletion failed before the function ran |
+| pgTAP `trace_delete_my_account_grant.test.sql`. The runtime test now expects that one usage grant. Rollback revokes the usage and does not drop the function | tests, rollback | |
+
 ## 2.36.0 — 2026-11-26 (private sharing default, account deletion)
 
 | Change | Files | Why |
