@@ -17,3 +17,4 @@ backend/app/services/career_origins/content
 backend/scripts/build_career_origins.py
 backend/evaluation
 backend/tests
+backend/.models

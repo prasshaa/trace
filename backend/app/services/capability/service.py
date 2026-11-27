@@ -19,7 +19,9 @@ PACK = "pm-v1.2"                 # requirements revision (Phase 4 review, D31/D3
 SOURCE_INVENTORY = "pm-v1"       # the approved source inventory, unchanged by the revision
 PACK_NOTE = ("Curated evidence base of 15 sources (approved 2026-11-16), not a representative survey of the job market. "
              "No single source defines the profession.")
-TARGET_LEVELS = {"PM-PM": "pm", "PM-SPM": "senior_pm"}          # the levels the approved pack covers
+# "apm" uses the shared requirements (applies_to_level "all") only. Senior-only requirements stay on senior_pm.
+# Associate Product Manager is a real target: Non-PM → APM is a supported move. Roles outside this set have no pack.
+TARGET_LEVELS = {"PM-APM": "apm", "PM-PM": "pm", "PM-SPM": "senior_pm"}
 SEPARATION_NOTE = ("This is the target-role capability view only. It is not an employer's application criteria and not a "
                    "judgement of how feasible a move is for you; those are shown separately.")
 
@@ -44,8 +46,8 @@ def context_note(o, questions: dict) -> Optional[dict]:
     if o.state != "transferable":
         return None
     if o.needs_context and o.needs_context.startswith("scope_question:"):
-        keys = o.needs_context.split(":", 1)[1].split(",")
-        return {"kind": "scope_question", "questions": [questions[k] for k in keys if k in questions]}
+        keys = [k for k in o.needs_context.split(":", 1)[1].split(",") if k in questions]
+        return {"kind": "scope_question", "questions": [questions[k] for k in keys], "question_keys": keys}
     if o.needs_context == "partial_reading":
         return {"kind": "partial", "questions": []}
     return {"kind": "related", "questions": []}
@@ -74,7 +76,8 @@ class CapabilityService:
                               at: Optional[datetime] = None) -> dict:
         level = TARGET_LEVELS.get(target_role_id)
         if level is None:
-            raise TargetNotCovered("no approved knowledge pack covers this target role yet (Product Manager and Senior Product Manager only)")
+            raise TargetNotCovered("no approved knowledge pack covers this target role yet "
+                                    "(Associate Product Manager, Product Manager and Senior Product Manager)")
         contexts = sorted(set(contexts))
         bad = set(contexts) - set(CONTEXTS)
         if bad:

@@ -92,6 +92,16 @@ STATE_TEXT = {
 }
 
 
+# Scope-question key -> the responsibility area it belongs to (taxonomy v2/v3). An answer is stored on that area.
+QUALIFIER_AREA = {
+    "outcome_metrics_influence": "data_analysis",
+    "multi_product_scope": "strategy_portfolio",
+    "cross_team": "delivery_execution",
+    "coaching_mentoring": "people_leadership",
+    "tracks_outcomes": "business_case_economics",
+}
+
+
 def capabilities(items: List[dict], evidence: Dict[str, dict], requirements: Dict[str, dict]) -> List[dict]:
     """Each assessed capability with its plain-language state and the user's own records behind it (only records
     eligible now: confirmed, and categorised by the user or read by Trace). "Not yet demonstrated in the available
@@ -112,10 +122,21 @@ def capabilities(items: List[dict], evidence: Dict[str, dict], requirements: Dic
         if state in ("evidence_found", "needs_context") and not ev:
             state = "not_yet_demonstrated" if i["state"] != "unknown" else "cannot_assess_yet"
         nc = i.get("needs_context") or {}
+        questions = nc.get("questions", []) if state == "needs_context" else []
+        asks = []
+        if nc.get("kind") == "scope_question" and state == "needs_context":
+            line = next((e for e in ev if e["kind"] == "evidence"), None)
+            for key, text in zip(nc.get("question_keys") or [], questions):
+                area = QUALIFIER_AREA.get(key)
+                areas = list((line or {}).get("areas") or [])
+                if area and area not in areas:
+                    areas.append(area)
+                asks.append({"key": key, "text": text, "area": area, "areas": areas,
+                             "evidence_id": line["id"] if line else None})
         out.append({"key": i["key"], "title": i["title"], "state": state, "state_text": STATE_TEXT[state],
                     "decision_rights": bool(i.get("decision_rights")), "description": requirements.get(i["key"], {}).get("description"),
                     "evidence": ev[:12], "evidence_count": len(ev),
-                    "questions": nc.get("questions", []) if state == "needs_context" else [],
+                    "questions": questions, "asks": asks,
                     "context_kind": nc.get("kind") if state == "needs_context" else None})
     order = {"evidence_found": 0, "needs_context": 1, "not_yet_demonstrated": 2, "cannot_assess_yet": 3}
     return sorted(out, key=lambda c: (not c["decision_rights"], order[c["state"]], c["key"]))
@@ -149,6 +170,37 @@ CAPABILITY_PRACTICE = {
 def _clip(text: str, n: int = 90) -> str:
     text = " ".join((text or "").split())
     return text if len(text) <= n else text[: n - 1].rstrip() + "…"
+
+
+def apply_support_depth(roadmap: dict, depth: str, target_title: Optional[str]) -> None:
+    """Label the move. Limited support keeps the evidence and a positioning note, and never a capability status."""
+    title = target_title or "this role"
+    if depth == "deep":
+        roadmap["support"] = {"depth": "deep", "label": "Supported move",
+                              "text": f"Trace can assess this move toward {title} from your confirmed experience."}
+        return
+    evidence = []
+    for c in roadmap.get("capabilities") or []:
+        c["state"] = "positioning"
+        c["state_text"] = "Positioning"
+        for e in c.get("evidence") or []:
+            if e.get("kind") == "evidence" and len(evidence) < 4:
+                evidence.append({"text": e.get("text"), "source": e.get("source")})
+    roadmap["support"] = {
+        "depth": "limited", "label": "Limited support",
+        "text": (f"Limited support for a move to {title}. Trace shows the experience that positions you for it. "
+                 "It does not assign a capability status on this move."),
+    }
+    roadmap["next_actions"] = [{
+        "key": "positioning", "capability": "How to talk about this move", "kind": "reposition",
+        "timing": "before_applying", "decision_rights": False,
+        "action": f"Write a short note on why your experience is relevant to {title}, using your own lines.",
+        "why": "This move is outside the paths Trace assesses in full. The note is positioning, not a judgement of capability.",
+        "builds_on": evidence,
+        "keep": "The lines from your profile you would actually use.",
+        "how": "One page: the problem, what you did, and what it shows for the role you want.",
+        "done_when": "You can explain the move in a few minutes without claiming a status Trace has not assessed.",
+    }]
 
 
 def next_actions(caps: List[dict], move: Optional[dict], target_title: str, rule: Optional[str], route_steps: List[dict]) -> List[dict]:

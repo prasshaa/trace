@@ -5,7 +5,7 @@ modules = ["python-3.12"]
 [deployment]
 deploymentTarget = "cloudrun"
 build = ["sh", "-c", "python -m pip install --no-cache-dir -r backend/requirements.txt"]
-run = ["sh", "-c", "cd backend && exec python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 2 --proxy-headers --forwarded-allow-ips='*' --no-server-header"]
+run = ["sh", "-c", "cd backend && exec python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 2 --proxy-headers --no-server-header"]
 
 [[ports]]
 localPort = 8000

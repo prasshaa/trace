@@ -44,6 +44,8 @@ export function render(root, { oauthError, config }) {
   toggle.addEventListener("click", () => {
     mode = mode === "signin" ? "signup" : "signin";
     submit.textContent = submitLabel();
+    const title = form.closest(".landing") ? form.closest(".landing").querySelector("#auth-card-title") : null;
+    if (title) title.textContent = mode === "signin" ? "Sign in to Trace" : "Create your Trace account";
     toggle.textContent = mode === "signin" ? "New to Trace? Create an account" : "Already have an account? Sign in";
     password.setAttribute("autocomplete", mode === "signin" ? "current-password" : "new-password");
     mount(status);
@@ -89,13 +91,14 @@ export function render(root, { oauthError, config }) {
         h("p.lead", research
           ? "Understand where your experience stands, explore how Product Managers with different backgrounds have made "
             + "career moves, and see what you could build next to reach your goal."
-          : "Understand where your experience stands, see the routes that lead to your target role, and what you could "
-            + "build next to reach your goal."),
+          : "See what your experience proves for your next product role, what is missing, and how to close the gap, "
+            + "and keep that case growing as your career does."),
         h("p.tagline", "Upload your resume. Choose your target. See your path.")),
       h("div.auth-card",
-        h("h2.card-title", "Sign in to Trace"),
+        h("h2.card-title", { id: "auth-card-title" }, "Sign in to Trace"),
         googleBlock,
-        status, form),
+        status, form,
+        h("p.hint", "By default, Trace uses your data anonymously to improve recommendations for everyone; your profile is never shown or shared with other users, and you can change this in Settings.")),
       h("ol.auth-points", { "aria-label": "How Trace works" },
         h("li", h("span.auth-point-num", { "aria-hidden": "true" }, "01"),
           h("div", h("strong", "Upload your resume"), h("span", "Check and correct what Trace found, then confirm it once."))),

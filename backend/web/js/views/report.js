@@ -99,8 +99,8 @@ function backToTarget(ctx) {
 function notCovered(root) {
   mount(root, h("section.page", h("section.card.state-card",
     h("h1.page-title", { tabindex: "-1" }, "A career plan isn't available for this role yet"),
-    h("p", "Trace's role knowledge currently covers Product Manager and Senior Product Manager. For other roles it doesn't "
-      + "yet have sourced information to plan with, so it won't guess."),
+    h("p", "Trace can read a move into Associate Product Manager or Product Manager, and from Product Manager to Senior "
+      + "Product Manager. Other moves on that ladder are labelled Limited support. Roles outside it are not guessed at."),
     h("p.muted", "Your profile is saved. Choose one of the covered roles to see your plan."),
     h("div.actions", h("a.btn.btn-primary", { href: "#/target" }, "Choose another target role")))));
   root.querySelector(".page-title").focus({ preventScroll: true });
@@ -113,6 +113,10 @@ function draw(root, ctx, key) {
     ...cache, target, app: ctx.app, records: ctx.state.records,
     refreshGoal: async () => {
       cache.rm = await api.roadmap(cache.plan.run_id);
+      draw(root, ctx, key);
+    },
+    refreshAi: (ai) => {
+      cache.rm = { ...cache.rm, ai };
       draw(root, ctx, key);
     },
     replan: (portfolioScope) => async () => {

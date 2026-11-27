@@ -450,6 +450,12 @@ class RoadmapView(_View):
     move: Dict[str, Any] = {}
     readiness: Dict[str, Any] = {}
     next_actions: List[Dict[str, Any]] = []
+    # deep: the four assessed moves. limited: evidence and positioning, never a capability status.
+    support: Dict[str, Any] = {}
+    # Present when the AI demo path ran or explained why it did not. Absent on older saved responses only.
+    ai: Dict[str, Any] = {}
+    # Group patterns from the closest de-identified career paths. Empty unless TRACE_PEER_MATCHING=1.
+    peers: Dict[str, Any] = {}
 
 
 def _goal_view(target: str, g: Optional[dict]) -> GoalView:
@@ -470,6 +476,15 @@ def put_goal(payload: GoalUpdate, response: Response, target: str = TARGET, ctx:
     response.headers["Cache-Control"] = "no-store"
     dates = {k: v.isoformat() for k, v in payload.checkpoint_dates.items()}
     return _goal_view(target, service.set_goal(ctx, target, payload.timeframe, payload.target_date, payload.weekly_hours, dates))
+
+
+@router.get("/ai-narrative", dependencies=[Depends(limit("read"))])
+def ai_narrative(response: Response, target: str = TARGET, ctx: OwnerContext = Depends(owner_context)) -> Dict[str, Any]:
+    """The in-progress or finished model reading for this target. Pending means the call is still running."""
+    from app.services.ai_assessment.jobs import lookup
+    response.headers["Cache-Control"] = "no-store"
+    found = lookup(str(ctx.owner_user_id), target)
+    return found or {"status": "not_started"}
 
 
 @router.get("/transition-plan/{run_id}/roadmap", response_model=RoadmapView, response_model_by_alias=True,

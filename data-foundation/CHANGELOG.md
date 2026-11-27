@@ -1,5 +1,93 @@
 # Changelog
 
+## 2.42.0 — 2026-11-26 (peer patterns are counts again)
+
+| Change | Files | Why |
+|---|---|---|
+| `peer_patterns(vector, jsonb, text)` reranks in a CTE and returns aggregate sentences. The distance sort cannot use the HNSW index, so the pool is 120 rather than the index default of about 40. The v2.41 five-argument function is left in place so the running app still resolves during rollout. A pattern needs 10 known profiles before it is phrased as "most of the N". The caller's own background is a match line, not a pattern. A switcher always gets the target-level start, the months median (the range only beside it), and the MBA line when they have an MBA. Someone already in product gets the target-level line, years in product, and an MBA comparison. Execute on the new function stays with `trace_app_runtime` only | migration 59 | v2.41 exposed neighbour attributes, and a stable function that built temporary tables could not be called |
+| Rollback restores the v2.41.0 function | rollback | |
+
+## 2.45.0 — 2026-11-27 (time to a first PM role)
+
+| Change | Files | Why |
+|---|---|---|
+| The dated-path sentence is "it took about 8 years to reach a first PM role" | migration 62 | "about 8 years to a first PM role" had no verb |
+| Rollback restores the v2.44.0 sentence | rollback | |
+
+## 2.44.0 — 2026-11-27 (peer pattern wording)
+
+| Change | Files | Why |
+|---|---|---|
+| Replace `peer_patterns(vector, jsonb, text)`. A duration over 24 months is the nearest half year. The 25th–75th range is folded into the median sentence as "the middle half took", and it is not a separate pattern. An MBA holder sees how uncommon an MBA is in the whole cohort. Someone already in product also sees the pre-PM background mix among people at their target level, and the typical years since career start at that level. Lines about the caller's own move or target level use a lift of 1.1 | migration 61 | The range was being read as "most", and an MBA comparison overstated a rare credential |
+| Rollback restores the v2.42.0 function | rollback | |
+
+## 2.43.0 — 2026-11-26 (drop the per-profile peer function)
+
+| Change | Files | Why |
+|---|---|---|
+| Drop `peer_patterns(vector, text, text[], integer, text)`, the v2.41 function that returned one attribute object per neighbour. The file is `20261126235900_trace_peer_drop_row_function.sql` | migration 60 | Apply only after the app that calls `peer_patterns(vector, jsonb, text)` is deployed |
+| Rollback recreates that five-argument function | rollback | |
+
+## 2.41.0 — 2026-11-26 (peer search returns a candidate pool)
+
+| Change | Files | Why |
+|---|---|---|
+| `peer_patterns` returns the 120 closest anonymous attribute rows, plus cohort counts, background counts and first-level progression counts. No profile key. The level nudge is no longer applied in the database | migration 58 | The application reranks that pool. Embedding distance alone was too compressed to separate paths |
+| Rollback restores the v2.40.0 aggregate function | rollback | |
+
+## 2.40.0 — 2026-11-26 (peer patterns stay a similarity search)
+
+| Change | Files | Why |
+|---|---|---|
+| `peer_patterns` uses a 0.03 same-level nudge and a 0.02 adjacent nudge, and returns neighbour counts beside whole-cohort counts. A blank degree and a pre-PM count with no history can be null | migration 57 | The previous 0.15 nudge dominated the narrow cosine range, and a blank was being stored as false or zero |
+| Rollback restores the v2.39.0 function and the not-null columns | rollback | |
+
+## 2.39.0 — 2026-11-26 (peer career-path patterns)
+
+| Change | Files | Why |
+|---|---|---|
+| Schema `trace_peer_cohort` holds de-identified career-path rows and a local embedding. It is not a user table, a contribution, or a reference profile. RLS is on. No client role can read the table. `peer_patterns` is security definer, returns one jsonb of counts, and is executable by `trace_app_runtime` only | migration 56 | The plan can match a career path to the closest profiles without returning a person |
+| Rollback drops the schema | rollback | |
+
+## 2.38.0 — 2026-11-26 (anonymous recommendation use is the default)
+
+| Change | Files | Why |
+|---|---|---|
+| `trace_contrib.acknowledge_data_use_notice` records `shared` when the caller has no preference yet. An existing choice is still never overwritten. No consent event is written and nothing is enqueued | migration 55 | New users default to using their data anonymously to improve recommendations. The profile is not published and is not added to the shared pool |
+| Rollback restores the v2.36.0 body (`private`). Preferences already stored are not rewritten | rollback | |
+
+## 2.37.0 — 2026-11-26 (account deletion can be called)
+
+| Change | Files | Why |
+|---|---|---|
+| `USAGE` on schema `trace_private` for `trace_app_user` only, plus the existing `EXECUTE` on `trace_private.delete_my_account()`. No `CREATE`. No table privileges. `EXECUTE` stays revoked from public, anon, authenticated and service_role. The function is unchanged: security definer, empty `search_path`, deletes `auth.users` only for `trace_review.request_uid()` (`auth.uid()`) | migration 54 | v2.36.0 granted execute, but a role cannot resolve a function without schema usage, so deletion failed before the function ran |
+| pgTAP `trace_delete_my_account_grant.test.sql`. The runtime test now expects that one usage grant. Rollback revokes the usage and does not drop the function | tests, rollback | |
+
+## 2.36.0 — 2026-11-26 (private sharing default, account deletion)
+
+| Change | Files | Why |
+|---|---|---|
+| `trace_contrib.acknowledge_data_use_notice` records `private` when the caller has no preference yet. An existing choice is still never overwritten. No consent event is written | migration 53 | Sharing is opt-in. Continuing the notice must not turn sharing on |
+| `trace_private.delete_my_account()` deletes `auth.users` for the request identity only. Career rows, plans, drafts and contributions follow existing `on delete cascade` foreign keys. `trace_app_user` only | migration 53 | The owner can delete their account. The function cannot name another user |
+| pgTAP: the onboarding assertion expects `private`. Rollback restores the previous function body and drops `delete_my_account` (preferences already stored are not rewritten) | tests, rollback | |
+
+## 2.35.0 — 2026-11-23 (semantic retrieval, Phase 3: hybrid candidates)
+
+| Change | Files | Why |
+|---|---|---|
+| `trace_semantic.hybrid_candidates(profile, queries jsonb, model, version)`: for one query family (≤ 64), the caller's ELIGIBLE records only (same set as `my_embedding_sources`) with provenance (source, parent employment or activity, review status), the user's CURRENT categorisation (stale ones not returned), and per query the lexical (full-text, english, `ts_rank_cd`) and semantic (cosine over the current embedding) RANKS both ways: line within query, query within line. Security definer, owned by `trace_embedding_writer`, `trace_app_user` only; refuses calls without a request identity | migration 52 | Phase 3 hybrid retrieval: ranks computed where the data is; similarity values never leave the database (D53) |
+| Column grants to `trace_embedding_writer`: evidence `area_classification`, `area_classification_is_stale`, `area_classification_none`, `candidate_employment_id`, `candidate_activity_id`; activities `related_employment_id` | migration 52 | Provenance and the user's own categorisation; nothing else (`area_qualifiers` stays unreadable) |
+| pgTAP `trace_semantic_hybrid_candidates.test.sql` (11). Rollback (drops the function and revokes the column grants; no data), rehearsed and re-applied | tests, rollback | |
+
+## 2.34.0 — 2026-11-23 (semantic retrieval, Phase 2: pgvector storage)
+
+| Change | Files | Why |
+|---|---|---|
+| `create extension vector` (schema `extensions`); schema `trace_semantic`; NOLOGIN role `trace_embedding_writer` | migration 51 | D53: embeddings generated inside Trace (local gte-small, 384 dimensions) |
+| `trace_private.candidate_embeddings`: one row per (reviewed evidence line or career activity, model, version); content SHA-256, no text; FK `on delete cascade` to the source record, the profile and the account; RLS on the request identity; no client grant. Functions (security definer, `trace_app_user` only, owned by the writer): `my_embedding_sources`, `store_my_embeddings` (stores only the caller's eligible records whose CURRENT text has the given hash), `match_my_evidence` (cosine; stale, unreviewed and rejected records excluded) | migration 51 | Private corpus: strict ownership; deleted on clear, replace or account deletion; never returned stale |
+| `trace_ref.knowledge_embeddings` (corpus constrained to `role_knowledge`; areas, capability requirements, action templates), read by `trace_reference_reader`; `trace_semantic.match_knowledge` | migration 51 | Shared role knowledge, kept separate; the research corpus can't be written here |
+| No vector index (exact scan: tens of rows per person, ~100 knowledge rows). pgTAP `trace_semantic_embeddings.test.sql` (12). Rollback (drops only what v2.34.0 added; embeddings are regenerable), rehearsed and re-applied | tests, rollback | |
+
 ## 2.33.0 — 2026-11-22 (release: clear my career profile and start over)
 
 | Change | Files | Why |

@@ -55,7 +55,9 @@ flowchart LR
 | **Career pathway planning** (`backend/app/services/transition`) | Routes, readiness and next actions from versioned role knowledge packs (`data-foundation/knowledge_packs`). |
 | **Career Origins research** | An aggregated research view of how Product Managers with different backgrounds moved. **Not included in this repository and switched off in production** while its data-use and privacy review is completed. |
 
-No vector database, embeddings or external LLM are used.
+Embeddings, when switched on, stay inside Trace (local gte-small, pgvector). A demo narrative can be written by an
+OpenAI-compatible model configured with environment variables. That path is off unless `TRACE_AI_ASSESSMENT=1`.
+Nothing in the production deploy config turns it on. See [DEMO.md](DEMO.md).
 
 ## Data and privacy
 
@@ -92,25 +94,28 @@ cd data-foundation && ../backend/.venv/bin/python -m pytest -q
 
 ## Deployment
 
-Live at **https://trace-career.fly.dev/**. The app runs on Fly.io (`Dockerfile`, `fly.toml`) with a dedicated Supabase
-project for Auth and PostgreSQL. Secrets live in Fly's secret store. See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+The production service is on Fly.io (`Dockerfile`, `fly.toml`, region `nrt`) with a dedicated Supabase project.
+A preview can be run on Cloud Run in `asia-south1`. Neither is changed by a pull request. Secrets stay in the
+platform's secret store. See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). Do not point a preview at the production database.
 
 ## Demo flow
 
-1. Open the landing page and create an account (confirm your email).
-2. Agree to resume reading and upload a PDF or Word resume.
-3. Review and correct what Trace found, then confirm.
-4. Choose a target role (your current role works too) and, optionally, where you'd like to move and by when.
-5. Read the plan: your starting point, routes to the target, how your experience relates, and what to do next.
-6. On your profile, try "Update using a new resume" or "Clear my career profile and start over".
+Use a fictional resume. The steps, the model environment variables, and the preview deploy are in [DEMO.md](DEMO.md).
+
+1. Open the landing page and create an account (confirm your email, or use the local demo account).
+2. Agree to resume reading and upload a PDF or Word resume. The file is not kept.
+3. Review and correct what Trace found, then confirm. A year is enough for education when the resume has no month.
+4. Choose a target. Associate Product Manager, Product Manager and Senior Product Manager produce a plan. Other moves on that ladder are labelled Limited support.
+5. Read what the experience proves, what is still open, and the next step. When the model is configured, that reading cites the lines it used.
+6. From Profile settings, download your data as JSON, or delete the account. Clearing the career profile keeps the account.
 
 ## Current limitations
 
-- Product management roles only, with knowledge packs for the PM ladder; other roles show "plan not available yet".
+- The assessed moves are into Associate Product Manager or Product Manager, from Associate to Product Manager, and from Product Manager to Senior Product Manager. Other moves are labelled Limited support. Roles outside that ladder are not guessed at.
 - The capability reading is deterministic. On wording it hasn't seen, it misses evidence (a missed line shows as "needs
   more context", not as a false claim). Its evaluation set is author-annotated.
 - The career research view is off outside an authorised local preview, and its data isn't in this repository.
-- Account deletion isn't in the app yet; clearing the career profile removes the career information.
+- Account deletion is in Profile settings (`POST /api/v1/account`). It needs migrations v2.36.0 and v2.37.0 on the database it talks to. v2.37.0 is the schema usage that lets the owner role call the function. Clearing the career profile still keeps the account.
 - No licence has been chosen yet, so all rights are reserved.
 
 Design decisions are recorded in [docs/DECISIONS.md](docs/DECISIONS.md) and the phase plan in

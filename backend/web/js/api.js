@@ -181,11 +181,14 @@ export const api = {
   setMovePreference: (target, body) => send("PUT", `/api/v1/move-preference?target=${q(target)}`, { body }),
   setGoal: (target, body) => send("PUT", `/api/v1/transition-goal?target=${q(target)}`, { body }),
   roadmap: (runId) => send("GET", `/api/v1/transition-plan/${q(runId)}/roadmap`),
+  aiNarrative: (target) => send("GET", `/api/v1/ai-narrative?target=${q(target)}`),
   // Career Origins & Transitions (internal preview, off unless the server enables it): research-cohort aggregates, with the
   // research group matching the confirmed current role of this saved plan. 404 means the feature is off.
   careerOrigins: (runId) => send("GET", `/api/v1/career-origins?plan=${q(runId)}`),
   // where a returning user lands: their most recent saved plan for any target (404 when there is none)
   latestAnyPlan: () => send("GET", "/api/v1/transition-plans/latest"),
+  exportData: () => send("GET", "/api/v1/account/export"),
+  deleteAccount: (confirm) => send("POST", "/api/v1/account", { body: { confirm } }),
 
   // DORMANT (redesign): target companies and company research are no longer part of the product flow. The endpoints
   // and data are preserved for possible future use; no view calls these.

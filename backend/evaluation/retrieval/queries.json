@@ -1,0 +1,317 @@
+{
+ "version": "retrieval-queries-1.0",
+ "frozen_on": "2026-11-23",
+ "sources": {
+  "areas": "trace_responsibility_areas (taxonomy v2)",
+  "capabilities": "knowledge pack pm-v1.2"
+ },
+ "areas": [
+  {
+   "key": "ai_product_work",
+   "label": "AI and machine-learning product work",
+   "description": "Specifies, builds, evaluates or launches features powered by machine-learning models or large language models.",
+   "examples": [
+    "Defined the evaluation set and pass criteria for a support chatbot",
+    "Chose between two models based on cost, latency and accuracy",
+    "Wrote prompt and guardrail requirements for an AI agent"
+   ]
+  },
+  {
+   "key": "business_case_economics",
+   "label": "Business cases and economics",
+   "description": "Builds business cases, pricing or cost models, or is accountable for a budget, revenue or unit economics.",
+   "examples": [
+    "Built the business case that funded a new pricing tier",
+    "Modelled and reduced cost per transaction",
+    "Owned an annual budget for a product area"
+   ]
+  },
+  {
+   "key": "customer_account_management",
+   "label": "Customer and account management",
+   "description": "Manages customer accounts, escalations and renewals or resolves customer issues.",
+   "examples": [
+    "Managed renewals and escalations for enterprise accounts",
+    "Resolved recurring customer issues with the support team"
+   ]
+  },
+  {
+   "key": "data_analysis",
+   "label": "Data analysis",
+   "description": "Analyses data, funnels, experiments or metrics; builds dashboards or models.",
+   "examples": [
+    "Built a funnel dashboard for onboarding",
+    "Analysed an A/B test and recommended a variant"
+   ]
+  },
+  {
+   "key": "data_governance_quality",
+   "label": "Data quality and governance",
+   "description": "Defines, certifies or controls data: shared definitions, quality checks, lineage, access and consent controls.",
+   "examples": [
+    "Defined the single \"active customer\" definition used across reports",
+    "Set up data-quality checks and an access-request process",
+    "Owned consent flags in a customer data pipeline"
+   ]
+  },
+  {
+   "key": "delivery_execution",
+   "label": "Delivery and execution",
+   "description": "Plans and coordinates delivery, launches and dependencies.",
+   "examples": [
+    "Planned and coordinated a release with engineering and QA",
+    "Managed launch dependencies and dates"
+   ]
+  },
+  {
+   "key": "design_research",
+   "label": "Design and user research",
+   "description": "Interaction design, usability testing and design research.",
+   "examples": [
+    "Ran usability tests on a new checkout flow",
+    "Designed wireframes for the settings page"
+   ]
+  },
+  {
+   "key": "executive_communication",
+   "label": "Communicating with senior leadership",
+   "description": "Presents strategy, progress, risks or decisions to senior leaders, or writes decision papers for them.",
+   "examples": [
+    "Presented the quarterly roadmap to the CTO and CFO",
+    "Wrote the decision memo for the leadership committee",
+    "Ran the monthly business review with directors"
+   ]
+  },
+  {
+   "key": "go_to_market_growth",
+   "label": "Go-to-market and growth",
+   "description": "Marketing, acquisition, campaigns and go-to-market.",
+   "examples": [
+    "Planned the launch campaign with marketing",
+    "Ran acquisition experiments for a new segment"
+   ]
+  },
+  {
+   "key": "operations_process",
+   "label": "Operations and process",
+   "description": "Runs operations and improves processes.",
+   "examples": [
+    "Redesigned the refund process to cut handling time",
+    "Ran day-to-day operations for a service desk"
+   ]
+  },
+  {
+   "key": "outcome_ownership",
+   "label": "Outcome ownership",
+   "description": "Accountable for product outcomes such as adoption, conversion, retention or revenue.",
+   "examples": [
+    "Accountable for the activation rate of a product area",
+    "Owned a revenue or retention target"
+   ]
+  },
+  {
+   "key": "people_leadership",
+   "label": "People leadership",
+   "description": "Leads or mentors people or teams.",
+   "examples": [
+    "Managed a team of five analysts",
+    "Mentored two junior colleagues"
+   ]
+  },
+  {
+   "key": "prioritisation_backlog",
+   "label": "Prioritisation and backlog",
+   "description": "Owns backlog, release or feature prioritisation.",
+   "examples": [
+    "Prioritised the integrations backlog each sprint",
+    "Decided what went into each release"
+   ]
+  },
+  {
+   "key": "product_discovery",
+   "label": "Product and customer discovery",
+   "description": "Problem, customer or user discovery that shapes what is built.",
+   "examples": [
+    "Interviewed customers to validate a redesign",
+    "Ran problem discovery before committing to a feature"
+   ]
+  },
+  {
+   "key": "quality_testing",
+   "label": "Quality and testing",
+   "description": "Tests software and manages defects.",
+   "examples": [
+    "Wrote and ran regression tests",
+    "Triaged and tracked defects"
+   ]
+  },
+  {
+   "key": "requirements_analysis",
+   "label": "Requirements analysis",
+   "description": "Elicits requirements, process maps or specifications.",
+   "examples": [
+    "Gathered requirements from merchants",
+    "Wrote specifications and process maps"
+   ]
+  },
+  {
+   "key": "roadmap_ownership",
+   "label": "Roadmap ownership",
+   "description": "Owns or sets a roadmap or product strategy for a product area.",
+   "examples": [
+    "Set the six-month roadmap for a product area",
+    "Owned the product strategy for a feature set"
+   ]
+  },
+  {
+   "key": "stakeholder_management",
+   "label": "Stakeholder management",
+   "description": "Coordinates stakeholders and cross-functional partners.",
+   "examples": [
+    "Aligned operations, finance and engineering on a change",
+    "Ran weekly stakeholder reviews"
+   ]
+  },
+  {
+   "key": "strategy_portfolio",
+   "label": "Strategy and portfolio",
+   "description": "Sets multi-product, portfolio or organisation-level strategy.",
+   "examples": [
+    "Set strategy across three related products",
+    "Decided investment across a portfolio of initiatives"
+   ]
+  },
+  {
+   "key": "technical_engineering",
+   "label": "Technical engineering",
+   "description": "Designs, builds or integrates software, APIs or models.",
+   "examples": [
+    "Built and maintained payment APIs",
+    "Designed a data pipeline"
+   ]
+  }
+ ],
+ "capabilities": [
+  {
+   "key": "C1",
+   "title": "Understand users and customers and set priorities from their needs",
+   "description": "Learn about users and customers through research, feedback and data, and use that to decide what matters.",
+   "direct_areas": [
+    "product_discovery",
+    "design_research"
+   ],
+   "transferable_areas": [
+    "customer_account_management",
+    "requirements_analysis"
+   ]
+  },
+  {
+   "key": "C2",
+   "title": "Product vision, strategy and roadmap",
+   "description": "Set direction for a product and turn it into a sequenced roadmap.",
+   "direct_areas": [
+    "roadmap_ownership",
+    "strategy_portfolio"
+   ],
+   "transferable_areas": [
+    "prioritisation_backlog"
+   ]
+  },
+  {
+   "key": "C3",
+   "title": "Turn problems into requirements and priorities",
+   "description": "Write specifications, PRDs or data contracts, own a backlog and decide what comes first.",
+   "direct_areas": [
+    "requirements_analysis",
+    "prioritisation_backlog"
+   ],
+   "transferable_areas": [
+    "delivery_execution",
+    "quality_testing",
+    "technical_engineering"
+   ]
+  },
+  {
+   "key": "C4",
+   "title": "Define outcome metrics and make data-informed decisions",
+   "description": "Decide how success is measured and use data to choose and adjust.",
+   "direct_areas": [
+    "outcome_ownership",
+    "data_analysis"
+   ],
+   "transferable_areas": [
+    "go_to_market_growth",
+    "business_case_economics"
+   ]
+  },
+  {
+   "key": "C5",
+   "title": "Cross-functional collaboration and stakeholder communication",
+   "description": "Work with engineering, design, business and leadership, including without direct authority.",
+   "direct_areas": [
+    "stakeholder_management",
+    "executive_communication"
+   ],
+   "transferable_areas": [
+    "customer_account_management",
+    "people_leadership",
+    "delivery_execution"
+   ]
+  },
+  {
+   "key": "C6",
+   "title": "Iterative delivery across the product lifecycle",
+   "description": "Ship, measure and iterate, from launch to retirement.",
+   "direct_areas": [
+    "delivery_execution"
+   ],
+   "transferable_areas": [
+    "quality_testing",
+    "operations_process",
+    "technical_engineering"
+   ]
+  },
+  {
+   "key": "L1",
+   "title": "Scope: several products or a complex, high-risk product",
+   "description": "Own a group of products, or one complex or high-risk product.",
+   "direct_areas": [
+    "strategy_portfolio"
+   ],
+   "transferable_areas": [
+    "roadmap_ownership"
+   ]
+  },
+  {
+   "key": "L2",
+   "title": "Coaching, mentoring and product leadership",
+   "description": "Develop other product people and lead without a title.",
+   "direct_areas": [
+    "people_leadership"
+   ],
+   "transferable_areas": []
+  },
+  {
+   "key": "L3",
+   "title": "Executive-level communication",
+   "description": "Present direction, risks and results to senior leaders.",
+   "direct_areas": [
+    "executive_communication"
+   ],
+   "transferable_areas": [
+    "stakeholder_management"
+   ]
+  },
+  {
+   "key": "L4",
+   "title": "Planning across teams and functions",
+   "description": "Plan work that spans several teams and manage the dependencies.",
+   "direct_areas": [
+    "delivery_execution"
+   ],
+   "transferable_areas": [
+    "stakeholder_management"
+   ]
+  }
+ ]
+}

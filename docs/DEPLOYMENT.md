@@ -100,8 +100,28 @@ second account. `GET /api/v1/career-origins` must return 404. Delete the smoke-t
 
 ## Known production limits
 
-- The IP rate limit uses the client address reported by Replit's proxy (`--forwarded-allow-ips='*'`). A client can
-  prepend a forwarded address, so the per-IP limit is advisory; the per-user limits (verified account) always apply.
+- The process does **not** start with `--forwarded-allow-ips='*'`. That wildcard trusts every caller, so a client can
+  put a fake address at the start of `X-Forwarded-For` and dodge the per-IP limit. Uvicorn's default trusts only
+  `127.0.0.1`. On Fly, the app reads `Fly-Client-IP`, which the proxy overwrites. On Cloud Run, set
+  `TRACE_TRUST_APPENDED_FORWARDED=1` so only the last forwarded hop (the one the frontend appended) is used.
+  Per-user limits still apply either way.
 - Plans show profile-led routes only: production has no reference career histories (the synthetic sample is never
   loaded there and the research is off).
-- Account deletion isn't in the app; clearing the career profile removes the career information.
+- Account deletion is `POST /api/v1/account` after the caller types `delete my account`. It needs migrations v2.36.0 and v2.37.0.
+  Clearing the career profile still keeps the account.
+
+## Preview on Cloud Run (asia-south1) — not production
+
+Do not point this at `trace-prod` or apply migrations there without a separate decision. Use a preview Supabase project.
+
+1. Create or select a **preview** Supabase project in `asia-south1` (or the closest available region). Apply migrations
+   with `supabase db push` against that project's admin URL only, including v2.34.0, v2.35.0, v2.36.0 and v2.37.0 if the demo
+   narrative and account deletion are in scope. Do not load synthetic seeds into a project that holds real profiles.
+2. Build the image from this repository (`Dockerfile`). Do not set `TRACE_AI_ASSESSMENT` in the production Fly app.
+3. Deploy to Cloud Run, region `asia-south1`, with a dedicated runtime service account. Set secrets in Cloud Run, not
+   in the image: `DATABASE_RUNTIME_URL`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `TRACE_IDENTITY_MARKER_KEY`.
+4. For the AI demo on that preview only: `TRACE_AI_ASSESSMENT=1`, `TRACE_LLM_PROVIDER`, `TRACE_LLM_BASE_URL`,
+   `TRACE_LLM_MODEL`, `TRACE_LLM_API_KEY`, `TRACE_EMBEDDINGS=1`, `TRACE_SEMANTIC_RETRIEVAL=1`,
+   `TRACE_TRUST_APPENDED_FORWARDED=1`. Leave `TRACE_CAREER_ORIGINS=0` and do not set `TRACE_DEMO_FIXTURES`.
+5. Confirm `GET /health` and that `/api/v1/career-origins` is 404. Sign up with a new address, upload a **fictional**
+   resume, and delete the account afterwards.

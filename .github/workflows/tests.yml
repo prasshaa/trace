@@ -1,0 +1,65 @@
+name: tests
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  backend-and-frontend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: trace
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d trace"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install backend dependencies
+        run: python -m pip install -r backend/requirements-dev.txt
+      - name: Backend tests that do not need a database
+        working-directory: backend
+        run: python -m pytest -q -m "not integration" --tb=line
+      - name: Fictional resume packets
+        working-directory: backend
+        run: python -m evaluation.ai_demo
+      - name: Peer patterns on Postgres
+        working-directory: backend
+        env:
+          PEER_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/trace
+        run: python -m pytest -q tests/test_peer_patterns_postgres.py -k "not rolls_back" --tb=short
+      - name: Peer migration rollbacks on Postgres
+        working-directory: backend
+        env:
+          PEER_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/trace
+        run: python -m pytest -q tests/test_peer_patterns_postgres.py -k rolls_back --tb=short
+      - name: Frontend syntax
+        working-directory: backend
+        run: |
+          python - << 'PY'
+          import shutil, subprocess, sys
+          from pathlib import Path
+          node = shutil.which("node")
+          bad = []
+          for p in Path("web/js").rglob("*.js"):
+              if "vendor" in p.parts:
+                  continue
+              r = subprocess.run([node, "--input-type=module", "--check"], input=p.read_text(), text=True, capture_output=True)
+              if r.returncode:
+                  bad.append(p.name + " " + r.stderr)
+          if bad:
+              sys.exit("frontend syntax\n" + "\n".join(bad))
+          PY

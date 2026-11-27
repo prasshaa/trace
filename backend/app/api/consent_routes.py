@@ -7,9 +7,10 @@
 
 GET /api/v1/consent shows both side by side. Each decision is the caller's own explicit action on the current
 document version; none is inferred from an upload, from the other purpose or from terms. The contribution policy is
-server-controlled (TRACE_CONTRIBUTION_POLICY): "opt_in" (default) or "disabled" (a grant is refused; denial and
-withdrawal are always accepted). Any other value fails closed. Withdrawal excludes and deletes the caller's
-contributed reference profiles in the same transaction (database trigger).
+server-controlled (TRACE_CONTRIBUTION_POLICY): "opt_in" (default), "disabled" (the notice records private; a grant
+is refused), or "anonymous" (the sign-up notice records shared use to improve recommendations, and a grant is still
+refused, so nothing is queued for a shared pool). Denial and withdrawal are always accepted. Any other value fails
+closed. Withdrawal excludes and deletes the caller's contributed reference profiles in the same transaction.
 """
 from typing import List, Literal
 from uuid import UUID
@@ -26,7 +27,7 @@ from app.services.candidate_profile.repository import CandidateProfileError
 
 router = APIRouter(prefix="/api/v1", tags=["api"])
 CONTRIBUTION = "deidentified_shared_dataset"
-POLICIES = ("opt_in", "disabled")
+POLICIES = ("opt_in", "disabled", "anonymous")
 
 
 class ContributionPolicyUnavailable(Exception):
@@ -55,7 +56,7 @@ class PurposeView(BaseModel):
 
 class ConsentOverview(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    contribution_policy: Literal["opt_in", "disabled"]
+    contribution_policy: Literal["opt_in", "disabled", "anonymous"]
     purposes: List[PurposeView]
     note: str = "Each purpose is a separate decision. Neither is implied by the other, by uploading or by any terms."
 

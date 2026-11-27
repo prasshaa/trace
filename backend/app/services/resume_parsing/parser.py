@@ -26,7 +26,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from app.services.resume_parsing import skills as sk
 from app.services.resume_parsing.document import Document, Line
 
-PARSER_VERSION = "trace-resume-parser-2.2"
+PARSER_VERSION = "trace-resume-parser-2.3"
 # /2 added `unresolved` (nothing is dropped silently); /3 keeps a role with no recognisable title as a role (title left for
 # the user), adds each role's `source` line, and gives unplaced text the fields it supports (title, employer, dates).
 DRAFT_SCHEMA = "trace-resume-draft/3"
@@ -346,7 +346,15 @@ def _continues(prev: Para, l: Line, line_h: float, right: float = 0.0, left: flo
             return False
         text_x = prev.first.x0
         if prev.bullet:
-            return abs(l.x0 - text_x) <= 4 or (l.x0 > text_x - 2 and t[:1].islower())
+            dx = l.x0 - text_x
+            # Same column as the bullet text. A hanging indent (the glyph sits left of the words, so the wrap
+            # starts further right) is the same bullet even when it resumes with a digit ("91%") or a capital
+            # ("Did not"). A line that itself looks like a job header is not pulled into the bullet.
+            if abs(dx) <= 4:
+                return True
+            if 4 < dx <= 28 and not (_header_like(l, loose=False) and not t[:1].islower() and not t[:1].isdigit()):
+                return True
+            return dx > -2 and t[:1].islower()
         full = right > left and last.x1 >= right - 0.18 * (right - left)          # the previous line ran to the margin
         # A lower-case start is a sentence carried over; otherwise the previous line must have run to the margin.
         return abs(l.x0 - text_x) <= 4 and (t[:1].islower() or (full and not _header_like(l, loose=False)
@@ -483,6 +491,18 @@ def experience(lines: List[Line]) -> List[Job]:
     return experience_with_issues(lines)[0]
 
 
+def _prose_fragment(text: str) -> bool:
+    """A wrapped bullet or a sentence, not a job header. These stay with the role they were written under."""
+    t = text.strip()
+    if not t:
+        return False
+    if t[:1].islower() or ends_sentence(t):
+        return True
+    return re.match(
+        r"(?i)^(worked|supported|partnered|collaborated|owned|built|led|helped|raised|improved|did|shipped|launched)\b",
+        t) is not None
+
+
 def _possible_role(text: str) -> bool:
     m = RANGE.search(text) or SINCE.search(text)
     return bool(m) and bool(ROLE_WORDS.search(text) or ORG_WORDS.search(text) or LEGAL_FORM.search(text))
@@ -525,7 +545,14 @@ def segment_experience(paras: List[Para]) -> Tuple[List[Segment], List[Para], Li
         tail = compact_tail(text) if m and not p.bullet else None
         head = text[:m.end()] if (m and tail) else text
         if m and not p.bullet and len(head) <= 160:
-            cur = Segment(pending, p, True)
+            # A wrapped bullet that wasn't joined ("Did not own the roadmap") must not become the next job's header.
+            stray = [q for q in pending if _prose_fragment(q.text)]
+            headers = [q for q in pending if q not in stray]
+            if cur is not None:
+                cur.body.extend(stray)
+            else:
+                orphans.extend(stray)
+            cur = Segment(headers, p, True)
             pending = []
             cur.tail = tail
             nxt = paras[i + 1] if i + 1 < len(paras) else None
@@ -547,9 +574,16 @@ def segment_experience(paras: List[Para]) -> Tuple[List[Segment], List[Para], Li
             i += 1
             continue
         if p.bullet and pending and (cur is None or cur.body or cur.tail):
-            # header lines followed by bullets but no dates: an undated role, if those lines name a title
-            if _assign([x for h in pending for x in _parts(h.text)])[0]:
-                cur = Segment(pending, None, False)
+            # header lines followed by bullets but no dates: an undated role, if those lines name a title.
+            # A sentence fragment ("Partnered with the Product Manager") is not a new role; it stays on this one.
+            headers = [h for h in pending if not _prose_fragment(h.text)]
+            if headers and _assign([x for h in headers for x in _parts(h.text)])[0]:
+                prose = [h for h in pending if h not in headers]
+                if cur is not None:
+                    cur.body.extend(prose)
+                else:
+                    orphans.extend(prose)
+                cur = Segment(headers, None, False)
                 pending = []
                 segments.append(cur)
         if p.bullet:

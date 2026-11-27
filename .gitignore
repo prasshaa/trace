@@ -23,3 +23,6 @@ venv/
 # Local backups and review archives
 data-foundation-v2.0.0-backup/
 Trace_Data_Foundation_v2_review*.zip
+
+# Embedding model files (downloaded and checksum-verified by backend/scripts/fetch_embedding_model.py)
+backend/.models/

@@ -2,12 +2,13 @@
 
 GET  /api/v1/sharing          the onboarding data-use notice, the caller's sharing preference and, separately, the
                               actual state of their profile in the shared pool.
-POST /api/v1/sharing/notice   Continue on the onboarding data-use notice: records the default preference ('shared')
-                              when the caller has none yet. Never overrides an earlier choice.
+POST /api/v1/sharing/notice   Continue on the onboarding data-use notice: records the default preference ('shared':
+                              anonymous use to improve recommendations) when the caller has none yet. Never overrides
+                              an earlier choice. It does not publish a profile and does not record contribution consent.
 PUT  /api/v1/sharing          a choice in Profile settings: {"mode": "shared" | "private", "confirm_version": ...}.
 
 Three things are kept apart and never inferred from one another:
-  preference           what the user wants ('shared' is the product default after the onboarding notice).
+  preference           what the user wants ('shared' is the default after the onboarding notice; they can switch it off).
   explicit permission  the existing contribution consent (purpose deidentified_shared_dataset): an explicit 'granted'
                        decision under the current approved notice. Processing for the shared pool still REQUIRES it.
                        Acknowledging the onboarding notice never creates it. Choosing 'shared' in settings with
@@ -37,21 +38,24 @@ from app.services.candidate_profile.repository import ConsentConflict, owner_ses
 
 router = APIRouter(prefix="/api/v1", tags=["api"])
 
-# v2 (Phase 7.2): the last paragraph now says what the default preference does and does not do. Preferences recorded
-# under v1 keep their recorded version; nothing is re-shown or re-recorded for them.
-NOTICE_VERSION = "trace-data-use-notice-v2"
-NOTICE_TITLE = "Your experience helps make Trace better."
+# v4: the default for a new account is anonymous use to improve recommendations. v3 recorded private. A preference
+# already stored is not rewritten, so people who continued under v3 are not shown this notice again.
+NOTICE_VERSION = "trace-data-use-notice-v4"
+NOTICE_TITLE = "How Trace uses your career information"
+# One sentence, shown at sign-up and as the lead of this notice. India DPDP: say the default and where to change it.
+NOTICE_LINE = (
+    "By default, Trace uses your data anonymously to improve recommendations for everyone; "
+    "your profile is never shown or shared with other users, and you can change this in Settings."
+)
 NOTICE_PARAGRAPHS = (
-    "Trace uses your career information to understand your experience and recommend paths for you. It can also use "
-    "career details from your profile to improve recommendations for other people.",
-    "Before career details are added to the shared pool, we remove personal details such as your name, email address "
-    "and phone number. We keep relevant professional information, such as your employers, job titles, education and "
-    "experience, to understand career patterns.",
-    "Other users see patterns across groups of profiles, not your individual profile. Some combinations of career "
-    "details may still make a profile recognisable, so we cannot promise complete anonymity.",
-    "Your sharing preference is set to on by default. Your career details won't be added to shared recommendations until "
-    "you confirm sharing in Profile settings and your profile passes the required checks. You can change your "
-    "preference to private recommendations anytime.",
+    NOTICE_LINE,
+    "Your individual profile is never shown to other users, and it is not published. "
+    "You can turn this off at any time in Profile settings.",
+    "Direct personal details such as your name, email address and phone number are removed before career details "
+    "are used to improve recommendations for others. Some combinations of career details may still make a profile "
+    "recognisable, so we cannot promise complete anonymity.",
+    "This default does not share your profile publicly. Nothing from your profile is shown to other members as yours. "
+    "You can switch to using your career information only for your own recommendations in Settings.",
 )
 
 # Release (D52): where sharing with other users is not offered (TRACE_CONTRIBUTION_POLICY=disabled, the public site), the
@@ -98,8 +102,13 @@ class SharingChoice(_View):
     confirm_version: Optional[str] = Field(default=None, min_length=1, max_length=120)
 
 
+def forces_private_default(policy: str) -> bool:
+    """Only the public-site policy rewrites the onboarding choice to private. `anonymous` keeps `shared`."""
+    return policy == "disabled"
+
+
 def _notice(policy: str = "opt_in") -> DataUseNotice:
-    if policy == "disabled":
+    if forces_private_default(policy):
         return DataUseNotice(version=PRIVATE_NOTICE_VERSION, title=PRIVATE_NOTICE_TITLE, paragraphs=list(PRIVATE_NOTICE_PARAGRAPHS))
     return DataUseNotice(version=NOTICE_VERSION, title=NOTICE_TITLE, paragraphs=list(NOTICE_PARAGRAPHS))
 
@@ -143,7 +152,7 @@ def acknowledge_notice(payload: NoticeAcknowledgement, owner: UUID = Depends(cur
         raise ConsentConflict("this data-use notice is not the current version")
     with owner_session(conn, owner):
         conn.execute("select trace_contrib.acknowledge_data_use_notice(%s)", (current,))
-        if policy == "disabled":                       # sharing isn't offered: the recorded preference is private
+        if forces_private_default(policy):            # the public site records private; the demo policy `anonymous` does not
             conn.execute("select trace_contrib.set_sharing_preference('private')")
     return _view(conn, owner, service, policy)
 

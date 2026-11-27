@@ -70,13 +70,13 @@ const NAV = [
 const ALIASES = { results: "pathway", setup: "start", intelligence: "pathway", insights: "pathway", contribution: "settings" };
 
 function navHref(key) {
-  if (key === "pathway") return app.target ? `#/pathway/${encodeURIComponent(app.target)}` : "#/target";
+  if (key === "pathway") return app.target ? `#/pathway/${encodeURIComponent(app.target)}` : "#/pathway";
   return `#/${key}`;
 }
 
 function renderHeader(active) {
   const items = app.session && app.me
-    ? NAV.filter((n) => !n.needsRecords || app.hasRecords)
+    ? NAV.filter((n) => !n.needsRecords || app.hasRecords).filter((n) => n.key !== "pathway" || app.target)
     : [];
   if (app.session && app.me && app.pendingImport) items.unshift({ key: "import", label: "Review your resume" });
   else if (app.session && app.me && !app.hasRecords) items.unshift({ key: "start", label: "Get started" });
@@ -125,6 +125,7 @@ async function route() {
   const root = shell.main;
   if (!app.session) {
     renderHeader(null);
+    if (parseHash().path === "privacy") return privacyPage(root);
     if (window.location.hash && window.location.hash !== "#/") history.replaceState(null, "", "#/");
     signin.render(root, { config: app.config, oauthError: app.oauthError });
     app.oauthError = null;
@@ -183,6 +184,8 @@ async function route() {
       return report.render(root, { ...ctx, targetId: app.target, section: section || "overview" });
     case "settings":
       return settings.render(root, ctx);
+    case "privacy":
+      return privacyPage(root);
     case "replace":
       return manage.renderReplace(root, ctx);
     default:
@@ -243,6 +246,24 @@ async function boot() {
   });
   window.addEventListener("hashchange", route);
   route();
+}
+
+function privacyPage(root) {
+  mount(root, h("section.page.page-narrow",
+    h("header.page-header",
+      h("p.eyebrow", "Privacy notice"),
+      h("h1.page-title", { tabindex: "-1" }, "How Trace handles your information"),
+      h("p.lead", "This is a plain description of the product, not a legal opinion.")),
+    h("section.card",
+      h("p", "Trace uses your account email to sign you in, and the career details you confirm — jobs, education, skills and the lines you keep — to build your own plan."),
+      h("p", "The resume file itself is read in memory and is not stored. Trace keeps a size, a type and a fingerprint."),
+      h("p", "Your profile is private to you. Sharing with other people is off until you turn it on in Profile settings. Other people never see your profile; shared patterns, when they exist, are groups."),
+      h("p", "When the AI reading is switched on for a demo, the confirmed lines needed for that reading are sent to the model provider named in the server environment. Embeddings, when they are used, are computed on Trace's own server and are not sent to that provider."),
+      h("p", "You can download a JSON copy of your data from Profile settings, clear your career profile, or delete your account. Deleting the account removes the sign-in and the career data that belongs to it."),
+      h("p.muted.small", "Questions about a production deployment should go to the person who runs that site.")),
+    h("p", h("a", { href: "#/" }, "Back"))));
+  const title = root.querySelector(".page-title");
+  if (title) title.focus({ preventScroll: true });
 }
 
 boot();
