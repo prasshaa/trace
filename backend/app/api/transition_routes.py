@@ -454,6 +454,8 @@ class RoadmapView(_View):
     support: Dict[str, Any] = {}
     # Present when the AI demo path ran or explained why it did not. Absent on older saved responses only.
     ai: Dict[str, Any] = {}
+    # Group patterns from the closest de-identified career paths. Empty unless TRACE_PEER_MATCHING=1.
+    peers: Dict[str, Any] = {}
 
 
 def _goal_view(target: str, g: Optional[dict]) -> GoalView:

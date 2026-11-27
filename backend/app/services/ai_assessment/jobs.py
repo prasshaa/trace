@@ -1,7 +1,7 @@
 """In-process narrative jobs. The roadmap returns immediately; the model call finishes in the background.
 
-Keyed by owner, target and profile version. A second request while one is running does not start another call.
-The process stores the result only. It does not store the API key or the prompt.
+Each narrative runs on its own thread. The lock only updates the job map, so two readings do not wait on each other.
+A second request for the same owner, target and profile version reuses the call already running.
 """
 from __future__ import annotations
 

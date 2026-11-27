@@ -102,8 +102,13 @@ class SharingChoice(_View):
     confirm_version: Optional[str] = Field(default=None, min_length=1, max_length=120)
 
 
+def forces_private_default(policy: str) -> bool:
+    """Only the public-site policy rewrites the onboarding choice to private. `anonymous` keeps `shared`."""
+    return policy == "disabled"
+
+
 def _notice(policy: str = "opt_in") -> DataUseNotice:
-    if policy == "disabled":
+    if forces_private_default(policy):
         return DataUseNotice(version=PRIVATE_NOTICE_VERSION, title=PRIVATE_NOTICE_TITLE, paragraphs=list(PRIVATE_NOTICE_PARAGRAPHS))
     return DataUseNotice(version=NOTICE_VERSION, title=NOTICE_TITLE, paragraphs=list(NOTICE_PARAGRAPHS))
 
@@ -147,7 +152,7 @@ def acknowledge_notice(payload: NoticeAcknowledgement, owner: UUID = Depends(cur
         raise ConsentConflict("this data-use notice is not the current version")
     with owner_session(conn, owner):
         conn.execute("select trace_contrib.acknowledge_data_use_notice(%s)", (current,))
-        if policy == "disabled":                       # sharing isn't offered: the recorded preference is private
+        if forces_private_default(policy):            # the public site records private; the demo policy `anonymous` does not
             conn.execute("select trace_contrib.set_sharing_preference('private')")
     return _view(conn, owner, service, policy)
 

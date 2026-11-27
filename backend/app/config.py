@@ -64,7 +64,10 @@ class Settings(BaseSettings):
     trace_enabled_cohorts: str = "synthetic"
 
     # Shared career-intelligence contribution policy (server-controlled). "opt_in": an explicit, separate decision;
-    # never inferred from uploads or terms. "disabled": contribution consent is not offered. Anything else fails closed.
+    # never inferred from uploads or terms. "disabled": the onboarding notice records private and contribution consent
+    # is not offered. "anonymous": the demo. The sign-up notice records shared (anonymous use to improve
+    # recommendations) and a contribution grant is still refused, so nothing is queued for a shared pool.
+    # Anything else fails closed.
     trace_contribution_policy: str = "opt_in"
 
     # A user's own resume (Phase 6.1): POST /api/v1/real-resumes. Off by default; enable deliberately per environment.
@@ -105,6 +108,11 @@ class Settings(BaseSettings):
     # (v3 final). Off by default. Product exposure needs a separate data-use and privacy review; enable only locally.
     trace_career_origins: bool = False
     trace_career_origins_artifact: Optional[Path] = None      # default: the artifact shipped with the service
+    # Peer path matching (demo). Off by default. When on, the plan asks trace_peer_cohort.peer_patterns for group
+    # totals of the closest de-identified profiles. It does not read the Career Origins artifact and it does not
+    # change TRACE_CAREER_ORIGINS. The cohort file is loaded separately and is not in the repository.
+    trace_peer_matching: bool = False
+    trace_peer_cohort_version: str = "india-pm-v3"
 
     # Embeddings (D53): local gte-small, in process. Off by default; nothing in the product uses them until the
     # semantic-retrieval flag (Phase 3) is on. Model files are pinned and verified (scripts/fetch_embedding_model.py).
@@ -130,6 +138,9 @@ class Settings(BaseSettings):
     # grok-4.7 accepts reasoning_effort low|medium|high|xhigh on chat completions. The provider default is high.
     # low is the demo default (a side check cut 60–170 s calls to about 25–30 s). Set the variable empty to omit it.
     trace_llm_reasoning_effort: str = "low"
+    # Output tokens for one reading. 800 cut the JSON off (good readings use about 850–1,200). 1,800 is the default.
+    # TRACE_LLM_MAX_OUTPUT_TOKENS overrides it.
+    trace_llm_max_output_tokens: int = Field(default=1800, ge=256, le=8192)
     # Strict-Transport-Security on every response. Only for a deployment served over HTTPS (release, D52).
     trace_hsts: bool = False
     # Interactive API docs (/docs, /redoc, /openapi.json). Off by default; enable only for local development.

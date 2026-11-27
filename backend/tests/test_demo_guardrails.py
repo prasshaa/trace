@@ -211,6 +211,76 @@ def test_the_request_deadline_is_the_whole_call_and_a_5xx_is_retried_once(monkey
     assert calls["effort"][-1] is None
 
 
+def test_a_truncated_reading_is_retried_and_the_output_cap_is_1800(monkeypatch):
+    import json as _json
+    from app.config import Settings
+    from app.services.ai_assessment.client import LlmError, OpenAICompatible, client_from_settings
+
+    sent = []
+
+    class Resp:
+        def __init__(self, payload):
+            self._buf = _json.dumps(payload).encode()
+        def read(self, _n=-1):
+            data, self._buf = self._buf, b""
+            return data
+        def close(self):
+            pass
+
+    calls = {"n": 0}
+    def open_once(req, timeout=None, socks=None):
+        body = _json.loads(req.data.decode())
+        sent.append(body["max_tokens"])
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return Resp({"choices": [{"finish_reason": "length", "message": {"content": '{"opening": "cut'}}],
+                          "usage": {"prompt_tokens": 10, "completion_tokens": 800}})
+        return Resp({"choices": [{"finish_reason": "stop", "message": {"content": '{"opening": "ok"}'}}],
+                     "usage": {"prompt_tokens": 10, "completion_tokens": 900}})
+
+    monkeypatch.setattr("app.services.ai_assessment.client._open", open_once)
+    client = OpenAICompatible(provider="xai", base_url="https://api.x.ai/v1", model="grok-4.7",
+                              api_key="secret-not-logged", timeout=5)
+    assert client.max_output_tokens == 1800
+    assert client.complete_json("system", "user") == {"opening": "ok"}
+    assert calls["n"] == 2 and sent == [1800, 1800]
+    calls["n"] = 0
+    sent.clear()
+    capped = OpenAICompatible(provider="xai", base_url="https://api.x.ai/v1", model="grok-4.7",
+                              api_key="secret-not-logged", timeout=0.01, max_output_tokens=1800)
+    def always_cut(req, timeout=None, socks=None):
+        return Resp({"choices": [{"finish_reason": "length", "message": {"content": '{"opening":'}}]})
+    monkeypatch.setattr("app.services.ai_assessment.client._open", always_cut)
+    with pytest.raises(LlmError, match="cut off"):
+        capped.complete_json("system", "user")
+    configured = client_from_settings(Settings(
+        trace_ai_assessment=True, trace_llm_model="grok-4.7", trace_llm_api_key="secret-not-logged",
+        trace_llm_max_output_tokens=2400))
+    assert configured.max_output_tokens == 2400
+    assert Settings().trace_llm_max_output_tokens == 1800
+
+
+def test_a_cut_off_reading_is_a_retry_for_the_user(monkeypatch):
+    from app.services.ai_assessment.client import LlmError
+    from app.services.ai_assessment.service import narrative_for
+
+    class Boom:
+        def complete_json(self, *args, **kwargs):
+            raise LlmError("the model output was cut off")
+        last_meta = {"attempts": 2, "latency_s": 4}
+
+    monkeypatch.setattr("app.services.ai_assessment.service.client_from_settings", lambda settings: Boom())
+    monkeypatch.setattr("app.services.ai_assessment.service.confirmed_lines",
+                        lambda profile: [{"id": "L1", "text": "Shipped the queue.", "job": "SWE"}])
+    monkeypatch.setattr("app.services.ai_assessment.service.select_lines",
+                        lambda *args, **kwargs: ([{"id": "L1", "text": "Shipped the queue.", "job": "SWE"}], {"mode": "all_lines"}))
+    result = narrative_for(None, None, object(), {"target_role_id": "PM-PM", "target_role": "Product Manager"})
+    assert result["status"] == "retry"
+    assert "cut off" in result["detail"]
+    assert "JSON" not in result["detail"]
+    assert "plan is unchanged" in result["detail"]
+
+
 def test_a_reset_connection_is_retried_once_inside_the_deadline(monkeypatch):
     import json as _json
     import urllib.error

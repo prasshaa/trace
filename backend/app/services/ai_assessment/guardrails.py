@@ -322,6 +322,65 @@ def negation_as_positive(claim: str, cited: str) -> bool:
     return False
 
 
+_PREP_STEP = re.compile(
+    r"\b(write|prd|portfolio|product-sense|product sense|practise|practice|course|interview|"
+    r"case study|case write-up|mock)\b",
+    re.I,
+)
+_PROGRESSION_STEP = re.compile(r"\b(promot\w*|own the roadmap|roadmap|next level|started as|or above)\b", re.I)
+_BACKGROUND_STEP = re.compile(r"\bcame from\b|\bbefore a product\b|\bbackground\b", re.I)
+_MOVE_STEP = re.compile(
+    r"\b(internal|inside the employer|inside their employer|same employer|move into product|moved into product)\b",
+    re.I,
+)
+
+
+def _about_the_group(sentence: str) -> bool:
+    return bool(re.search(
+        r"closest PMs|paths like yours|path like yours|of PMs|inside the employer|inside their employer|moved into product",
+        sentence or "", re.I))
+
+
+def _peer_figure_text(claim: str, lines: Dict[str, dict]) -> str:
+    """The peer pattern that contains every figure in this sentence, when the sentence states at least two."""
+    nums = _NUM.findall(claim or "")
+    if len(nums) < 2:
+        return ""
+    for row in lines.values():
+        if not str(row.get("id") or "").startswith("PEER-"):
+            continue
+        blob = row.get("text") or ""
+        if blob and not invented_number(claim, blob):
+            return blob
+    return ""
+
+
+def _peer_citation_fits(step_text: str, cited: str) -> bool:
+    """A peer pattern stays only on a step about that same move. A prep step never keeps one."""
+    if _PREP_STEP.search(step_text or ""):
+        return False
+    if re.search(r"started as .+ or above|or above", cited or "", re.I) and _PROGRESSION_STEP.search(step_text or ""):
+        return True
+    if re.search(r"came from ", cited or "", re.I) and _BACKGROUND_STEP.search(step_text or ""):
+        return True
+    if re.search(r"inside the employer|from outside the employer", cited or "", re.I) and _MOVE_STEP.search(step_text or ""):
+        return True
+    if _peer_figure_text(step_text or "", {"PEER-1": {"id": "PEER-1", "text": cited or ""}}):
+        return not bool(_PREP_STEP.search(step_text or ""))
+    return False
+
+
+def _peer_claim_problem(text: str, ids: Iterable[str]) -> Optional[str]:
+    """A peer citation may repeat the group pattern. It may not name a person or promise an outcome."""
+    if not any(str(i).startswith("PEER-") for i in ids):
+        return None
+    if re.search(r"\b(guarantee|guarantees|guaranteed|probability|likely to|will become|you will|percent chance)\b", text or "", re.I):
+        return "peer_claim"
+    if re.search(r"\b(she|he|one person|this person|named)\b", text or "", re.I):
+        return "peer_individual"
+    return None
+
+
 def keep_claim(claim: dict, lines: Dict[str, dict], *, require_citation: bool, kind: str) -> Tuple[Optional[dict], Optional[str]]:
     """The claim and None, or None and a drop reason."""
     if not isinstance(claim, dict):
@@ -333,6 +392,16 @@ def keep_claim(claim: dict, lines: Dict[str, dict], *, require_citation: bool, k
     if _EVAL_ID.search(raw_text) or _UUID.search(raw_text):
         return None, "leaked_id"
     ids = [str(i) for i in (claim.get("evidence_ids") or []) if i]
+    if any(i.startswith("PEER-") for i in ids):
+        peer_reason = _peer_claim_problem(raw_text + " " + raw_why, ids)
+        if peer_reason:
+            return None, peer_reason
+        if kind != "step":
+            return None, "peer_evidence"
+        peer_ids = [i for i in ids if i.startswith("PEER-")]
+        cited = " ".join((lines.get(i) or {}).get("text") or "" for i in peer_ids)
+        if len(peer_ids) != 1 or not _peer_citation_fits(raw_text, cited):
+            ids = [i for i in ids if not i.startswith("PEER-")]
     if any(i and i.lower() in raw_text.lower() for i in ids):
         return None, "leaked_id"
     known = list(lines)
@@ -342,11 +411,16 @@ def keep_claim(claim: dict, lines: Dict[str, dict], *, require_citation: bool, k
     if cited is None:
         return None, "unknown_citation"
     universe = cited if ids else " ".join(row.get("text") or "" for row in lines.values())
+    if kind == "step" and (_about_the_group(raw_text) or any(i.startswith("PEER-") for i in ids)):
+        universe = (universe + " " + _peer_figure_text(raw_text, lines)).strip()
     advice = (kind == "step" and _genuine_advice(raw_text)) or (kind == "transferable" and not _PAST_OWNER.search(raw_text))
     if invented_number(remove_ids(raw_text, known), universe, advice=advice):
         return None, "invented_number"
     if raw_why and invented_number(remove_ids(raw_why, known), universe, advice=advice):
         return None, "invented_number"
+    peer_reason = _peer_claim_problem(raw_text + " " + raw_why, ids)
+    if peer_reason:
+        return None, peer_reason
     if ids and not advice and collaboration_as_ownership(raw_text, cited):
         return None, "collaboration_as_ownership"
     if ids and not _skips_negation(raw_text, kind) and negation_as_positive(raw_text, cited):
@@ -370,20 +444,71 @@ def _trim(text: str, limit: int) -> str:
     return cut
 
 
+def plain_text(raw) -> str:
+    """A model's opening may be a string or an object with a text field. Never pass the object through str()."""
+    if isinstance(raw, dict):
+        return plain_text(raw.get("text"))
+    if isinstance(raw, list):
+        return " ".join(part for part in (plain_text(item) for item in raw) if part)
+    if raw is None:
+        return ""
+    return str(raw)
+
+
+def trim_at_sentence(text: str, limit: int) -> str:
+    """Keep whole sentences that fit. Do not stop in the middle of a phrase."""
+    text = " ".join((text or "").split())
+    if len(text.split()) <= limit:
+        return text
+    kept = []
+    count = 0
+    for sentence in re.split(r"(?<=[.!?])\s+", text):
+        sentence = sentence.strip()
+        if not sentence:
+            continue
+        words = len(sentence.split())
+        if kept and count + words > limit:
+            break
+        if not kept and words > limit:
+            return sentence if words <= 70 else ""
+        kept.append(sentence)
+        count += words
+    result = " ".join(kept)
+    if len(result.split()) < 12 and len(text.split()) >= 12:
+        longer = []
+        total = 0
+        for sentence in re.split(r"(?<=[.!?])\s+", text):
+            sentence = sentence.strip()
+            if not sentence:
+                continue
+            longer.append(sentence)
+            total += len(sentence.split())
+            if len(longer) == 2 or total >= 12:
+                break
+        if longer and len(" ".join(longer).split()) > len(result.split()):
+            return " ".join(longer)
+    return result
+
+
 def _opening(raw, by_id, lines, reasons) -> str:
     """Keep every sentence that does not invent a figure. One bad sentence does not blank the rest."""
     universe = " ".join(row["text"] for row in lines)
-    scrubbed = _scrub(" ".join(str(raw or "").split()), by_id)
+    scrubbed = _scrub(" ".join(plain_text(raw).split()), by_id)
     kept = []
     for sentence in re.split(r"(?<=[.!?])\s+", scrubbed):
         sentence = sentence.strip()
         if not sentence:
             continue
-        if invented_number(remove_ids(sentence, by_id), universe):
+        peer_text = _peer_figure_text(sentence, by_id) if _about_the_group(sentence) else ""
+        number_universe = (universe + " " + peer_text) if peer_text else universe
+        if invented_number(remove_ids(sentence, by_id), number_universe):
             _bump(reasons, "invented_number")
             continue
+        if peer_text and _peer_claim_problem(sentence, ["PEER-1"]):
+            _bump(reasons, "peer_claim")
+            continue
         kept.append(sentence)
-    return _trim(" ".join(kept), 45)
+    return trim_at_sentence(" ".join(kept), 45)
 
 
 def _reading_words(reading: dict) -> int:
@@ -420,7 +545,7 @@ def _limit_reading(reading: dict, reasons: Dict[str, int], by_id: Dict[str, dict
 
     A strength that cites a figure stays. Transferable items stay.
     """
-    while _reading_words(reading) > 380:
+    while _reading_words(reading) > 260:
         questions = reading.get("questions") or []
         if len(questions) > 1:
             questions.pop()
@@ -450,11 +575,11 @@ def apply_guardrails(raw: dict, lines: List[dict]) -> dict:
     """Drop unsupported claims. Counts each drop by reason. User-facing text has ids and audit jargon removed."""
     by_id = {row["id"]: row for row in lines}
     reasons: Dict[str, int] = {}
-    strengths = _collect(raw.get("strengths") or raw.get("proves") or [], by_id, "strength", True, reasons)[:5]
-    transferable = _collect(raw.get("transferable") or [], by_id, "transferable", True, reasons)[:3]
-    gaps = _gaps(raw.get("gaps") or raw.get("missing") or [], by_id, reasons)[:3]
-    questions = _questions(raw.get("questions") or [], by_id, reasons)[:3]
-    steps = _collect(raw.get("steps") or [], by_id, "step", False, reasons)[:3]
+    strengths = _collect(raw.get("strengths") or raw.get("proves") or [], by_id, "strength", True, reasons)[:3]
+    transferable = _collect(raw.get("transferable") or [], by_id, "transferable", True, reasons)[:2]
+    gaps = _gaps(raw.get("gaps") or raw.get("missing") or [], by_id, reasons)[:2]
+    questions = _questions(raw.get("questions") or [], by_id, reasons)[:2]
+    steps = _one_peer_step(_collect(raw.get("steps") or [], by_id, "step", False, reasons), by_id)[:3]
     opening = _opening(raw.get("opening"), by_id, lines, reasons)
     reading = {
         "opening": opening,
@@ -473,6 +598,26 @@ def apply_guardrails(raw: dict, lines: List[dict]) -> dict:
         "dropped": sum(reasons.values()),
         "dropped_reasons": reasons,
     }
+
+
+def _one_peer_step(steps: List[dict], by_id: Dict[str, dict]) -> List[dict]:
+    """At most one step keeps a single peer citation, and only when that citation is the step's subject."""
+    seen = False
+    out = []
+    for step in steps:
+        ids = [str(i) for i in (step.get("evidence_ids") or []) if i]
+        peer = [i for i in ids if i.startswith("PEER-")]
+        if not peer:
+            out.append(step)
+            continue
+        cited = (by_id.get(peer[0]) or {}).get("text") or ""
+        if not seen and len(peer) == 1 and _peer_citation_fits(step.get("text") or "", cited):
+            seen = True
+            out.append(step)
+            continue
+        kept = [i for i in ids if not i.startswith("PEER-")]
+        out.append({**step, "evidence_ids": kept})
+    return out
 
 
 def _collect(items, by_id, kind, require, reasons) -> List[dict]:

@@ -8,12 +8,13 @@ Verified bearer token and the caller's own profile (owner_context); every statem
 """
 import json
 from typing import Any, Dict
+from uuid import UUID
 
 import psycopg
 from fastapi import APIRouter, Depends, Response
 from pydantic import BaseModel, ConfigDict, Field
 
-from app.api.deps import db_connection, owner_context
+from app.api.deps import current_owner, db_connection, owner_context
 from app.api.ratelimit import limit
 from app.services.candidate_profile import OwnerContext
 from app.services.profile_reset import ProfileResetService
@@ -61,8 +62,8 @@ def export_account(ctx: OwnerContext = Depends(owner_context), svc: ProfileReset
 
 
 @router.post("/account", dependencies=[Depends(limit("mutation"))])
-def delete_account(body: DeleteAccountRequest, response: Response, ctx: OwnerContext = Depends(owner_context),
+def delete_account(body: DeleteAccountRequest, response: Response, owner: UUID = Depends(current_owner),
                    svc: ProfileResetService = Depends(_svc)) -> Dict[str, Any]:
-    """Delete the caller's account and the career data that cascades from it. 422 without the exact phrase."""
+    """Delete the caller's account. A career profile is not required. 422 without the exact phrase."""
     response.headers["Cache-Control"] = "private, no-store"
-    return svc.delete_account(ctx, body.confirm)
+    return svc.delete_account(owner, body.confirm)

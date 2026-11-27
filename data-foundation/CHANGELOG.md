@@ -1,5 +1,54 @@
 # Changelog
 
+## 2.42.0 — 2026-11-26 (peer patterns are counts again)
+
+| Change | Files | Why |
+|---|---|---|
+| `peer_patterns(vector, jsonb, text)` reranks in a CTE and returns aggregate sentences. The distance sort cannot use the HNSW index, so the pool is 120 rather than the index default of about 40. The v2.41 five-argument function is left in place so the running app still resolves during rollout. A pattern needs 10 known profiles before it is phrased as "most of the N". The caller's own background is a match line, not a pattern. A switcher always gets the target-level start, the months median (the range only beside it), and the MBA line when they have an MBA. Someone already in product gets the target-level line, years in product, and an MBA comparison. Execute on the new function stays with `trace_app_runtime` only | migration 59 | v2.41 exposed neighbour attributes, and a stable function that built temporary tables could not be called |
+| Rollback restores the v2.41.0 function | rollback | |
+
+## 2.45.0 — 2026-11-27 (time to a first PM role)
+
+| Change | Files | Why |
+|---|---|---|
+| The dated-path sentence is "it took about 8 years to reach a first PM role" | migration 62 | "about 8 years to a first PM role" had no verb |
+| Rollback restores the v2.44.0 sentence | rollback | |
+
+## 2.44.0 — 2026-11-27 (peer pattern wording)
+
+| Change | Files | Why |
+|---|---|---|
+| Replace `peer_patterns(vector, jsonb, text)`. A duration over 24 months is the nearest half year. The 25th–75th range is folded into the median sentence as "the middle half took", and it is not a separate pattern. An MBA holder sees how uncommon an MBA is in the whole cohort. Someone already in product also sees the pre-PM background mix among people at their target level, and the typical years since career start at that level. Lines about the caller's own move or target level use a lift of 1.1 | migration 61 | The range was being read as "most", and an MBA comparison overstated a rare credential |
+| Rollback restores the v2.42.0 function | rollback | |
+
+## 2.43.0 — 2026-11-26 (drop the per-profile peer function)
+
+| Change | Files | Why |
+|---|---|---|
+| Drop `peer_patterns(vector, text, text[], integer, text)`, the v2.41 function that returned one attribute object per neighbour. The file is `20261126235900_trace_peer_drop_row_function.sql` | migration 60 | Apply only after the app that calls `peer_patterns(vector, jsonb, text)` is deployed |
+| Rollback recreates that five-argument function | rollback | |
+
+## 2.41.0 — 2026-11-26 (peer search returns a candidate pool)
+
+| Change | Files | Why |
+|---|---|---|
+| `peer_patterns` returns the 120 closest anonymous attribute rows, plus cohort counts, background counts and first-level progression counts. No profile key. The level nudge is no longer applied in the database | migration 58 | The application reranks that pool. Embedding distance alone was too compressed to separate paths |
+| Rollback restores the v2.40.0 aggregate function | rollback | |
+
+## 2.40.0 — 2026-11-26 (peer patterns stay a similarity search)
+
+| Change | Files | Why |
+|---|---|---|
+| `peer_patterns` uses a 0.03 same-level nudge and a 0.02 adjacent nudge, and returns neighbour counts beside whole-cohort counts. A blank degree and a pre-PM count with no history can be null | migration 57 | The previous 0.15 nudge dominated the narrow cosine range, and a blank was being stored as false or zero |
+| Rollback restores the v2.39.0 function and the not-null columns | rollback | |
+
+## 2.39.0 — 2026-11-26 (peer career-path patterns)
+
+| Change | Files | Why |
+|---|---|---|
+| Schema `trace_peer_cohort` holds de-identified career-path rows and a local embedding. It is not a user table, a contribution, or a reference profile. RLS is on. No client role can read the table. `peer_patterns` is security definer, returns one jsonb of counts, and is executable by `trace_app_runtime` only | migration 56 | The plan can match a career path to the closest profiles without returning a person |
+| Rollback drops the schema | rollback | |
+
 ## 2.38.0 — 2026-11-26 (anonymous recommendation use is the default)
 
 | Change | Files | Why |

@@ -22,8 +22,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 72761,
-      "sha256": "8e6a625c94d2c04e3a8416ed05f98c833976c0a3805f8b22eb66c36ee07f9166"
+      "bytes": 79090,
+      "sha256": "a267395e505e1cac2231bab505b39b64880d97e371eaee033557f569a3d5a6e1"
     },
     {
       "path": "README.md",
@@ -726,6 +726,56 @@
       "sha256": "2f33b002a8743bdf75957d0c8ff5768f0a3445146b61273c18e86df4e5056ae1"
     },
     {
+      "path": "supabase/migrations/20261126100000_trace_private_sharing_default_and_account.sql",
+      "bytes": 2729,
+      "sha256": "6d3e70882ef38c91c2cf8f5c79297d715a3fcf9365375b084992df10d1a826d0"
+    },
+    {
+      "path": "supabase/migrations/20261126180000_trace_private_delete_account_grant.sql",
+      "bytes": 3793,
+      "sha256": "a567e685e91985a5cc15303d5fff46721eb4c4d52c3f31fb19e24b482eb46463"
+    },
+    {
+      "path": "supabase/migrations/20261126190000_trace_anonymous_recommendation_default.sql",
+      "bytes": 2641,
+      "sha256": "b81cb40da8d51698118dc5a2d62d4b89563c8786f4f56ed0c7818dac26241410"
+    },
+    {
+      "path": "supabase/migrations/20261126200000_trace_peer_cohort.sql",
+      "bytes": 7086,
+      "sha256": "420614cf8f7b589be02126e59467f7bdfa479c248ad475f5a19ab380ababa8a6"
+    },
+    {
+      "path": "supabase/migrations/20261126223000_trace_peer_pattern_quality.sql",
+      "bytes": 7044,
+      "sha256": "d8c57b8451c4ccf182777d181f9589de5253ab94123267948e9f1be45c8d9c81"
+    },
+    {
+      "path": "supabase/migrations/20261126230000_trace_peer_rerank_pool.sql",
+      "bytes": 7119,
+      "sha256": "a3364a00de19572f3f336e9f9942f1746d2eee5953f58fa38540aa88f7a0e79e"
+    },
+    {
+      "path": "supabase/migrations/20261126233000_trace_peer_aggregates_only.sql",
+      "bytes": 19401,
+      "sha256": "d73dc729047bc2009118c500598cb832decc2a108866f5449c683d07625d5ae1"
+    },
+    {
+      "path": "supabase/migrations/20261126235900_trace_peer_drop_row_function.sql",
+      "bytes": 404,
+      "sha256": "f9d66cc8ab4935f755c3951bf7ade02b46b27b15a19f6d20a7894b4cf46a69e1"
+    },
+    {
+      "path": "supabase/migrations/20261127001000_trace_peer_pattern_wording.sql",
+      "bytes": 24630,
+      "sha256": "a1ee57f4e19a8c421d1d0229c9c8217663b91f8c817431922aeea0e6bc581dfd"
+    },
+    {
+      "path": "supabase/migrations/20261127002000_trace_peer_duration_verb.sql",
+      "bytes": 19963,
+      "sha256": "33584a4f2dadeeb55c4c470e503e632f24994df7241e9e0702c2ac1d108cbe2e"
+    },
+    {
       "path": "supabase/rollback/20261111150000_trace_candidate_review_enforcement.rollback.sql",
       "bytes": 13064,
       "sha256": "55def97a842ecca5eb8bf29289b831aa4b10bd0a035378d5b4d57b6fc4c304a5"
@@ -921,6 +971,56 @@
       "sha256": "d25322405216d94f0f4a5a1faaa4c2b7c6036d5cf1847951d50ce50a4b3de2be"
     },
     {
+      "path": "supabase/rollback/20261126100000_trace_private_sharing_default_and_account.rollback.sql",
+      "bytes": 1232,
+      "sha256": "f1ebbf1ce3172bf848175b4eaa69205cbd638f837b9e179e7fce78042db2fe2f"
+    },
+    {
+      "path": "supabase/rollback/20261126180000_trace_private_delete_account_grant.rollback.sql",
+      "bytes": 356,
+      "sha256": "269acf2d7fb98aacdcbc80f83e8e1fd5d359ebcfcf3a4b788f224aecb7d812d0"
+    },
+    {
+      "path": "supabase/rollback/20261126190000_trace_anonymous_recommendation_default.rollback.sql",
+      "bytes": 1128,
+      "sha256": "795057f3546271b434d9b947e7e3890822ced42b818c2f7bcb3a3497f18acff3"
+    },
+    {
+      "path": "supabase/rollback/20261126200000_trace_peer_cohort.rollback.sql",
+      "bytes": 258,
+      "sha256": "d58b42b69bb78f0a4a63054656f8e477996b2dab4243d030bfa2e63ace75ea7f"
+    },
+    {
+      "path": "supabase/rollback/20261126223000_trace_peer_pattern_quality.rollback.sql",
+      "bytes": 3583,
+      "sha256": "7a31b84f8fc29f31d3a16a99dfac405351f7f3840f9d8cfce8239edada35218e"
+    },
+    {
+      "path": "supabase/rollback/20261126230000_trace_peer_rerank_pool.rollback.sql",
+      "bytes": 5511,
+      "sha256": "7373cc087b8432a1737e393f9009218f16dca3ddb45b8ce158d3a2ce87d7049c"
+    },
+    {
+      "path": "supabase/rollback/20261126233000_trace_peer_aggregates_only.rollback.sql",
+      "bytes": 7110,
+      "sha256": "290473ea06dcd87c1e5ca732a4ee19536b80f75aa3b65f3366c18ea3653aa1a5"
+    },
+    {
+      "path": "supabase/rollback/20261126235900_trace_peer_drop_row_function.rollback.sql",
+      "bytes": 6842,
+      "sha256": "1d03a4eed11bb3c6d2473a6e62a84860b63651b70f73ddcb9fb6964298e84e3b"
+    },
+    {
+      "path": "supabase/rollback/20261127001000_trace_peer_pattern_wording.rollback.sql",
+      "bytes": 18135,
+      "sha256": "09038e1bd6e0902404eb60a1527d73509253f0f09a708b3d6117867ed7499aa0"
+    },
+    {
+      "path": "supabase/rollback/20261127002000_trace_peer_duration_verb.rollback.sql",
+      "bytes": 19869,
+      "sha256": "b0b41dc1449c607dfc05ef10e136ee4bd7972c50ab8b3276a8d6a985b3dc0aee"
+    },
+    {
       "path": "supabase/seeds/synthetic_fixtures.sql",
       "bytes": 132275,
       "sha256": "67787eb7963d63918b7173431262bf7425f7bb50c06d70cbb1cdb086bc424bb9"
@@ -966,6 +1066,11 @@
       "sha256": "b0f570823ef8699901fdeb0e123c9db354e487aece7ec1bba387d38b6d7e63f6"
     },
     {
+      "path": "supabase/tests/database/trace_delete_my_account_grant.test.sql",
+      "bytes": 2241,
+      "sha256": "5a3ae49ff3c6ce07c224111f09a77247d15e658680f1fea1de3dd9f8882105d6"
+    },
+    {
       "path": "supabase/tests/database/trace_episode_pathways.test.sql",
       "bytes": 19697,
       "sha256": "6050bf68ccf51c4cb4614a805c0392144537a2a2abcfe833b3e4cf30e6dcebcb"
@@ -996,6 +1101,11 @@
       "sha256": "efff331ed7f019e42f958f0cfa8aa09770bc1418d560d9b43aa298db0d0d6711"
     },
     {
+      "path": "supabase/tests/database/trace_peer_cohort.test.sql",
+      "bytes": 1981,
+      "sha256": "4fb689d41cc22e46240989ebc111cef521925f25c1c114ab5f78473762a1f5d9"
+    },
+    {
       "path": "supabase/tests/database/trace_phase4_remediation.test.sql",
       "bytes": 14966,
       "sha256": "6a17775af15ed67117ac80f1275256f592f27919d836a7079fa3fb65c8b28a68"
@@ -1017,8 +1127,8 @@
     },
     {
       "path": "supabase/tests/database/trace_runtime_and_real_reference.test.sql",
-      "bytes": 9081,
-      "sha256": "2d3d931b2e88532976beb8ab3ca1fb1a919136e60a53410560c92481517a39ef"
+      "bytes": 9110,
+      "sha256": "3ca4cc5044d7575ab5683617f596ae0361eec50a9a1fc164c228500f8e262cce"
     },
     {
       "path": "supabase/tests/database/trace_semantic_embeddings.test.sql",
@@ -1032,8 +1142,8 @@
     },
     {
       "path": "supabase/tests/database/trace_sharing_preference.test.sql",
-      "bytes": 5886,
-      "sha256": "3816f6edfd243d43d373ef2596702ef609309e4bf403f7b8dd8bfea76d1aab0c"
+      "bytes": 5927,
+      "sha256": "1ea2575fa3eacb1973635232aa269c792ff5b09cba367b143812aaaa32d058cd"
     },
     {
       "path": "supabase/tests/database/trace_target_company_preferences.test.sql",

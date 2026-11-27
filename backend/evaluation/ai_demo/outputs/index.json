@@ -145,35 +145,35 @@
       "id": "F21",
       "move": "non_pm_to_apm",
       "status": "not_configured",
-      "lines": 10,
+      "lines": 8,
       "retrieval": "in_process_overlap"
     },
     {
       "id": "F22",
       "move": "non_pm_to_pm",
       "status": "not_configured",
-      "lines": 11,
+      "lines": 8,
       "retrieval": "in_process_overlap"
     },
     {
       "id": "F23",
       "move": "apm_to_pm",
       "status": "not_configured",
-      "lines": 10,
+      "lines": 8,
       "retrieval": "in_process_overlap"
     },
     {
       "id": "F24",
       "move": "pm_to_spm",
       "status": "not_configured",
-      "lines": 12,
+      "lines": 8,
       "retrieval": "in_process_overlap"
     },
     {
       "id": "F25",
       "move": "non_pm_to_apm",
       "status": "not_configured",
-      "lines": 10,
+      "lines": 8,
       "retrieval": "in_process_overlap"
     }
   ]

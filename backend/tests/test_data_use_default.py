@@ -22,6 +22,21 @@ def test_the_onboarding_default_is_anonymous_recommendation_use_and_not_a_publis
     assert "change this in Settings" in NOTICE_LINE
 
 
+def test_the_demo_policy_keeps_the_shared_notice_and_does_not_queue_a_pool():
+    from app.api.consent_routes import POLICIES
+    from app.api.sharing_routes import NOTICE_VERSION, forces_private_default, _notice
+    assert "anonymous" in POLICIES
+    assert forces_private_default("disabled") is True
+    assert forces_private_default("anonymous") is False
+    assert _notice("anonymous").version == NOTICE_VERSION
+    assert _notice("disabled").version != NOTICE_VERSION
+    consent = (ROOT / "backend/app/api/consent_routes.py").read_text()
+    assert 'policy != "opt_in"' in consent
+    example = (ROOT / "backend/.env.example").read_text()
+    assert "TRACE_CONTRIBUTION_POLICY=anonymous" in example or "anonymous" in example
+    assert "nothing is queued" in example
+
+
 def test_sign_up_and_settings_use_the_same_words_as_the_notice():
     signin = (ROOT / "backend/web/js/views/signin.js").read_text()
     settings = (ROOT / "backend/web/js/views/settings.js").read_text()
