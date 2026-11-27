@@ -107,7 +107,7 @@ second account. `GET /api/v1/career-origins` must return 404. Delete the smoke-t
   Per-user limits still apply either way.
 - Plans show profile-led routes only: production has no reference career histories (the synthetic sample is never
   loaded there and the research is off).
-- Account deletion is `POST /api/v1/account` after the caller types `delete my account`. It needs migration v2.36.0.
+- Account deletion is `POST /api/v1/account` after the caller types `delete my account`. It needs migrations v2.36.0 and v2.37.0.
   Clearing the career profile still keeps the account.
 
 ## Preview on Cloud Run (asia-south1) — not production
@@ -115,7 +115,7 @@ second account. `GET /api/v1/career-origins` must return 404. Delete the smoke-t
 Do not point this at `trace-prod` or apply migrations there without a separate decision. Use a preview Supabase project.
 
 1. Create or select a **preview** Supabase project in `asia-south1` (or the closest available region). Apply migrations
-   with `supabase db push` against that project's admin URL only, including v2.34.0, v2.35.0 and v2.36.0 if the demo
+   with `supabase db push` against that project's admin URL only, including v2.34.0, v2.35.0, v2.36.0 and v2.37.0 if the demo
    narrative and account deletion are in scope. Do not load synthetic seeds into a project that holds real profiles.
 2. Build the image from this repository (`Dockerfile`). Do not set `TRACE_AI_ASSESSMENT` in the production Fly app.
 3. Deploy to Cloud Run, region `asia-south1`, with a dedicated runtime service account. Set secrets in Cloud Run, not

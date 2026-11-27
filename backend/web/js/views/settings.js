@@ -1,8 +1,8 @@
 // Profile settings -> Data & privacy: how Trace uses your career information.
 //
 // Two mutually exclusive modes, saved with an explicit action (PUT /api/v1/sharing):
-//   shared   use my career information to improve recommendations for everyone (opt in, in these settings)
-//   private  use it only for my recommendations (the default)
+//   shared   use my data anonymously to improve recommendations for everyone (the default for a new account)
+//   private  use it only for my recommendations (turns the default off)
 // The sharing PREFERENCE and the profile's actual STATUS in the shared pool are shown separately, both from
 // GET /api/v1/sharing. "Included" appears only when the API says eligible AND included. Nothing is shown as changed
 // until the API confirms it. Reviewer and administrative operations are not available here.
@@ -21,10 +21,10 @@ const POLL_DELAYS = [3000, 5000, 8000, 13000, 21000];      // a few checks while
 
 const MODES = {
   shared: {
-    title: "Use my career information to improve recommendations for everyone",
-    text: "Trace can use career details from your reviewed profile, after removing direct personal details and completing "
-      + "the required checks, to improve career recommendations and insights for other members.",
-    summary: "Share when eligible",                 // a preference, never a statement that anything is shared
+    title: "Use my data anonymously to improve recommendations for everyone",
+    text: "Your profile is never shown or shared with other users. Trace uses career details from your reviewed profile, "
+      + "with direct personal details removed, to improve recommendations for everyone. You can turn this off here at any time.",
+    summary: "Share when eligible",                 // a preference, never a statement that anything is contributed
   },
   private: {
     title: "Use my career information only for my recommendations",

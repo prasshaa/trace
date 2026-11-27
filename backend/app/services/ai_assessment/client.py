@@ -103,6 +103,15 @@ class OpenAICompatible:
                 latency = round(time.perf_counter() - started, 3)
                 attempt_log.append({"n": attempt, "ok": False, "error": type(exc).__name__, "latency_s": latency})
                 self._remember(attempt_log, None, time.perf_counter() - started_all)
+                # A refused or reset connection fails in well under a second. Try once more, after a short pause,
+                # using whatever remains of the whole-request deadline. Other socket errors are not retried.
+                if attempt == 1 and _connect_failure(exc) and (deadline - time.monotonic()) >= 1:
+                    pause = min(0.4, deadline - time.monotonic() - 0.5)
+                    logger.info("llm call provider=%s model=%s attempt=%s connect_error=%s latency_s=%.3f",
+                                self.provider, self.model, attempt, type(exc).__name__, latency)
+                    if pause > 0:
+                        time.sleep(pause)
+                    continue
                 raise LlmError(f"the model provider could not be reached ({type(exc).__name__})") from None
             latency = round(time.perf_counter() - started, 3)
             try:
@@ -137,6 +146,19 @@ class OpenAICompatible:
             "attempts": len(attempt_log),
             "attempt_log": attempt_log,
         }
+
+
+_CONNECT_FAILURES = (ConnectionRefusedError, ConnectionResetError, ConnectionAbortedError, BrokenPipeError)
+
+
+def _connect_failure(exc: BaseException) -> bool:
+    """A connection that never started, or was reset. HTTP responses are not connection failures."""
+    if isinstance(exc, urllib.error.HTTPError):
+        return False
+    if isinstance(exc, _CONNECT_FAILURES):
+        return True
+    reason = getattr(exc, "reason", None)
+    return isinstance(reason, _CONNECT_FAILURES)
 
 
 def _post_bounded(url: str, body: bytes, api_key: str, budget: float) -> bytes:

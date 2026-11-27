@@ -211,6 +211,44 @@ def test_the_request_deadline_is_the_whole_call_and_a_5xx_is_retried_once(monkey
     assert calls["effort"][-1] is None
 
 
+def test_a_reset_connection_is_retried_once_inside_the_deadline(monkeypatch):
+    import json as _json
+    import urllib.error
+
+    class Resp:
+        def __init__(self):
+            self._buf = _json.dumps({"choices": [{"message": {"content": '{"opening": "ok"}'}}],
+                                     "usage": {"prompt_tokens": 1, "completion_tokens": 1}}).encode()
+        def read(self, _n=-1):
+            data, self._buf = self._buf, b""
+            return data
+        def close(self):
+            pass
+
+    calls = {"n": 0}
+    slept = []
+    def open_once(req, timeout=None, socks=None):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            raise urllib.error.URLError(ConnectionResetError("reset"))
+        return Resp()
+    monkeypatch.setattr("app.services.ai_assessment.client._open", open_once)
+    monkeypatch.setattr("app.services.ai_assessment.client.time.sleep", lambda seconds: slept.append(seconds))
+    client = OpenAICompatible(provider="xai", base_url="https://api.x.ai/v1", model="grok-4.7",
+                              api_key="secret-not-logged", timeout=5, first_attempt_seconds=5)
+    assert client.complete_json("system", "user") == {"opening": "ok"}
+    assert calls["n"] == 2 and client.last_meta["attempts"] == 2
+    assert slept and 0 < slept[0] <= 0.4
+    def refused(req, timeout=None, socks=None):
+        raise PermissionError("not a connection")
+    monkeypatch.setattr("app.services.ai_assessment.client._open", refused)
+    other = OpenAICompatible(provider="xai", base_url="https://api.x.ai/v1", model="grok-4.7",
+                             api_key="secret-not-logged", timeout=5)
+    with pytest.raises(LlmError, match="could not be reached"):
+        other.complete_json("system", "user")
+    assert other.last_meta["attempts"] == 1
+
+
 def test_headers_then_a_slow_body_cannot_outrun_the_deadline():
     """Headers at t=deadline-1, then a trickle. The call must return at the deadline, not when the body ends."""
     import socket

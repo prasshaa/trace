@@ -97,7 +97,7 @@ def test_where_sharing_is_not_offered_the_onboarding_notice_says_so_and_records_
         assert r["notice_acknowledged"] and r["preference"] == "private"
     with make_client(base_settings) as c:                                   # opt-in servers keep the existing notice
         _, h = candidate(c, users)
-        assert c.get("/api/v1/sharing", headers=h).json()["notice"]["version"] == "trace-data-use-notice-v3"
+        assert c.get("/api/v1/sharing", headers=h).json()["notice"]["version"] == "trace-data-use-notice-v4"
 
 
 def test_every_frontend_module_parses():

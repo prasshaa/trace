@@ -34,6 +34,12 @@ def test_role_unconfirmed_has_a_direct_action_to_the_job():
     assert "positionText(" in code_of("views/target.js")
 
 
+def test_the_role_picker_starts_on_the_suggested_role():
+    r = code_of("views/review.js")
+    assert "const preset = options.suggested_role_id && byId[options.suggested_role_id] ? options.suggested_role_id : \"\"" in r
+    assert "select.value = preset" in r
+
+
 def test_move_directions_come_only_from_the_api():                       # Phase 8.2
     c = code_of("copy.js")
     for text in ("Move to a more senior role", "Move to a more junior role", "Lateral move",
