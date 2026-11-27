@@ -3,7 +3,8 @@
     cd backend && python -m evaluation.ai_demo
 
 TRACE_LLM_TIMEOUT (seconds) is read from the environment when a model is configured. The first try uses
-TRACE_LLM_FIRST_ATTEMPT_SECONDS (default 70) so a timeout still leaves time for one retry. TRACE_LLM_REASONING_EFFORT
+TRACE_LLM_FIRST_ATTEMPT_SECONDS (default 90). A try that uses the full 90 seconds is not retried inside the 120 second
+budget. TRACE_LLM_REASONING_EFFORT
 defaults to low for grok-4.7; set it to medium, high or xhigh to override, or to an empty value to omit it.
 With no key the files are status not_configured. Nothing is invented.
 """
@@ -42,11 +43,11 @@ def _client():
         timeout = float(raw_timeout)
     except ValueError:
         timeout = 120.0
-    raw_first = (os.environ.get("TRACE_LLM_FIRST_ATTEMPT_SECONDS") or "70").strip()
+    raw_first = (os.environ.get("TRACE_LLM_FIRST_ATTEMPT_SECONDS") or "90").strip()
     try:
         first_attempt = float(raw_first)
     except ValueError:
-        first_attempt = 70.0
+        first_attempt = 90.0
     return OpenAICompatible(
         provider=(os.environ.get("TRACE_LLM_PROVIDER") or "openai").strip(),
         base_url=(os.environ.get("TRACE_LLM_BASE_URL") or "https://api.openai.com/v1").strip(),

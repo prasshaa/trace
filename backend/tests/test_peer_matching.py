@@ -146,6 +146,17 @@ def test_peer_numbers_must_match_the_pattern_and_a_person_is_dropped():
                    "evidence_ids": ["PEER-1"], "why": ""}],
     }, peer_lines)
     assert "17 of the 40" in reading["opening"]
+    pattern = "14 of the 29 cohort PMs who started as APM are now Product Manager or above."
+    peer = [{"id": "L1", "text": "Shipped the onboarding queue."}, {"id": "PEER-2", "text": pattern}]
+    causal = apply_guardrails({
+        "opening": pattern[:-1] + ", so scope is the promotion lever.",
+    }, peer)
+    assert "14 of the 29" in causal["opening"]
+    assert "promotion lever" not in causal["opening"]
+    neutral = apply_guardrails({
+        "opening": pattern[:-1] + ", so this is a common route.",
+    }, peer)
+    assert "so this is a common route" in neutral["opening"]
     assert not reading["strengths"]
     assert reading["steps"] and reading["steps"][0]["evidence_ids"] == ["PEER-1"]
 
@@ -366,6 +377,26 @@ def test_a_structured_opening_stays_prose_and_the_limit_ends_on_a_sentence():
         {"opening": "24 of the 40 people with a similar path moved internally. You shipped the queue."},
         {"available": True, "patterns": [{"id": "PEER-1", "text": "24 of the 40 closest PMs moved internally."}]})
     assert paraphrased["opening"].startswith("24 of the 40")
+    zeros = [_row(final_n_pre_pm_roles="0", final_months_to_first_pm_from_earliest_nonintern=str(60 + i)) for i in range(12)]
+    real = [_row(final_n_pre_pm_roles=str(2 + (i % 2)), final_months_to_first_pm_from_earliest_nonintern=str(48 + i)) for i in range(12)]
+    from app.services.peer_matching.aggregate import stats_from_rows
+    assert 0 not in stats_from_rows(zeros + real)["pre"]
+    started = [_row(final_first_pm_group="APM", norm_seniority_group="Product Manager", final_n_pm_roles="2") for _ in range(12)]
+    started += [_row(final_first_pm_group="APM", norm_seniority_group="APM", final_n_pm_roles="1") for _ in range(4)]
+    progressed = patterns_from_neighbours(started, "Product Manager", started, user={"in_pm": True, "first_pm_level": "APM", "target_level": "Product Manager"})
+    assert any("started as APM" in item["text"] and "Product Manager or above" in item["text"] for item in progressed["patterns"])
+    seniors = [_row(final_first_pm_group="Product Manager", norm_seniority_group="Senior Product Manager", final_n_pm_roles="3") for _ in range(12)]
+    climbed = patterns_from_neighbours(seniors, "Senior Product Manager", seniors,
+                                       user={"in_pm": True, "first_pm_level": "Product Manager", "target_level": "Senior Product Manager"})
+    assert any("started as Product Manager" in item["text"] and "Senior Product Manager or above" in item["text"]
+               for item in climbed["patterns"])
+    from app.services.peer_matching.aggregate import _share, _takeaways
+    compared, _lift = _share(24, 30, "started as APM.", 40, 400, 439)
+    assert "APM.," not in compared and compared.endswith("PMs.")
+    minority = [{"text": "from inside the employer", "rate": 0.38, "cohort_rate": 0.2}]
+    assert _takeaways(minority, 14, 23) == []
+    refused = _from_payload({"headline": "PMs with paths like yours", "patterns": [], "candidates": []}, {})
+    assert refused["available"] is False
 
 
 def test_the_fallback_peer_sentence_keeps_casing_and_skips_mba_and_duration():
@@ -396,26 +427,6 @@ def test_the_fallback_peer_sentence_keeps_casing_and_skips_mba_and_duration():
         {"available": True, "patterns": [{"id": "PEER-2", "text": level}]})
     assert level_only["opening"].endswith(level)
     assert level_only["opening"].startswith("You shipped")
-    zeros = [_row(final_n_pre_pm_roles="0", final_months_to_first_pm_from_earliest_nonintern=str(60 + i)) for i in range(12)]
-    real = [_row(final_n_pre_pm_roles=str(2 + (i % 2)), final_months_to_first_pm_from_earliest_nonintern=str(48 + i)) for i in range(12)]
-    from app.services.peer_matching.aggregate import stats_from_rows
-    assert 0 not in stats_from_rows(zeros + real)["pre"]
-    started = [_row(final_first_pm_group="APM", norm_seniority_group="Product Manager", final_n_pm_roles="2") for _ in range(12)]
-    started += [_row(final_first_pm_group="APM", norm_seniority_group="APM", final_n_pm_roles="1") for _ in range(4)]
-    progressed = patterns_from_neighbours(started, "Product Manager", started, user={"in_pm": True, "first_pm_level": "APM", "target_level": "Product Manager"})
-    assert any("started as APM" in item["text"] and "Product Manager or above" in item["text"] for item in progressed["patterns"])
-    seniors = [_row(final_first_pm_group="Product Manager", norm_seniority_group="Senior Product Manager", final_n_pm_roles="3") for _ in range(12)]
-    climbed = patterns_from_neighbours(seniors, "Senior Product Manager", seniors,
-                                       user={"in_pm": True, "first_pm_level": "Product Manager", "target_level": "Senior Product Manager"})
-    assert any("started as Product Manager" in item["text"] and "Senior Product Manager or above" in item["text"]
-               for item in climbed["patterns"])
-    from app.services.peer_matching.aggregate import _share, _takeaways
-    compared, _lift = _share(24, 30, "started as APM.", 40, 400, 439)
-    assert "APM.," not in compared and compared.endswith("PMs.")
-    minority = [{"text": "from inside the employer", "rate": 0.38, "cohort_rate": 0.2}]
-    assert _takeaways(minority, 14, 23) == []
-    refused = _from_payload({"headline": "PMs with paths like yours", "patterns": [], "candidates": []}, {})
-    assert refused["available"] is False
 
 
 def test_a_switcher_gets_six_patterns_without_restating_their_background():

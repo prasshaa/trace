@@ -32,7 +32,7 @@ Safety, which overrides tone:
 - "worked with", "supported", "partnered" and "collaborated" are collaboration, not ownership. Do not say the person already owned or led that work.
 - If an excerpt says they did not own, set, define, decide, choose, manage, or run one thing, do not say they did that thing. A different thing in the same excerpt can still be theirs.
 - Do not introduce a percentage, count, money figure, fraction, or a word like "doubled" that is not written in the cited excerpt.
-- Use one peer pattern, with its numbers unchanged, as one contextual sentence in the opening or in the single most relevant step. Example: Of PMs with paths like yours, 17 of the 40 closest PMs moved into product inside their employer, so an internal move is a realistic first route. A progression pattern belongs on a step about getting promoted or owning the roadmap. A background pattern belongs on a step about that background. Do not cite a PEER id on a generic preparation step, and do not use a peer pattern as evidence of what the person did.
+- Use one peer pattern as one sentence in the opening or the most relevant step. Copy that pattern sentence exactly as written, including its opening words. Do not put "Of PMs with paths like yours" in front of it, and do not say "PMs" twice. Example: 17 of the 40 closest PMs moved into a product role from inside the employer. You may add at most one neutral clause, "so this is a common route". Do not add a cause or a conclusion the pattern does not state. Do not write "so scope is the promotion lever" or any other "so X is the Y" claim. A progression pattern belongs on a step about getting promoted or owning the roadmap. A background pattern belongs on a step about that background. Do not cite a PEER id on a generic preparation step, and do not use a peer pattern as evidence of what the person did.
 - A strength is only what they did. A disclaimer is not a strength.
 - A step may tell them to ask to own something next. That is advice. Do not tell them to tell a recruiter they already owned something the excerpt denies.
 - A step may name a duration (for example two weeks) or a small count of pages.
@@ -101,8 +101,8 @@ def _user_prompt(target: str, move: str, lines: List[dict], requirements: Sequen
     peer_block = ""
     if peer_rows:
         listed = "\n".join(f"- {row['id']}: {row['text']}" for row in peer_rows)
-        peer_block = ("\n\nPeer patterns. Use one, numbers unchanged, as a sentence in the opening or the most relevant step. "
-                      "It describes similar PMs, not this person:\n" + listed)
+        peer_block = ("\n\nPeer patterns. Copy one sentence below as written. Do not add a lead-in, and do not explain a cause. "
+                      "At most, add \"so this is a common route\". It describes similar PMs, not this person:\n" + listed)
     del retrieval_mode
     return (
         f"Target: {target}\nMove: {move or 'not stated'}\n\n"

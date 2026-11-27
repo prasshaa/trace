@@ -122,6 +122,10 @@ Do not point this at `trace-prod` or apply migrations there without a separate d
    in the image: `DATABASE_RUNTIME_URL`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `TRACE_IDENTITY_MARKER_KEY`.
 4. For the AI demo on that preview only: `TRACE_AI_ASSESSMENT=1`, `TRACE_LLM_PROVIDER`, `TRACE_LLM_BASE_URL`,
    `TRACE_LLM_MODEL`, `TRACE_LLM_API_KEY`, `TRACE_EMBEDDINGS=1`, `TRACE_SEMANTIC_RETRIEVAL=1`,
-   `TRACE_TRUST_APPENDED_FORWARDED=1`. Leave `TRACE_CAREER_ORIGINS=0` and do not set `TRACE_DEMO_FIXTURES`.
+   `TRACE_TRUST_APPENDED_FORWARDED=1`. Leave `TRACE_LLM_REASONING_EFFORT` unset so the app sends `low`.
+   Leave `TRACE_CAREER_ORIGINS=0` and do not set `TRACE_DEMO_FIXTURES`.
+   Set the Cloud Run request timeout to 300 seconds (`--timeout=300`). The first model try uses
+   `TRACE_LLM_FIRST_ATTEMPT_SECONDS` (default 90) inside `TRACE_LLM_TIMEOUT` (default 120). The browser polls for
+   240 seconds. A platform timeout under that poll window ends the reading early.
 5. Confirm `GET /health` and that `/api/v1/career-origins` is 404. Sign up with a new address, upload a **fictional**
    resume, and delete the account afterwards.

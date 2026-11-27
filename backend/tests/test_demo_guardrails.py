@@ -139,6 +139,7 @@ def test_the_model_client_is_absent_without_a_key_and_json_fences_parse():
     assert "secret-not-logged" not in repr(client)
     assert "secret-not-logged" not in client.base_url
     assert Settings().trace_llm_timeout == 120
+    assert Settings().trace_llm_first_attempt_seconds == 90
     assert Settings().trace_llm_reasoning_effort == "low"
     assert client.reasoning_effort == "low"
 
