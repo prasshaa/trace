@@ -133,10 +133,13 @@ class Settings(BaseSettings):
     trace_llm_api_key: Optional[SecretStr] = None
     # Reasoning models (grok-4.7) often need more than a minute. 120 s is the default; raise it with TRACE_LLM_TIMEOUT.
     trace_llm_timeout: float = Field(default=120, ge=5, le=600)
-    # The first try stops here so a timeout still leaves the rest of TRACE_LLM_TIMEOUT for one retry.
-    trace_llm_first_attempt_seconds: float = Field(default=70, ge=1, le=600)
+    # The first try stops here. 90 s covers a low-effort reading that spends several thousand reasoning tokens.
+    # A full 90 s try is not sent again: half of TRACE_LLM_TIMEOUT (120) is 60 s, so only a faster failure is retried.
+    # TRACE_LLM_FIRST_ATTEMPT_SECONDS overrides it. Keep it at or below TRACE_LLM_TIMEOUT.
+    trace_llm_first_attempt_seconds: float = Field(default=90, ge=1, le=600)
     # grok-4.7 accepts reasoning_effort low|medium|high|xhigh on chat completions. The provider default is high.
-    # low is the demo default (a side check cut 60–170 s calls to about 25–30 s). Set the variable empty to omit it.
+    # low is the demo default. Omitting the field makes xAI use high, which spends more reasoning tokens, not fewer.
+    # There is no separate reasoning-token cap on this endpoint, so the cheap lever is to keep low. Do not raise it.
     trace_llm_reasoning_effort: str = "low"
     # Output tokens for one reading. 800 cut the JSON off (good readings use about 850–1,200). 1,800 is the default.
     # TRACE_LLM_MAX_OUTPUT_TOKENS overrides it.

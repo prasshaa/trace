@@ -335,9 +335,30 @@ _MOVE_STEP = re.compile(
 )
 
 
+_NEUTRAL_PEER_TAIL = re.compile(r",?\s*so this is a common (?:route|step|path)\.?$", re.I)
+_CAUSAL_PEER_TAIL = re.compile(
+    r",?\s+\b(?:so|therefore|because|which means|that means)\b\s+.*$",
+    re.I,
+)
+
+
+def _plain_peer_sentence(sentence: str) -> str:
+    """Keep a peer pattern and, at most, 'so this is a common route'. Drop any other conclusion."""
+    if _NEUTRAL_PEER_TAIL.search(sentence or ""):
+        return sentence
+    cut = _CAUSAL_PEER_TAIL.search(sentence or "")
+    if not cut:
+        return sentence
+    head = sentence[:cut.start()].rstrip(" ,")
+    if head and head[-1] not in ".!?":
+        head += "."
+    return head or sentence
+
+
 def _about_the_group(sentence: str) -> bool:
     return bool(re.search(
-        r"closest PMs|paths like yours|path like yours|of PMs|inside the employer|inside their employer|moved into product",
+        r"closest PMs|cohort PMs|paths like yours|path like yours|of PMs|inside the employer|"
+        r"inside their employer|moved into product",
         sentence or "", re.I))
 
 
@@ -500,6 +521,8 @@ def _opening(raw, by_id, lines, reasons) -> str:
         if not sentence:
             continue
         peer_text = _peer_figure_text(sentence, by_id) if _about_the_group(sentence) else ""
+        if peer_text:
+            sentence = _plain_peer_sentence(sentence)
         number_universe = (universe + " " + peer_text) if peer_text else universe
         if invented_number(remove_ids(sentence, by_id), number_universe):
             _bump(reasons, "invented_number")

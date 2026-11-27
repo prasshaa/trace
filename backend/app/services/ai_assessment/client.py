@@ -31,7 +31,7 @@ class LlmError(Exception):
 
 class OpenAICompatible:
     def __init__(self, *, provider: str, base_url: str, model: str, api_key: str, timeout: float = 120.0,
-                 reasoning_effort: Optional[str] = "low", first_attempt_seconds: float = 70.0,
+                 reasoning_effort: Optional[str] = "low", first_attempt_seconds: float = 90.0,
                  max_output_tokens: int = 1800):
         self.provider = provider or "openai"
         self.base_url = base_url.rstrip("/")
@@ -325,6 +325,6 @@ def client_from_settings(settings) -> Optional[OpenAICompatible]:
         api_key=raw,
         timeout=float(getattr(settings, "trace_llm_timeout", 120) or 120),
         reasoning_effort="low" if effort is None else effort,
-        first_attempt_seconds=float(getattr(settings, "trace_llm_first_attempt_seconds", 70) or 70),
+        first_attempt_seconds=float(getattr(settings, "trace_llm_first_attempt_seconds", 90) or 90),
         max_output_tokens=int(getattr(settings, "trace_llm_max_output_tokens", 1800) or 1800),
     )
